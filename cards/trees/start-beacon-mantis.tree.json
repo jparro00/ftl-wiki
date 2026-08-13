@@ -1,0 +1,14 @@
+{
+  "schema": "ftl-event-tree/1",
+  "id": "START_BEACON_MANTIS",
+  "slug": "start-beacon-mantis",
+  "title": "Start beacon (Mantis)",
+  "extracted_from": "raw/gamedata/events_mantis.xml",
+  "text": {
+    "value": "You've entered a poorly charted area of space that's known to be home to the Mantis. Ensure your hull plating is up to scratch and that you have enough fuel in the tank to make it through.",
+    "ref": "event_START_BEACON_MANTIS_text"
+  },
+  "name": "START_BEACON_MANTIS",
+  "source": "raw/gamedata/events_mantis.xml",
+  "effects": []
+}

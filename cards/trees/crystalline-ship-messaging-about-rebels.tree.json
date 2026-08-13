@@ -1,0 +1,382 @@
+{
+  "schema": "ftl-event-tree/1",
+  "id": "CRYSTAL_REQUEST",
+  "slug": "crystalline-ship-messaging-about-rebels",
+  "title": "Crystalline ship messaging about Rebels",
+  "extracted_from": "raw/gamedata/events_crystal.xml",
+  "text": {
+    "value": "The moment you arrive you notice a Crystalline ship in the vicinity keeping its distance. They message you, \"The 'Rebels' that are trying to hunt YOU down are creating havoc everywhere they go.\"",
+    "ref": "event_CRYSTAL_REQUEST_text"
+  },
+  "name": "CRYSTAL_REQUEST",
+  "source": "raw/gamedata/events_crystal.xml",
+  "effects": [],
+  "flags": {
+    "unique": true
+  },
+  "node": {
+    "kind": "decision",
+    "options": [
+      {
+        "label": "Continue...",
+        "gate": null,
+        "child": {
+          "text": {
+            "value": "\"To minimize their impact on our people, we would like you to give them your flight path out of our sector. We would like to remain civil and are willing to pay you in 'scrap' for the increased danger it poses.",
+            "ref": "event_CRYSTAL_REQUEST_c1_text"
+          },
+          "effects": [],
+          "node": {
+            "kind": "decision",
+            "options": [
+              {
+                "label": "Give them your flight plans.",
+                "gate": null,
+                "child": {
+                  "text": {
+                    "value": "It was never your intention to lead the Rebels here, and frankly you could do with the scrap. The Crystalline ship immediately jumps off to inform the Rebels, leaving you with a fleet to outrun!",
+                    "ref": "event_CRYSTAL_REQUEST_c1_c1_text"
+                  },
+                  "effects": [
+                    {
+                      "kind": "reward",
+                      "level": "HIGH",
+                      "tier": "scrap_only"
+                    },
+                    {
+                      "kind": "fleet_delay",
+                      "amount": 1
+                    }
+                  ]
+                },
+                "label_ref": "event_CRYSTAL_REQUEST_c1_c1_choice",
+                "hidden": true
+              },
+              {
+                "label": "Accept the scrap but give them false flight plans.",
+                "gate": null,
+                "child": {
+                  "effects": [],
+                  "node": {
+                    "kind": "chance",
+                    "list": "CRYSTAL_REQUEST_LIST",
+                    "source": "raw/gamedata/events_crystal.xml",
+                    "odds_basis": "unweighted",
+                    "options": [
+                      {
+                        "share": null,
+                        "child": {
+                          "text": {
+                            "value": "Unable to interpret it themselves, the Crystalline Beings assume your data will mean something to the Rebels. It should see the pursuing fleet taking a leisurely cruise before they get back on track.",
+                            "ref": "event_CRYSTAL_REQUEST_LIST_1_text"
+                          },
+                          "effects": [
+                            {
+                              "kind": "reward",
+                              "level": "HIGH",
+                              "tier": "scrap_only"
+                            },
+                            {
+                              "kind": "fleet_delay",
+                              "amount": -1
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "share": null,
+                        "child": {
+                          "text": {
+                            "value": "They take one look at your fake telemetry and realize what you've done. They apparently do not take being lied to well - they immediately attack!",
+                            "ref": "event_CRYSTAL_REQUEST_LIST_2_text"
+                          },
+                          "effects": [
+                            {
+                              "kind": "ship_hostility",
+                              "hostile": true
+                            },
+                            {
+                              "kind": "boarders",
+                              "min": 1,
+                              "max": 2,
+                              "class": "crystal"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                },
+                "label_ref": "event_CRYSTAL_REQUEST_c1_c2_choice",
+                "hidden": true
+              },
+              {
+                "label": "(Distraction Buoy) Accept the scrap but give them falsified flight plans.",
+                "gate": {
+                  "req": "FLEET_DISTRACTION",
+                  "label": "Distraction Buoys"
+                },
+                "child": {
+                  "text": {
+                    "value": "Your distraction buoy allows you to create very convincing flight plan. They accept it as true and give you the scrap. The deception may not be the most honorable tactic but staying ahead of the fleet is your highest priority.",
+                    "ref": "event_CRYSTAL_REQUEST_c1_c3_text"
+                  },
+                  "effects": [
+                    {
+                      "kind": "reward",
+                      "level": "HIGH",
+                      "tier": "scrap_only"
+                    },
+                    {
+                      "kind": "fleet_delay",
+                      "amount": -1
+                    }
+                  ]
+                },
+                "label_ref": "event_CRYSTAL_REQUEST_c1_c3_choice",
+                "hidden": true,
+                "dlc": true
+              },
+              {
+                "label": "Refuse.",
+                "gate": null,
+                "child": {
+                  "text": {
+                    "value": "You apologize for the trouble you've brought them, but explain that you have no choice. They seem to understand, and break the comm link to set about preparing defenses.",
+                    "ref": "event_CRYSTAL_REQUEST_c1_c4_text"
+                  },
+                  "effects": []
+                },
+                "label_ref": "event_CRYSTAL_REQUEST_c1_c4_choice",
+                "hidden": true
+              }
+            ]
+          }
+        },
+        "label_ref": "continue",
+        "hidden": true
+      }
+    ],
+    "combat": {
+      "kind": "combat",
+      "ship": "CRYSTAL_SHIP_NO_SURRENDER",
+      "ship_labels": [
+        "Crystal Scout",
+        "Crystal Bomber"
+      ],
+      "hostile": false,
+      "auto_blueprint": "SHIPS_CRYSTAL",
+      "source": "raw/gamedata/events_ships.xml",
+      "branches": [
+        {
+          "on": "destroyed",
+          "child": {
+            "effects": [],
+            "node": {
+              "kind": "chance",
+              "list": "DESTROYED_DEFAULT",
+              "source": "raw/gamedata/events.xml",
+              "odds_basis": "unweighted",
+              "options": [
+                {
+                  "share": null,
+                  "child": {
+                    "text": {
+                      "value": "The ship explodes, leaving behind a substantial collection of useful scrap material.",
+                      "ref": "event_DESTROYED_DEFAULT_1_text"
+                    },
+                    "effects": [
+                      {
+                        "kind": "reward",
+                        "level": "MED",
+                        "tier": "standard"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "share": null,
+                  "child": {
+                    "text": {
+                      "value": "The ship explodes, leaving behind a substantial collection of useful scrap material.",
+                      "ref": "event_DESTROYED_DEFAULT_1_text"
+                    },
+                    "effects": [
+                      {
+                        "kind": "reward",
+                        "level": "MED",
+                        "tier": "standard"
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        },
+        {
+          "on": "deadCrew",
+          "child": {
+            "effects": [],
+            "node": {
+              "kind": "chance",
+              "list": "DEAD_CREW_DEFAULT",
+              "source": "raw/gamedata/events.xml",
+              "odds_basis": "unweighted",
+              "options": [
+                {
+                  "share": null,
+                  "child": {
+                    "text": {
+                      "value": "There are no more life-signs remaining on the ship. You strip it of useful materials.",
+                      "ref": "event_DEAD_CREW_DEFAULT_1_text"
+                    },
+                    "effects": [
+                      {
+                        "kind": "reward",
+                        "level": "MED",
+                        "tier": "standard"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "share": null,
+                  "child": {
+                    "text": {
+                      "value": "There are no more life-signs remaining on the ship. You strip it of useful materials.",
+                      "ref": "event_DEAD_CREW_DEFAULT_1_text"
+                    },
+                    "effects": [
+                      {
+                        "kind": "reward",
+                        "level": "MED",
+                        "tier": "standard"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "share": null,
+                  "child": {
+                    "text": {
+                      "value": "There are no more life-signs remaining on the ship. You strip it of useful materials.",
+                      "ref": "event_DEAD_CREW_DEFAULT_1_text"
+                    },
+                    "effects": [
+                      {
+                        "kind": "reward",
+                        "level": "MED",
+                        "tier": "standard"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "share": null,
+                  "child": {
+                    "text": {
+                      "value": "There are no more life-signs remaining on the ship. You strip it of useful materials.",
+                      "ref": "event_DEAD_CREW_DEFAULT_1_text"
+                    },
+                    "effects": [
+                      {
+                        "kind": "reward",
+                        "level": "HIGH",
+                        "tier": "standard"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "share": null,
+                  "child": {
+                    "text": {
+                      "value": "There are no more life-signs remaining on the ship. You strip it of useful materials.",
+                      "ref": "event_DEAD_CREW_DEFAULT_1_text"
+                    },
+                    "effects": [
+                      {
+                        "kind": "reward",
+                        "level": "HIGH",
+                        "tier": "standard"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "share": null,
+                  "child": {
+                    "text": {
+                      "value": "With the crew dead, you are able to take the fuel out of storage. You also take all the scrap you can manage.",
+                      "ref": "event_DEAD_CREW_DEFAULT_6_text"
+                    },
+                    "effects": [
+                      {
+                        "kind": "reward",
+                        "level": "HIGH",
+                        "tier": "fuel"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "share": null,
+                  "child": {
+                    "text": {
+                      "value": "With the crew dead, you are able to take the fuel out of storage. You also take all the scrap you can manage.",
+                      "ref": "event_DEAD_CREW_DEFAULT_6_text"
+                    },
+                    "effects": [
+                      {
+                        "kind": "reward",
+                        "level": "HIGH",
+                        "tier": "fuel"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "share": null,
+                  "child": {
+                    "text": {
+                      "value": "Now that their ship has been emptied of hostiles, you search it. Eventually you find a prisoner who offers to join your crew.",
+                      "ref": "event_DEAD_CREW_DEFAULT_8_text"
+                    },
+                    "effects": [
+                      {
+                        "kind": "crew_gain",
+                        "amount": 1
+                      },
+                      {
+                        "kind": "reward",
+                        "level": "LOW",
+                        "tier": "scrap_only"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "share": null,
+                  "child": {
+                    "text": {
+                      "value": "You find a weapon system on their ship. With no crew to stop you, you can install it on your own.",
+                      "ref": "event_DEAD_CREW_DEFAULT_9_text"
+                    },
+                    "effects": [
+                      {
+                        "kind": "reward",
+                        "level": "LOW",
+                        "tier": "weapon"
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  }
+}

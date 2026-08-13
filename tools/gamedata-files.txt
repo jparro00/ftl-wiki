@@ -1,0 +1,39 @@
+# Event definitions
+data/events.xml
+data/events_boss.xml
+data/events_crystal.xml
+data/events_engi.xml
+data/events_fuel.xml
+data/events_mantis.xml
+data/events_nebula.xml
+data/events_pirate.xml
+data/events_rebel.xml
+data/events_rock.xml
+data/events_ships.xml
+data/events_slug.xml
+data/events_zoltan.xml
+data/events_imageList.xml
+data/newEvents.xml
+data/nameEvents.xml
+# Advanced Edition overlays
+data/dlcEvents.xml
+data/dlcEventsOverwrite.xml
+data/dlcEvents_anaerobic.xml
+# Sector structure
+data/sector_data.xml
+# Items / ships
+data/blueprints.xml
+data/autoBlueprints.xml
+data/dlcBlueprints.xml
+data/dlcBlueprintsOverwrite.xml
+data/dlcPirateBlueprints.xml
+data/bosses.xml
+# Achievements (ship unlocks)
+data/achievements.xml
+# English text (events reference these by id)
+data/text_events.xml
+data/text_blueprints.xml
+data/text_achievements.xml
+data/text_misc.xml
+data/text_sectorname.xml
+data/text_tooltips.xml

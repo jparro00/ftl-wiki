@@ -1,0 +1,634 @@
+{
+  "schema": "ftl-event-tree/1",
+  "id": "NEBULA_AUTO_DEFENSE_ITEM",
+  "slug": "auto-ship-near-storage-station-in-nebula",
+  "title": "Auto-ship near storage station in nebula",
+  "extracted_from": "raw/gamedata/events_nebula.xml",
+  "text": {
+    "value": "An advance Rebel automated ship remains stationed near a small Rebel space-station. However, without functioning sensors it is impossible to tell what is inside.",
+    "ref": "event_NEBULA_AUTO_DEFENSE_ITEM_text"
+  },
+  "name": "NEBULA_AUTO_DEFENSE_ITEM",
+  "source": "raw/gamedata/events_nebula.xml",
+  "effects": [
+    {
+      "kind": "environment",
+      "environment": "nebula",
+      "target": "player"
+    }
+  ],
+  "flags": {
+    "unique": true,
+    "environment": "nebula",
+    "environment_target": "player"
+  },
+  "node": {
+    "kind": "decision",
+    "options": [
+      {
+        "label": "Attack the automated ship to get to the station.",
+        "gate": null,
+        "child": {
+          "effects": [
+            {
+              "kind": "ship_hostility",
+              "hostile": true
+            }
+          ]
+        },
+        "label_ref": "event_NEBULA_AUTO_DEFENSE_ITEM_c1_choice"
+      },
+      {
+        "label": "Avoid provoking the ship.",
+        "gate": null,
+        "child": {
+          "effects": []
+        },
+        "label_ref": "event_NEBULA_AUTO_DEFENSE_ITEM_c2_choice"
+      },
+      {
+        "label": "(Cloaking) Attempt to stealthily access the space station.",
+        "gate": {
+          "req": "cloaking",
+          "label": "Cloaking",
+          "lvl": "1",
+          "max_group": "0"
+        },
+        "child": {
+          "effects": [],
+          "node": {
+            "kind": "chance",
+            "list": "NEBULA_AUTO_DEFENSE_ITEM_CLOAK",
+            "dlc": true,
+            "source": "raw/gamedata/events_nebula.xml",
+            "odds_basis": "unweighted",
+            "options": [
+              {
+                "share": null,
+                "child": {
+                  "text": {
+                    "value": "You successfully sneak by the ship and access the station undetected.",
+                    "ref": "event_NEBULA_AUTO_DEFENSE_ITEM_CLOAK_1_text"
+                  },
+                  "effects": [],
+                  "node": {
+                    "kind": "decision",
+                    "options": [
+                      {
+                        "label": "Continue...",
+                        "gate": null,
+                        "child": {
+                          "effects": [],
+                          "node": {
+                            "kind": "chance",
+                            "list": "DEFENSE_ITEM_LIST",
+                            "source": "raw/gamedata/events_rebel.xml",
+                            "odds_basis": "unweighted",
+                            "options": [
+                              {
+                                "share": null,
+                                "child": {
+                                  "text": {
+                                    "value": "The station was either abandoned or stripped clean. It seems to have lain unused for quite some time. You find nothing useful.",
+                                    "ref": "event_DEFENSE_ITEM_LIST_1_text"
+                                  },
+                                  "effects": []
+                                }
+                              },
+                              {
+                                "share": null,
+                                "child": {
+                                  "text": {
+                                    "value": "The station was apparently designed to outfit Rebel ships with Drone Systems. You find a functioning Schematic.",
+                                    "ref": "event_DEFENSE_ITEM_LIST_2_text"
+                                  },
+                                  "effects": [
+                                    {
+                                      "kind": "reward",
+                                      "level": "LOW",
+                                      "tier": "drone"
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "share": null,
+                                "child": {
+                                  "text": {
+                                    "value": "The station is a storage site for military grade weapons. You find one that can be easily attached to the ship.",
+                                    "ref": "event_DEFENSE_ITEM_LIST_3_text"
+                                  },
+                                  "effects": [
+                                    {
+                                      "kind": "reward",
+                                      "level": "LOW",
+                                      "tier": "weapon"
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "share": null,
+                                "child": {
+                                  "text": {
+                                    "value": "The station is a storage site for various resources. You salvage everything possible.",
+                                    "ref": "event_DEFENSE_ITEM_LIST_4_text"
+                                  },
+                                  "effects": [
+                                    {
+                                      "kind": "reward",
+                                      "level": "MED",
+                                      "tier": "stuff"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          }
+                        },
+                        "label_ref": "continue",
+                        "hidden": true
+                      }
+                    ]
+                  }
+                }
+              },
+              {
+                "share": null,
+                "child": {
+                  "text": {
+                    "value": "You try to sneak past the automated ship but it quickly turns and attacks!",
+                    "ref": "event_NEBULA_AUTO_DEFENSE_ITEM_CLOAK_2_text"
+                  },
+                  "effects": [
+                    {
+                      "kind": "ship_hostility",
+                      "hostile": true
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        "label_ref": "event_NEBULA_AUTO_DEFENSE_ITEM_c3_choice",
+        "hidden": true
+      },
+      {
+        "label": "(Improved Cloaking) Use your stealth to access the space station.",
+        "gate": {
+          "req": "cloaking",
+          "label": "Cloaking",
+          "lvl": "2",
+          "max_group": "0"
+        },
+        "child": {
+          "text": {
+            "value": "You successfully sneak by the ship and access the station undetected.",
+            "ref": "event_NEBULA_AUTO_DEFENSE_ITEM_c4_text"
+          },
+          "effects": [],
+          "node": {
+            "kind": "decision",
+            "options": [
+              {
+                "label": "Continue...",
+                "gate": null,
+                "child": {
+                  "effects": [],
+                  "node": {
+                    "kind": "chance",
+                    "list": "DEFENSE_ITEM_LIST",
+                    "source": "raw/gamedata/events_rebel.xml",
+                    "odds_basis": "unweighted",
+                    "options": [
+                      {
+                        "share": null,
+                        "child": {
+                          "text": {
+                            "value": "The station was either abandoned or stripped clean. It seems to have lain unused for quite some time. You find nothing useful.",
+                            "ref": "event_DEFENSE_ITEM_LIST_1_text"
+                          },
+                          "effects": []
+                        }
+                      },
+                      {
+                        "share": null,
+                        "child": {
+                          "text": {
+                            "value": "The station was apparently designed to outfit Rebel ships with Drone Systems. You find a functioning Schematic.",
+                            "ref": "event_DEFENSE_ITEM_LIST_2_text"
+                          },
+                          "effects": [
+                            {
+                              "kind": "reward",
+                              "level": "LOW",
+                              "tier": "drone"
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "share": null,
+                        "child": {
+                          "text": {
+                            "value": "The station is a storage site for military grade weapons. You find one that can be easily attached to the ship.",
+                            "ref": "event_DEFENSE_ITEM_LIST_3_text"
+                          },
+                          "effects": [
+                            {
+                              "kind": "reward",
+                              "level": "LOW",
+                              "tier": "weapon"
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "share": null,
+                        "child": {
+                          "text": {
+                            "value": "The station is a storage site for various resources. You salvage everything possible.",
+                            "ref": "event_DEFENSE_ITEM_LIST_4_text"
+                          },
+                          "effects": [
+                            {
+                              "kind": "reward",
+                              "level": "MED",
+                              "tier": "stuff"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                },
+                "label_ref": "continue",
+                "hidden": true
+              }
+            ]
+          }
+        },
+        "label_ref": "event_NEBULA_AUTO_DEFENSE_ITEM_c4_choice",
+        "hidden": true
+      },
+      {
+        "label": "(Hacking) Try to hack the station to prevent an alert.",
+        "gate": {
+          "req": "hacking",
+          "label": "Hacking",
+          "lvl": "1",
+          "max_group": "1"
+        },
+        "child": {
+          "effects": [],
+          "node": {
+            "kind": "chance",
+            "list": "NEBULA_AUTO_DEFENSE_ITEM_HACK",
+            "dlc": true,
+            "source": "raw/gamedata/events_nebula.xml",
+            "odds_basis": "unweighted",
+            "options": [
+              {
+                "share": null,
+                "child": {
+                  "text": {
+                    "value": "You successfully hack into the station and sever the connection to the automated ship. You access the station undetected.",
+                    "ref": "event_NEBULA_AUTO_DEFENSE_ITEM_HACK_1_text"
+                  },
+                  "effects": [
+                    {
+                      "kind": "resource",
+                      "resource": "drones",
+                      "min": -1,
+                      "max": -1
+                    }
+                  ],
+                  "node": {
+                    "kind": "decision",
+                    "options": [
+                      {
+                        "label": "Continue...",
+                        "gate": null,
+                        "child": {
+                          "effects": [],
+                          "node": {
+                            "kind": "chance",
+                            "list": "DEFENSE_ITEM_LIST",
+                            "source": "raw/gamedata/events_rebel.xml",
+                            "odds_basis": "unweighted",
+                            "options": [
+                              {
+                                "share": null,
+                                "child": {
+                                  "text": {
+                                    "value": "The station was either abandoned or stripped clean. It seems to have lain unused for quite some time. You find nothing useful.",
+                                    "ref": "event_DEFENSE_ITEM_LIST_1_text"
+                                  },
+                                  "effects": []
+                                }
+                              },
+                              {
+                                "share": null,
+                                "child": {
+                                  "text": {
+                                    "value": "The station was apparently designed to outfit Rebel ships with Drone Systems. You find a functioning Schematic.",
+                                    "ref": "event_DEFENSE_ITEM_LIST_2_text"
+                                  },
+                                  "effects": [
+                                    {
+                                      "kind": "reward",
+                                      "level": "LOW",
+                                      "tier": "drone"
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "share": null,
+                                "child": {
+                                  "text": {
+                                    "value": "The station is a storage site for military grade weapons. You find one that can be easily attached to the ship.",
+                                    "ref": "event_DEFENSE_ITEM_LIST_3_text"
+                                  },
+                                  "effects": [
+                                    {
+                                      "kind": "reward",
+                                      "level": "LOW",
+                                      "tier": "weapon"
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "share": null,
+                                "child": {
+                                  "text": {
+                                    "value": "The station is a storage site for various resources. You salvage everything possible.",
+                                    "ref": "event_DEFENSE_ITEM_LIST_4_text"
+                                  },
+                                  "effects": [
+                                    {
+                                      "kind": "reward",
+                                      "level": "MED",
+                                      "tier": "stuff"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          }
+                        },
+                        "label_ref": "continue",
+                        "hidden": true
+                      }
+                    ]
+                  }
+                }
+              },
+              {
+                "share": null,
+                "child": {
+                  "text": {
+                    "value": "You send a drone to hack the station but the automated ship notices and turns to attack!",
+                    "ref": "event_NEBULA_AUTO_DEFENSE_ITEM_HACK_2_text"
+                  },
+                  "effects": [
+                    {
+                      "kind": "resource",
+                      "resource": "drones",
+                      "min": -1,
+                      "max": -1
+                    },
+                    {
+                      "kind": "ship_hostility",
+                      "hostile": true
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        "label_ref": "event_NEBULA_AUTO_DEFENSE_ITEM_c5_choice",
+        "hidden": false,
+        "dlc": true
+      },
+      {
+        "label": "(Improved Hacking) Hack the station to prevent an alert.",
+        "gate": {
+          "req": "hacking",
+          "label": "Hacking",
+          "lvl": "2",
+          "max_group": "1"
+        },
+        "child": {
+          "text": {
+            "value": "You successfully hack into the station and sever the connection to the automated ship, accessing the station completely undetected.",
+            "ref": "event_NEBULA_AUTO_DEFENSE_ITEM_c6_text"
+          },
+          "effects": [
+            {
+              "kind": "resource",
+              "resource": "drones",
+              "min": -1,
+              "max": -1
+            }
+          ],
+          "node": {
+            "kind": "decision",
+            "options": [
+              {
+                "label": "Continue...",
+                "gate": null,
+                "child": {
+                  "effects": [],
+                  "node": {
+                    "kind": "chance",
+                    "list": "DEFENSE_ITEM_LIST",
+                    "source": "raw/gamedata/events_rebel.xml",
+                    "odds_basis": "unweighted",
+                    "options": [
+                      {
+                        "share": null,
+                        "child": {
+                          "text": {
+                            "value": "The station was either abandoned or stripped clean. It seems to have lain unused for quite some time. You find nothing useful.",
+                            "ref": "event_DEFENSE_ITEM_LIST_1_text"
+                          },
+                          "effects": []
+                        }
+                      },
+                      {
+                        "share": null,
+                        "child": {
+                          "text": {
+                            "value": "The station was apparently designed to outfit Rebel ships with Drone Systems. You find a functioning Schematic.",
+                            "ref": "event_DEFENSE_ITEM_LIST_2_text"
+                          },
+                          "effects": [
+                            {
+                              "kind": "reward",
+                              "level": "LOW",
+                              "tier": "drone"
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "share": null,
+                        "child": {
+                          "text": {
+                            "value": "The station is a storage site for military grade weapons. You find one that can be easily attached to the ship.",
+                            "ref": "event_DEFENSE_ITEM_LIST_3_text"
+                          },
+                          "effects": [
+                            {
+                              "kind": "reward",
+                              "level": "LOW",
+                              "tier": "weapon"
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "share": null,
+                        "child": {
+                          "text": {
+                            "value": "The station is a storage site for various resources. You salvage everything possible.",
+                            "ref": "event_DEFENSE_ITEM_LIST_4_text"
+                          },
+                          "effects": [
+                            {
+                              "kind": "reward",
+                              "level": "MED",
+                              "tier": "stuff"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                },
+                "label_ref": "continue",
+                "hidden": true
+              }
+            ]
+          }
+        },
+        "label_ref": "event_NEBULA_AUTO_DEFENSE_ITEM_c6_choice",
+        "hidden": false,
+        "dlc": true
+      }
+    ],
+    "combat": {
+      "kind": "combat",
+      "ship": "REBEL_AUTO_ITEM",
+      "ship_labels": [
+        "Auto-Scout",
+        "Auto-Assault"
+      ],
+      "hostile": false,
+      "auto_blueprint": "SHIPS_AUTO",
+      "source": "raw/gamedata/events_ships.xml",
+      "branches": [
+        {
+          "on": "destroyed",
+          "child": {
+            "text": {
+              "value": "You salvage what you can from the broken ship.",
+              "ref": "ship_REBEL_AUTO_ITEM_destroyed_text"
+            },
+            "effects": [
+              {
+                "kind": "reward",
+                "level": "MED",
+                "tier": "scrap_only"
+              }
+            ],
+            "node": {
+              "kind": "decision",
+              "options": [
+                {
+                  "label": "Investigate the station.",
+                  "gate": null,
+                  "child": {
+                    "effects": [],
+                    "node": {
+                      "kind": "chance",
+                      "list": "DEFENSE_ITEM_LIST",
+                      "source": "raw/gamedata/events_rebel.xml",
+                      "odds_basis": "unweighted",
+                      "options": [
+                        {
+                          "share": null,
+                          "child": {
+                            "text": {
+                              "value": "The station was either abandoned or stripped clean. It seems to have lain unused for quite some time. You find nothing useful.",
+                              "ref": "event_DEFENSE_ITEM_LIST_1_text"
+                            },
+                            "effects": []
+                          }
+                        },
+                        {
+                          "share": null,
+                          "child": {
+                            "text": {
+                              "value": "The station was apparently designed to outfit Rebel ships with Drone Systems. You find a functioning Schematic.",
+                              "ref": "event_DEFENSE_ITEM_LIST_2_text"
+                            },
+                            "effects": [
+                              {
+                                "kind": "reward",
+                                "level": "LOW",
+                                "tier": "drone"
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "share": null,
+                          "child": {
+                            "text": {
+                              "value": "The station is a storage site for military grade weapons. You find one that can be easily attached to the ship.",
+                              "ref": "event_DEFENSE_ITEM_LIST_3_text"
+                            },
+                            "effects": [
+                              {
+                                "kind": "reward",
+                                "level": "LOW",
+                                "tier": "weapon"
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "share": null,
+                          "child": {
+                            "text": {
+                              "value": "The station is a storage site for various resources. You salvage everything possible.",
+                              "ref": "event_DEFENSE_ITEM_LIST_4_text"
+                            },
+                            "effects": [
+                              {
+                                "kind": "reward",
+                                "level": "MED",
+                                "tier": "stuff"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    }
+                  },
+                  "label_ref": "ship_REBEL_AUTO_ITEM_destroyed_c1_choice",
+                  "hidden": true
+                }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  }
+}

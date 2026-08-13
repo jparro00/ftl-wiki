@@ -1,0 +1,34 @@
+{
+  "schema": "ftl-event-tree/1",
+  "id": "CRYSTAL_UNLOCK",
+  "slug": "crystal-unlock",
+  "title": "Crystal unlock",
+  "extracted_from": "raw/gamedata/events_crystal.xml",
+  "text": {
+    "value": "You arrive at the coordinates to find a massive Crystalline cruiser docked at a small repair station. You arrange for the ship to be sent back to the Federation base while the station upgrades your hull.",
+    "ref": "event_CRYSTAL_UNLOCK_text"
+  },
+  "name": "CRYSTAL_UNLOCK",
+  "source": "raw/gamedata/events_crystal.xml",
+  "effects": [
+    {
+      "kind": "reward",
+      "level": "MED",
+      "tier": "fuel"
+    },
+    {
+      "kind": "item",
+      "item_kind": "augment",
+      "id": "CRYSTAL_SHARDS",
+      "label": "Crystal Vengeance"
+    },
+    {
+      "kind": "hull_repair",
+      "amount": 10
+    },
+    {
+      "kind": "unlock_ship",
+      "id": "8"
+    }
+  ]
+}

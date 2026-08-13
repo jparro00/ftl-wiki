@@ -1,0 +1,378 @@
+{
+  "schema": "ftl-card-vocab/1",
+  "_comment": "Every English word a card renders that is not verbatim game text lives here, shared across all cards. The renderer holds no wording of its own.",
+  "levels": {
+    "LOW": "low",
+    "MED": "medium",
+    "MEDIUM": "medium",
+    "HIGH": "high",
+    "RANDOM": "random",
+    "low": "low",
+    "med": "medium",
+    "high": "high",
+    "random": "random"
+  },
+  "tiers": {
+    "standard": "{level} scrap",
+    "scrap_only": "{level} scrap",
+    "stuff": "{level} supplies",
+    "weapon": "a weapon ({level})",
+    "drone": "a drone ({level})",
+    "fuel": "{level} fuel",
+    "fuel_only": "{level} fuel",
+    "augment": "an augment ({level})",
+    "missiles": "{level} missiles",
+    "droneparts": "{level} drone parts",
+    "scrap": "{level} scrap"
+  },
+  "tier_tones": {
+    "standard": "cost",
+    "scrap_only": "cost",
+    "stuff": "cost",
+    "weapon": "gain",
+    "drone": "gain",
+    "fuel": "cost",
+    "fuel_only": "cost",
+    "augment": "gain",
+    "missiles": "cost",
+    "droneparts": "cost",
+    "scrap": "cost"
+  },
+  "effects": {
+    "resource": {
+      "text": "{range} {resource}",
+      "tone": "gain"
+    },
+    "crew_gain": {
+      "text": "+{amount} {class}crew {name}{skills}",
+      "tone": "gain",
+      "if": {
+        "all_skills": " with a point in every skill"
+      }
+    },
+    "crew_loss": {
+      "text": "{amount} {class}crew killed",
+      "tone": "fight",
+      "if": {
+        "clone": " (a Clone Bay revives them)"
+      }
+    },
+    "hull_repair": {
+      "text": "{amount} hull repaired",
+      "tone": "gain"
+    },
+    "hull_damage": {
+      "text": "{amount} hull damage",
+      "tone": "fight"
+    },
+    "system_damage": {
+      "text": "{amount} damage to {system}",
+      "tone": "fight"
+    },
+    "boarders": {
+      "text": "{range} {class}{noun}",
+      "tone": "fight"
+    },
+    "item": {
+      "text": "{label}",
+      "tone": "gain"
+    },
+    "upgrade": {
+      "text": "{system} upgrade",
+      "tone": "gain"
+    },
+    "status": {
+      "text": "{status} {system}",
+      "tone": "none"
+    },
+    "quest": {
+      "text": "a quest beacon",
+      "tone": "gain"
+    },
+    "unlock_ship": {
+      "text": "{label} unlocked",
+      "tone": "gain"
+    },
+    "fleet_delay": {
+      "text": "rebel fleet delayed {jumps}",
+      "tone": "gain"
+    },
+    "reveal_map": {
+      "text": "the map revealed",
+      "tone": "gain"
+    },
+    "repair_all": {
+      "text": "hull fully repaired",
+      "tone": "gain"
+    },
+    "remove_augment": {
+      "text": "lose {label}",
+      "tone": "fight"
+    },
+    "secret_sector": {
+      "text": "a hidden sector route",
+      "tone": "gain"
+    },
+    "ship_hostility": {
+      "text": "the ship turns hostile",
+      "tone": "fight"
+    },
+    "ship_hostility_off": {
+      "text": "the ship stands down",
+      "tone": "none"
+    },
+    "hazard": {
+      "text": "{label}",
+      "tone": "fight"
+    },
+    "environment": {
+      "text": "fought {label}",
+      "tone": "fight"
+    },
+    "fleet_advance": {
+      "text": "rebel fleet advances {jumps}",
+      "tone": "fight"
+    },
+    "resource_spend": {
+      "text": "{range} {resource}",
+      "tone": "cost"
+    },
+    "crew_lost": {
+      "text": "−{amount} {class}crew {name}",
+      "tone": "fight"
+    },
+    "store": {
+      "text": "a store opens",
+      "tone": "gain"
+    }
+  },
+  "resource_labels": {
+    "scrap": [
+      "scrap",
+      "scrap"
+    ],
+    "fuel": [
+      "fuel",
+      "fuel"
+    ],
+    "missiles": [
+      "missile",
+      "missiles"
+    ],
+    "drones": [
+      "drone part",
+      "drone parts"
+    ]
+  },
+  "spend_prefix": "−",
+  "nothing": "nothing happens",
+  "dlc_mark": " (AE)",
+  "merge_chip": "×{n}",
+  "leads": {
+    "combat": "fight the {ship}",
+    "chance": "1 of {n}",
+    "decision": "a choice",
+    "ref": "the same table again",
+    "sequence": "what happens next"
+  },
+  "block_labels": {
+    "combat": "The fight — {ship}",
+    "chance_unweighted": "Random — 1 of {n}",
+    "chance_weighted": "Random",
+    "decision": "Then"
+  },
+  "branches": {
+    "destroyed": "You destroy it",
+    "deadCrew": "You kill the crew",
+    "surrender": "They surrender",
+    "escape": "They try to escape",
+    "gotaway": "They get away"
+  },
+  "gate_labels": {
+    "medbay": "Medbay",
+    "clonebay": "Clone Bay",
+    "teleporter": "Teleporter",
+    "sensors": "Sensors",
+    "shields": "Shields",
+    "engines": "Engines",
+    "cloaking": "Cloaking",
+    "drones": "Drone Control",
+    "slug": "Slug crew",
+    "rock": "Rock crew",
+    "engi": "Engi crew",
+    "mantis": "Mantis crew",
+    "zoltan": "Zoltan crew",
+    "crystal": "Crystal crew",
+    "energy": "Zoltan crew",
+    "anaerobic": "Lanius crew",
+    "WEAPONS_BEAM_DAMAGE": "Beam weapon",
+    "COMBAT_BEAM_DRONE_LIST": "Beam drone",
+    "WEAPONS_MISSILES": "Missile weapon",
+    "WEAPONS_ION": "Ion weapon",
+    "DRONES_DEFENSE_LIST": "Defense drone",
+    "COMBAT_DRONE_LIST": "Combat drone",
+    "WEAPONS_FIRE": "Fire weapon",
+    "WEAPONS_BEAM": "Beam weapon",
+    "BOARDING_DRONE_LIST": "Boarding drone",
+    "REPAIR_DRONE_LIST": "Repair drone",
+    "reactor": "Reactor",
+    "WEAPONS_MISSILES_EVENTS": "Missile weapon",
+    "oxygen": "Oxygen",
+    "doors": "Doors",
+    "pilot": "Piloting",
+    "mind": "Mind Control",
+    "hacking": "Hacking",
+    "weapons": "Weapon Control"
+  },
+  "ship_labels": {
+    "PIRATE": "pirate ship"
+  },
+  "display": {
+    "eyebrow": {
+      "distress": "Distress beacon",
+      "store": "Store",
+      "default": "Beacon event"
+    },
+    "notes": {
+      "unique": "Fires at most once per run.",
+      "unweighted": "The game files publish no weights for the random tables, so no odds are shown.",
+      "gates": "Blue rows need the system or crew named in front of them.",
+      "chain": "The quest beacon it marks is mapped below — you fly there later, it is not part of this encounter.",
+      "environment": "Fights at this beacon happen {label}.",
+      "max_group": "Where blue options share a requirement, the game offers only the best one you qualify for.",
+      "dlc": "Marked (AE) content is Advanced Edition only.",
+      "variants": "The game picks one of {n} openings for this event; the text above is the first."
+    }
+  },
+  "chain_step": "Quest beacon {n}",
+  "chain_heading": "Where the marker sends you",
+  "chain_loop": "Leads back to a beacon already shown above.",
+  "format": {
+    "arrow": "→ ",
+    "effect_join": ", ",
+    "range_join": "–",
+    "percent": "{n}%",
+    "gate_open": "(",
+    "gate_close": ")",
+    "gate_level_join": " ",
+    "number_suffix": ". ",
+    "quote_open": "“",
+    "quote_close": "”",
+    "or_join": " or ",
+    "caret": "▸",
+    "range_join_signed": " to "
+  },
+  "attached_combat": {
+    "hostile": "If the fight starts"
+  },
+  "hazards": {
+    "fire": "a fire",
+    "breach": "a hull breach",
+    "random": "a random hazard",
+    "all": "hazards throughout"
+  },
+  "environments": {
+    "asteroid": "in an asteroid field",
+    "nebula": "in a nebula",
+    "sun": "close to a sun",
+    "storm": "in an ion storm",
+    "pulsar": "near a pulsar",
+    "PDS": "under planetary defence fire"
+  },
+  "systems": {
+    "random": "a random system",
+    "room": "a random room"
+  },
+  "jumps": {
+    "1": "1 jump",
+    "2": "2 jumps"
+  },
+  "statuses": {
+    "divide": "{system} divided by {amount}",
+    "limit": "{system} limited to {amount}",
+    "clear": "{system} status cleared",
+    "loss": "{system} reduced by {amount}"
+  },
+  "random_items": {
+    "weapon": "a random weapon",
+    "drone": "a random drone",
+    "augment": "a random augment"
+  },
+  "ship_lists": {
+    "SHIPS_PIRATE": "pirate ship",
+    "SHIPS_REBEL": "Rebel ship",
+    "SHIPS_AUTO": "auto-ship",
+    "SHIPS_ROCK": "Rock ship",
+    "SHIPS_MANTIS": "Mantis ship",
+    "SHIPS_ZOLTAN": "Zoltan ship",
+    "SHIPS_SLUG": "Slug ship",
+    "SHIPS_ENGI": "Engi ship",
+    "SHIPS_CRYSTAL": "Crystal ship",
+    "SHIPS_JELLY": "Slug ship",
+    "SHPS_REBEL_AND_AUTO": "Rebel ship or auto-ship"
+  },
+  "on_arrival": "As you arrive",
+  "species": {
+    "energy": "Zoltan",
+    "anaerobic": "Lanius",
+    "slug": "Slug",
+    "mantis": "Mantis",
+    "rock": "Rock",
+    "engi": "Engi",
+    "crystal": "Crystal",
+    "human": "human",
+    "random": "random",
+    "traitor": "traitor"
+  },
+  "skills": {
+    "pilot": "piloting",
+    "engines": "engines",
+    "shields": "shields",
+    "weapons": "weapons",
+    "repair": "repair",
+    "combat": "combat"
+  },
+  "skill_suffix": "with a point in {list}",
+  "item_lists": {
+    "WEAPONS_CRYSTAL": "a Crystal weapon",
+    "WEAPONS_BOMBS_CHEAP": "a bomb weapon",
+    "WEAPONS_MISSILES_EXPENSIVE": "a missile weapon",
+    "DLC_WEAPONS": "a weapon",
+    "DLC_DRONES": "a drone",
+    "DLC_AUGMENTS": "an augment"
+  },
+  "ship_unlocks": {
+    "1": "the Stealth Cruiser",
+    "2": "the Mantis Cruiser",
+    "4": "the Federation Cruiser",
+    "5": "the Slug Cruiser",
+    "6": "the Rock Cruiser",
+    "7": "the Zoltan Cruiser",
+    "8": "the Crystal Cruiser"
+  },
+  "status_targets": {
+    "player": "{system}",
+    "enemy": "the enemy's {system}",
+    "all": "every ship's {system}"
+  },
+  "environment_targets": {
+    "player": "{label}",
+    "enemy": "{label}, firing on the enemy",
+    "all": "{label}, firing on both ships"
+  },
+  "all_skills_suffix": {
+    "1": "with a point in every skill"
+  },
+  "all_skills_suffix_n": "with {n} points in every skill",
+  "name_suffix": "({name})",
+  "boarder_words": [
+    "boarder",
+    "boarders"
+  ],
+  "gate_bounds": {
+    "lvl": "{label} {n}",
+    "max_lvl": "{label} below {n}",
+    "min_level": "{label} {n}+"
+  },
+  "unlabelled": "Outcome"
+}

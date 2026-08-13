@@ -1,0 +1,20 @@
+{
+  "schema": "ftl-event-tree/1",
+  "id": "MERCHANT_INVESTIGATE_DELIVER",
+  "slug": "merchant-investigate-deliver",
+  "title": "Deliver to the station",
+  "extracted_from": "raw/gamedata/events.xml",
+  "text": {
+    "value": "You find the station that had ordered your cargo. You drop it off and they respond, \"Ignoring the fact that this is days late, we really appreciate that you delivered our materials. We realize how dangerous this sector is these days. Take this as payment.\"",
+    "ref": "event_MERCHANT_INVESTIGATE_DELIVER_text"
+  },
+  "name": "MERCHANT_INVESTIGATE_DELIVER",
+  "source": "raw/gamedata/events.xml",
+  "effects": [
+    {
+      "kind": "reward",
+      "level": "MED",
+      "tier": "drone"
+    }
+  ]
+}

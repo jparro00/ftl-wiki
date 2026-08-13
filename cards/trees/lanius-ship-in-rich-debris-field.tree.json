@@ -1,0 +1,479 @@
+{
+  "schema": "ftl-event-tree/1",
+  "id": "LANIUS_HARVESTER",
+  "slug": "lanius-ship-in-rich-debris-field",
+  "title": "Lanius ship in rich debris field",
+  "extracted_from": "raw/gamedata/dlcEvents_anaerobic.xml",
+  "text": {
+    "value": "Your scans have picked up a Lanius vessel in this system: it appears to be navigating a rich debris field, harvesting the minerals.",
+    "ref": "event_LANIUS_HARVESTER_text"
+  },
+  "name": "LANIUS_HARVESTER",
+  "source": "raw/gamedata/dlcEvents_anaerobic.xml",
+  "effects": [],
+  "flags": {
+    "unique": true
+  },
+  "node": {
+    "kind": "decision",
+    "options": [
+      {
+        "label": "Attempt to harvest some for yourself.",
+        "gate": null,
+        "child": {
+          "text": {
+            "value": "As you attempt to navigate the debris, you come too close to the Lanius ship - and they proceed to try to harvest you!",
+            "ref": "event_LANIUS_HARVESTER_c1_text"
+          },
+          "effects": [],
+          "node": {
+            "kind": "combat",
+            "ship": "LANIUS_HARVESTER_SHIP",
+            "ship_labels": [
+              "Lanius Scout",
+              "Lanius Bomber"
+            ],
+            "hostile": true,
+            "auto_blueprint": "SHIPS_LANIUS",
+            "source": "raw/gamedata/dlcEvents_anaerobic.xml",
+            "branches": [
+              {
+                "on": "destroyed",
+                "child": {
+                  "text": {
+                    "value": "The ship explodes, leaving behind a collection of useful scrap material.",
+                    "ref": "ship_LANIUS_HARVESTER_SHIP_destroyed_text"
+                  },
+                  "effects": [
+                    {
+                      "kind": "reward",
+                      "level": "MED",
+                      "tier": "standard"
+                    }
+                  ],
+                  "node": {
+                    "kind": "decision",
+                    "options": [
+                      {
+                        "label": "Investigate the debris.",
+                        "gate": null,
+                        "child": {
+                          "effects": [],
+                          "node": {
+                            "kind": "chance",
+                            "list": "LANIUS_HARVESTER_SHIP_LIST",
+                            "source": "raw/gamedata/dlcEvents_anaerobic.xml",
+                            "odds_basis": "unweighted",
+                            "options": [
+                              {
+                                "share": null,
+                                "child": {
+                                  "text": {
+                                    "value": "The competitor gone, you investigate the debris, but it looks as if the Lanius harvested much of it before you arrived.",
+                                    "ref": "event_LANIUS_HARVESTER_SHIP_LIST_1_text"
+                                  },
+                                  "effects": [
+                                    {
+                                      "kind": "reward",
+                                      "level": "LOW",
+                                      "tier": "standard"
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "share": null,
+                                "child": {
+                                  "text": {
+                                    "value": "The competitor gone, you proceed to investigate the field and scavenge what you can.",
+                                    "ref": "event_LANIUS_HARVESTER_SHIP_LIST_2_text"
+                                  },
+                                  "effects": [
+                                    {
+                                      "kind": "reward",
+                                      "level": "MED",
+                                      "tier": "standard"
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "share": null,
+                                "child": {
+                                  "text": {
+                                    "value": "It looks like you interrupted the Lanius before they had a chance to scavenge much from the debris, and you make off with a good haul.",
+                                    "ref": "event_LANIUS_HARVESTER_SHIP_LIST_3_text"
+                                  },
+                                  "effects": [
+                                    {
+                                      "kind": "reward",
+                                      "level": "HIGH",
+                                      "tier": "standard"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          }
+                        },
+                        "label_ref": "ship_LANIUS_HARVESTER_SHIP_destroyed_c1_choice",
+                        "hidden": true
+                      }
+                    ]
+                  }
+                }
+              },
+              {
+                "on": "deadCrew",
+                "child": {
+                  "text": {
+                    "value": "There are no more life-signs remaining on the ship. You strip it of useful materials.",
+                    "ref": "ship_LANIUS_HARVESTER_SHIP_deadCrew_text"
+                  },
+                  "effects": [
+                    {
+                      "kind": "reward",
+                      "level": "MED",
+                      "tier": "standard"
+                    }
+                  ],
+                  "node": {
+                    "kind": "decision",
+                    "options": [
+                      {
+                        "label": "Investigate the debris.",
+                        "gate": null,
+                        "child": {
+                          "effects": [],
+                          "node": {
+                            "kind": "chance",
+                            "list": "LANIUS_HARVESTER_SHIP_LIST",
+                            "source": "raw/gamedata/dlcEvents_anaerobic.xml",
+                            "odds_basis": "unweighted",
+                            "options": [
+                              {
+                                "share": null,
+                                "child": {
+                                  "text": {
+                                    "value": "The competitor gone, you investigate the debris, but it looks as if the Lanius harvested much of it before you arrived.",
+                                    "ref": "event_LANIUS_HARVESTER_SHIP_LIST_1_text"
+                                  },
+                                  "effects": [
+                                    {
+                                      "kind": "reward",
+                                      "level": "LOW",
+                                      "tier": "standard"
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "share": null,
+                                "child": {
+                                  "text": {
+                                    "value": "The competitor gone, you proceed to investigate the field and scavenge what you can.",
+                                    "ref": "event_LANIUS_HARVESTER_SHIP_LIST_2_text"
+                                  },
+                                  "effects": [
+                                    {
+                                      "kind": "reward",
+                                      "level": "MED",
+                                      "tier": "standard"
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "share": null,
+                                "child": {
+                                  "text": {
+                                    "value": "It looks like you interrupted the Lanius before they had a chance to scavenge much from the debris, and you make off with a good haul.",
+                                    "ref": "event_LANIUS_HARVESTER_SHIP_LIST_3_text"
+                                  },
+                                  "effects": [
+                                    {
+                                      "kind": "reward",
+                                      "level": "HIGH",
+                                      "tier": "standard"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          }
+                        },
+                        "label_ref": "ship_LANIUS_HARVESTER_SHIP_destroyed_c1_choice",
+                        "hidden": true
+                      }
+                    ]
+                  }
+                }
+              }
+            ]
+          }
+        },
+        "label_ref": "event_LANIUS_HARVESTER_c1_choice",
+        "hidden": true
+      },
+      {
+        "label": "(Improved Piloting) Engage the auto-pilot and safely harvest the debris.",
+        "gate": {
+          "req": "pilot",
+          "label": "Piloting",
+          "lvl": "2",
+          "max_group": "0"
+        },
+        "child": {
+          "text": {
+            "value": "With help from the computer, you are able to keep a comfortable distance between you and the Lanius ship, and you are able to gather resources from the debris field without conflict.",
+            "ref": "event_LANIUS_HARVESTER_c2_text"
+          },
+          "effects": [
+            {
+              "kind": "reward",
+              "level": "MED",
+              "tier": "standard"
+            }
+          ]
+        },
+        "label_ref": "event_LANIUS_HARVESTER_c2_choice",
+        "hidden": true
+      },
+      {
+        "label": "(Advanced Piloting) Engage the auto-pilot and safely harvest the debris.",
+        "gate": {
+          "req": "pilot",
+          "label": "Piloting",
+          "lvl": "3",
+          "max_group": "0"
+        },
+        "child": {
+          "text": {
+            "value": "With help from the computer, you are able to keep a comfortable distance between you and the Lanius ship, and you gather a considerable amount of resources from the debris field without conflict.",
+            "ref": "event_LANIUS_HARVESTER_c3_text"
+          },
+          "effects": [
+            {
+              "kind": "reward",
+              "level": "HIGH",
+              "tier": "standard"
+            }
+          ]
+        },
+        "label_ref": "event_LANIUS_HARVESTER_c3_choice",
+        "hidden": true
+      },
+      {
+        "label": "Attack the vessel.",
+        "gate": null,
+        "child": {
+          "text": {
+            "value": "You go on the offensive and power up your weapons - with any luck, you'll soon have the mineral field all to yourself.",
+            "ref": "event_LANIUS_HARVESTER_c4_text"
+          },
+          "effects": [],
+          "node": {
+            "kind": "combat",
+            "ship": "LANIUS_HARVESTER_SHIP",
+            "ship_labels": [
+              "Lanius Scout",
+              "Lanius Bomber"
+            ],
+            "hostile": true,
+            "auto_blueprint": "SHIPS_LANIUS",
+            "source": "raw/gamedata/dlcEvents_anaerobic.xml",
+            "branches": [
+              {
+                "on": "destroyed",
+                "child": {
+                  "text": {
+                    "value": "The ship explodes, leaving behind a collection of useful scrap material.",
+                    "ref": "ship_LANIUS_HARVESTER_SHIP_destroyed_text"
+                  },
+                  "effects": [
+                    {
+                      "kind": "reward",
+                      "level": "MED",
+                      "tier": "standard"
+                    }
+                  ],
+                  "node": {
+                    "kind": "decision",
+                    "options": [
+                      {
+                        "label": "Investigate the debris.",
+                        "gate": null,
+                        "child": {
+                          "effects": [],
+                          "node": {
+                            "kind": "chance",
+                            "list": "LANIUS_HARVESTER_SHIP_LIST",
+                            "source": "raw/gamedata/dlcEvents_anaerobic.xml",
+                            "odds_basis": "unweighted",
+                            "options": [
+                              {
+                                "share": null,
+                                "child": {
+                                  "text": {
+                                    "value": "The competitor gone, you investigate the debris, but it looks as if the Lanius harvested much of it before you arrived.",
+                                    "ref": "event_LANIUS_HARVESTER_SHIP_LIST_1_text"
+                                  },
+                                  "effects": [
+                                    {
+                                      "kind": "reward",
+                                      "level": "LOW",
+                                      "tier": "standard"
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "share": null,
+                                "child": {
+                                  "text": {
+                                    "value": "The competitor gone, you proceed to investigate the field and scavenge what you can.",
+                                    "ref": "event_LANIUS_HARVESTER_SHIP_LIST_2_text"
+                                  },
+                                  "effects": [
+                                    {
+                                      "kind": "reward",
+                                      "level": "MED",
+                                      "tier": "standard"
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "share": null,
+                                "child": {
+                                  "text": {
+                                    "value": "It looks like you interrupted the Lanius before they had a chance to scavenge much from the debris, and you make off with a good haul.",
+                                    "ref": "event_LANIUS_HARVESTER_SHIP_LIST_3_text"
+                                  },
+                                  "effects": [
+                                    {
+                                      "kind": "reward",
+                                      "level": "HIGH",
+                                      "tier": "standard"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          }
+                        },
+                        "label_ref": "ship_LANIUS_HARVESTER_SHIP_destroyed_c1_choice",
+                        "hidden": true
+                      }
+                    ]
+                  }
+                }
+              },
+              {
+                "on": "deadCrew",
+                "child": {
+                  "text": {
+                    "value": "There are no more life-signs remaining on the ship. You strip it of useful materials.",
+                    "ref": "ship_LANIUS_HARVESTER_SHIP_deadCrew_text"
+                  },
+                  "effects": [
+                    {
+                      "kind": "reward",
+                      "level": "MED",
+                      "tier": "standard"
+                    }
+                  ],
+                  "node": {
+                    "kind": "decision",
+                    "options": [
+                      {
+                        "label": "Investigate the debris.",
+                        "gate": null,
+                        "child": {
+                          "effects": [],
+                          "node": {
+                            "kind": "chance",
+                            "list": "LANIUS_HARVESTER_SHIP_LIST",
+                            "source": "raw/gamedata/dlcEvents_anaerobic.xml",
+                            "odds_basis": "unweighted",
+                            "options": [
+                              {
+                                "share": null,
+                                "child": {
+                                  "text": {
+                                    "value": "The competitor gone, you investigate the debris, but it looks as if the Lanius harvested much of it before you arrived.",
+                                    "ref": "event_LANIUS_HARVESTER_SHIP_LIST_1_text"
+                                  },
+                                  "effects": [
+                                    {
+                                      "kind": "reward",
+                                      "level": "LOW",
+                                      "tier": "standard"
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "share": null,
+                                "child": {
+                                  "text": {
+                                    "value": "The competitor gone, you proceed to investigate the field and scavenge what you can.",
+                                    "ref": "event_LANIUS_HARVESTER_SHIP_LIST_2_text"
+                                  },
+                                  "effects": [
+                                    {
+                                      "kind": "reward",
+                                      "level": "MED",
+                                      "tier": "standard"
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "share": null,
+                                "child": {
+                                  "text": {
+                                    "value": "It looks like you interrupted the Lanius before they had a chance to scavenge much from the debris, and you make off with a good haul.",
+                                    "ref": "event_LANIUS_HARVESTER_SHIP_LIST_3_text"
+                                  },
+                                  "effects": [
+                                    {
+                                      "kind": "reward",
+                                      "level": "HIGH",
+                                      "tier": "standard"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          }
+                        },
+                        "label_ref": "ship_LANIUS_HARVESTER_SHIP_destroyed_c1_choice",
+                        "hidden": true
+                      }
+                    ]
+                  }
+                }
+              }
+            ]
+          }
+        },
+        "label_ref": "event_LANIUS_HARVESTER_c4_choice",
+        "hidden": true
+      },
+      {
+        "label": "Ignore the vessel.",
+        "gate": null,
+        "child": {
+          "text": {
+            "value": "You charge up your drive and prepare to make the next jump. No sense in antagonizing the Lanius if you don't need to.",
+            "ref": "event_LANIUS_HARVESTER_c5_text"
+          },
+          "effects": []
+        },
+        "label_ref": "event_LANIUS_HARVESTER_c5_choice",
+        "hidden": true
+      }
+    ]
+  }
+}

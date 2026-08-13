@@ -1,0 +1,14 @@
+{
+  "schema": "ftl-event-tree/1",
+  "id": "BOSS_TEXT_1",
+  "slug": "boss-text-1",
+  "title": "Rebel Flagship, phase 1",
+  "extracted_from": "raw/gamedata/events_boss.xml",
+  "text": {
+    "value": "This is it... The Rebel flagship. If you are able to destroy this monstrosity, the Federation fleet will have a chance of surviving. There's no turning back!",
+    "ref": "event_BOSS_TEXT_1_text"
+  },
+  "name": "BOSS_TEXT_1",
+  "source": "raw/gamedata/events_boss.xml",
+  "effects": []
+}

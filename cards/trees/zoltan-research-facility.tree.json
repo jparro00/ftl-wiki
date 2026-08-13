@@ -1,0 +1,293 @@
+{
+  "schema": "ftl-event-tree/1",
+  "id": "ZOLTAN_CREW_STUDY",
+  "slug": "zoltan-research-facility",
+  "title": "Zoltan research facility",
+  "extracted_from": "raw/gamedata/events.xml",
+  "text": {
+    "value": "You arrive at a Zoltan research facility. They say they are researching genetic distortion due to stasis sleep and prolonged FTL travel. They ask if your crew has the time to undergo a few scans.",
+    "ref": "event_ZOLTAN_CREW_STUDY_text"
+  },
+  "name": "ZOLTAN_CREW_STUDY",
+  "source": "raw/gamedata/events.xml",
+  "effects": [],
+  "node": {
+    "kind": "decision",
+    "options": [
+      {
+        "label": "Participate in their study.",
+        "gate": null,
+        "child": {
+          "effects": [],
+          "node": {
+            "kind": "chance",
+            "list": "ZOLTAN_CREW_STUDY_LIST",
+            "source": "raw/gamedata/events.xml",
+            "odds_basis": "unweighted",
+            "options": [
+              {
+                "share": null,
+                "child": {
+                  "text": {
+                    "value": "Your crew calmly lines up for the Zoltans to take their readings. After a short time, the process is done. They contact you, \"Thank you for your participation in our study. Please accept these small cakes made from stiff dough as well as some scrap.\"",
+                    "ref": "event_ZOLTAN_CREW_STUDY_LIST_1_text"
+                  },
+                  "effects": [
+                    {
+                      "kind": "reward",
+                      "level": "LOW",
+                      "tier": "scrap_only"
+                    }
+                  ]
+                }
+              },
+              {
+                "share": null,
+                "child": {
+                  "text": {
+                    "value": "Your crew calmly lines up for the Zoltans to take their readings. After a short time, the process is done. They contact you, \"Thank you for your participation in our study. Please accept these small cakes made from stiff dough as well as some scrap.\"",
+                    "ref": "event_ZOLTAN_CREW_STUDY_LIST_1_text"
+                  },
+                  "effects": [
+                    {
+                      "kind": "reward",
+                      "level": "LOW",
+                      "tier": "scrap_only"
+                    }
+                  ]
+                }
+              },
+              {
+                "share": null,
+                "child": {
+                  "text": {
+                    "value": "As soon as you dock, pirates burst on board and a hostile ship appears on the radar. You hear the Zoltans yell in the distance, \"We're being held hostage!\"",
+                    "ref": "event_ZOLTAN_CREW_STUDY_LIST_3_text"
+                  },
+                  "effects": [
+                    {
+                      "kind": "boarders",
+                      "min": 2,
+                      "max": 2,
+                      "class": "random"
+                    }
+                  ],
+                  "node": {
+                    "kind": "combat",
+                    "ship": "PIRATE_ZOLTAN_CREW_STUDY",
+                    "hostile": true,
+                    "auto_blueprint": "SHIPS_PIRATE",
+                    "source": "raw/gamedata/events_ships.xml",
+                    "branches": [
+                      {
+                        "on": "destroyed",
+                        "child": {
+                          "text": {
+                            "value": "You take out the ship and contact the research station.",
+                            "ref": "ship_PIRATE_ZOLTAN_CREW_STUDY_destroyed_text"
+                          },
+                          "effects": [
+                            {
+                              "kind": "reward",
+                              "level": "MED",
+                              "tier": "standard"
+                            }
+                          ],
+                          "node": {
+                            "kind": "decision",
+                            "options": [
+                              {
+                                "label": "Continue...",
+                                "gate": null,
+                                "child": {
+                                  "text": {
+                                    "value": "\"Thank you for rescuing us! They held us hostage to ambush unsuspecting passersby. Please, take this.\"",
+                                    "ref": "ship_PIRATE_ZOLTAN_CREW_STUDY_destroyed_c1_text"
+                                  },
+                                  "effects": [
+                                    {
+                                      "kind": "reward",
+                                      "level": "LOW",
+                                      "tier": "stuff"
+                                    },
+                                    {
+                                      "kind": "item",
+                                      "item_kind": "drone",
+                                      "id": "RANDOM",
+                                      "label": "RANDOM"
+                                    }
+                                  ]
+                                },
+                                "label_ref": "continue",
+                                "hidden": true
+                              }
+                            ]
+                          }
+                        }
+                      },
+                      {
+                        "on": "deadCrew",
+                        "child": {
+                          "text": {
+                            "value": "You disable the ship and contact the research station.",
+                            "ref": "ship_PIRATE_ZOLTAN_CREW_STUDY_deadCrew_text"
+                          },
+                          "effects": [
+                            {
+                              "kind": "reward",
+                              "level": "HIGH",
+                              "tier": "standard"
+                            }
+                          ],
+                          "node": {
+                            "kind": "decision",
+                            "options": [
+                              {
+                                "label": "Continue...",
+                                "gate": null,
+                                "child": {
+                                  "text": {
+                                    "value": "\"Thank you for rescuing us! They held us hostage to ambush unsuspecting passersby. Please, take this.\"",
+                                    "ref": "ship_PIRATE_ZOLTAN_CREW_STUDY_destroyed_c1_text"
+                                  },
+                                  "effects": [
+                                    {
+                                      "kind": "reward",
+                                      "level": "LOW",
+                                      "tier": "stuff"
+                                    },
+                                    {
+                                      "kind": "item",
+                                      "item_kind": "drone",
+                                      "id": "RANDOM",
+                                      "label": "RANDOM"
+                                    }
+                                  ]
+                                },
+                                "label_ref": "continue",
+                                "hidden": true
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            ]
+          }
+        },
+        "label_ref": "event_ZOLTAN_CREW_STUDY_c1_choice",
+        "hidden": true
+      },
+      {
+        "label": "Decline.",
+        "gate": null,
+        "child": {
+          "text": {
+            "value": "\"Alright. Fly safe.\" You prepare to leave.",
+            "ref": "event_ZOLTAN_CREW_STUDY_c2_text"
+          },
+          "effects": []
+        },
+        "label_ref": "event_ZOLTAN_CREW_STUDY_c2_choice",
+        "hidden": true
+      },
+      {
+        "label": "(Advanced Medbay) Give them your medical records.",
+        "gate": {
+          "req": "medbay",
+          "label": "Medbay",
+          "lvl": "3"
+        },
+        "child": {
+          "text": {
+            "value": "\"Thank you! We didn't expect to receive such a significant amount of data regarding your crew's health during FTL travel. Please, accept this for your trouble.\"",
+            "ref": "event_ZOLTAN_CREW_STUDY_c3_text"
+          },
+          "effects": [
+            {
+              "kind": "item",
+              "item_kind": "drone",
+              "id": "RANDOM",
+              "label": "RANDOM"
+            },
+            {
+              "kind": "reward",
+              "level": "LOW",
+              "tier": "stuff"
+            }
+          ]
+        },
+        "label_ref": "event_ZOLTAN_CREW_STUDY_c3_choice",
+        "hidden": true
+      },
+      {
+        "label": "(Damaged Stasis Pod) Ask if they can fix this.",
+        "gate": {
+          "req": "STASIS_POD",
+          "label": "Damaged Stasis Pod"
+        },
+        "child": {
+          "text": {
+            "value": "\"Interesting. I've never seen a cryogenic system like this. It appears to still be functioning...\" They hook it up to their system and run a number of tests on it.",
+            "ref": "event_ZOLTAN_CREW_STUDY_c4_text"
+          },
+          "effects": [
+            {
+              "kind": "remove_augment",
+              "id": "STASIS_POD",
+              "label": "Damaged Stasis Pod"
+            }
+          ],
+          "node": {
+            "kind": "decision",
+            "options": [
+              {
+                "label": "Continue...",
+                "gate": null,
+                "child": {
+                  "text": {
+                    "value": "\"Amazing! It has the ability to reconstruct the body if it was damaged during transit. Watch.\" They reactivate the pod and you watch as the hunks of crystal inside reform to build a humanoid structure. The pod slides open and the re-formed alien steps out.",
+                    "ref": "event_ZOLTAN_CREW_STUDY_c4_c1_text"
+                  },
+                  "effects": [],
+                  "node": {
+                    "kind": "decision",
+                    "options": [
+                      {
+                        "label": "Continue...",
+                        "gate": null,
+                        "child": {
+                          "text": {
+                            "value": "It speaks slowly, \"Greetings. I appear to be in your debt. My people isolated themselves a long time ago, but perhaps it's time to re-establish a connection. There's a hidden wormhole near the Rock home-worlds. Perhaps you can take me there so I can properly repay you?\"",
+                            "ref": "event_ZOLTAN_CREW_STUDY_c4_c1_c1_text"
+                          },
+                          "effects": [
+                            {
+                              "kind": "crew_gain",
+                              "amount": 1,
+                              "class": "crystal",
+                              "name": "Ruwen"
+                            }
+                          ]
+                        },
+                        "label_ref": "continue",
+                        "hidden": true
+                      }
+                    ]
+                  }
+                },
+                "label_ref": "continue",
+                "hidden": true
+              }
+            ]
+          }
+        },
+        "label_ref": "event_ZOLTAN_CREW_STUDY_c4_choice",
+        "hidden": true
+      }
+    ]
+  }
+}

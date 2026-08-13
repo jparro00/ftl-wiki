@@ -1,0 +1,241 @@
+{
+  "schema": "ftl-event-tree/1",
+  "id": "DONOR_BLACK_RAVEN",
+  "slug": "the-black-raven",
+  "title": "The Black Raven",
+  "extracted_from": "raw/gamedata/events.xml",
+  "text": {
+    "value": "As you jump in, you immediately see an impressive Slug pirate ship with \"The Black Raven\" painted on one side. They hail you, \"Greetingsss. I am the dreaded pirate, Captain Nights. You mussst be full of fear, no? You have heard of me... no?\"",
+    "ref": "event_DONOR_BLACK_RAVEN_text"
+  },
+  "name": "DONOR_BLACK_RAVEN",
+  "source": "raw/gamedata/events.xml",
+  "effects": [],
+  "flags": {
+    "unique": true
+  },
+  "node": {
+    "kind": "decision",
+    "options": [
+      {
+        "label": "No.",
+        "gate": null,
+        "child": {
+          "text": {
+            "value": "\"Well I have heard of you and I must see if you are as dangerousss as they say. I challenge you!\"",
+            "ref": "event_DONOR_BLACK_RAVEN_c1_text"
+          },
+          "effects": [],
+          "node": {
+            "kind": "decision",
+            "options": [
+              {
+                "label": "Accept his challenge.",
+                "gate": null,
+                "child": {
+                  "effects": [
+                    {
+                      "kind": "ship_hostility",
+                      "hostile": true
+                    }
+                  ]
+                },
+                "label_ref": "event_DONOR_BLACK_RAVEN_c1_c1_choice",
+                "hidden": true
+              },
+              {
+                "label": "Decline.",
+                "gate": null,
+                "child": {
+                  "text": {
+                    "value": "\"I sssee... However you have no choice in the matter!\" They move in to attack.",
+                    "ref": "event_DONOR_BLACK_RAVEN_c1_c2_text"
+                  },
+                  "effects": [
+                    {
+                      "kind": "ship_hostility",
+                      "hostile": true
+                    }
+                  ]
+                },
+                "label_ref": "event_DONOR_BLACK_RAVEN_c1_c2_choice",
+                "hidden": true
+              },
+              {
+                "label": "(Slugman Crew) Engage in a duel of the mind.",
+                "gate": {
+                  "req": "slug",
+                  "label": "Slug"
+                },
+                "child": {
+                  "effects": [],
+                  "node": {
+                    "kind": "chance",
+                    "list": "DONOR_BLACK_RAVEN_SLUG",
+                    "source": "raw/gamedata/events.xml",
+                    "odds_basis": "unweighted",
+                    "options": [
+                      {
+                        "share": null,
+                        "child": {
+                          "text": {
+                            "value": "Your Slug crewman's eyes glaze over as the two telepaths concentrate. You can only wonder what is happening. After a short time your comrade grunts in pain and collapses onto the floor, stunned. Nights responds, \"Hah! It'll take more than that to defeat me! Let the real battle begin!\"",
+                            "ref": "event_DONOR_BLACK_RAVEN_SLUG_1_text"
+                          },
+                          "effects": [
+                            {
+                              "kind": "ship_hostility",
+                              "hostile": true
+                            },
+                            {
+                              "kind": "boarders",
+                              "min": 1,
+                              "max": 2,
+                              "class": "slug"
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "share": null,
+                        "child": {
+                          "text": {
+                            "value": "Your Slug crewman's eyes glaze over as the two telepaths concentrate. You are powerless to help, but after a short time your comrade shakes off the daze and appears victorious.",
+                            "ref": "event_DONOR_BLACK_RAVEN_SLUG_2_text"
+                          },
+                          "effects": [],
+                          "node": {
+                            "kind": "decision",
+                            "options": [
+                              {
+                                "label": "Continue...",
+                                "gate": null,
+                                "child": {
+                                  "text": {
+                                    "value": "His face contorted with pain, Nights concedes his defeat: \"If this is the caliber of subordinatesss you keep, there iss no way we can defeat you. Take thisss and let us leave in shame.\"",
+                                    "ref": "event_DONOR_BLACK_RAVEN_SLUG_2_c1_text"
+                                  },
+                                  "effects": [
+                                    {
+                                      "kind": "reward",
+                                      "level": "HIGH",
+                                      "tier": "weapon"
+                                    }
+                                  ]
+                                },
+                                "label_ref": "continue",
+                                "hidden": true
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    ]
+                  }
+                },
+                "label_ref": "event_DONOR_BLACK_RAVEN_c1_c3_choice",
+                "hidden": true
+              }
+            ]
+          }
+        },
+        "label_ref": "event_DONOR_BLACK_RAVEN_c1_choice",
+        "hidden": true
+      }
+    ],
+    "combat": {
+      "kind": "combat",
+      "ship": "DONOR_BLACK_RAVEN",
+      "ship_label": "Slug Assault",
+      "hostile": false,
+      "auto_blueprint": "JELLY_TRUFFLE",
+      "source": "raw/gamedata/events.xml",
+      "branches": [
+        {
+          "on": "destroyed",
+          "child": {
+            "text": {
+              "value": "\"The Black Raven\" breaks apart and you salvage the remains.",
+              "ref": "ship_DONOR_BLACK_RAVEN_destroyed_text"
+            },
+            "effects": [
+              {
+                "kind": "reward",
+                "level": "MED",
+                "tier": "standard"
+              }
+            ]
+          }
+        },
+        {
+          "on": "deadCrew",
+          "child": {
+            "text": {
+              "value": "The once-dreaded pirate Nights has been killed and you proceed to loot his ship.",
+              "ref": "ship_DONOR_BLACK_RAVEN_deadCrew_text"
+            },
+            "effects": [
+              {
+                "kind": "reward",
+                "level": "HIGH",
+                "tier": "standard"
+              }
+            ]
+          }
+        },
+        {
+          "on": "surrender",
+          "child": {
+            "text": {
+              "value": "\"I see the rumorsss are true. I yield, we are no match for you. Take this and let us leave in ssshame.\"",
+              "ref": "ship_DONOR_BLACK_RAVEN_surrender_text"
+            },
+            "effects": [],
+            "node": {
+              "kind": "decision",
+              "options": [
+                {
+                  "label": "Accept his surrender.",
+                  "gate": null,
+                  "child": {
+                    "text": {
+                      "value": "He transfers over the goods and starts to repair his ship.",
+                      "ref": "ship_DONOR_BLACK_RAVEN_surrender_c1_text"
+                    },
+                    "effects": [
+                      {
+                        "kind": "ship_hostility",
+                        "hostile": false
+                      },
+                      {
+                        "kind": "reward",
+                        "level": "HIGH",
+                        "tier": "weapon"
+                      }
+                    ]
+                  },
+                  "label_ref": "ship_DONOR_BLACK_RAVEN_surrender_c1_choice"
+                },
+                {
+                  "label": "Ignore him and attack.",
+                  "gate": null,
+                  "child": {
+                    "text": {
+                      "value": "\"Wait! There is no need to be....\" You cut off the transmission and prepare to fire.",
+                      "ref": "ship_DONOR_BLACK_RAVEN_surrender_c2_text"
+                    },
+                    "effects": []
+                  },
+                  "label_ref": "ship_DONOR_BLACK_RAVEN_surrender_c2_choice"
+                }
+              ]
+            }
+          },
+          "chance": "0",
+          "min": "3",
+          "max": "4"
+        }
+      ]
+    }
+  }
+}

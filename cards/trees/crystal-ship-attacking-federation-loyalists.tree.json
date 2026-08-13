@@ -1,0 +1,209 @@
+{
+  "schema": "ftl-event-tree/1",
+  "id": "CRYSTAL_FED",
+  "slug": "crystal-ship-attacking-federation-loyalists",
+  "title": "Crystal ship attacking Federation loyalists",
+  "extracted_from": "raw/gamedata/events_crystal.xml",
+  "text": {
+    "value": "There appears to be a fight going on nearby. A Crystalline border guard is chasing a small Federation ship!",
+    "ref": "event_CRYSTAL_FED_text"
+  },
+  "name": "CRYSTAL_FED",
+  "source": "raw/gamedata/events_crystal.xml",
+  "effects": [],
+  "flags": {
+    "unique": false
+  },
+  "node": {
+    "kind": "decision",
+    "options": [
+      {
+        "label": "Save the Federation ship.",
+        "gate": null,
+        "child": {
+          "text": {
+            "value": "It doesn't look like the Fed ship can stand much more pressure. You fly in and intercept the Crystalline ship.",
+            "ref": "event_CRYSTAL_FED_c1_text"
+          },
+          "effects": [],
+          "node": {
+            "kind": "combat",
+            "ship": "CRYSTAL_FED",
+            "ship_labels": [
+              "Crystal Scout",
+              "Crystal Bomber"
+            ],
+            "hostile": true,
+            "auto_blueprint": "SHIPS_CRYSTAL",
+            "source": "raw/gamedata/events_ships.xml",
+            "branches": [
+              {
+                "on": "destroyed",
+                "child": {
+                  "text": {
+                    "value": "The Crystalline ship shatters and you pick what you can from the debris.",
+                    "ref": "ship_CRYSTAL_FED_destroyed_text"
+                  },
+                  "effects": [
+                    {
+                      "kind": "reward",
+                      "level": "MED",
+                      "tier": "standard"
+                    }
+                  ],
+                  "node": {
+                    "kind": "decision",
+                    "options": [
+                      {
+                        "label": "Continue...",
+                        "gate": null,
+                        "child": {
+                          "effects": [],
+                          "node": {
+                            "kind": "chance",
+                            "list": "CRYSTAL_FED_LIST",
+                            "source": "raw/gamedata/events_crystal.xml",
+                            "odds_basis": "unweighted",
+                            "options": [
+                              {
+                                "share": null,
+                                "child": {
+                                  "text": {
+                                    "value": "\"Thank you! We heard you jumped into an unknown sector and we figured it would be a safe enough place to hide from the Rebels. We were wrong!\" They transfer some excess materials for your trouble.",
+                                    "ref": "event_CRYSTAL_FED_LIST_1_text"
+                                  },
+                                  "effects": [
+                                    {
+                                      "kind": "reward",
+                                      "level": "RANDOM",
+                                      "tier": "stuff"
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "share": null,
+                                "child": {
+                                  "text": {
+                                    "value": "The ship looks battered and ready to break apart. You quickly move in to help rescue the survivors, but it looks like only one person made it. They offer to join your crew as thanks.",
+                                    "ref": "event_CRYSTAL_FED_LIST_2_text"
+                                  },
+                                  "effects": [
+                                    {
+                                      "kind": "crew_gain",
+                                      "amount": 1
+                                    },
+                                    {
+                                      "kind": "reward",
+                                      "level": "LOW",
+                                      "tier": "standard"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          }
+                        },
+                        "label_ref": "continue",
+                        "hidden": true
+                      }
+                    ]
+                  }
+                }
+              },
+              {
+                "on": "deadCrew",
+                "child": {
+                  "text": {
+                    "value": "The crew of the enemy ship has been eliminated. You scrap what you can.",
+                    "ref": "ship_CRYSTAL_FED_deadCrew_text"
+                  },
+                  "effects": [
+                    {
+                      "kind": "reward",
+                      "level": "HIGH",
+                      "tier": "standard"
+                    }
+                  ],
+                  "node": {
+                    "kind": "decision",
+                    "options": [
+                      {
+                        "label": "Continue...",
+                        "gate": null,
+                        "child": {
+                          "effects": [],
+                          "node": {
+                            "kind": "chance",
+                            "list": "CRYSTAL_FED_LIST",
+                            "source": "raw/gamedata/events_crystal.xml",
+                            "odds_basis": "unweighted",
+                            "options": [
+                              {
+                                "share": null,
+                                "child": {
+                                  "text": {
+                                    "value": "\"Thank you! We heard you jumped into an unknown sector and we figured it would be a safe enough place to hide from the Rebels. We were wrong!\" They transfer some excess materials for your trouble.",
+                                    "ref": "event_CRYSTAL_FED_LIST_1_text"
+                                  },
+                                  "effects": [
+                                    {
+                                      "kind": "reward",
+                                      "level": "RANDOM",
+                                      "tier": "stuff"
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "share": null,
+                                "child": {
+                                  "text": {
+                                    "value": "The ship looks battered and ready to break apart. You quickly move in to help rescue the survivors, but it looks like only one person made it. They offer to join your crew as thanks.",
+                                    "ref": "event_CRYSTAL_FED_LIST_2_text"
+                                  },
+                                  "effects": [
+                                    {
+                                      "kind": "crew_gain",
+                                      "amount": 1
+                                    },
+                                    {
+                                      "kind": "reward",
+                                      "level": "LOW",
+                                      "tier": "standard"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          }
+                        },
+                        "label_ref": "continue",
+                        "hidden": true
+                      }
+                    ]
+                  }
+                }
+              }
+            ]
+          }
+        },
+        "label_ref": "event_CRYSTAL_FED_c1_choice",
+        "hidden": true
+      },
+      {
+        "label": "Prepare to leave.",
+        "gate": null,
+        "child": {
+          "text": {
+            "value": "With the Federation ship distracting the guard, you are free to continue on your mission.",
+            "ref": "event_CRYSTAL_FED_c2_text"
+          },
+          "effects": []
+        },
+        "label_ref": "event_CRYSTAL_FED_c2_choice",
+        "hidden": true
+      }
+    ]
+  }
+}

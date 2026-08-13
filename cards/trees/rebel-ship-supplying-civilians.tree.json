@@ -1,0 +1,360 @@
+{
+  "schema": "ftl-event-tree/1",
+  "id": "REBEL_HELPERS",
+  "slug": "rebel-ship-supplying-civilians",
+  "title": "Rebel ship supplying civilians",
+  "extracted_from": "raw/gamedata/newEvents.xml",
+  "text": {
+    "value": "You stumble across a Rebel ship distributing supplies to local civilian colonies. It's probably not anything military grade, but every little bit helps...",
+    "ref": "REBEL_HELPERS_TEXT",
+    "variants": 5
+  },
+  "name": "REBEL_HELPERS",
+  "source": "raw/gamedata/newEvents.xml",
+  "effects": [],
+  "node": {
+    "kind": "decision",
+    "options": [
+      {
+        "label": "Attack the Rebels.",
+        "gate": null,
+        "child": {
+          "effects": [],
+          "node": {
+            "kind": "combat",
+            "ship": "REBEL_HELPERS_SHIP",
+            "ship_labels": [
+              "Rebel Rigger",
+              "Rebel Fighter"
+            ],
+            "hostile": true,
+            "auto_blueprint": "SHIPS_REBEL",
+            "source": "raw/gamedata/newEvents.xml",
+            "branches": [
+              {
+                "on": "destroyed",
+                "child": {
+                  "text": {
+                    "value": "With the Rebel ship destroyed, you take the time to collect what little scrap remains. They had already made their delivery to the civilians.",
+                    "ref": "ship_REBEL_HELPERS_SHIP_destroyed_text"
+                  },
+                  "effects": [
+                    {
+                      "kind": "reward",
+                      "level": "LOW",
+                      "tier": "standard"
+                    }
+                  ],
+                  "node": {
+                    "kind": "decision",
+                    "options": [
+                      {
+                        "label": "Steal the civilian supplies.",
+                        "gate": null,
+                        "child": {
+                          "effects": [],
+                          "node": {
+                            "kind": "chance",
+                            "list": "REBEL_HELPERS_SUPPLIES",
+                            "source": "raw/gamedata/newEvents.xml",
+                            "odds_basis": "unweighted",
+                            "options": [
+                              {
+                                "share": null,
+                                "child": {
+                                  "text": {
+                                    "value": "The colonists hand over the supplies. It appears to be mostly equipment meant for automated farming, but you can make use of it. As you leave, you receive a message: \"This is why the Rebels will always have support!\"",
+                                    "ref": "event_REBEL_HELPERS_SUPPLIES_1_text"
+                                  },
+                                  "effects": [
+                                    {
+                                      "kind": "reward",
+                                      "level": "LOW",
+                                      "tier": "droneparts"
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "share": null,
+                                "child": {
+                                  "text": {
+                                    "value": "The colonists hand over the supplies and you load it onto your ship. As you jump away, you crack it open and discover nothing more than vaccinations for a local plague.",
+                                    "ref": "event_REBEL_HELPERS_SUPPLIES_2_text"
+                                  },
+                                  "effects": []
+                                }
+                              },
+                              {
+                                "share": null,
+                                "child": {
+                                  "text": {
+                                    "value": "You make the colonists teleport the supplies to your ship. It's nothing more than building construction supplies. Oh well, scrap is scrap.",
+                                    "ref": "event_REBEL_HELPERS_SUPPLIES_3_text"
+                                  },
+                                  "effects": [
+                                    {
+                                      "kind": "reward",
+                                      "level": "LOW",
+                                      "tier": "scrap_only"
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "share": null,
+                                "child": {
+                                  "text": {
+                                    "value": "The colonists willingly give up their supplies. But as you make to jump away, an explosion rocks your ship. The cargo was booby trapped!",
+                                    "ref": "event_REBEL_HELPERS_SUPPLIES_4_text"
+                                  },
+                                  "effects": [
+                                    {
+                                      "kind": "system_damage",
+                                      "amount": 2,
+                                      "system": "room"
+                                    },
+                                    {
+                                      "kind": "hazard",
+                                      "hazard": "random"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          }
+                        },
+                        "label_ref": "ship_REBEL_HELPERS_SHIP_destroyed_c1_choice",
+                        "hidden": true
+                      },
+                      {
+                        "label": "Leave the civilians alone.",
+                        "gate": null,
+                        "child": {
+                          "text": {
+                            "value": "You make to preparations to leave. One of the civilian leaders contacts you: \"That Rebel was our sole source of supplies. You have doomed us all.\"",
+                            "ref": "REBEL_HELPER_NO_SUPPLIES_TEXT",
+                            "variants": 4
+                          },
+                          "name": "REBEL_HELPER_NO_SUPPLIES",
+                          "source": "raw/gamedata/newEvents.xml",
+                          "effects": []
+                        },
+                        "label_ref": "ship_REBEL_HELPERS_SHIP_destroyed_c2_choice",
+                        "hidden": true
+                      }
+                    ]
+                  }
+                }
+              },
+              {
+                "on": "deadCrew",
+                "child": {
+                  "text": {
+                    "value": "With the Rebel crew dead, you strip their ship for equipment. They had already made their delivery to the civilians.",
+                    "ref": "ship_REBEL_HELPERS_SHIP_deadCrew_text"
+                  },
+                  "effects": [
+                    {
+                      "kind": "reward",
+                      "level": "MED",
+                      "tier": "standard"
+                    }
+                  ],
+                  "node": {
+                    "kind": "decision",
+                    "options": [
+                      {
+                        "label": "Steal the civilian supplies.",
+                        "gate": null,
+                        "child": {
+                          "effects": [],
+                          "node": {
+                            "kind": "chance",
+                            "list": "REBEL_HELPERS_SUPPLIES",
+                            "source": "raw/gamedata/newEvents.xml",
+                            "odds_basis": "unweighted",
+                            "options": [
+                              {
+                                "share": null,
+                                "child": {
+                                  "text": {
+                                    "value": "The colonists hand over the supplies. It appears to be mostly equipment meant for automated farming, but you can make use of it. As you leave, you receive a message: \"This is why the Rebels will always have support!\"",
+                                    "ref": "event_REBEL_HELPERS_SUPPLIES_1_text"
+                                  },
+                                  "effects": [
+                                    {
+                                      "kind": "reward",
+                                      "level": "LOW",
+                                      "tier": "droneparts"
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "share": null,
+                                "child": {
+                                  "text": {
+                                    "value": "The colonists hand over the supplies and you load it onto your ship. As you jump away, you crack it open and discover nothing more than vaccinations for a local plague.",
+                                    "ref": "event_REBEL_HELPERS_SUPPLIES_2_text"
+                                  },
+                                  "effects": []
+                                }
+                              },
+                              {
+                                "share": null,
+                                "child": {
+                                  "text": {
+                                    "value": "You make the colonists teleport the supplies to your ship. It's nothing more than building construction supplies. Oh well, scrap is scrap.",
+                                    "ref": "event_REBEL_HELPERS_SUPPLIES_3_text"
+                                  },
+                                  "effects": [
+                                    {
+                                      "kind": "reward",
+                                      "level": "LOW",
+                                      "tier": "scrap_only"
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "share": null,
+                                "child": {
+                                  "text": {
+                                    "value": "The colonists willingly give up their supplies. But as you make to jump away, an explosion rocks your ship. The cargo was booby trapped!",
+                                    "ref": "event_REBEL_HELPERS_SUPPLIES_4_text"
+                                  },
+                                  "effects": [
+                                    {
+                                      "kind": "system_damage",
+                                      "amount": 2,
+                                      "system": "room"
+                                    },
+                                    {
+                                      "kind": "hazard",
+                                      "hazard": "random"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          }
+                        },
+                        "label_ref": "ship_REBEL_HELPERS_SHIP_destroyed_c1_choice",
+                        "hidden": true
+                      },
+                      {
+                        "label": "Leave the civilians alone.",
+                        "gate": null,
+                        "child": {
+                          "text": {
+                            "value": "You make to preparations to leave. One of the civilian leaders contacts you: \"That Rebel was our sole source of supplies. You have doomed us all.\"",
+                            "ref": "REBEL_HELPER_NO_SUPPLIES_TEXT",
+                            "variants": 4
+                          },
+                          "name": "REBEL_HELPER_NO_SUPPLIES",
+                          "source": "raw/gamedata/newEvents.xml",
+                          "effects": []
+                        },
+                        "label_ref": "ship_REBEL_HELPERS_SHIP_destroyed_c2_choice",
+                        "hidden": true
+                      }
+                    ]
+                  }
+                }
+              }
+            ]
+          }
+        },
+        "label_ref": "event_REBEL_HELPERS_c1_choice"
+      },
+      {
+        "label": "Wait and steal the supplies from the civilians.",
+        "gate": null,
+        "child": {
+          "effects": [],
+          "node": {
+            "kind": "chance",
+            "list": "REBEL_HELPERS_SUPPLIES",
+            "source": "raw/gamedata/newEvents.xml",
+            "odds_basis": "unweighted",
+            "options": [
+              {
+                "share": null,
+                "child": {
+                  "text": {
+                    "value": "The colonists hand over the supplies. It appears to be mostly equipment meant for automated farming, but you can make use of it. As you leave, you receive a message: \"This is why the Rebels will always have support!\"",
+                    "ref": "event_REBEL_HELPERS_SUPPLIES_1_text"
+                  },
+                  "effects": [
+                    {
+                      "kind": "reward",
+                      "level": "LOW",
+                      "tier": "droneparts"
+                    }
+                  ]
+                }
+              },
+              {
+                "share": null,
+                "child": {
+                  "text": {
+                    "value": "The colonists hand over the supplies and you load it onto your ship. As you jump away, you crack it open and discover nothing more than vaccinations for a local plague.",
+                    "ref": "event_REBEL_HELPERS_SUPPLIES_2_text"
+                  },
+                  "effects": []
+                }
+              },
+              {
+                "share": null,
+                "child": {
+                  "text": {
+                    "value": "You make the colonists teleport the supplies to your ship. It's nothing more than building construction supplies. Oh well, scrap is scrap.",
+                    "ref": "event_REBEL_HELPERS_SUPPLIES_3_text"
+                  },
+                  "effects": [
+                    {
+                      "kind": "reward",
+                      "level": "LOW",
+                      "tier": "scrap_only"
+                    }
+                  ]
+                }
+              },
+              {
+                "share": null,
+                "child": {
+                  "text": {
+                    "value": "The colonists willingly give up their supplies. But as you make to jump away, an explosion rocks your ship. The cargo was booby trapped!",
+                    "ref": "event_REBEL_HELPERS_SUPPLIES_4_text"
+                  },
+                  "effects": [
+                    {
+                      "kind": "system_damage",
+                      "amount": 2,
+                      "system": "room"
+                    },
+                    {
+                      "kind": "hazard",
+                      "hazard": "random"
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        "label_ref": "event_REBEL_HELPERS_c2_choice",
+        "hidden": true
+      },
+      {
+        "label": "Leave them be.",
+        "gate": null,
+        "child": {
+          "effects": []
+        },
+        "label_ref": "event_REBEL_HELPERS_c3_choice"
+      }
+    ]
+  }
+}

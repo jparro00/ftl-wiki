@@ -1,0 +1,14 @@
+{
+  "schema": "ftl-event-tree/1",
+  "id": "FINISH_BEACON_NEBULA",
+  "slug": "finish-beacon-nebula",
+  "title": "Long-Range Beacon in a nebula (sector exit)",
+  "extracted_from": "raw/gamedata/events.xml",
+  "text": {
+    "value": "This Long-Range Beacon is almost hidden within a nebula. When the FTL Drive is charged you can jump to the next Sector.",
+    "ref": "event_FINISH_BEACON_NEBULA_text"
+  },
+  "name": "FINISH_BEACON_NEBULA",
+  "source": "raw/gamedata/events.xml",
+  "effects": []
+}

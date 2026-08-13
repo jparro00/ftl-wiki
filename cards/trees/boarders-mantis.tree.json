@@ -1,0 +1,25 @@
+{
+  "schema": "ftl-event-tree/1",
+  "id": "MANTIS_BOARDERS",
+  "slug": "boarders-mantis",
+  "title": "Boarders: Mantis",
+  "extracted_from": "raw/gamedata/events_mantis.xml",
+  "text": {
+    "value": "A derelict and still smoking Mantis vessel floats by. The battle must have been recent; its surviving crew beam aboard. Prepare for a fight!",
+    "ref": "MANTIS_BOARDERS",
+    "variants": 3
+  },
+  "name": "MANTIS_BOARDERS",
+  "source": "raw/gamedata/events_mantis.xml",
+  "effects": [
+    {
+      "kind": "boarders",
+      "min": 2,
+      "max": 4,
+      "class": "mantis"
+    }
+  ],
+  "flags": {
+    "unique": true
+  }
+}

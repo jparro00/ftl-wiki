@@ -1,0 +1,15 @@
+{
+  "schema": "ftl-event-tree/1",
+  "id": "START_BEACON_ENGI",
+  "slug": "start-beacon-engi",
+  "title": "Start beacon (Engi)",
+  "extracted_from": "raw/gamedata/events_engi.xml",
+  "text": {
+    "value": "You have arrived in Engi space. The Mantis have been threatening the Engi core worlds, but you should be able to stock up for your journey.",
+    "ref": "START_BEACON_ENGI",
+    "variants": 2
+  },
+  "name": "START_BEACON_ENGI",
+  "source": "raw/gamedata/events_engi.xml",
+  "effects": []
+}

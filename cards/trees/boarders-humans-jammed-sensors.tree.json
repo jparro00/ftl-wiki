@@ -1,0 +1,67 @@
+{
+  "schema": "ftl-event-tree/1",
+  "id": "BOARDERS_HACKING",
+  "slug": "boarders-humans-jammed-sensors",
+  "title": "Boarders: Humans jammed sensors",
+  "extracted_from": "raw/gamedata/events.xml",
+  "text": {
+    "value": "You catch a glimpse of a strange signal coming from a space station before your sensors shut off unexpectedly. As you discover that your sensors are being jammed, you hear hostiles beam onto your ship.",
+    "ref": "event_BOARDERS_HACKING_text"
+  },
+  "name": "BOARDERS_HACKING",
+  "source": "raw/gamedata/events.xml",
+  "effects": [
+    {
+      "kind": "boarders",
+      "min": 3,
+      "max": 5,
+      "class": "human"
+    }
+  ],
+  "flags": {
+    "unique": true
+  },
+  "node": {
+    "kind": "decision",
+    "options": [
+      {
+        "label": "Continue...",
+        "gate": null,
+        "child": {
+          "text": {
+            "value": "Until you are able to jump away from the hostile space station, your sensors will be disabled. You should deal with these boarders first though!",
+            "ref": "event_BOARDERS_HACKING_c1_text"
+          },
+          "effects": [
+            {
+              "kind": "status",
+              "status": "limit",
+              "target": "player",
+              "system": "sensors",
+              "amount": 0
+            }
+          ]
+        },
+        "label_ref": "continue",
+        "hidden": true
+      },
+      {
+        "label": "(Hacking System) Counter the remote hacking.",
+        "gate": {
+          "req": "hacking",
+          "label": "Hacking"
+        },
+        "child": {
+          "text": {
+            "value": "Your hacking system automatically counters the digital assault. Your Sensors flicker back on and you prepare to fight the boarders.",
+            "ref": "event_BOARDERS_HACKING_c2_text"
+          },
+          "effects": []
+        },
+        "label_ref": "event_BOARDERS_HACKING_c2_choice",
+        "hidden": true,
+        "dlc": true
+      }
+    ]
+  }
+}

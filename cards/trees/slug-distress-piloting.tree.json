@@ -1,0 +1,251 @@
+{
+  "schema": "ftl-event-tree/1",
+  "id": "SLUG_DISTRESS_PILOTING",
+  "slug": "slug-distress-piloting",
+  "title": "Slug allegiance demand",
+  "extracted_from": "raw/gamedata/events_slug.xml",
+  "text": {
+    "value": "The distress signal originates from a tampered jump beacon. A Slug vessel jumps in and announces he has hacked your engines system. \"Of course if you, as one of the few remaining ships in the Federation, swear allegiance to the Slug Empire you will be free to go.\"",
+    "ref": "event_SLUG_DISTRESS_PILOTING_text"
+  },
+  "name": "SLUG_DISTRESS_PILOTING",
+  "source": "raw/gamedata/events_slug.xml",
+  "effects": [
+    {
+      "kind": "environment",
+      "environment": "nebula",
+      "target": "player"
+    },
+    {
+      "kind": "status",
+      "status": "limit",
+      "target": "player",
+      "system": "engines",
+      "amount": 1
+    }
+  ],
+  "flags": {
+    "unique": true,
+    "environment": "nebula",
+    "environment_target": "player"
+  },
+  "node": {
+    "kind": "decision",
+    "options": [
+      {
+        "label": "Swear allegiance.",
+        "gate": null,
+        "child": {
+          "effects": [],
+          "node": {
+            "kind": "chance",
+            "list": "SLUG_DISTRESS_PILOTING_SWEAR",
+            "source": "raw/gamedata/events_slug.xml",
+            "odds_basis": "unweighted",
+            "options": [
+              {
+                "share": null,
+                "child": {
+                  "text": {
+                    "value": "\"Wow, I didn't think you'd go through with it...\" He turns to his second in command, \"Looks like I owe you some scrap.\" Strangely enough, they simply let you pass.",
+                    "ref": "event_SLUG_DISTRESS_PILOTING_SWEAR_1_text"
+                  },
+                  "effects": [
+                    {
+                      "kind": "status",
+                      "status": "clear",
+                      "target": "player",
+                      "system": "engines",
+                      "amount": 100
+                    }
+                  ]
+                }
+              },
+              {
+                "share": null,
+                "child": {
+                  "text": {
+                    "value": "Words come cheap, especially these ones. You assure the Slug of your loyalty and he welcomes you to the fold: \"...and finally, let me introduce you to your new Slug Empire Overseer. He will ensure you stay true to the cause.\" A bored-looking Slug teleports over.",
+                    "ref": "event_SLUG_DISTRESS_PILOTING_SWEAR_2_text"
+                  },
+                  "effects": [
+                    {
+                      "kind": "crew_gain",
+                      "amount": 1,
+                      "class": "slug"
+                    },
+                    {
+                      "kind": "status",
+                      "status": "clear",
+                      "target": "player",
+                      "system": "engines",
+                      "amount": 100
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        "label_ref": "event_SLUG_DISTRESS_PILOTING_c1_choice",
+        "hidden": true
+      },
+      {
+        "label": "Never!",
+        "gate": null,
+        "child": {
+          "text": {
+            "value": "The Slug is unimpressed by your bravado and moves in to attack. Get the shields up, you're a sitting duck with malfunctioning thrusters!",
+            "ref": "event_SLUG_DISTRESS_PILOTING_c2_text"
+          },
+          "effects": [
+            {
+              "kind": "ship_hostility",
+              "hostile": true
+            }
+          ]
+        },
+        "label_ref": "event_SLUG_DISTRESS_PILOTING_c2_choice",
+        "hidden": true
+      },
+      {
+        "label": "(Improved Piloting) Override his control.",
+        "gate": {
+          "req": "pilot",
+          "label": "Piloting",
+          "lvl": "2"
+        },
+        "child": {
+          "text": {
+            "value": "You quickly re-wire through a secondary control module. Once they realize you're not likely to agree to their demands they move in to attack.",
+            "ref": "event_SLUG_DISTRESS_PILOTING_c3_text"
+          },
+          "effects": [
+            {
+              "kind": "ship_hostility",
+              "hostile": true
+            },
+            {
+              "kind": "status",
+              "status": "clear",
+              "target": "player",
+              "system": "engines",
+              "amount": 100
+            }
+          ]
+        },
+        "label_ref": "event_SLUG_DISTRESS_PILOTING_c3_choice",
+        "hidden": true
+      },
+      {
+        "label": "(Hacking System) Counter the remote hacking.",
+        "gate": {
+          "req": "hacking",
+          "label": "Hacking"
+        },
+        "child": {
+          "text": {
+            "value": "Your hacking system automatically counters the digital assault and you move in to fight the ship.",
+            "ref": "event_SLUG_DISTRESS_PILOTING_c4_text"
+          },
+          "effects": [
+            {
+              "kind": "ship_hostility",
+              "hostile": true
+            },
+            {
+              "kind": "status",
+              "status": "clear",
+              "target": "player",
+              "system": "engines",
+              "amount": 100
+            },
+            {
+              "kind": "status",
+              "status": "limit",
+              "target": "player",
+              "system": "hacking",
+              "amount": 0
+            }
+          ]
+        },
+        "label_ref": "event_SLUG_DISTRESS_PILOTING_c4_choice",
+        "hidden": true
+      }
+    ],
+    "combat": {
+      "kind": "combat",
+      "ship": "JELLY_STATUS_ENGINES",
+      "ship_labels": [
+        "Slug Interceptor",
+        "Slug Light-Cruiser",
+        "Slug Assault"
+      ],
+      "hostile": false,
+      "auto_blueprint": "SHIPS_JELLY",
+      "source": "raw/gamedata/events_ships.xml",
+      "branches": [
+        {
+          "on": "destroyed",
+          "child": {
+            "text": {
+              "value": "The Slug ship breaks apart and your engines return to normal. You collect what you can.",
+              "ref": "ship_JELLY_STATUS_ENGINES_destroyed_text"
+            },
+            "effects": [
+              {
+                "kind": "reward",
+                "level": "MED",
+                "tier": "standard"
+              },
+              {
+                "kind": "status",
+                "status": "clear",
+                "target": "player",
+                "system": "engines",
+                "amount": 100
+              },
+              {
+                "kind": "status",
+                "status": "clear",
+                "target": "player",
+                "system": "hacking",
+                "amount": 100
+              }
+            ]
+          }
+        },
+        {
+          "on": "deadCrew",
+          "child": {
+            "text": {
+              "value": "With their crew dead, you quickly shut off their hacking module and your engines return to normal. You strip the ship.",
+              "ref": "ship_JELLY_STATUS_ENGINES_deadCrew_text"
+            },
+            "effects": [
+              {
+                "kind": "reward",
+                "level": "HIGH",
+                "tier": "standard"
+              },
+              {
+                "kind": "status",
+                "status": "clear",
+                "target": "player",
+                "system": "engines",
+                "amount": 100
+              },
+              {
+                "kind": "status",
+                "status": "clear",
+                "target": "player",
+                "system": "hacking",
+                "amount": 100
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

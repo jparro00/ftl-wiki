@@ -1,0 +1,283 @@
+{
+  "schema": "ftl-event-tree/1",
+  "id": "DONOR_MANTIS_CHASE",
+  "slug": "mantis-ship-collectors",
+  "title": "Mantis ship-collectors",
+  "extracted_from": "raw/gamedata/events.xml",
+  "text": {
+    "value": "You are immediately hailed by an impressive looking Mantis ship, \"Your ship would make a mighty fine prize. Prepare for battle!\"",
+    "ref": "event_DONOR_MANTIS_CHASE_text"
+  },
+  "name": "DONOR_MANTIS_CHASE",
+  "source": "raw/gamedata/events.xml",
+  "effects": [],
+  "flags": {
+    "unique": true
+  },
+  "node": {
+    "kind": "combat",
+    "ship": "DONOR_MANTIS_CHASE1",
+    "ship_label": "Mantis Fighter",
+    "hostile": true,
+    "auto_blueprint": "MANTIS_FIGHTER",
+    "source": "raw/gamedata/events.xml",
+    "branches": [
+      {
+        "on": "destroyed",
+        "child": {
+          "text": {
+            "value": "Their ship breaks apart and you move in to scrap the remains.",
+            "ref": "ship_DONOR_MANTIS_CHASE1_destroyed_text"
+          },
+          "effects": [
+            {
+              "kind": "reward",
+              "level": "MED",
+              "tier": "standard"
+            }
+          ]
+        }
+      },
+      {
+        "on": "deadCrew",
+        "child": {
+          "text": {
+            "value": "With no more crew on board you are free to salvage what you can from the remains.",
+            "ref": "ship_DONOR_MANTIS_CHASE1_deadCrew_text"
+          },
+          "effects": [
+            {
+              "kind": "reward",
+              "level": "HIGH",
+              "tier": "standard"
+            }
+          ]
+        }
+      },
+      {
+        "on": "escape",
+        "child": {
+          "text": {
+            "value": "You pick up more chatter from the enemy ship, \"You know what... Forget this. Prepare for retreat!\" Looks like they're preparing to make a hasty get away!",
+            "ref": "ship_DONOR_MANTIS_CHASE1_escape_text"
+          },
+          "effects": []
+        },
+        "min": "5",
+        "max": "5"
+      },
+      {
+        "on": "gotaway",
+        "child": {
+          "text": {
+            "value": "The ship made an emergency FTL jump, but it looks like they didn't mask their signatures. You could easily follow them if you want.",
+            "ref": "ship_DONOR_MANTIS_CHASE1_gotaway_text"
+          },
+          "effects": [],
+          "node": {
+            "kind": "decision",
+            "options": [
+              {
+                "label": "After them!",
+                "gate": null,
+                "child": {
+                  "text": {
+                    "value": "You input their coordinates into your map and prepare to follow.",
+                    "ref": "ship_DONOR_MANTIS_CHASE1_gotaway_c1_text"
+                  },
+                  "effects": [
+                    {
+                      "kind": "quest",
+                      "event": "DONOR_MANTIS_CHASE2"
+                    }
+                  ]
+                },
+                "label_ref": "ship_DONOR_MANTIS_CHASE1_gotaway_c1_choice",
+                "hidden": true
+              },
+              {
+                "label": "Forget it.",
+                "gate": null,
+                "child": {
+                  "text": {
+                    "value": "They're not worth the trouble. You prepare to leave.",
+                    "ref": "ship_DONOR_MANTIS_CHASE1_gotaway_c2_text"
+                  },
+                  "effects": []
+                },
+                "label_ref": "ship_DONOR_MANTIS_CHASE1_gotaway_c2_choice",
+                "hidden": true
+              }
+            ]
+          }
+        }
+      }
+    ]
+  },
+  "chain": [
+    {
+      "id": "DONOR_MANTIS_CHASE2",
+      "from": "DONOR_MANTIS_CHASE",
+      "slug": "donor-mantis-chase2",
+      "title": "Mantis ship-collectors, rematch",
+      "text": {
+        "value": "You catch up with the Mantis ship that escaped before, only to see them transferring their crew into an even bigger ship!",
+        "ref": "event_DONOR_MANTIS_CHASE2_text"
+      },
+      "name": "DONOR_MANTIS_CHASE2",
+      "source": "raw/gamedata/events.xml",
+      "effects": [],
+      "node": {
+        "kind": "decision",
+        "options": [
+          {
+            "label": "Continue...",
+            "gate": null,
+            "child": {
+              "text": {
+                "value": "\"Not YOU again! Do you know how much these repairs are going to cost me? Time to take out the big guns.\"",
+                "ref": "event_DONOR_MANTIS_CHASE2_c1_text"
+              },
+              "effects": []
+            },
+            "label_ref": "continue",
+            "hidden": true
+          }
+        ],
+        "combat": {
+          "kind": "combat",
+          "ship": "DONOR_MANTIS_CHASE2",
+          "ship_label": "Mantis Bomber",
+          "hostile": true,
+          "auto_blueprint": "MANTIS_BOMBER",
+          "source": "raw/gamedata/events.xml",
+          "branches": [
+            {
+              "on": "destroyed",
+              "child": {
+                "text": {
+                  "value": "Their ship breaks apart and you salvage the two ships.",
+                  "ref": "ship_DONOR_MANTIS_CHASE2_destroyed_text"
+                },
+                "effects": [
+                  {
+                    "kind": "item",
+                    "item_kind": "weapon",
+                    "id": "RANDOM",
+                    "label": "RANDOM"
+                  },
+                  {
+                    "kind": "reward",
+                    "level": "MED",
+                    "tier": "standard"
+                  }
+                ]
+              }
+            },
+            {
+              "on": "deadCrew",
+              "child": {
+                "text": {
+                  "value": "You find an intact weapon on their now empty ship. You take as much scrap from the ships as possible.",
+                  "ref": "ship_DONOR_MANTIS_CHASE2_deadCrew_text"
+                },
+                "effects": [
+                  {
+                    "kind": "item",
+                    "item_kind": "weapon",
+                    "id": "RANDOM",
+                    "label": "RANDOM"
+                  },
+                  {
+                    "kind": "reward",
+                    "level": "HIGH",
+                    "tier": "standard"
+                  }
+                ]
+              }
+            },
+            {
+              "on": "surrender",
+              "child": {
+                "text": {
+                  "value": "\"Look, you proved your point. We don't want to die... Take this and let us go. Please?\"",
+                  "ref": "ship_DONOR_MANTIS_CHASE2_surrender_text"
+                },
+                "effects": [],
+                "node": {
+                  "kind": "decision",
+                  "options": [
+                    {
+                      "label": "Let them live.",
+                      "gate": null,
+                      "child": {
+                        "text": {
+                          "value": "\"Thank you. But do you have any idea how much repairing TWO ships will set us back?...\" What an odd Mantis. You prepare to leave.",
+                          "ref": "ship_DONOR_MANTIS_CHASE2_surrender_c1_text"
+                        },
+                        "effects": [
+                          {
+                            "kind": "reward",
+                            "level": "HIGH",
+                            "tier": "weapon"
+                          },
+                          {
+                            "kind": "ship_hostility",
+                            "hostile": false
+                          }
+                        ]
+                      },
+                      "label_ref": "ship_DONOR_MANTIS_CHASE2_surrender_c1_choice"
+                    },
+                    {
+                      "label": "Finish them off.",
+                      "gate": null,
+                      "child": {
+                        "text": {
+                          "value": "\"No! Hurry up, get us out of here! They're crazy!\" You cut transmissions.",
+                          "ref": "ship_DONOR_MANTIS_CHASE2_surrender_c2_text"
+                        },
+                        "effects": []
+                      },
+                      "label_ref": "ship_DONOR_MANTIS_CHASE2_surrender_c2_choice"
+                    }
+                  ]
+                }
+              },
+              "min": "2",
+              "max": "2"
+            },
+            {
+              "on": "escape",
+              "child": {
+                "text": {
+                  "value": "They appear to be trying to get away again. You doubt they'll forget to mask their jump signature this time.",
+                  "ref": "ship_DONOR_MANTIS_CHASE2_escape_text"
+                },
+                "effects": []
+              },
+              "min": "6",
+              "max": "6"
+            },
+            {
+              "on": "gotaway",
+              "child": {
+                "text": {
+                  "value": "Looks like they got away. At least you're able to scrap their abandoned fighter.",
+                  "ref": "ship_DONOR_MANTIS_CHASE2_gotaway_text"
+                },
+                "effects": [
+                  {
+                    "kind": "reward",
+                    "level": "HIGH",
+                    "tier": "standard"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

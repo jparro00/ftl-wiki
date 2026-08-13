@@ -1,0 +1,20 @@
+{
+  "schema": "ftl-event-tree/1",
+  "id": "NO_FUEL_REFUGEE_FRIENDLY",
+  "slug": "no-fuel-friendly-refugee",
+  "title": "No fuel: friendly refugee",
+  "extracted_from": "raw/gamedata/events_fuel.xml",
+  "text": {
+    "value": "A refugee ship fleeing the Rebel advance enters the system. It seems surprised to see you stranded, and admits it was following you from afar in the hopes of you leading it to Federation space. While it doesn't have much fuel to spare, it recognizes you are part of the Federation and offers to split its remaining fuel with you.",
+    "ref": "event_NO_FUEL_REFUGEE_FRIENDLY_text"
+  },
+  "name": "NO_FUEL_REFUGEE_FRIENDLY",
+  "source": "raw/gamedata/events_fuel.xml",
+  "effects": [
+    {
+      "kind": "reward",
+      "level": "MED",
+      "tier": "fuel_only"
+    }
+  ]
+}

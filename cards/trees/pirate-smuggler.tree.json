@@ -1,0 +1,801 @@
+{
+  "schema": "ftl-event-tree/1",
+  "id": "NEBULA_PIRATE_SMUGGLE",
+  "slug": "pirate-smuggler",
+  "title": "Pirate smuggler",
+  "extracted_from": "raw/gamedata/events_nebula.xml",
+  "text": {
+    "value": "A pirate ship arrives shortly after you. Judging from the fact that it is attempting to avoid your ship, you assume that it's a smuggler trying to stay away from beacons.",
+    "ref": "event_NEBULA_PIRATE_SMUGGLE_text"
+  },
+  "name": "NEBULA_PIRATE_SMUGGLE",
+  "source": "raw/gamedata/events_nebula.xml",
+  "effects": [
+    {
+      "kind": "environment",
+      "environment": "nebula",
+      "target": "player"
+    }
+  ],
+  "flags": {
+    "environment": "nebula",
+    "environment_target": "player"
+  },
+  "node": {
+    "kind": "decision",
+    "options": [
+      {
+        "label": "Attack the pirate.",
+        "gate": null,
+        "child": {
+          "text": {
+            "value": "You power up your weapons and move in to engage.",
+            "ref": "event_NEBULA_PIRATE_SMUGGLE_c1_text"
+          },
+          "effects": [],
+          "node": {
+            "kind": "combat",
+            "ship": "PIRATE_SMUGGLE",
+            "hostile": true,
+            "auto_blueprint": "SHIPS_PIRATE",
+            "source": "raw/gamedata/events_ships.xml",
+            "branches": [
+              {
+                "on": "destroyed",
+                "child": {
+                  "effects": [],
+                  "node": {
+                    "kind": "chance",
+                    "list": "REBEL_TRANSPORT_DESTROYED",
+                    "source": "raw/gamedata/events_rebel.xml",
+                    "odds_basis": "unweighted",
+                    "options": [
+                      {
+                        "share": null,
+                        "child": {
+                          "text": {
+                            "value": "You search the ship and discover that its cargo was new military-grade weaponry! It was somehow undamaged in the fight and can easily be mounted on the ship.",
+                            "ref": "event_REBEL_TRANSPORT_DESTROYED_1_text"
+                          },
+                          "effects": [
+                            {
+                              "kind": "reward",
+                              "level": "MED",
+                              "tier": "weapon"
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "share": null,
+                        "child": {
+                          "text": {
+                            "value": "You search the remains of the ship, but only come across blueprints and debris from broken machinery. A shame, but you take what scrap you can salvage.",
+                            "ref": "event_REBEL_TRANSPORT_DESTROYED_2_text"
+                          },
+                          "effects": [
+                            {
+                              "kind": "reward",
+                              "level": "LOW",
+                              "tier": "standard"
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "share": null,
+                        "child": {
+                          "text": {
+                            "value": "The ship was transporting weaponry. You find a piece still intact, despite the battle.",
+                            "ref": "event_REBEL_TRANSPORT_DESTROYED_3_text"
+                          },
+                          "effects": [
+                            {
+                              "kind": "reward",
+                              "level": "low",
+                              "tier": "weapon"
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "share": null,
+                        "child": {
+                          "text": {
+                            "value": "The ship was apparently transporting weaponry; however, nothing seems to have survived the battle.",
+                            "ref": "event_REBEL_TRANSPORT_DESTROYED_4_text"
+                          },
+                          "effects": [
+                            {
+                              "kind": "reward",
+                              "level": "MED",
+                              "tier": "scrap_only"
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "share": null,
+                        "child": {
+                          "text": {
+                            "value": "Searching the remains, you find that the cargo was military-grade Drone Schematics! You bring them aboard to install in your ship.",
+                            "ref": "event_REBEL_TRANSPORT_DESTROYED_5_text"
+                          },
+                          "effects": [
+                            {
+                              "kind": "reward",
+                              "level": "MED",
+                              "tier": "drone"
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "share": null,
+                        "child": {
+                          "text": {
+                            "value": "The debris implies that the ship was carrying Drone Schematics, but unfortunately nothing remains. You do find functioning Drone Parts, however.",
+                            "ref": "event_REBEL_TRANSPORT_DESTROYED_6_text"
+                          },
+                          "effects": [
+                            {
+                              "kind": "reward",
+                              "level": "MED",
+                              "tier": "droneparts"
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "share": null,
+                        "child": {
+                          "text": {
+                            "value": "This ship's cargo was not salvageable. However, they seem to have been surveying the region; they possess detailed maps and data. You download what you can to the ship's map.",
+                            "ref": "event_REBEL_TRANSPORT_DESTROYED_7_text"
+                          },
+                          "effects": [
+                            {
+                              "kind": "reveal_map"
+                            },
+                            {
+                              "kind": "reward",
+                              "level": "MED",
+                              "tier": "scrap_only"
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "share": null,
+                        "child": {
+                          "text": {
+                            "value": "From the bits and pieces you find, you decide that this ship was gathering information. Nothing seems useful.",
+                            "ref": "event_REBEL_TRANSPORT_DESTROYED_8_text"
+                          },
+                          "effects": [
+                            {
+                              "kind": "reward",
+                              "level": "MED",
+                              "tier": "scrap_only"
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "share": null,
+                        "child": {
+                          "text": {
+                            "value": "You detect faint life signatures from an intact piece of the hull. They were transporting prisoners, and the sole survivor offers to join your crew, as a first step on their path to get revenge.",
+                            "ref": "event_REBEL_TRANSPORT_DESTROYED_9_text"
+                          },
+                          "effects": [
+                            {
+                              "kind": "crew_gain",
+                              "amount": 1
+                            },
+                            {
+                              "kind": "reward",
+                              "level": "LOW",
+                              "tier": "standard"
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "share": null,
+                        "child": {
+                          "text": {
+                            "value": "The ship appears to have been transporting prisoners. Unfortunately they were all killed in the battle. You salvage what you can.",
+                            "ref": "event_REBEL_TRANSPORT_DESTROYED_10_text"
+                          },
+                          "effects": [
+                            {
+                              "kind": "reward",
+                              "level": "LOW",
+                              "tier": "standard"
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "share": null,
+                        "child": {
+                          "text": {
+                            "value": "The ship was carrying military supplies. You pick up anything that looks salvageable from the debris.",
+                            "ref": "event_REBEL_TRANSPORT_DESTROYED_11_text"
+                          },
+                          "effects": [
+                            {
+                              "kind": "reward",
+                              "level": "HIGH",
+                              "tier": "standard"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                }
+              },
+              {
+                "on": "deadCrew",
+                "child": {
+                  "effects": [],
+                  "node": {
+                    "kind": "chance",
+                    "list": "REBEL_TRANSPORT_CAPTURED",
+                    "source": "raw/gamedata/events_rebel.xml",
+                    "odds_basis": "unweighted",
+                    "options": [
+                      {
+                        "share": null,
+                        "child": {
+                          "text": {
+                            "value": "With the crew dead, you search the ship. You find military-grade weaponry and take what looks most useful.",
+                            "ref": "event_REBEL_TRANSPORT_CAPTURED_1_text"
+                          },
+                          "effects": [
+                            {
+                              "kind": "reward",
+                              "level": "MED",
+                              "tier": "weapon"
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "share": null,
+                        "child": {
+                          "text": {
+                            "value": "The ship refuses to fight, but you still detect life signatures. Apparently this was a prisoner transport. The single survivor offers to join your crew in exchange for their freedom.",
+                            "ref": "event_REBEL_TRANSPORT_CAPTURED_2_text"
+                          },
+                          "effects": [
+                            {
+                              "kind": "crew_gain",
+                              "amount": 1
+                            },
+                            {
+                              "kind": "reward",
+                              "level": "HIGH",
+                              "tier": "scrap_only"
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "share": null,
+                        "child": {
+                          "text": {
+                            "value": "This ship was apparently carrying information about the surrounding beacons. You download what you can to the ship's map, and scrap the rest of the ship.",
+                            "ref": "event_REBEL_TRANSPORT_CAPTURED_3_text"
+                          },
+                          "effects": [
+                            {
+                              "kind": "reveal_map"
+                            },
+                            {
+                              "kind": "reward",
+                              "level": "MED",
+                              "tier": "scrap_only"
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "share": null,
+                        "child": {
+                          "text": {
+                            "value": "Searching the remains you find that the cargo was military-grade Drone Schematics! You bring them aboard to install on your ship.",
+                            "ref": "event_REBEL_TRANSPORT_CAPTURED_4_text"
+                          },
+                          "effects": [
+                            {
+                              "kind": "reward",
+                              "level": "MED",
+                              "tier": "drone"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                }
+              },
+              {
+                "on": "surrender",
+                "child": {
+                  "text": {
+                    "value": "They hail you, \"We realize our ship is no match for yours. If you let us go we can make it worth your while.\"",
+                    "ref": "ship_PIRATE_SMUGGLE_surrender_text"
+                  },
+                  "effects": [],
+                  "node": {
+                    "kind": "decision",
+                    "options": [
+                      {
+                        "label": "Accept their offer.",
+                        "gate": null,
+                        "child": {
+                          "effects": [
+                            {
+                              "kind": "ship_hostility",
+                              "hostile": false
+                            },
+                            {
+                              "kind": "reward",
+                              "level": "RANDOM",
+                              "tier": "stuff"
+                            }
+                          ]
+                        },
+                        "label_ref": "ship_PIRATE_SMUGGLE_surrender_c1_choice"
+                      },
+                      {
+                        "label": "Ignore their pleas and attack.",
+                        "gate": null,
+                        "child": {
+                          "effects": []
+                        },
+                        "label_ref": "ship_PIRATE_SMUGGLE_surrender_c2_choice"
+                      }
+                    ]
+                  }
+                },
+                "chance": "0.5",
+                "min": "2",
+                "max": "4"
+              },
+              {
+                "on": "escape",
+                "child": {
+                  "text": {
+                    "value": "They look like they don't want to fight. They are trying to escape.",
+                    "ref": "ship_PIRATE_SMUGGLE_escape_text"
+                  },
+                  "effects": [
+                    {
+                      "kind": "ship_hostility",
+                      "hostile": true
+                    }
+                  ]
+                },
+                "min": "3",
+                "max": "4"
+              }
+            ]
+          }
+        },
+        "label_ref": "event_NEBULA_PIRATE_SMUGGLE_c1_choice"
+      },
+      {
+        "label": "Ignore the ship.",
+        "gate": null,
+        "child": {
+          "text": {
+            "value": "It jumps away after a time.",
+            "ref": "event_NEBULA_PIRATE_SMUGGLE_c2_text"
+          },
+          "effects": []
+        },
+        "label_ref": "event_NEBULA_PIRATE_SMUGGLE_c2_choice"
+      },
+      {
+        "label": "(Weapons) Activate your advanced weapons threateningly.",
+        "gate": {
+          "req": "weapons",
+          "label": "Weapon Control",
+          "lvl": "6"
+        },
+        "child": {
+          "text": {
+            "value": "They hail you, \"There's no need for aggression... Perhaps this would convince you to look the other way?\"",
+            "ref": "event_NEBULA_PIRATE_SMUGGLE_c3_text"
+          },
+          "effects": [],
+          "node": {
+            "kind": "decision",
+            "options": [
+              {
+                "label": "Take their bribe.",
+                "gate": null,
+                "child": {
+                  "effects": [
+                    {
+                      "kind": "reward",
+                      "level": "MED",
+                      "tier": "fuel"
+                    }
+                  ]
+                },
+                "label_ref": "event_NEBULA_PIRATE_SMUGGLE_c3_c1_choice"
+              },
+              {
+                "label": "Ignore their bribe and attack.",
+                "gate": null,
+                "child": {
+                  "effects": [],
+                  "node": {
+                    "kind": "combat",
+                    "ship": "PIRATE_SMUGGLE",
+                    "hostile": true,
+                    "auto_blueprint": "SHIPS_PIRATE",
+                    "source": "raw/gamedata/events_ships.xml",
+                    "branches": [
+                      {
+                        "on": "destroyed",
+                        "child": {
+                          "effects": [],
+                          "node": {
+                            "kind": "chance",
+                            "list": "REBEL_TRANSPORT_DESTROYED",
+                            "source": "raw/gamedata/events_rebel.xml",
+                            "odds_basis": "unweighted",
+                            "options": [
+                              {
+                                "share": null,
+                                "child": {
+                                  "text": {
+                                    "value": "You search the ship and discover that its cargo was new military-grade weaponry! It was somehow undamaged in the fight and can easily be mounted on the ship.",
+                                    "ref": "event_REBEL_TRANSPORT_DESTROYED_1_text"
+                                  },
+                                  "effects": [
+                                    {
+                                      "kind": "reward",
+                                      "level": "MED",
+                                      "tier": "weapon"
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "share": null,
+                                "child": {
+                                  "text": {
+                                    "value": "You search the remains of the ship, but only come across blueprints and debris from broken machinery. A shame, but you take what scrap you can salvage.",
+                                    "ref": "event_REBEL_TRANSPORT_DESTROYED_2_text"
+                                  },
+                                  "effects": [
+                                    {
+                                      "kind": "reward",
+                                      "level": "LOW",
+                                      "tier": "standard"
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "share": null,
+                                "child": {
+                                  "text": {
+                                    "value": "The ship was transporting weaponry. You find a piece still intact, despite the battle.",
+                                    "ref": "event_REBEL_TRANSPORT_DESTROYED_3_text"
+                                  },
+                                  "effects": [
+                                    {
+                                      "kind": "reward",
+                                      "level": "low",
+                                      "tier": "weapon"
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "share": null,
+                                "child": {
+                                  "text": {
+                                    "value": "The ship was apparently transporting weaponry; however, nothing seems to have survived the battle.",
+                                    "ref": "event_REBEL_TRANSPORT_DESTROYED_4_text"
+                                  },
+                                  "effects": [
+                                    {
+                                      "kind": "reward",
+                                      "level": "MED",
+                                      "tier": "scrap_only"
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "share": null,
+                                "child": {
+                                  "text": {
+                                    "value": "Searching the remains, you find that the cargo was military-grade Drone Schematics! You bring them aboard to install in your ship.",
+                                    "ref": "event_REBEL_TRANSPORT_DESTROYED_5_text"
+                                  },
+                                  "effects": [
+                                    {
+                                      "kind": "reward",
+                                      "level": "MED",
+                                      "tier": "drone"
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "share": null,
+                                "child": {
+                                  "text": {
+                                    "value": "The debris implies that the ship was carrying Drone Schematics, but unfortunately nothing remains. You do find functioning Drone Parts, however.",
+                                    "ref": "event_REBEL_TRANSPORT_DESTROYED_6_text"
+                                  },
+                                  "effects": [
+                                    {
+                                      "kind": "reward",
+                                      "level": "MED",
+                                      "tier": "droneparts"
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "share": null,
+                                "child": {
+                                  "text": {
+                                    "value": "This ship's cargo was not salvageable. However, they seem to have been surveying the region; they possess detailed maps and data. You download what you can to the ship's map.",
+                                    "ref": "event_REBEL_TRANSPORT_DESTROYED_7_text"
+                                  },
+                                  "effects": [
+                                    {
+                                      "kind": "reveal_map"
+                                    },
+                                    {
+                                      "kind": "reward",
+                                      "level": "MED",
+                                      "tier": "scrap_only"
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "share": null,
+                                "child": {
+                                  "text": {
+                                    "value": "From the bits and pieces you find, you decide that this ship was gathering information. Nothing seems useful.",
+                                    "ref": "event_REBEL_TRANSPORT_DESTROYED_8_text"
+                                  },
+                                  "effects": [
+                                    {
+                                      "kind": "reward",
+                                      "level": "MED",
+                                      "tier": "scrap_only"
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "share": null,
+                                "child": {
+                                  "text": {
+                                    "value": "You detect faint life signatures from an intact piece of the hull. They were transporting prisoners, and the sole survivor offers to join your crew, as a first step on their path to get revenge.",
+                                    "ref": "event_REBEL_TRANSPORT_DESTROYED_9_text"
+                                  },
+                                  "effects": [
+                                    {
+                                      "kind": "crew_gain",
+                                      "amount": 1
+                                    },
+                                    {
+                                      "kind": "reward",
+                                      "level": "LOW",
+                                      "tier": "standard"
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "share": null,
+                                "child": {
+                                  "text": {
+                                    "value": "The ship appears to have been transporting prisoners. Unfortunately they were all killed in the battle. You salvage what you can.",
+                                    "ref": "event_REBEL_TRANSPORT_DESTROYED_10_text"
+                                  },
+                                  "effects": [
+                                    {
+                                      "kind": "reward",
+                                      "level": "LOW",
+                                      "tier": "standard"
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "share": null,
+                                "child": {
+                                  "text": {
+                                    "value": "The ship was carrying military supplies. You pick up anything that looks salvageable from the debris.",
+                                    "ref": "event_REBEL_TRANSPORT_DESTROYED_11_text"
+                                  },
+                                  "effects": [
+                                    {
+                                      "kind": "reward",
+                                      "level": "HIGH",
+                                      "tier": "standard"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      },
+                      {
+                        "on": "deadCrew",
+                        "child": {
+                          "effects": [],
+                          "node": {
+                            "kind": "chance",
+                            "list": "REBEL_TRANSPORT_CAPTURED",
+                            "source": "raw/gamedata/events_rebel.xml",
+                            "odds_basis": "unweighted",
+                            "options": [
+                              {
+                                "share": null,
+                                "child": {
+                                  "text": {
+                                    "value": "With the crew dead, you search the ship. You find military-grade weaponry and take what looks most useful.",
+                                    "ref": "event_REBEL_TRANSPORT_CAPTURED_1_text"
+                                  },
+                                  "effects": [
+                                    {
+                                      "kind": "reward",
+                                      "level": "MED",
+                                      "tier": "weapon"
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "share": null,
+                                "child": {
+                                  "text": {
+                                    "value": "The ship refuses to fight, but you still detect life signatures. Apparently this was a prisoner transport. The single survivor offers to join your crew in exchange for their freedom.",
+                                    "ref": "event_REBEL_TRANSPORT_CAPTURED_2_text"
+                                  },
+                                  "effects": [
+                                    {
+                                      "kind": "crew_gain",
+                                      "amount": 1
+                                    },
+                                    {
+                                      "kind": "reward",
+                                      "level": "HIGH",
+                                      "tier": "scrap_only"
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "share": null,
+                                "child": {
+                                  "text": {
+                                    "value": "This ship was apparently carrying information about the surrounding beacons. You download what you can to the ship's map, and scrap the rest of the ship.",
+                                    "ref": "event_REBEL_TRANSPORT_CAPTURED_3_text"
+                                  },
+                                  "effects": [
+                                    {
+                                      "kind": "reveal_map"
+                                    },
+                                    {
+                                      "kind": "reward",
+                                      "level": "MED",
+                                      "tier": "scrap_only"
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "share": null,
+                                "child": {
+                                  "text": {
+                                    "value": "Searching the remains you find that the cargo was military-grade Drone Schematics! You bring them aboard to install on your ship.",
+                                    "ref": "event_REBEL_TRANSPORT_CAPTURED_4_text"
+                                  },
+                                  "effects": [
+                                    {
+                                      "kind": "reward",
+                                      "level": "MED",
+                                      "tier": "drone"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      },
+                      {
+                        "on": "surrender",
+                        "child": {
+                          "text": {
+                            "value": "They hail you, \"We realize our ship is no match for yours. If you let us go we can make it worth your while.\"",
+                            "ref": "ship_PIRATE_SMUGGLE_surrender_text"
+                          },
+                          "effects": [],
+                          "node": {
+                            "kind": "decision",
+                            "options": [
+                              {
+                                "label": "Accept their offer.",
+                                "gate": null,
+                                "child": {
+                                  "effects": [
+                                    {
+                                      "kind": "ship_hostility",
+                                      "hostile": false
+                                    },
+                                    {
+                                      "kind": "reward",
+                                      "level": "RANDOM",
+                                      "tier": "stuff"
+                                    }
+                                  ]
+                                },
+                                "label_ref": "ship_PIRATE_SMUGGLE_surrender_c1_choice"
+                              },
+                              {
+                                "label": "Ignore their pleas and attack.",
+                                "gate": null,
+                                "child": {
+                                  "effects": []
+                                },
+                                "label_ref": "ship_PIRATE_SMUGGLE_surrender_c2_choice"
+                              }
+                            ]
+                          }
+                        },
+                        "chance": "0.5",
+                        "min": "2",
+                        "max": "4"
+                      },
+                      {
+                        "on": "escape",
+                        "child": {
+                          "text": {
+                            "value": "They look like they don't want to fight. They are trying to escape.",
+                            "ref": "ship_PIRATE_SMUGGLE_escape_text"
+                          },
+                          "effects": [
+                            {
+                              "kind": "ship_hostility",
+                              "hostile": true
+                            }
+                          ]
+                        },
+                        "min": "3",
+                        "max": "4"
+                      }
+                    ]
+                  }
+                },
+                "label_ref": "event_NEBULA_PIRATE_SMUGGLE_c3_c2_choice"
+              }
+            ]
+          }
+        },
+        "label_ref": "event_NEBULA_PIRATE_SMUGGLE_c3_choice",
+        "hidden": true
+      }
+    ]
+  }
+}

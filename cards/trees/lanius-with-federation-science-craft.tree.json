@@ -1,0 +1,199 @@
+{
+  "schema": "ftl-event-tree/1",
+  "id": "LANIUS_RESEARCHER_CONTACT",
+  "slug": "lanius-with-federation-science-craft",
+  "title": "Lanius with Federation science craft",
+  "extracted_from": "raw/gamedata/dlcEvents_anaerobic.xml",
+  "text": {
+    "value": "A Federation science craft is docked with a few Lanius ships. You hail them and ask what is going on. \"Greetings! We have been attempting to understand our region's newest visitors, the Lanius, although we have been making little headway in deciphering their language.\"",
+    "ref": "event_LANIUS_RESEARCHER_CONTACT_text"
+  },
+  "name": "LANIUS_RESEARCHER_CONTACT",
+  "source": "raw/gamedata/dlcEvents_anaerobic.xml",
+  "effects": [],
+  "flags": {
+    "unique": true
+  },
+  "node": {
+    "kind": "decision",
+    "options": [
+      {
+        "label": "Ask if they have anything that could help your mission.",
+        "gate": null,
+        "child": {
+          "effects": [],
+          "node": {
+            "kind": "chance",
+            "list": "LANIUS_RESEARCHER_CONTACT_LIST",
+            "source": "raw/gamedata/dlcEvents_anaerobic.xml",
+            "odds_basis": "unweighted",
+            "options": [
+              {
+                "share": null,
+                "child": {
+                  "text": {
+                    "value": "\"There should be some extra junk metal in some cargo bay...\" You thank them once they transfer the scrap and prepare to move on.",
+                    "ref": "event_LANIUS_RESEARCHER_CONTACT_LIST_1_text"
+                  },
+                  "effects": [
+                    {
+                      "kind": "reward",
+                      "level": "MED",
+                      "tier": "scrap_only"
+                    }
+                  ]
+                }
+              },
+              {
+                "share": null,
+                "child": {
+                  "text": {
+                    "value": "\"We use drones frequently in our work and have extra parts lying around.\" They transfer the parts over and you thank them for their generosity.",
+                    "ref": "event_LANIUS_RESEARCHER_CONTACT_LIST_2_text"
+                  },
+                  "effects": [
+                    {
+                      "kind": "reward",
+                      "level": "MED",
+                      "tier": "droneparts"
+                    }
+                  ]
+                }
+              },
+              {
+                "share": null,
+                "child": {
+                  "text": {
+                    "value": "\"We were doing research on some Lanius weaponry before. I hope you don't have to use it but perhaps it will aid you on your mission.\" You thank them and prepare to move on.",
+                    "ref": "event_LANIUS_RESEARCHER_CONTACT_LIST_3_text"
+                  },
+                  "effects": [
+                    {
+                      "kind": "item",
+                      "item_kind": "weapon",
+                      "id": "RANDOM",
+                      "label": "RANDOM"
+                    }
+                  ]
+                }
+              },
+              {
+                "share": null,
+                "child": {
+                  "text": {
+                    "value": "\"Sorry we don't really carry much equipment that would be of use to a military vessel.\" You thank them and prepare to move on.",
+                    "ref": "event_LANIUS_RESEARCHER_CONTACT_LIST_4_text"
+                  },
+                  "effects": []
+                }
+              }
+            ]
+          }
+        },
+        "label_ref": "event_LANIUS_RESEARCHER_CONTACT_c1_choice",
+        "hidden": true
+      },
+      {
+        "label": "(Lanius Crew) Offer to copy your translator's data suite.",
+        "gate": {
+          "req": "anaerobic",
+          "label": "Lanius"
+        },
+        "child": {
+          "text": {
+            "value": "Your Lanius crew had tweaked the ship's translator to slowly improve itself over time. The data collected from your interactions with the Lanius could be very helpful to these scientists.",
+            "ref": "event_LANIUS_RESEARCHER_CONTACT_c2_text"
+          },
+          "effects": [],
+          "node": {
+            "kind": "decision",
+            "options": [
+              {
+                "label": "Continue...",
+                "gate": null,
+                "child": {
+                  "effects": [],
+                  "node": {
+                    "kind": "chance",
+                    "list": "LANIUS_RESEARCHER_CONTACT_LIST2",
+                    "source": "raw/gamedata/dlcEvents_anaerobic.xml",
+                    "odds_basis": "unweighted",
+                    "options": [
+                      {
+                        "share": null,
+                        "child": {
+                          "text": {
+                            "value": "They are grateful for your contribution and offer you some Lanius equipment that they were previously studying.",
+                            "ref": "event_LANIUS_RESEARCHER_CONTACT_LIST2_1_text"
+                          },
+                          "effects": [
+                            {
+                              "kind": "item",
+                              "item_kind": "augment",
+                              "id": "RANDOM",
+                              "label": "RANDOM"
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "share": null,
+                        "child": {
+                          "text": {
+                            "value": "They are grateful for your contribution and offer you some Lanius equipment that they were previously studying.",
+                            "ref": "event_LANIUS_RESEARCHER_CONTACT_LIST2_1_text"
+                          },
+                          "effects": [
+                            {
+                              "kind": "item",
+                              "item_kind": "weapon",
+                              "id": "RANDOM",
+                              "label": "RANDOM"
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "share": null,
+                        "child": {
+                          "text": {
+                            "value": "They are grateful for your contribution and offer you some Lanius equipment that they were previously studying.",
+                            "ref": "event_LANIUS_RESEARCHER_CONTACT_LIST2_1_text"
+                          },
+                          "effects": [
+                            {
+                              "kind": "item",
+                              "item_kind": "drone",
+                              "id": "RANDOM",
+                              "label": "RANDOM"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                },
+                "label_ref": "continue",
+                "hidden": true
+              }
+            ]
+          }
+        },
+        "label_ref": "event_LANIUS_RESEARCHER_CONTACT_c2_choice",
+        "hidden": true
+      },
+      {
+        "label": "Leave.",
+        "gate": null,
+        "child": {
+          "text": {
+            "value": "You wish them well and prepare to jump.",
+            "ref": "event_LANIUS_RESEARCHER_CONTACT_c3_text"
+          },
+          "effects": []
+        },
+        "label_ref": "event_LANIUS_RESEARCHER_CONTACT_c3_choice"
+      }
+    ]
+  }
+}

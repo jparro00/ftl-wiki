@@ -1,0 +1,463 @@
+{
+  "schema": "ftl-event-tree/1",
+  "id": "DISTRESS_TRAPPED_MINER",
+  "slug": "crushed-pirate",
+  "title": "Crushed pirate",
+  "extracted_from": "raw/gamedata/events.xml",
+  "text": {
+    "value": "You arrive at the distress beacon near a small asteroid belt and find a ship with pirate markings partially crushed between two large rocks. It must have been illegally mining the belt without proper equipment.",
+    "ref": "event_DISTRESS_TRAPPED_MINER_text"
+  },
+  "name": "DISTRESS_TRAPPED_MINER",
+  "source": "raw/gamedata/events.xml",
+  "effects": [],
+  "flags": {
+    "unique": true,
+    "beacon": "distress"
+  },
+  "node": {
+    "kind": "decision",
+    "options": [
+      {
+        "label": "Try to dislodge the ship by shooting at the rocks.",
+        "gate": null,
+        "child": {
+          "effects": [],
+          "node": {
+            "kind": "chance",
+            "list": "DISTRESS_TRAPPED_MINER_SHOOT",
+            "source": "raw/gamedata/events.xml",
+            "odds_basis": "unweighted",
+            "options": [
+              {
+                "share": null,
+                "child": {
+                  "text": {
+                    "value": "You take a few careful shots but you expose a mineral patch in the rock that reacts violently with your weapon. A shockwave forces you back as debris pelts against your hull. When you regain control you find there is not much left of the ship.",
+                    "ref": "event_DISTRESS_TRAPPED_MINER_SHOOT_1_text"
+                  },
+                  "effects": [
+                    {
+                      "kind": "reward",
+                      "level": "LOW",
+                      "tier": "scrap_only"
+                    },
+                    {
+                      "kind": "system_damage",
+                      "amount": 2,
+                      "system": "random",
+                      "dlc": true
+                    }
+                  ]
+                }
+              },
+              {
+                "share": null,
+                "child": {
+                  "text": {
+                    "value": "You fire a few volleys into the rock and it starts to shudder and break apart. Without shields the pirate ship takes a beating but eventually pulls free. They thank you for your assistance.",
+                    "ref": "event_DISTRESS_TRAPPED_MINER_SHOOT_2_text"
+                  },
+                  "effects": [
+                    {
+                      "kind": "reward",
+                      "level": "MED",
+                      "tier": "standard"
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        "label_ref": "event_DISTRESS_TRAPPED_MINER_c1_choice",
+        "hidden": true
+      },
+      {
+        "label": "Destroy and loot the ship. They're just pirates.",
+        "gate": null,
+        "child": {
+          "effects": [],
+          "node": {
+            "kind": "chance",
+            "list": "DISTRESS_TRAPPED_MINER_LOOT",
+            "source": "raw/gamedata/events.xml",
+            "odds_basis": "unweighted",
+            "options": [
+              {
+                "share": null,
+                "child": {
+                  "text": {
+                    "value": "You decide the pirate is not worth saving and fire a few volleys into their hull causing the ship to depressurize and break apart. You move in to loot the remains.",
+                    "ref": "event_DISTRESS_TRAPPED_MINER_LOOT_1_text"
+                  },
+                  "effects": [
+                    {
+                      "kind": "reward",
+                      "level": "MED",
+                      "tier": "standard"
+                    }
+                  ]
+                }
+              },
+              {
+                "share": null,
+                "child": {
+                  "text": {
+                    "value": "You decide the pirate is not worth saving and fire a few volleys into their hull. Before you can scrap the remains another pirate ship flashes on your radar. Perhaps they saw your deed, or perhaps they want to claim the spoils for themselves, but for whatever reason, they're charging weapons!",
+                    "ref": "event_DISTRESS_TRAPPED_MINER_LOOT_2_text"
+                  },
+                  "effects": [],
+                  "node": {
+                    "kind": "combat",
+                    "ship": "PIRATE",
+                    "hostile": true,
+                    "auto_blueprint": "SHIPS_PIRATE",
+                    "source": "raw/gamedata/events_ships.xml",
+                    "branches": [
+                      {
+                        "on": "destroyed",
+                        "child": {
+                          "effects": [],
+                          "node": {
+                            "kind": "chance",
+                            "list": "DESTROYED_DEFAULT",
+                            "source": "raw/gamedata/events.xml",
+                            "odds_basis": "unweighted",
+                            "options": [
+                              {
+                                "share": null,
+                                "child": {
+                                  "text": {
+                                    "value": "The ship explodes, leaving behind a substantial collection of useful scrap material.",
+                                    "ref": "event_DESTROYED_DEFAULT_1_text"
+                                  },
+                                  "effects": [
+                                    {
+                                      "kind": "reward",
+                                      "level": "MED",
+                                      "tier": "standard"
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "share": null,
+                                "child": {
+                                  "text": {
+                                    "value": "The ship explodes, leaving behind a substantial collection of useful scrap material.",
+                                    "ref": "event_DESTROYED_DEFAULT_1_text"
+                                  },
+                                  "effects": [
+                                    {
+                                      "kind": "reward",
+                                      "level": "MED",
+                                      "tier": "standard"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      },
+                      {
+                        "on": "deadCrew",
+                        "child": {
+                          "effects": [],
+                          "node": {
+                            "kind": "chance",
+                            "list": "DEAD_CREW_DEFAULT",
+                            "source": "raw/gamedata/events.xml",
+                            "odds_basis": "unweighted",
+                            "options": [
+                              {
+                                "share": null,
+                                "child": {
+                                  "text": {
+                                    "value": "There are no more life-signs remaining on the ship. You strip it of useful materials.",
+                                    "ref": "event_DEAD_CREW_DEFAULT_1_text"
+                                  },
+                                  "effects": [
+                                    {
+                                      "kind": "reward",
+                                      "level": "MED",
+                                      "tier": "standard"
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "share": null,
+                                "child": {
+                                  "text": {
+                                    "value": "There are no more life-signs remaining on the ship. You strip it of useful materials.",
+                                    "ref": "event_DEAD_CREW_DEFAULT_1_text"
+                                  },
+                                  "effects": [
+                                    {
+                                      "kind": "reward",
+                                      "level": "MED",
+                                      "tier": "standard"
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "share": null,
+                                "child": {
+                                  "text": {
+                                    "value": "There are no more life-signs remaining on the ship. You strip it of useful materials.",
+                                    "ref": "event_DEAD_CREW_DEFAULT_1_text"
+                                  },
+                                  "effects": [
+                                    {
+                                      "kind": "reward",
+                                      "level": "MED",
+                                      "tier": "standard"
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "share": null,
+                                "child": {
+                                  "text": {
+                                    "value": "There are no more life-signs remaining on the ship. You strip it of useful materials.",
+                                    "ref": "event_DEAD_CREW_DEFAULT_1_text"
+                                  },
+                                  "effects": [
+                                    {
+                                      "kind": "reward",
+                                      "level": "HIGH",
+                                      "tier": "standard"
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "share": null,
+                                "child": {
+                                  "text": {
+                                    "value": "There are no more life-signs remaining on the ship. You strip it of useful materials.",
+                                    "ref": "event_DEAD_CREW_DEFAULT_1_text"
+                                  },
+                                  "effects": [
+                                    {
+                                      "kind": "reward",
+                                      "level": "HIGH",
+                                      "tier": "standard"
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "share": null,
+                                "child": {
+                                  "text": {
+                                    "value": "With the crew dead, you are able to take the fuel out of storage. You also take all the scrap you can manage.",
+                                    "ref": "event_DEAD_CREW_DEFAULT_6_text"
+                                  },
+                                  "effects": [
+                                    {
+                                      "kind": "reward",
+                                      "level": "HIGH",
+                                      "tier": "fuel"
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "share": null,
+                                "child": {
+                                  "text": {
+                                    "value": "With the crew dead, you are able to take the fuel out of storage. You also take all the scrap you can manage.",
+                                    "ref": "event_DEAD_CREW_DEFAULT_6_text"
+                                  },
+                                  "effects": [
+                                    {
+                                      "kind": "reward",
+                                      "level": "HIGH",
+                                      "tier": "fuel"
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "share": null,
+                                "child": {
+                                  "text": {
+                                    "value": "Now that their ship has been emptied of hostiles, you search it. Eventually you find a prisoner who offers to join your crew.",
+                                    "ref": "event_DEAD_CREW_DEFAULT_8_text"
+                                  },
+                                  "effects": [
+                                    {
+                                      "kind": "crew_gain",
+                                      "amount": 1
+                                    },
+                                    {
+                                      "kind": "reward",
+                                      "level": "LOW",
+                                      "tier": "scrap_only"
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "share": null,
+                                "child": {
+                                  "text": {
+                                    "value": "You find a weapon system on their ship. With no crew to stop you, you can install it on your own.",
+                                    "ref": "event_DEAD_CREW_DEFAULT_9_text"
+                                  },
+                                  "effects": [
+                                    {
+                                      "kind": "reward",
+                                      "level": "LOW",
+                                      "tier": "weapon"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      },
+                      {
+                        "on": "surrender",
+                        "child": {
+                          "text": {
+                            "value": "\"Alright, you win! Here's some equipment from our stores, leave us alone!\"",
+                            "ref": "PIRATE_SURRENDER_TEXT",
+                            "variants": 23
+                          },
+                          "name": "PIRATE_SURRENDER",
+                          "source": "raw/gamedata/events.xml",
+                          "effects": [],
+                          "node": {
+                            "kind": "decision",
+                            "options": [
+                              {
+                                "label": "Accept their offer.",
+                                "gate": null,
+                                "child": {
+                                  "effects": [
+                                    {
+                                      "kind": "ship_hostility",
+                                      "hostile": false
+                                    },
+                                    {
+                                      "kind": "reward",
+                                      "level": "RANDOM",
+                                      "tier": "stuff"
+                                    }
+                                  ]
+                                },
+                                "label_ref": "event_PIRATE_SURRENDER_c1_choice"
+                              },
+                              {
+                                "label": "We will not accept surrender!",
+                                "gate": null,
+                                "child": {
+                                  "effects": []
+                                },
+                                "label_ref": "event_PIRATE_SURRENDER_c2_choice"
+                              }
+                            ]
+                          }
+                        },
+                        "chance": "0.5",
+                        "min": "3",
+                        "max": "4"
+                      },
+                      {
+                        "on": "escape",
+                        "child": {
+                          "text": {
+                            "value": "The enemy ship appears to be powering up its FTL. It's trying to escape!",
+                            "ref": "event_PIRATE_ESCAPE_text"
+                          },
+                          "name": "PIRATE_ESCAPE",
+                          "source": "raw/gamedata/events.xml",
+                          "effects": [
+                            {
+                              "kind": "ship_hostility",
+                              "hostile": true
+                            }
+                          ]
+                        },
+                        "chance": "0.5",
+                        "min": "2",
+                        "max": "4"
+                      },
+                      {
+                        "on": "gotaway",
+                        "child": {
+                          "text": {
+                            "value": "The pirate jumped away.",
+                            "ref": "ship_PIRATE_gotaway_text"
+                          },
+                          "effects": []
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            ]
+          }
+        },
+        "label_ref": "event_DISTRESS_TRAPPED_MINER_c2_choice",
+        "hidden": true
+      },
+      {
+        "label": "(Beam Weapon) Carefully cut the ship out.",
+        "gate": {
+          "req": "WEAPONS_BEAM_DAMAGE"
+        },
+        "child": {
+          "text": {
+            "value": "You use your beam to make a few precision cuts in the asteroid. The ship gives a quick burst of thrust and the rock crumbles away. They thank you and offer some of the resources they have collected.",
+            "ref": "event_DISTRESS_TRAPPED_MINER_c3_text"
+          },
+          "effects": [
+            {
+              "kind": "reward",
+              "level": "MED",
+              "tier": "standard"
+            }
+          ]
+        },
+        "label_ref": "event_DISTRESS_TRAPPED_MINER_c3_choice",
+        "hidden": true
+      },
+      {
+        "label": "(Beam Drone) Have your drone cut the ship out.",
+        "gate": {
+          "req": "COMBAT_BEAM_DRONE_LIST"
+        },
+        "child": {
+          "text": {
+            "value": "You program the drone to work carefully around the trapped ship. In a short time it allows the ship to easily slip out of its cage. They thank you and offer some of the resources they have collected.",
+            "ref": "event_DISTRESS_TRAPPED_MINER_c4_text"
+          },
+          "effects": [
+            {
+              "kind": "reward",
+              "level": "MED",
+              "tier": "standard"
+            },
+            {
+              "kind": "resource",
+              "resource": "drones",
+              "min": -1,
+              "max": -1
+            }
+          ]
+        },
+        "label_ref": "event_DISTRESS_TRAPPED_MINER_c4_choice",
+        "hidden": true
+      }
+    ]
+  }
+}

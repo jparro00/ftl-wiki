@@ -1,0 +1,32 @@
+{
+  "schema": "ftl-event-tree/1",
+  "id": "NEBULA_BOARDING",
+  "slug": "boarders-humans-in-nebula",
+  "title": "Boarders: Humans in nebula",
+  "extracted_from": "raw/gamedata/events_nebula.xml",
+  "text": {
+    "value": "You see a small station nearby and feel the shudder of shots ringing through the ship. You can't be sure without sensors, but it seems there may be intruders on the ship!",
+    "ref": "NEBULA_BOARDING_TEXT",
+    "variants": 3
+  },
+  "name": "NEBULA_BOARDING",
+  "source": "raw/gamedata/events_nebula.xml",
+  "effects": [
+    {
+      "kind": "environment",
+      "environment": "nebula",
+      "target": "player"
+    },
+    {
+      "kind": "boarders",
+      "min": 2,
+      "max": 4,
+      "class": "human"
+    }
+  ],
+  "flags": {
+    "unique": true,
+    "environment": "nebula",
+    "environment_target": "player"
+  }
+}

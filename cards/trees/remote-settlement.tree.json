@@ -1,0 +1,276 @@
+{
+  "schema": "ftl-event-tree/1",
+  "id": "PIRATE_STATION_CROPS",
+  "slug": "remote-settlement",
+  "title": "Remote settlement",
+  "extracted_from": "raw/gamedata/events.xml",
+  "text": {
+    "value": "Scans show a remote settlement being blockaded by a pirate ship. The ship hastily messages you, \"Stay out of this, or you'll be next!...Concentrate fire on...\"",
+    "ref": "event_PIRATE_STATION_CROPS_text"
+  },
+  "name": "PIRATE_STATION_CROPS",
+  "source": "raw/gamedata/events.xml",
+  "effects": [],
+  "flags": {
+    "unique": true
+  },
+  "node": {
+    "kind": "decision",
+    "options": [
+      {
+        "label": "Attack the pirate.",
+        "gate": null,
+        "child": {
+          "text": {
+            "value": "\"You asked for it!\" They pull away from the planet and move in to engage.",
+            "ref": "event_PIRATE_STATION_CROPS_c1_text"
+          },
+          "effects": [
+            {
+              "kind": "ship_hostility",
+              "hostile": true
+            }
+          ]
+        },
+        "label_ref": "event_PIRATE_STATION_CROPS_c1_choice",
+        "hidden": true
+      },
+      {
+        "label": "Ignore them.",
+        "gate": null,
+        "child": {
+          "text": {
+            "value": "It's just not possible to save every civilian affected by this war. You prepare to jump.",
+            "ref": "event_PIRATE_STATION_CROPS_c2_text"
+          },
+          "effects": []
+        },
+        "label_ref": "event_PIRATE_STATION_CROPS_c2_choice",
+        "hidden": true
+      },
+      {
+        "label": "(Fire Beam) Show the pirate how to intimidate settlers: burn their crops!",
+        "gate": {
+          "req": "BEAM_FIRE",
+          "label": "Fire Beam"
+        },
+        "child": {
+          "text": {
+            "value": "The pirate watches as you start to light the meager crops on fire. In a few moments the settlement surrenders, offering tribute to leave them alone. The pirate seems impressed.",
+            "ref": "event_PIRATE_STATION_CROPS_c3_text"
+          },
+          "effects": [
+            {
+              "kind": "reward",
+              "level": "HIGH",
+              "tier": "drone"
+            }
+          ]
+        },
+        "label_ref": "event_PIRATE_STATION_CROPS_c3_choice",
+        "hidden": true
+      },
+      {
+        "label": "(Fire Bomb) Show the pirate how to intimidate settlers: start fires in their crude dwellings.",
+        "gate": {
+          "req": "BOMB_FIRE",
+          "label": "Fire Bomb"
+        },
+        "child": {
+          "text": {
+            "value": "The pirate watches as you teleport an incendiary explosive into the settlement. As the settlers scramble to put out the fires, their rudimentary planetary defenses power down. Forcing their surrender was laughably easy, but the pirate seems impressed with your tactics and agrees to share the settlement's 'tribute'.",
+            "ref": "event_PIRATE_STATION_CROPS_c4_text"
+          },
+          "effects": [
+            {
+              "kind": "resource",
+              "resource": "missiles",
+              "min": -1,
+              "max": -1
+            },
+            {
+              "kind": "reward",
+              "level": "HIGH",
+              "tier": "drone"
+            }
+          ]
+        },
+        "label_ref": "event_PIRATE_STATION_CROPS_c4_choice",
+        "hidden": true
+      }
+    ],
+    "combat": {
+      "kind": "combat",
+      "ship": "PIRATE_STATION_CROPS",
+      "hostile": false,
+      "auto_blueprint": "SHIPS_PIRATE",
+      "source": "raw/gamedata/events.xml",
+      "branches": [
+        {
+          "on": "destroyed",
+          "child": {
+            "text": {
+              "value": "You pick through the remains and contact the settlement.",
+              "ref": "ship_PIRATE_STATION_CROPS_destroyed_text"
+            },
+            "effects": [
+              {
+                "kind": "reward",
+                "level": "MED",
+                "tier": "standard"
+              }
+            ],
+            "node": {
+              "kind": "decision",
+              "options": [
+                {
+                  "label": "Continue...",
+                  "gate": null,
+                  "child": {
+                    "text": {
+                      "value": "With the pirates gone you signal the station. \"We appreciate what you've done, but there'll just be another ship looking to profit from our isolation soon enough. Sorry we can't give you more.\"",
+                      "ref": "event_PIRATE_STATION_CROPS_RESULT_text"
+                    },
+                    "name": "PIRATE_STATION_CROPS_RESULT",
+                    "source": "raw/gamedata/events.xml",
+                    "effects": [
+                      {
+                        "kind": "reward",
+                        "level": "LOW",
+                        "tier": "stuff"
+                      }
+                    ]
+                  },
+                  "label_ref": "continue",
+                  "hidden": true
+                }
+              ]
+            }
+          }
+        },
+        {
+          "on": "deadCrew",
+          "child": {
+            "text": {
+              "value": "You pick through the remains and contact the settlement.",
+              "ref": "ship_PIRATE_STATION_CROPS_destroyed_text"
+            },
+            "effects": [
+              {
+                "kind": "reward",
+                "level": "MED",
+                "tier": "standard"
+              }
+            ],
+            "node": {
+              "kind": "decision",
+              "options": [
+                {
+                  "label": "Continue...",
+                  "gate": null,
+                  "child": {
+                    "text": {
+                      "value": "With the pirates gone you signal the station. \"We appreciate what you've done, but there'll just be another ship looking to profit from our isolation soon enough. Sorry we can't give you more.\"",
+                      "ref": "event_PIRATE_STATION_CROPS_RESULT_text"
+                    },
+                    "name": "PIRATE_STATION_CROPS_RESULT",
+                    "source": "raw/gamedata/events.xml",
+                    "effects": [
+                      {
+                        "kind": "reward",
+                        "level": "LOW",
+                        "tier": "stuff"
+                      }
+                    ]
+                  },
+                  "label_ref": "continue",
+                  "hidden": true
+                }
+              ]
+            }
+          }
+        },
+        {
+          "on": "surrender",
+          "child": {
+            "text": {
+              "value": "\"Alright! We give up! We're terrible at this pirating thing anyway...\"",
+              "ref": "ship_PIRATE_STATION_CROPS_surrender_text"
+            },
+            "effects": [],
+            "node": {
+              "kind": "decision",
+              "options": [
+                {
+                  "label": "Let them go.",
+                  "gate": null,
+                  "child": {
+                    "effects": [
+                      {
+                        "kind": "ship_hostility",
+                        "hostile": false
+                      },
+                      {
+                        "kind": "reward",
+                        "level": "MED",
+                        "tier": "stuff"
+                      }
+                    ]
+                  },
+                  "label_ref": "ship_PIRATE_STATION_CROPS_surrender_c1_choice"
+                },
+                {
+                  "label": "Piracy cannot be forgiven. Attack!",
+                  "gate": null,
+                  "child": {
+                    "effects": []
+                  },
+                  "label_ref": "ship_PIRATE_STATION_CROPS_surrender_c2_choice"
+                }
+              ]
+            }
+          },
+          "chance": "0.5",
+          "min": "2",
+          "max": "4"
+        },
+        {
+          "on": "escape",
+          "child": {
+            "text": {
+              "value": "They look like they don't want to fight. They are trying to escape.",
+              "ref": "ship_PIRATE_STATION_CROPS_escape_text"
+            },
+            "effects": [
+              {
+                "kind": "ship_hostility",
+                "hostile": true
+              }
+            ]
+          },
+          "chance": "0.5",
+          "min": "3",
+          "max": "4"
+        },
+        {
+          "on": "gotaway",
+          "child": {
+            "text": {
+              "value": "With the pirates gone you signal the station. \"We appreciate what you've done, but there'll just be another ship looking to profit from our isolation soon enough. Sorry we can't give you more.\"",
+              "ref": "event_PIRATE_STATION_CROPS_RESULT_text"
+            },
+            "name": "PIRATE_STATION_CROPS_RESULT",
+            "source": "raw/gamedata/events.xml",
+            "effects": [
+              {
+                "kind": "reward",
+                "level": "LOW",
+                "tier": "stuff"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

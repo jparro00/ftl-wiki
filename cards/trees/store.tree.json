@@ -1,0 +1,22 @@
+{
+  "schema": "ftl-event-tree/1",
+  "id": "STORE",
+  "slug": "store",
+  "title": "Store",
+  "extracted_from": "raw/gamedata/events.xml",
+  "text": {
+    "value": "A ship engineer has set up a small shop here.",
+    "ref": "STORE_TEXT",
+    "variants": 5
+  },
+  "name": "STORE",
+  "source": "raw/gamedata/events.xml",
+  "effects": [
+    {
+      "kind": "store"
+    }
+  ],
+  "flags": {
+    "store": true
+  }
+}

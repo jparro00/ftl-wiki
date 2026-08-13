@@ -1,0 +1,31 @@
+{
+  "schema": "ftl-event-tree/1",
+  "id": "BOARDERS_ASTEROID",
+  "slug": "boarders-asteroid",
+  "title": "Boarders in asteroid field",
+  "extracted_from": "raw/gamedata/events_pirate.xml",
+  "text": {
+    "value": "You jump into a perilous asteroid field. Worse, sensors show a pirate stronghold has locked onto our ship and is activating a teleporter. Prepare for a fight!",
+    "ref": "event_BOARDERS_ASTEROID_text"
+  },
+  "name": "BOARDERS_ASTEROID",
+  "source": "raw/gamedata/events_pirate.xml",
+  "effects": [
+    {
+      "kind": "boarders",
+      "min": 2,
+      "max": 4,
+      "class": "human"
+    },
+    {
+      "kind": "environment",
+      "environment": "asteroid",
+      "target": "player"
+    }
+  ],
+  "flags": {
+    "unique": true,
+    "environment": "asteroid",
+    "environment_target": "player"
+  }
+}

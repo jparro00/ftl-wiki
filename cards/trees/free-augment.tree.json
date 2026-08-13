@@ -1,0 +1,20 @@
+{
+  "schema": "ftl-event-tree/1",
+  "id": "FREE_AUGMENT",
+  "slug": "free-augment",
+  "title": "Free augment",
+  "extracted_from": "raw/gamedata/nameEvents.xml",
+  "text": {
+    "value": "Wow! A ship enhancement is just floating in space. %crew seems especially excited about this one."
+  },
+  "name": "FREE_AUGMENT",
+  "source": "raw/gamedata/nameEvents.xml",
+  "effects": [
+    {
+      "kind": "item",
+      "item_kind": "augment",
+      "id": "RANDOM",
+      "label": "RANDOM"
+    }
+  ]
+}

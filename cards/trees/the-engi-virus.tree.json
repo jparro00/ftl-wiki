@@ -1,0 +1,568 @@
+{
+  "schema": "ftl-event-tree/1",
+  "id": "ENGI_VIRUS",
+  "slug": "the-engi-virus",
+  "title": "The Engi virus",
+  "extracted_from": "raw/gamedata/events_engi.xml",
+  "text": {
+    "value": "The Engi are awaiting you at the beacon, with their weapons on-line! They explain a computer virus that is wanted for hostile acts against the Engi (multiple counts of binary scrambling, nano-dissolution, and variable interference) is aboard your vessel.",
+    "ref": "event_ENGI_VIRUS_text"
+  },
+  "name": "ENGI_VIRUS",
+  "source": "raw/gamedata/events_engi.xml",
+  "effects": [],
+  "flags": {
+    "unique": true
+  },
+  "node": {
+    "kind": "decision",
+    "options": [
+      {
+        "label": "Continue...",
+        "gate": null,
+        "child": {
+          "text": {
+            "value": "They insist they must destroy your ship to prevent the virus from escaping!",
+            "ref": "event_ENGI_VIRUS_c1_text"
+          },
+          "effects": [],
+          "node": {
+            "kind": "decision",
+            "options": [
+              {
+                "label": "Hold on! Let us try to purge the system code!",
+                "gate": null,
+                "child": {
+                  "text": {
+                    "value": "Wiping your engine core and shields proves useless... eventually you trap the virus in the weapons systems to purge it, but before you do, the Engi grow restless and attack!",
+                    "ref": "event_ENGI_VIRUS_c1_c1_text"
+                  },
+                  "effects": [
+                    {
+                      "kind": "status",
+                      "status": "divide",
+                      "target": "player",
+                      "system": "shields",
+                      "amount": 2
+                    },
+                    {
+                      "kind": "status",
+                      "status": "divide",
+                      "target": "player",
+                      "system": "engines",
+                      "amount": 2
+                    }
+                  ],
+                  "node": {
+                    "kind": "combat",
+                    "ship": "ENGI_VIRUS_SHIP",
+                    "ship_labels": [
+                      "Engi Scout",
+                      "Engi Bomber"
+                    ],
+                    "hostile": true,
+                    "auto_blueprint": "SHIPS_CIRCLE",
+                    "source": "raw/gamedata/events_engi.xml",
+                    "branches": [
+                      {
+                        "on": "destroyed",
+                        "child": {
+                          "text": {
+                            "value": "With the ship destroyed, you detect that the virus has abandoned your ship and disappeared somewhere within the systems of the wreckage. It will likely infect whatever Engi ship passes next, but your mission is too vital to risk re-infection by stopping it.",
+                            "ref": "ship_ENGI_VIRUS_SHIP_destroyed_text"
+                          },
+                          "effects": [
+                            {
+                              "kind": "reward",
+                              "level": "MEDIUM",
+                              "tier": "standard"
+                            },
+                            {
+                              "kind": "status",
+                              "status": "clear",
+                              "target": "player",
+                              "system": "engines",
+                              "amount": 100
+                            },
+                            {
+                              "kind": "status",
+                              "status": "clear",
+                              "target": "player",
+                              "system": "shields",
+                              "amount": 100
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "on": "deadCrew",
+                        "child": {
+                          "text": {
+                            "value": "With the Engi crew dead, you detect that the virus has abandoned your ship and disappeared somewhere within the systems of Engi vessel. It will likely infect whatever Engi ship passes next, but your mission is too vital to risk re-infection by stopping it.",
+                            "ref": "ship_ENGI_VIRUS_SHIP_deadCrew_text"
+                          },
+                          "effects": [
+                            {
+                              "kind": "reward",
+                              "level": "MEDIUM",
+                              "tier": "standard"
+                            },
+                            {
+                              "kind": "status",
+                              "status": "clear",
+                              "target": "player",
+                              "system": "engines",
+                              "amount": 100
+                            },
+                            {
+                              "kind": "status",
+                              "status": "clear",
+                              "target": "player",
+                              "system": "shields",
+                              "amount": 100
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                },
+                "label_ref": "event_ENGI_VIRUS_c1_c1_choice",
+                "hidden": true
+              },
+              {
+                "label": "Attack the Engi vessel!",
+                "gate": null,
+                "child": {
+                  "text": {
+                    "value": "The Engi be damned, no one threatens your ship. You prepare for a fight!",
+                    "ref": "event_ENGI_VIRUS_c1_c2_text"
+                  },
+                  "effects": [],
+                  "node": {
+                    "kind": "combat",
+                    "ship": "ENGI_VIRUS_SHIP",
+                    "ship_labels": [
+                      "Engi Scout",
+                      "Engi Bomber"
+                    ],
+                    "hostile": true,
+                    "auto_blueprint": "SHIPS_CIRCLE",
+                    "source": "raw/gamedata/events_engi.xml",
+                    "branches": [
+                      {
+                        "on": "destroyed",
+                        "child": {
+                          "text": {
+                            "value": "With the ship destroyed, you detect that the virus has abandoned your ship and disappeared somewhere within the systems of the wreckage. It will likely infect whatever Engi ship passes next, but your mission is too vital to risk re-infection by stopping it.",
+                            "ref": "ship_ENGI_VIRUS_SHIP_destroyed_text"
+                          },
+                          "effects": [
+                            {
+                              "kind": "reward",
+                              "level": "MEDIUM",
+                              "tier": "standard"
+                            },
+                            {
+                              "kind": "status",
+                              "status": "clear",
+                              "target": "player",
+                              "system": "engines",
+                              "amount": 100
+                            },
+                            {
+                              "kind": "status",
+                              "status": "clear",
+                              "target": "player",
+                              "system": "shields",
+                              "amount": 100
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "on": "deadCrew",
+                        "child": {
+                          "text": {
+                            "value": "With the Engi crew dead, you detect that the virus has abandoned your ship and disappeared somewhere within the systems of Engi vessel. It will likely infect whatever Engi ship passes next, but your mission is too vital to risk re-infection by stopping it.",
+                            "ref": "ship_ENGI_VIRUS_SHIP_deadCrew_text"
+                          },
+                          "effects": [
+                            {
+                              "kind": "reward",
+                              "level": "MEDIUM",
+                              "tier": "standard"
+                            },
+                            {
+                              "kind": "status",
+                              "status": "clear",
+                              "target": "player",
+                              "system": "engines",
+                              "amount": 100
+                            },
+                            {
+                              "kind": "status",
+                              "status": "clear",
+                              "target": "player",
+                              "system": "shields",
+                              "amount": 100
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                },
+                "label_ref": "event_ENGI_VIRUS_c1_c2_choice",
+                "hidden": true
+              },
+              {
+                "label": "(Hacking System) Isolate and quarantine the virus.",
+                "gate": {
+                  "req": "hacking",
+                  "label": "Hacking",
+                  "lvl": "1",
+                  "max_group": "0"
+                },
+                "child": {
+                  "text": {
+                    "value": "It takes some time, and the virus is slippery, but you eventually confine it to a useless sub-system prison where it frantically begins calculating insults at you. You eject the system from the ship and then silence the little binary criminal with your weapons.",
+                    "ref": "event_ENGI_VIRUS_c1_c3_text"
+                  },
+                  "effects": [],
+                  "node": {
+                    "kind": "decision",
+                    "options": [
+                      {
+                        "label": "Continue...",
+                        "gate": null,
+                        "child": {
+                          "text": {
+                            "value": "The Engi thank you for deleting the virus, and jump away. They offer a unique ship augmentation as a reward.",
+                            "ref": "event_ENGI_VIRUS_c1_c3_c1_text"
+                          },
+                          "effects": [
+                            {
+                              "kind": "reward",
+                              "level": "LOW",
+                              "tier": "standard"
+                            },
+                            {
+                              "kind": "item",
+                              "item_kind": "augment",
+                              "id": "DRONE_SPEED",
+                              "label": "Drone Reactor Booster"
+                            }
+                          ]
+                        },
+                        "label_ref": "continue",
+                        "hidden": true
+                      }
+                    ]
+                  }
+                },
+                "label_ref": "event_ENGI_VIRUS_c1_c3_choice",
+                "hidden": true
+              },
+              {
+                "label": "(Improved Hacking) Reprogram the virus.",
+                "gate": {
+                  "req": "hacking",
+                  "label": "Hacking",
+                  "lvl": "2",
+                  "max_group": "0"
+                },
+                "child": {
+                  "text": {
+                    "value": "You proceed to interface with the virus and optimize its repair and benevolence routines.",
+                    "ref": "event_ENGI_VIRUS_c1_c4_text"
+                  },
+                  "effects": [],
+                  "node": {
+                    "kind": "decision",
+                    "options": [
+                      {
+                        "label": "Continue...",
+                        "gate": null,
+                        "child": {
+                          "text": {
+                            "value": "After a few minutes, the virus \"sees the light\" and integrates itself in a positive manner with the computer society on your ship, repairing your hull and attempting to optimize your reactor.",
+                            "ref": "event_ENGI_VIRUS_c1_c4_c1_text"
+                          },
+                          "effects": [
+                            {
+                              "kind": "hull_repair",
+                              "amount": 15
+                            },
+                            {
+                              "kind": "upgrade",
+                              "system": "reactor",
+                              "amount": 1
+                            }
+                          ],
+                          "node": {
+                            "kind": "decision",
+                            "options": [
+                              {
+                                "label": "Continue...",
+                                "gate": null,
+                                "child": {
+                                  "text": {
+                                    "value": "The Engi thank you for deleting the virus, and jump away. They offer a unique ship augmentation as a reward.",
+                                    "ref": "event_ENGI_VIRUS_c1_c3_c1_text"
+                                  },
+                                  "effects": [
+                                    {
+                                      "kind": "item",
+                                      "item_kind": "augment",
+                                      "id": "DRONE_SPEED",
+                                      "label": "Drone Reactor Booster"
+                                    }
+                                  ]
+                                },
+                                "label_ref": "continue",
+                                "hidden": true
+                              }
+                            ]
+                          }
+                        },
+                        "label_ref": "continue",
+                        "hidden": true
+                      }
+                    ]
+                  }
+                },
+                "label_ref": "event_ENGI_VIRUS_c1_c4_choice",
+                "hidden": true
+              },
+              {
+                "label": "(Advanced Hacking) Reprogram the virus.",
+                "gate": {
+                  "req": "hacking",
+                  "label": "Hacking",
+                  "lvl": "3",
+                  "max_group": "0"
+                },
+                "child": {
+                  "text": {
+                    "value": "You proceed to interface with the virus and optimize its repair and benevolence routines.",
+                    "ref": "event_ENGI_VIRUS_c1_c4_text"
+                  },
+                  "effects": [],
+                  "node": {
+                    "kind": "decision",
+                    "options": [
+                      {
+                        "label": "Continue...",
+                        "gate": null,
+                        "child": {
+                          "text": {
+                            "value": "After a few minutes, the virus \"sees the light\" and integrates itself in a positive manner with the computer society on your ship, repairing your hull and attempting to optimize your reactor.",
+                            "ref": "event_ENGI_VIRUS_c1_c4_c1_text"
+                          },
+                          "effects": [
+                            {
+                              "kind": "hull_repair",
+                              "amount": 30
+                            },
+                            {
+                              "kind": "upgrade",
+                              "system": "reactor",
+                              "amount": 1
+                            }
+                          ],
+                          "node": {
+                            "kind": "decision",
+                            "options": [
+                              {
+                                "label": "Continue...",
+                                "gate": null,
+                                "child": {
+                                  "text": {
+                                    "value": "The Engi thank you for deleting the virus, and jump away. They offer a unique ship augmentation as a reward.",
+                                    "ref": "event_ENGI_VIRUS_c1_c3_c1_text"
+                                  },
+                                  "effects": [
+                                    {
+                                      "kind": "item",
+                                      "item_kind": "augment",
+                                      "id": "DRONE_SPEED",
+                                      "label": "Drone Reactor Booster"
+                                    }
+                                  ]
+                                },
+                                "label_ref": "continue",
+                                "hidden": true
+                              }
+                            ]
+                          }
+                        },
+                        "label_ref": "continue",
+                        "hidden": true
+                      }
+                    ]
+                  }
+                },
+                "label_ref": "event_ENGI_VIRUS_c1_c5_choice",
+                "hidden": true
+              },
+              {
+                "label": "(Lanius Crew) Your Lanius crewmember gestures frantically.",
+                "gate": {
+                  "req": "anaerobic",
+                  "label": "Lanius"
+                },
+                "child": {
+                  "text": {
+                    "value": "Oddly enough, the Lanius seems aware of which computer the virus is present in, and proceeds to... digest the terminal. There is a burst of O2, and the Engi ship powers down its weapons, no longer sensing the virus on board. The Engi send some parts over to repair your damaged computer, along with a unique ship augmentation as a reward for terminating the virus.",
+                    "ref": "event_ENGI_VIRUS_c1_c6_text"
+                  },
+                  "effects": [
+                    {
+                      "kind": "reward",
+                      "level": "MEDIUM",
+                      "tier": "scrap_only"
+                    },
+                    {
+                      "kind": "item",
+                      "item_kind": "augment",
+                      "id": "DRONE_SPEED",
+                      "label": "Drone Reactor Booster"
+                    }
+                  ]
+                },
+                "label_ref": "event_ENGI_VIRUS_c1_c6_choice",
+                "hidden": true
+              },
+              {
+                "label": "(Engi Crew) Have your Engi crewmember negotiate with the Engi ship.",
+                "gate": {
+                  "req": "engi",
+                  "label": "Engi"
+                },
+                "child": {
+                  "text": {
+                    "value": "As the Engi attempts to contact the vessel and negotiate, your Engi crewmember suddenly dissolves into nanites - the virus has murdered again! Detecting activity on board your ship, the Engi vessel opens fire!",
+                    "ref": "event_ENGI_VIRUS_c1_c7_text"
+                  },
+                  "effects": [
+                    {
+                      "kind": "crew_loss",
+                      "amount": 1,
+                      "clone": false,
+                      "class": "engi"
+                    }
+                  ],
+                  "node": {
+                    "kind": "combat",
+                    "ship": "ENGI_VIRUS_SHIP_ALT",
+                    "ship_labels": [
+                      "Engi Scout",
+                      "Engi Bomber"
+                    ],
+                    "hostile": true,
+                    "auto_blueprint": "SHIPS_CIRCLE",
+                    "source": "raw/gamedata/events_engi.xml",
+                    "branches": [
+                      {
+                        "on": "destroyed",
+                        "child": {
+                          "text": {
+                            "value": "With the ship destroyed, you scrap it and prepare to jump away.",
+                            "ref": "ship_ENGI_VIRUS_SHIP_ALT_destroyed_text"
+                          },
+                          "effects": [
+                            {
+                              "kind": "reward",
+                              "level": "MEDIUM",
+                              "tier": "standard"
+                            }
+                          ],
+                          "node": {
+                            "kind": "decision",
+                            "options": [
+                              {
+                                "label": "Continue...",
+                                "gate": null,
+                                "child": {
+                                  "text": {
+                                    "value": "To your surprise your Engi crewmember reforms. It looks as if the virus reconstituted, repurposed, and reprogrammed the Engi host and wants to travel with you... and it seems to have learned a great deal from its time on your ship.",
+                                    "ref": "event_ENGI_VIRUS_REBORN_text"
+                                  },
+                                  "name": "ENGI_VIRUS_REBORN",
+                                  "source": "raw/gamedata/events_engi.xml",
+                                  "effects": [
+                                    {
+                                      "kind": "crew_gain",
+                                      "amount": 1,
+                                      "class": "engi",
+                                      "all_skills": 2,
+                                      "name": "Virus"
+                                    }
+                                  ]
+                                },
+                                "label_ref": "continue",
+                                "hidden": true
+                              }
+                            ]
+                          }
+                        }
+                      },
+                      {
+                        "on": "deadCrew",
+                        "child": {
+                          "text": {
+                            "value": "With all the Engi dead, you take what you can and prepare to jump away.",
+                            "ref": "ship_ENGI_VIRUS_SHIP_ALT_deadCrew_text"
+                          },
+                          "effects": [
+                            {
+                              "kind": "reward",
+                              "level": "MEDIUM",
+                              "tier": "standard"
+                            }
+                          ],
+                          "node": {
+                            "kind": "decision",
+                            "options": [
+                              {
+                                "label": "Continue...",
+                                "gate": null,
+                                "child": {
+                                  "text": {
+                                    "value": "To your surprise your Engi crewmember reforms. It looks as if the virus reconstituted, repurposed, and reprogrammed the Engi host and wants to travel with you... and it seems to have learned a great deal from its time on your ship.",
+                                    "ref": "event_ENGI_VIRUS_REBORN_text"
+                                  },
+                                  "name": "ENGI_VIRUS_REBORN",
+                                  "source": "raw/gamedata/events_engi.xml",
+                                  "effects": [
+                                    {
+                                      "kind": "crew_gain",
+                                      "amount": 1,
+                                      "class": "engi",
+                                      "all_skills": 2,
+                                      "name": "Virus"
+                                    }
+                                  ]
+                                },
+                                "label_ref": "continue",
+                                "hidden": true
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    ]
+                  }
+                },
+                "label_ref": "event_ENGI_VIRUS_c1_c7_choice",
+                "hidden": true
+              }
+            ]
+          }
+        },
+        "label_ref": "continue"
+      }
+    ]
+  }
+}

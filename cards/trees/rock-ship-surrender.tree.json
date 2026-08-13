@@ -1,0 +1,46 @@
+{
+  "schema": "ftl-event-tree/1",
+  "id": "ROCK_SHIP_SURRENDER",
+  "slug": "rock-ship-surrender",
+  "title": "Rock ship surrender",
+  "extracted_from": "raw/gamedata/events_rock.xml",
+  "text": {
+    "value": "The Rock ship hails: \"Enough! We were told aliens were a threat to our ways, and you have proved as much. Take this and leave us in peace.\"",
+    "ref": "ROCK_SHIP_SURRENDER",
+    "variants": 12
+  },
+  "name": "ROCK_SHIP_SURRENDER",
+  "source": "raw/gamedata/events_rock.xml",
+  "effects": [],
+  "node": {
+    "kind": "decision",
+    "options": [
+      {
+        "label": "Accept their offer.",
+        "gate": null,
+        "child": {
+          "effects": [
+            {
+              "kind": "ship_hostility",
+              "hostile": false
+            },
+            {
+              "kind": "reward",
+              "level": "RANDOM",
+              "tier": "stuff"
+            }
+          ]
+        },
+        "label_ref": "event_ROCK_SHIP_SURRENDER_c1_choice"
+      },
+      {
+        "label": "We will not accept surrender!",
+        "gate": null,
+        "child": {
+          "effects": []
+        },
+        "label_ref": "event_ROCK_SHIP_SURRENDER_c2_choice"
+      }
+    ]
+  }
+}

@@ -1,0 +1,420 @@
+{
+  "schema": "ftl-event-tree/1",
+  "id": "HELP_MINERS",
+  "slug": "asteroid-mining-colony",
+  "title": "Asteroid mining colony",
+  "extracted_from": "raw/gamedata/newEvents.xml",
+  "text": {
+    "value": "You come across an asteroid mining colony. They message you immediately, saying, \"Greetings. Our supplies of mining explosives have run out ever since the Rebels blockaded this system. Do you have any extra explosives?\"",
+    "ref": "event_HELP_MINERS_text"
+  },
+  "name": "HELP_MINERS",
+  "source": "raw/gamedata/newEvents.xml",
+  "effects": [],
+  "flags": {
+    "unique": true
+  },
+  "node": {
+    "kind": "decision",
+    "options": [
+      {
+        "label": "(Missile Weapon) Offer to solve their problem by launching a missile.",
+        "gate": {
+          "req": "WEAPONS_MISSILES_EVENTS"
+        },
+        "child": {
+          "text": {
+            "value": "\"While I appreciate your enthusiasm, we have certain protocols for the use of explosives around the workplace. Launching a military grade weapon into our mines isn't exactly what I would call, 'union-friendly'.\"",
+            "ref": "event_HELP_MINERS_c1_text"
+          },
+          "effects": [],
+          "node": {
+            "kind": "decision",
+            "options": [
+              {
+                "label": "Give them the requested 5 missiles.",
+                "gate": null,
+                "child": {
+                  "effects": [],
+                  "node": {
+                    "kind": "chance",
+                    "list": "HELP_MINERS_1",
+                    "source": "raw/gamedata/newEvents.xml",
+                    "odds_basis": "unweighted",
+                    "options": [
+                      {
+                        "share": null,
+                        "child": {
+                          "text": {
+                            "value": "They thank you for your generosity and offer some scrap in exchange.",
+                            "ref": "event_HELP_MINERS_1_1_text"
+                          },
+                          "effects": [
+                            {
+                              "kind": "resource",
+                              "resource": "scrap",
+                              "min": 15,
+                              "max": 25
+                            },
+                            {
+                              "kind": "resource",
+                              "resource": "missiles",
+                              "min": -5,
+                              "max": -5
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "share": null,
+                        "child": {
+                          "text": {
+                            "value": "They thank you and offer to have their engineers repair some of your ship's hull.",
+                            "ref": "event_HELP_MINERS_1_2_text"
+                          },
+                          "effects": [
+                            {
+                              "kind": "hull_repair",
+                              "amount": 10
+                            },
+                            {
+                              "kind": "resource",
+                              "resource": "missiles",
+                              "min": -5,
+                              "max": -5
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "share": null,
+                        "child": {
+                          "text": {
+                            "value": "They thank you and offer to have their engineers try to upgrade your reactor.",
+                            "ref": "event_HELP_MINERS_1_3_text"
+                          },
+                          "effects": [
+                            {
+                              "kind": "upgrade",
+                              "system": "reactor",
+                              "amount": 1
+                            },
+                            {
+                              "kind": "resource",
+                              "resource": "missiles",
+                              "min": -5,
+                              "max": -5
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                },
+                "label_ref": "event_HELP_MINERS_c1_c1_choice",
+                "hidden": true
+              },
+              {
+                "label": "Give them 15 missiles.",
+                "gate": null,
+                "child": {
+                  "effects": [],
+                  "node": {
+                    "kind": "chance",
+                    "list": "HELP_MINERS_2",
+                    "source": "raw/gamedata/newEvents.xml",
+                    "odds_basis": "unweighted",
+                    "options": [
+                      {
+                        "share": null,
+                        "child": {
+                          "text": {
+                            "value": "\"Wow. This will help our efforts considerably. Let me see what I can scrounge up to offer you.\" They deliver some scrap and have their team try to repair part of your hull.",
+                            "ref": "event_HELP_MINERS_2_1_text"
+                          },
+                          "effects": [
+                            {
+                              "kind": "hull_repair",
+                              "amount": 5
+                            },
+                            {
+                              "kind": "resource",
+                              "resource": "scrap",
+                              "min": 30,
+                              "max": 40
+                            },
+                            {
+                              "kind": "resource",
+                              "resource": "missiles",
+                              "min": -15,
+                              "max": -15
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "share": null,
+                        "child": {
+                          "text": {
+                            "value": "\"Wow. This will help our efforts considerably.\" They offer to have their engineers fix up your ship and upgrade your reactor.",
+                            "ref": "event_HELP_MINERS_2_2_text"
+                          },
+                          "effects": [
+                            {
+                              "kind": "hull_repair",
+                              "amount": 15
+                            },
+                            {
+                              "kind": "upgrade",
+                              "system": "reactor",
+                              "amount": 1
+                            },
+                            {
+                              "kind": "resource",
+                              "resource": "missiles",
+                              "min": -15,
+                              "max": -15
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "share": null,
+                        "child": {
+                          "text": {
+                            "value": "\"Wow. This will help our efforts considerably. What could I offer for your troubles...\" After some time they deliver a ship Augment for installation on your ship.",
+                            "ref": "event_HELP_MINERS_2_3_text"
+                          },
+                          "effects": [
+                            {
+                              "kind": "item",
+                              "item_kind": "augment",
+                              "id": "RANDOM",
+                              "label": "RANDOM"
+                            },
+                            {
+                              "kind": "resource",
+                              "resource": "missiles",
+                              "min": -15,
+                              "max": -15
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                },
+                "label_ref": "event_HELP_MINERS_c1_c2_choice",
+                "hidden": true
+              },
+              {
+                "label": "Decline.",
+                "gate": null,
+                "child": {
+                  "text": {
+                    "value": "\"I understand. Good luck out there. We'll try to make do with what we have.\"",
+                    "ref": "event_HELP_MINERS_c1_c3_text"
+                  },
+                  "effects": []
+                },
+                "label_ref": "event_HELP_MINERS_c1_c3_choice",
+                "hidden": true
+              }
+            ]
+          }
+        },
+        "label_ref": "event_HELP_MINERS_c1_choice",
+        "hidden": true
+      },
+      {
+        "label": "Give them the requested 5 missiles.",
+        "gate": null,
+        "child": {
+          "effects": [],
+          "node": {
+            "kind": "chance",
+            "list": "HELP_MINERS_1",
+            "source": "raw/gamedata/newEvents.xml",
+            "odds_basis": "unweighted",
+            "options": [
+              {
+                "share": null,
+                "child": {
+                  "text": {
+                    "value": "They thank you for your generosity and offer some scrap in exchange.",
+                    "ref": "event_HELP_MINERS_1_1_text"
+                  },
+                  "effects": [
+                    {
+                      "kind": "resource",
+                      "resource": "scrap",
+                      "min": 15,
+                      "max": 25
+                    },
+                    {
+                      "kind": "resource",
+                      "resource": "missiles",
+                      "min": -5,
+                      "max": -5
+                    }
+                  ]
+                }
+              },
+              {
+                "share": null,
+                "child": {
+                  "text": {
+                    "value": "They thank you and offer to have their engineers repair some of your ship's hull.",
+                    "ref": "event_HELP_MINERS_1_2_text"
+                  },
+                  "effects": [
+                    {
+                      "kind": "hull_repair",
+                      "amount": 10
+                    },
+                    {
+                      "kind": "resource",
+                      "resource": "missiles",
+                      "min": -5,
+                      "max": -5
+                    }
+                  ]
+                }
+              },
+              {
+                "share": null,
+                "child": {
+                  "text": {
+                    "value": "They thank you and offer to have their engineers try to upgrade your reactor.",
+                    "ref": "event_HELP_MINERS_1_3_text"
+                  },
+                  "effects": [
+                    {
+                      "kind": "upgrade",
+                      "system": "reactor",
+                      "amount": 1
+                    },
+                    {
+                      "kind": "resource",
+                      "resource": "missiles",
+                      "min": -5,
+                      "max": -5
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        "label_ref": "event_HELP_MINERS_c1_c1_choice",
+        "hidden": true
+      },
+      {
+        "label": "Give them 15 missiles.",
+        "gate": null,
+        "child": {
+          "effects": [],
+          "node": {
+            "kind": "chance",
+            "list": "HELP_MINERS_2",
+            "source": "raw/gamedata/newEvents.xml",
+            "odds_basis": "unweighted",
+            "options": [
+              {
+                "share": null,
+                "child": {
+                  "text": {
+                    "value": "\"Wow. This will help our efforts considerably. Let me see what I can scrounge up to offer you.\" They deliver some scrap and have their team try to repair part of your hull.",
+                    "ref": "event_HELP_MINERS_2_1_text"
+                  },
+                  "effects": [
+                    {
+                      "kind": "hull_repair",
+                      "amount": 5
+                    },
+                    {
+                      "kind": "resource",
+                      "resource": "scrap",
+                      "min": 30,
+                      "max": 40
+                    },
+                    {
+                      "kind": "resource",
+                      "resource": "missiles",
+                      "min": -15,
+                      "max": -15
+                    }
+                  ]
+                }
+              },
+              {
+                "share": null,
+                "child": {
+                  "text": {
+                    "value": "\"Wow. This will help our efforts considerably.\" They offer to have their engineers fix up your ship and upgrade your reactor.",
+                    "ref": "event_HELP_MINERS_2_2_text"
+                  },
+                  "effects": [
+                    {
+                      "kind": "hull_repair",
+                      "amount": 15
+                    },
+                    {
+                      "kind": "upgrade",
+                      "system": "reactor",
+                      "amount": 1
+                    },
+                    {
+                      "kind": "resource",
+                      "resource": "missiles",
+                      "min": -15,
+                      "max": -15
+                    }
+                  ]
+                }
+              },
+              {
+                "share": null,
+                "child": {
+                  "text": {
+                    "value": "\"Wow. This will help our efforts considerably. What could I offer for your troubles...\" After some time they deliver a ship Augment for installation on your ship.",
+                    "ref": "event_HELP_MINERS_2_3_text"
+                  },
+                  "effects": [
+                    {
+                      "kind": "item",
+                      "item_kind": "augment",
+                      "id": "RANDOM",
+                      "label": "RANDOM"
+                    },
+                    {
+                      "kind": "resource",
+                      "resource": "missiles",
+                      "min": -15,
+                      "max": -15
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        "label_ref": "event_HELP_MINERS_c1_c2_choice",
+        "hidden": true
+      },
+      {
+        "label": "Decline.",
+        "gate": null,
+        "child": {
+          "text": {
+            "value": "\"I understand. Good luck out there. We'll try to make do with what we have.\"",
+            "ref": "event_HELP_MINERS_c1_c3_text"
+          },
+          "effects": []
+        },
+        "label_ref": "event_HELP_MINERS_c1_c3_choice",
+        "hidden": true
+      }
+    ]
+  }
+}

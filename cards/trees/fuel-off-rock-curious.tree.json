@@ -1,0 +1,240 @@
+{
+  "schema": "ftl-event-tree/1",
+  "id": "FUEL_OFF_ROCK_CURIOUS",
+  "slug": "fuel-off-rock-curious",
+  "title": "No fuel: curious Rock ship",
+  "extracted_from": "raw/gamedata/events_fuel.xml",
+  "text": {
+    "value": "A curious Rock ship comes in for a closer look at you. They refuse all hails.",
+    "ref": "event_FUEL_OFF_ROCK_CURIOUS_text"
+  },
+  "name": "FUEL_OFF_ROCK_CURIOUS",
+  "source": "raw/gamedata/events_fuel.xml",
+  "effects": [],
+  "node": {
+    "kind": "decision",
+    "options": [
+      {
+        "label": "Attack.",
+        "gate": null,
+        "child": {
+          "text": {
+            "value": "The Rock people are not renowned for their generosity. If it's fuel you need, it's fuel you must take!",
+            "ref": "event_FUEL_OFF_ROCK_CURIOUS_c1_text"
+          },
+          "effects": [],
+          "node": {
+            "kind": "combat",
+            "ship": "FUEL_OFF_ROCK_CURIOUS",
+            "ship_labels": [
+              "Rock Scout",
+              "Rock Fighter",
+              "Rock Assault"
+            ],
+            "hostile": true,
+            "auto_blueprint": "SHIPS_ROCK",
+            "source": "raw/gamedata/events_fuel.xml",
+            "branches": [
+              {
+                "on": "destroyed",
+                "child": {
+                  "text": {
+                    "value": "You take care to salvage as much fuel as possible from the wreck.",
+                    "ref": "ship_FUEL_OFF_ROCK_CURIOUS_destroyed_text"
+                  },
+                  "effects": [
+                    {
+                      "kind": "reward",
+                      "level": "MED",
+                      "tier": "fuel"
+                    },
+                    {
+                      "kind": "status",
+                      "status": "clear",
+                      "target": "player",
+                      "system": "pilot",
+                      "amount": 100
+                    }
+                  ]
+                }
+              },
+              {
+                "on": "deadCrew",
+                "child": {
+                  "text": {
+                    "value": "You take care to salvage as much fuel as possible from the wreck.",
+                    "ref": "ship_FUEL_OFF_ROCK_CURIOUS_destroyed_text"
+                  },
+                  "effects": [
+                    {
+                      "kind": "reward",
+                      "level": "HIGH",
+                      "tier": "fuel"
+                    },
+                    {
+                      "kind": "status",
+                      "status": "clear",
+                      "target": "player",
+                      "system": "engines",
+                      "amount": 100
+                    }
+                  ]
+                }
+              },
+              {
+                "on": "escape",
+                "child": {
+                  "effects": []
+                },
+                "min": "30",
+                "max": "30"
+              },
+              {
+                "on": "gotaway",
+                "child": {
+                  "text": {
+                    "value": "The ship jumps away without a word. You hope they didn't leave to get reinforcements.",
+                    "ref": "ship_FUEL_OFF_ROCK_CURIOUS_gotaway_text"
+                  },
+                  "effects": []
+                }
+              }
+            ]
+          }
+        },
+        "label_ref": "event_FUEL_OFF_ROCK_CURIOUS_c1_choice",
+        "hidden": true
+      },
+      {
+        "label": "Wait and see.",
+        "gate": null,
+        "child": {
+          "effects": [],
+          "node": {
+            "kind": "chance",
+            "list": "FUEL_OFF_ROCK_CURIOUS_LIST",
+            "source": "raw/gamedata/events_fuel.xml",
+            "odds_basis": "unweighted",
+            "options": [
+              {
+                "share": null,
+                "child": {
+                  "text": {
+                    "value": "The Rock ship circles yours, running scans on your systems. You fear the worst, but the scans pause on your fuel tank. They obviously have no wish to communicate, but they transfer over a cache of fuel before flashing their lights and jumping away!",
+                    "ref": "event_FUEL_OFF_ROCK_CURIOUS_LIST_1_text"
+                  },
+                  "effects": [
+                    {
+                      "kind": "resource",
+                      "resource": "fuel",
+                      "min": 3,
+                      "max": 8
+                    }
+                  ]
+                }
+              },
+              {
+                "share": null,
+                "child": {
+                  "text": {
+                    "value": "The Rock ship circles yours, running scans on your systems. Your worst fears are confirmed when they identify your engines and teleport a bomb straight onto it! Combat ready!",
+                    "ref": "event_FUEL_OFF_ROCK_CURIOUS_LIST_2_text"
+                  },
+                  "effects": [
+                    {
+                      "kind": "status",
+                      "status": "limit",
+                      "target": "player",
+                      "system": "engines",
+                      "amount": 1
+                    }
+                  ],
+                  "node": {
+                    "kind": "combat",
+                    "ship": "FUEL_OFF_ROCK_CURIOUS",
+                    "ship_labels": [
+                      "Rock Scout",
+                      "Rock Fighter",
+                      "Rock Assault"
+                    ],
+                    "hostile": true,
+                    "auto_blueprint": "SHIPS_ROCK",
+                    "source": "raw/gamedata/events_fuel.xml",
+                    "branches": [
+                      {
+                        "on": "destroyed",
+                        "child": {
+                          "text": {
+                            "value": "You take care to salvage as much fuel as possible from the wreck.",
+                            "ref": "ship_FUEL_OFF_ROCK_CURIOUS_destroyed_text"
+                          },
+                          "effects": [
+                            {
+                              "kind": "reward",
+                              "level": "MED",
+                              "tier": "fuel"
+                            },
+                            {
+                              "kind": "status",
+                              "status": "clear",
+                              "target": "player",
+                              "system": "pilot",
+                              "amount": 100
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "on": "deadCrew",
+                        "child": {
+                          "text": {
+                            "value": "You take care to salvage as much fuel as possible from the wreck.",
+                            "ref": "ship_FUEL_OFF_ROCK_CURIOUS_destroyed_text"
+                          },
+                          "effects": [
+                            {
+                              "kind": "reward",
+                              "level": "HIGH",
+                              "tier": "fuel"
+                            },
+                            {
+                              "kind": "status",
+                              "status": "clear",
+                              "target": "player",
+                              "system": "engines",
+                              "amount": 100
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "on": "escape",
+                        "child": {
+                          "effects": []
+                        },
+                        "min": "30",
+                        "max": "30"
+                      },
+                      {
+                        "on": "gotaway",
+                        "child": {
+                          "text": {
+                            "value": "The ship jumps away without a word. You hope they didn't leave to get reinforcements.",
+                            "ref": "ship_FUEL_OFF_ROCK_CURIOUS_gotaway_text"
+                          },
+                          "effects": []
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            ]
+          }
+        },
+        "label_ref": "event_FUEL_OFF_ROCK_CURIOUS_c2_choice",
+        "hidden": true
+      }
+    ]
+  }
+}

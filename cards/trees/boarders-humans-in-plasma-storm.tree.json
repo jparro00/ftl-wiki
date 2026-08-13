@@ -1,0 +1,37 @@
+{
+  "schema": "ftl-event-tree/1",
+  "id": "STORM_BOARDING",
+  "slug": "boarders-humans-in-plasma-storm",
+  "title": "Boarders: Humans in plasma storm",
+  "extracted_from": "raw/gamedata/events_nebula.xml",
+  "text": {
+    "value": "You find two heavily damaged ships floating nearby, the remains of a battle. You begin to harvest some usable debris when you hear the sounds of someone beaming aboard followed by the shouts of a boarding party.",
+    "ref": "event_STORM_BOARDING_text"
+  },
+  "name": "STORM_BOARDING",
+  "source": "raw/gamedata/events_nebula.xml",
+  "dlc": true,
+  "effects": [
+    {
+      "kind": "environment",
+      "environment": "storm",
+      "target": "player"
+    },
+    {
+      "kind": "boarders",
+      "min": 3,
+      "max": 4,
+      "class": "human"
+    },
+    {
+      "kind": "reward",
+      "level": "MED",
+      "tier": "standard"
+    }
+  ],
+  "flags": {
+    "unique": true,
+    "environment": "storm",
+    "environment_target": "player"
+  }
+}

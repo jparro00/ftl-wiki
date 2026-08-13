@@ -1,0 +1,1660 @@
+{
+  "schema": "ftl-event-tree/1",
+  "id": "PIRATE_SALESMAN",
+  "slug": "pirate-ship-selling-drones",
+  "title": "Pirate ship selling drones",
+  "extracted_from": "raw/gamedata/newEvents.xml",
+  "text": {
+    "value": "A ship with conspicuous pirate markings is orbiting a nearby moon, broadcasting a simple message claiming to have equipment available for sale.",
+    "ref": "event_PIRATE_SALESMAN_text"
+  },
+  "name": "PIRATE_SALESMAN",
+  "source": "raw/gamedata/newEvents.xml",
+  "effects": [],
+  "flags": {
+    "unique": true
+  },
+  "node": {
+    "kind": "decision",
+    "options": [
+      {
+        "label": "Hail the ship.",
+        "gate": null,
+        "child": {
+          "text": {
+            "value": "The ship responds \"Yes, we have an extensive stock! Come aboard and see our wares!\"",
+            "ref": "event_CONTACT_PIRATE_SALESMAN_text"
+          },
+          "name": "CONTACT_PIRATE_SALESMAN",
+          "source": "raw/gamedata/newEvents.xml",
+          "effects": [],
+          "node": {
+            "kind": "decision",
+            "options": [
+              {
+                "label": "Dock with the ship.",
+                "gate": null,
+                "child": {
+                  "effects": [],
+                  "node": {
+                    "kind": "chance",
+                    "list": "DOCK_PIRATE_SALESMAN",
+                    "source": "raw/gamedata/newEvents.xml",
+                    "odds_basis": "unweighted",
+                    "options": [
+                      {
+                        "share": null,
+                        "child": {
+                          "text": {
+                            "value": "A human in an exquisite suit meets you on board. \"Welcome to my ship! We specialize in drones of all kinds, can I interest you in any?\"",
+                            "ref": "event_DOCK_DRONE_SALESMAN_text"
+                          },
+                          "name": "DOCK_DRONE_SALESMAN",
+                          "source": "raw/gamedata/newEvents.xml",
+                          "effects": [],
+                          "node": {
+                            "kind": "decision",
+                            "options": [
+                              {
+                                "label": "Buy some Drone parts.",
+                                "gate": null,
+                                "child": {
+                                  "effects": [
+                                    {
+                                      "kind": "resource",
+                                      "resource": "scrap",
+                                      "min": -25,
+                                      "max": -25
+                                    },
+                                    {
+                                      "kind": "resource",
+                                      "resource": "drones",
+                                      "min": 5,
+                                      "max": 5
+                                    }
+                                  ]
+                                },
+                                "label_ref": "event_DOCK_DRONE_SALESMAN_c1_choice"
+                              },
+                              {
+                                "label": "Buy a Drone schematic.",
+                                "gate": null,
+                                "child": {
+                                  "effects": [
+                                    {
+                                      "kind": "resource",
+                                      "resource": "scrap",
+                                      "min": -35,
+                                      "max": -25
+                                    },
+                                    {
+                                      "kind": "item",
+                                      "item_kind": "drone",
+                                      "id": "RANDOM",
+                                      "label": "RANDOM"
+                                    }
+                                  ]
+                                },
+                                "label_ref": "event_DOCK_DRONE_SALESMAN_c2_choice"
+                              },
+                              {
+                                "label": "Buy a Drone system upgrade.",
+                                "gate": {
+                                  "req": "drones",
+                                  "label": "Drone Part",
+                                  "max_lvl": "3",
+                                  "max_group": "0",
+                                  "blue": "false"
+                                },
+                                "child": {
+                                  "effects": [
+                                    {
+                                      "kind": "resource",
+                                      "resource": "scrap",
+                                      "min": -20,
+                                      "max": -15
+                                    },
+                                    {
+                                      "kind": "upgrade",
+                                      "system": "drones",
+                                      "amount": 1
+                                    }
+                                  ]
+                                },
+                                "label_ref": "event_DOCK_DRONE_SALESMAN_c3_choice"
+                              },
+                              {
+                                "label": "Buy a Drone system upgrade.",
+                                "gate": {
+                                  "req": "drones",
+                                  "label": "Drone Part",
+                                  "max_lvl": "5",
+                                  "min_level": "4",
+                                  "max_group": "0",
+                                  "blue": "false"
+                                },
+                                "child": {
+                                  "effects": [
+                                    {
+                                      "kind": "resource",
+                                      "resource": "scrap",
+                                      "min": -33,
+                                      "max": -25
+                                    },
+                                    {
+                                      "kind": "upgrade",
+                                      "system": "drones",
+                                      "amount": 1
+                                    }
+                                  ]
+                                },
+                                "label_ref": "event_DOCK_DRONE_SALESMAN_c3_choice"
+                              },
+                              {
+                                "label": "Buy a Drone system upgrade.",
+                                "gate": {
+                                  "req": "drones",
+                                  "label": "Drone Part",
+                                  "max_lvl": "7",
+                                  "min_level": "6",
+                                  "max_group": "0",
+                                  "blue": "false"
+                                },
+                                "child": {
+                                  "effects": [
+                                    {
+                                      "kind": "resource",
+                                      "resource": "scrap",
+                                      "min": -65,
+                                      "max": -50
+                                    },
+                                    {
+                                      "kind": "upgrade",
+                                      "system": "drones",
+                                      "amount": 1
+                                    }
+                                  ]
+                                },
+                                "label_ref": "event_DOCK_DRONE_SALESMAN_c3_choice"
+                              },
+                              {
+                                "label": "Buy nothing.",
+                                "gate": null,
+                                "child": {
+                                  "text": {
+                                    "value": "\"Ah, I'm sorry to hear that! Pleasant journeys.\" Once back to the helm, a series of explosions rocks your ship. The pirate ship has powered its weapons! You receive a message, \"You shouldn't waste people's time Captain!\"",
+                                    "ref": "event_DOCK_DRONE_SALESMAN_c6_text"
+                                  },
+                                  "effects": [
+                                    {
+                                      "kind": "system_damage",
+                                      "amount": 1,
+                                      "system": "engines"
+                                    },
+                                    {
+                                      "kind": "hazard",
+                                      "hazard": "random"
+                                    },
+                                    {
+                                      "kind": "system_damage",
+                                      "amount": 1,
+                                      "system": "room"
+                                    },
+                                    {
+                                      "kind": "hazard",
+                                      "hazard": "random"
+                                    },
+                                    {
+                                      "kind": "system_damage",
+                                      "amount": 1,
+                                      "system": "room"
+                                    },
+                                    {
+                                      "kind": "hazard",
+                                      "hazard": "random"
+                                    }
+                                  ],
+                                  "node": {
+                                    "kind": "combat",
+                                    "ship": "PIRATE",
+                                    "hostile": true,
+                                    "auto_blueprint": "SHIPS_PIRATE",
+                                    "source": "raw/gamedata/events_ships.xml",
+                                    "branches": [
+                                      {
+                                        "on": "destroyed",
+                                        "child": {
+                                          "effects": [],
+                                          "node": {
+                                            "kind": "chance",
+                                            "list": "DESTROYED_DEFAULT",
+                                            "source": "raw/gamedata/events.xml",
+                                            "odds_basis": "unweighted",
+                                            "options": [
+                                              {
+                                                "share": null,
+                                                "child": {
+                                                  "text": {
+                                                    "value": "The ship explodes, leaving behind a substantial collection of useful scrap material.",
+                                                    "ref": "event_DESTROYED_DEFAULT_1_text"
+                                                  },
+                                                  "effects": [
+                                                    {
+                                                      "kind": "reward",
+                                                      "level": "MED",
+                                                      "tier": "standard"
+                                                    }
+                                                  ]
+                                                }
+                                              },
+                                              {
+                                                "share": null,
+                                                "child": {
+                                                  "text": {
+                                                    "value": "The ship explodes, leaving behind a substantial collection of useful scrap material.",
+                                                    "ref": "event_DESTROYED_DEFAULT_1_text"
+                                                  },
+                                                  "effects": [
+                                                    {
+                                                      "kind": "reward",
+                                                      "level": "MED",
+                                                      "tier": "standard"
+                                                    }
+                                                  ]
+                                                }
+                                              }
+                                            ]
+                                          }
+                                        }
+                                      },
+                                      {
+                                        "on": "deadCrew",
+                                        "child": {
+                                          "effects": [],
+                                          "node": {
+                                            "kind": "chance",
+                                            "list": "DEAD_CREW_DEFAULT",
+                                            "source": "raw/gamedata/events.xml",
+                                            "odds_basis": "unweighted",
+                                            "options": [
+                                              {
+                                                "share": null,
+                                                "child": {
+                                                  "text": {
+                                                    "value": "There are no more life-signs remaining on the ship. You strip it of useful materials.",
+                                                    "ref": "event_DEAD_CREW_DEFAULT_1_text"
+                                                  },
+                                                  "effects": [
+                                                    {
+                                                      "kind": "reward",
+                                                      "level": "MED",
+                                                      "tier": "standard"
+                                                    }
+                                                  ]
+                                                }
+                                              },
+                                              {
+                                                "share": null,
+                                                "child": {
+                                                  "text": {
+                                                    "value": "There are no more life-signs remaining on the ship. You strip it of useful materials.",
+                                                    "ref": "event_DEAD_CREW_DEFAULT_1_text"
+                                                  },
+                                                  "effects": [
+                                                    {
+                                                      "kind": "reward",
+                                                      "level": "MED",
+                                                      "tier": "standard"
+                                                    }
+                                                  ]
+                                                }
+                                              },
+                                              {
+                                                "share": null,
+                                                "child": {
+                                                  "text": {
+                                                    "value": "There are no more life-signs remaining on the ship. You strip it of useful materials.",
+                                                    "ref": "event_DEAD_CREW_DEFAULT_1_text"
+                                                  },
+                                                  "effects": [
+                                                    {
+                                                      "kind": "reward",
+                                                      "level": "MED",
+                                                      "tier": "standard"
+                                                    }
+                                                  ]
+                                                }
+                                              },
+                                              {
+                                                "share": null,
+                                                "child": {
+                                                  "text": {
+                                                    "value": "There are no more life-signs remaining on the ship. You strip it of useful materials.",
+                                                    "ref": "event_DEAD_CREW_DEFAULT_1_text"
+                                                  },
+                                                  "effects": [
+                                                    {
+                                                      "kind": "reward",
+                                                      "level": "HIGH",
+                                                      "tier": "standard"
+                                                    }
+                                                  ]
+                                                }
+                                              },
+                                              {
+                                                "share": null,
+                                                "child": {
+                                                  "text": {
+                                                    "value": "There are no more life-signs remaining on the ship. You strip it of useful materials.",
+                                                    "ref": "event_DEAD_CREW_DEFAULT_1_text"
+                                                  },
+                                                  "effects": [
+                                                    {
+                                                      "kind": "reward",
+                                                      "level": "HIGH",
+                                                      "tier": "standard"
+                                                    }
+                                                  ]
+                                                }
+                                              },
+                                              {
+                                                "share": null,
+                                                "child": {
+                                                  "text": {
+                                                    "value": "With the crew dead, you are able to take the fuel out of storage. You also take all the scrap you can manage.",
+                                                    "ref": "event_DEAD_CREW_DEFAULT_6_text"
+                                                  },
+                                                  "effects": [
+                                                    {
+                                                      "kind": "reward",
+                                                      "level": "HIGH",
+                                                      "tier": "fuel"
+                                                    }
+                                                  ]
+                                                }
+                                              },
+                                              {
+                                                "share": null,
+                                                "child": {
+                                                  "text": {
+                                                    "value": "With the crew dead, you are able to take the fuel out of storage. You also take all the scrap you can manage.",
+                                                    "ref": "event_DEAD_CREW_DEFAULT_6_text"
+                                                  },
+                                                  "effects": [
+                                                    {
+                                                      "kind": "reward",
+                                                      "level": "HIGH",
+                                                      "tier": "fuel"
+                                                    }
+                                                  ]
+                                                }
+                                              },
+                                              {
+                                                "share": null,
+                                                "child": {
+                                                  "text": {
+                                                    "value": "Now that their ship has been emptied of hostiles, you search it. Eventually you find a prisoner who offers to join your crew.",
+                                                    "ref": "event_DEAD_CREW_DEFAULT_8_text"
+                                                  },
+                                                  "effects": [
+                                                    {
+                                                      "kind": "crew_gain",
+                                                      "amount": 1
+                                                    },
+                                                    {
+                                                      "kind": "reward",
+                                                      "level": "LOW",
+                                                      "tier": "scrap_only"
+                                                    }
+                                                  ]
+                                                }
+                                              },
+                                              {
+                                                "share": null,
+                                                "child": {
+                                                  "text": {
+                                                    "value": "You find a weapon system on their ship. With no crew to stop you, you can install it on your own.",
+                                                    "ref": "event_DEAD_CREW_DEFAULT_9_text"
+                                                  },
+                                                  "effects": [
+                                                    {
+                                                      "kind": "reward",
+                                                      "level": "LOW",
+                                                      "tier": "weapon"
+                                                    }
+                                                  ]
+                                                }
+                                              }
+                                            ]
+                                          }
+                                        }
+                                      },
+                                      {
+                                        "on": "surrender",
+                                        "child": {
+                                          "text": {
+                                            "value": "\"Alright, you win! Here's some equipment from our stores, leave us alone!\"",
+                                            "ref": "PIRATE_SURRENDER_TEXT",
+                                            "variants": 23
+                                          },
+                                          "name": "PIRATE_SURRENDER",
+                                          "source": "raw/gamedata/events.xml",
+                                          "effects": [],
+                                          "node": {
+                                            "kind": "decision",
+                                            "options": [
+                                              {
+                                                "label": "Accept their offer.",
+                                                "gate": null,
+                                                "child": {
+                                                  "effects": [
+                                                    {
+                                                      "kind": "ship_hostility",
+                                                      "hostile": false
+                                                    },
+                                                    {
+                                                      "kind": "reward",
+                                                      "level": "RANDOM",
+                                                      "tier": "stuff"
+                                                    }
+                                                  ]
+                                                },
+                                                "label_ref": "event_PIRATE_SURRENDER_c1_choice"
+                                              },
+                                              {
+                                                "label": "We will not accept surrender!",
+                                                "gate": null,
+                                                "child": {
+                                                  "effects": []
+                                                },
+                                                "label_ref": "event_PIRATE_SURRENDER_c2_choice"
+                                              }
+                                            ]
+                                          }
+                                        },
+                                        "chance": "0.5",
+                                        "min": "3",
+                                        "max": "4"
+                                      },
+                                      {
+                                        "on": "escape",
+                                        "child": {
+                                          "text": {
+                                            "value": "The enemy ship appears to be powering up its FTL. It's trying to escape!",
+                                            "ref": "event_PIRATE_ESCAPE_text"
+                                          },
+                                          "name": "PIRATE_ESCAPE",
+                                          "source": "raw/gamedata/events.xml",
+                                          "effects": [
+                                            {
+                                              "kind": "ship_hostility",
+                                              "hostile": true
+                                            }
+                                          ]
+                                        },
+                                        "chance": "0.5",
+                                        "min": "2",
+                                        "max": "4"
+                                      },
+                                      {
+                                        "on": "gotaway",
+                                        "child": {
+                                          "text": {
+                                            "value": "The pirate jumped away.",
+                                            "ref": "ship_PIRATE_gotaway_text"
+                                          },
+                                          "effects": []
+                                        }
+                                      }
+                                    ]
+                                  }
+                                },
+                                "label_ref": "event_DOCK_DRONE_SALESMAN_c6_choice"
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    ]
+                  }
+                },
+                "label_ref": "event_CONTACT_PIRATE_SALESMAN_c1_choice"
+              },
+              {
+                "label": "This seems dangerous, leave.",
+                "gate": null,
+                "child": {
+                  "text": {
+                    "value": "As soon as you start to reverse your ship, the pirate reveals hidden weaponry and sets off in pursuit. You'll have to fight him to escape!",
+                    "ref": "event_CONTACT_PIRATE_SALESMAN_c2_text"
+                  },
+                  "effects": [],
+                  "node": {
+                    "kind": "combat",
+                    "ship": "PIRATE",
+                    "hostile": true,
+                    "auto_blueprint": "SHIPS_PIRATE",
+                    "source": "raw/gamedata/events_ships.xml",
+                    "branches": [
+                      {
+                        "on": "destroyed",
+                        "child": {
+                          "effects": [],
+                          "node": {
+                            "kind": "chance",
+                            "list": "DESTROYED_DEFAULT",
+                            "source": "raw/gamedata/events.xml",
+                            "odds_basis": "unweighted",
+                            "options": [
+                              {
+                                "share": null,
+                                "child": {
+                                  "text": {
+                                    "value": "The ship explodes, leaving behind a substantial collection of useful scrap material.",
+                                    "ref": "event_DESTROYED_DEFAULT_1_text"
+                                  },
+                                  "effects": [
+                                    {
+                                      "kind": "reward",
+                                      "level": "MED",
+                                      "tier": "standard"
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "share": null,
+                                "child": {
+                                  "text": {
+                                    "value": "The ship explodes, leaving behind a substantial collection of useful scrap material.",
+                                    "ref": "event_DESTROYED_DEFAULT_1_text"
+                                  },
+                                  "effects": [
+                                    {
+                                      "kind": "reward",
+                                      "level": "MED",
+                                      "tier": "standard"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      },
+                      {
+                        "on": "deadCrew",
+                        "child": {
+                          "effects": [],
+                          "node": {
+                            "kind": "chance",
+                            "list": "DEAD_CREW_DEFAULT",
+                            "source": "raw/gamedata/events.xml",
+                            "odds_basis": "unweighted",
+                            "options": [
+                              {
+                                "share": null,
+                                "child": {
+                                  "text": {
+                                    "value": "There are no more life-signs remaining on the ship. You strip it of useful materials.",
+                                    "ref": "event_DEAD_CREW_DEFAULT_1_text"
+                                  },
+                                  "effects": [
+                                    {
+                                      "kind": "reward",
+                                      "level": "MED",
+                                      "tier": "standard"
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "share": null,
+                                "child": {
+                                  "text": {
+                                    "value": "There are no more life-signs remaining on the ship. You strip it of useful materials.",
+                                    "ref": "event_DEAD_CREW_DEFAULT_1_text"
+                                  },
+                                  "effects": [
+                                    {
+                                      "kind": "reward",
+                                      "level": "MED",
+                                      "tier": "standard"
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "share": null,
+                                "child": {
+                                  "text": {
+                                    "value": "There are no more life-signs remaining on the ship. You strip it of useful materials.",
+                                    "ref": "event_DEAD_CREW_DEFAULT_1_text"
+                                  },
+                                  "effects": [
+                                    {
+                                      "kind": "reward",
+                                      "level": "MED",
+                                      "tier": "standard"
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "share": null,
+                                "child": {
+                                  "text": {
+                                    "value": "There are no more life-signs remaining on the ship. You strip it of useful materials.",
+                                    "ref": "event_DEAD_CREW_DEFAULT_1_text"
+                                  },
+                                  "effects": [
+                                    {
+                                      "kind": "reward",
+                                      "level": "HIGH",
+                                      "tier": "standard"
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "share": null,
+                                "child": {
+                                  "text": {
+                                    "value": "There are no more life-signs remaining on the ship. You strip it of useful materials.",
+                                    "ref": "event_DEAD_CREW_DEFAULT_1_text"
+                                  },
+                                  "effects": [
+                                    {
+                                      "kind": "reward",
+                                      "level": "HIGH",
+                                      "tier": "standard"
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "share": null,
+                                "child": {
+                                  "text": {
+                                    "value": "With the crew dead, you are able to take the fuel out of storage. You also take all the scrap you can manage.",
+                                    "ref": "event_DEAD_CREW_DEFAULT_6_text"
+                                  },
+                                  "effects": [
+                                    {
+                                      "kind": "reward",
+                                      "level": "HIGH",
+                                      "tier": "fuel"
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "share": null,
+                                "child": {
+                                  "text": {
+                                    "value": "With the crew dead, you are able to take the fuel out of storage. You also take all the scrap you can manage.",
+                                    "ref": "event_DEAD_CREW_DEFAULT_6_text"
+                                  },
+                                  "effects": [
+                                    {
+                                      "kind": "reward",
+                                      "level": "HIGH",
+                                      "tier": "fuel"
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "share": null,
+                                "child": {
+                                  "text": {
+                                    "value": "Now that their ship has been emptied of hostiles, you search it. Eventually you find a prisoner who offers to join your crew.",
+                                    "ref": "event_DEAD_CREW_DEFAULT_8_text"
+                                  },
+                                  "effects": [
+                                    {
+                                      "kind": "crew_gain",
+                                      "amount": 1
+                                    },
+                                    {
+                                      "kind": "reward",
+                                      "level": "LOW",
+                                      "tier": "scrap_only"
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "share": null,
+                                "child": {
+                                  "text": {
+                                    "value": "You find a weapon system on their ship. With no crew to stop you, you can install it on your own.",
+                                    "ref": "event_DEAD_CREW_DEFAULT_9_text"
+                                  },
+                                  "effects": [
+                                    {
+                                      "kind": "reward",
+                                      "level": "LOW",
+                                      "tier": "weapon"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      },
+                      {
+                        "on": "surrender",
+                        "child": {
+                          "text": {
+                            "value": "\"Alright, you win! Here's some equipment from our stores, leave us alone!\"",
+                            "ref": "PIRATE_SURRENDER_TEXT",
+                            "variants": 23
+                          },
+                          "name": "PIRATE_SURRENDER",
+                          "source": "raw/gamedata/events.xml",
+                          "effects": [],
+                          "node": {
+                            "kind": "decision",
+                            "options": [
+                              {
+                                "label": "Accept their offer.",
+                                "gate": null,
+                                "child": {
+                                  "effects": [
+                                    {
+                                      "kind": "ship_hostility",
+                                      "hostile": false
+                                    },
+                                    {
+                                      "kind": "reward",
+                                      "level": "RANDOM",
+                                      "tier": "stuff"
+                                    }
+                                  ]
+                                },
+                                "label_ref": "event_PIRATE_SURRENDER_c1_choice"
+                              },
+                              {
+                                "label": "We will not accept surrender!",
+                                "gate": null,
+                                "child": {
+                                  "effects": []
+                                },
+                                "label_ref": "event_PIRATE_SURRENDER_c2_choice"
+                              }
+                            ]
+                          }
+                        },
+                        "chance": "0.5",
+                        "min": "3",
+                        "max": "4"
+                      },
+                      {
+                        "on": "escape",
+                        "child": {
+                          "text": {
+                            "value": "The enemy ship appears to be powering up its FTL. It's trying to escape!",
+                            "ref": "event_PIRATE_ESCAPE_text"
+                          },
+                          "name": "PIRATE_ESCAPE",
+                          "source": "raw/gamedata/events.xml",
+                          "effects": [
+                            {
+                              "kind": "ship_hostility",
+                              "hostile": true
+                            }
+                          ]
+                        },
+                        "chance": "0.5",
+                        "min": "2",
+                        "max": "4"
+                      },
+                      {
+                        "on": "gotaway",
+                        "child": {
+                          "text": {
+                            "value": "The pirate jumped away.",
+                            "ref": "ship_PIRATE_gotaway_text"
+                          },
+                          "effects": []
+                        }
+                      }
+                    ]
+                  }
+                },
+                "label_ref": "event_CONTACT_PIRATE_SALESMAN_c2_choice"
+              },
+              {
+                "label": "(Slug) \"Sir: We can dock, but I sense that we better plan on making a purchase...\"",
+                "gate": {
+                  "req": "slug",
+                  "label": "Slug"
+                },
+                "child": {
+                  "effects": [],
+                  "node": {
+                    "kind": "chance",
+                    "list": "DOCK_PIRATE_SALESMAN",
+                    "source": "raw/gamedata/newEvents.xml",
+                    "odds_basis": "unweighted",
+                    "options": [
+                      {
+                        "share": null,
+                        "child": {
+                          "text": {
+                            "value": "A human in an exquisite suit meets you on board. \"Welcome to my ship! We specialize in drones of all kinds, can I interest you in any?\"",
+                            "ref": "event_DOCK_DRONE_SALESMAN_text"
+                          },
+                          "name": "DOCK_DRONE_SALESMAN",
+                          "source": "raw/gamedata/newEvents.xml",
+                          "effects": [],
+                          "node": {
+                            "kind": "decision",
+                            "options": [
+                              {
+                                "label": "Buy some Drone parts.",
+                                "gate": null,
+                                "child": {
+                                  "effects": [
+                                    {
+                                      "kind": "resource",
+                                      "resource": "scrap",
+                                      "min": -25,
+                                      "max": -25
+                                    },
+                                    {
+                                      "kind": "resource",
+                                      "resource": "drones",
+                                      "min": 5,
+                                      "max": 5
+                                    }
+                                  ]
+                                },
+                                "label_ref": "event_DOCK_DRONE_SALESMAN_c1_choice"
+                              },
+                              {
+                                "label": "Buy a Drone schematic.",
+                                "gate": null,
+                                "child": {
+                                  "effects": [
+                                    {
+                                      "kind": "resource",
+                                      "resource": "scrap",
+                                      "min": -35,
+                                      "max": -25
+                                    },
+                                    {
+                                      "kind": "item",
+                                      "item_kind": "drone",
+                                      "id": "RANDOM",
+                                      "label": "RANDOM"
+                                    }
+                                  ]
+                                },
+                                "label_ref": "event_DOCK_DRONE_SALESMAN_c2_choice"
+                              },
+                              {
+                                "label": "Buy a Drone system upgrade.",
+                                "gate": {
+                                  "req": "drones",
+                                  "label": "Drone Part",
+                                  "max_lvl": "3",
+                                  "max_group": "0",
+                                  "blue": "false"
+                                },
+                                "child": {
+                                  "effects": [
+                                    {
+                                      "kind": "resource",
+                                      "resource": "scrap",
+                                      "min": -20,
+                                      "max": -15
+                                    },
+                                    {
+                                      "kind": "upgrade",
+                                      "system": "drones",
+                                      "amount": 1
+                                    }
+                                  ]
+                                },
+                                "label_ref": "event_DOCK_DRONE_SALESMAN_c3_choice"
+                              },
+                              {
+                                "label": "Buy a Drone system upgrade.",
+                                "gate": {
+                                  "req": "drones",
+                                  "label": "Drone Part",
+                                  "max_lvl": "5",
+                                  "min_level": "4",
+                                  "max_group": "0",
+                                  "blue": "false"
+                                },
+                                "child": {
+                                  "effects": [
+                                    {
+                                      "kind": "resource",
+                                      "resource": "scrap",
+                                      "min": -33,
+                                      "max": -25
+                                    },
+                                    {
+                                      "kind": "upgrade",
+                                      "system": "drones",
+                                      "amount": 1
+                                    }
+                                  ]
+                                },
+                                "label_ref": "event_DOCK_DRONE_SALESMAN_c3_choice"
+                              },
+                              {
+                                "label": "Buy a Drone system upgrade.",
+                                "gate": {
+                                  "req": "drones",
+                                  "label": "Drone Part",
+                                  "max_lvl": "7",
+                                  "min_level": "6",
+                                  "max_group": "0",
+                                  "blue": "false"
+                                },
+                                "child": {
+                                  "effects": [
+                                    {
+                                      "kind": "resource",
+                                      "resource": "scrap",
+                                      "min": -65,
+                                      "max": -50
+                                    },
+                                    {
+                                      "kind": "upgrade",
+                                      "system": "drones",
+                                      "amount": 1
+                                    }
+                                  ]
+                                },
+                                "label_ref": "event_DOCK_DRONE_SALESMAN_c3_choice"
+                              },
+                              {
+                                "label": "Buy nothing.",
+                                "gate": null,
+                                "child": {
+                                  "text": {
+                                    "value": "\"Ah, I'm sorry to hear that! Pleasant journeys.\" Once back to the helm, a series of explosions rocks your ship. The pirate ship has powered its weapons! You receive a message, \"You shouldn't waste people's time Captain!\"",
+                                    "ref": "event_DOCK_DRONE_SALESMAN_c6_text"
+                                  },
+                                  "effects": [
+                                    {
+                                      "kind": "system_damage",
+                                      "amount": 1,
+                                      "system": "engines"
+                                    },
+                                    {
+                                      "kind": "hazard",
+                                      "hazard": "random"
+                                    },
+                                    {
+                                      "kind": "system_damage",
+                                      "amount": 1,
+                                      "system": "room"
+                                    },
+                                    {
+                                      "kind": "hazard",
+                                      "hazard": "random"
+                                    },
+                                    {
+                                      "kind": "system_damage",
+                                      "amount": 1,
+                                      "system": "room"
+                                    },
+                                    {
+                                      "kind": "hazard",
+                                      "hazard": "random"
+                                    }
+                                  ],
+                                  "node": {
+                                    "kind": "combat",
+                                    "ship": "PIRATE",
+                                    "hostile": true,
+                                    "auto_blueprint": "SHIPS_PIRATE",
+                                    "source": "raw/gamedata/events_ships.xml",
+                                    "branches": [
+                                      {
+                                        "on": "destroyed",
+                                        "child": {
+                                          "effects": [],
+                                          "node": {
+                                            "kind": "chance",
+                                            "list": "DESTROYED_DEFAULT",
+                                            "source": "raw/gamedata/events.xml",
+                                            "odds_basis": "unweighted",
+                                            "options": [
+                                              {
+                                                "share": null,
+                                                "child": {
+                                                  "text": {
+                                                    "value": "The ship explodes, leaving behind a substantial collection of useful scrap material.",
+                                                    "ref": "event_DESTROYED_DEFAULT_1_text"
+                                                  },
+                                                  "effects": [
+                                                    {
+                                                      "kind": "reward",
+                                                      "level": "MED",
+                                                      "tier": "standard"
+                                                    }
+                                                  ]
+                                                }
+                                              },
+                                              {
+                                                "share": null,
+                                                "child": {
+                                                  "text": {
+                                                    "value": "The ship explodes, leaving behind a substantial collection of useful scrap material.",
+                                                    "ref": "event_DESTROYED_DEFAULT_1_text"
+                                                  },
+                                                  "effects": [
+                                                    {
+                                                      "kind": "reward",
+                                                      "level": "MED",
+                                                      "tier": "standard"
+                                                    }
+                                                  ]
+                                                }
+                                              }
+                                            ]
+                                          }
+                                        }
+                                      },
+                                      {
+                                        "on": "deadCrew",
+                                        "child": {
+                                          "effects": [],
+                                          "node": {
+                                            "kind": "chance",
+                                            "list": "DEAD_CREW_DEFAULT",
+                                            "source": "raw/gamedata/events.xml",
+                                            "odds_basis": "unweighted",
+                                            "options": [
+                                              {
+                                                "share": null,
+                                                "child": {
+                                                  "text": {
+                                                    "value": "There are no more life-signs remaining on the ship. You strip it of useful materials.",
+                                                    "ref": "event_DEAD_CREW_DEFAULT_1_text"
+                                                  },
+                                                  "effects": [
+                                                    {
+                                                      "kind": "reward",
+                                                      "level": "MED",
+                                                      "tier": "standard"
+                                                    }
+                                                  ]
+                                                }
+                                              },
+                                              {
+                                                "share": null,
+                                                "child": {
+                                                  "text": {
+                                                    "value": "There are no more life-signs remaining on the ship. You strip it of useful materials.",
+                                                    "ref": "event_DEAD_CREW_DEFAULT_1_text"
+                                                  },
+                                                  "effects": [
+                                                    {
+                                                      "kind": "reward",
+                                                      "level": "MED",
+                                                      "tier": "standard"
+                                                    }
+                                                  ]
+                                                }
+                                              },
+                                              {
+                                                "share": null,
+                                                "child": {
+                                                  "text": {
+                                                    "value": "There are no more life-signs remaining on the ship. You strip it of useful materials.",
+                                                    "ref": "event_DEAD_CREW_DEFAULT_1_text"
+                                                  },
+                                                  "effects": [
+                                                    {
+                                                      "kind": "reward",
+                                                      "level": "MED",
+                                                      "tier": "standard"
+                                                    }
+                                                  ]
+                                                }
+                                              },
+                                              {
+                                                "share": null,
+                                                "child": {
+                                                  "text": {
+                                                    "value": "There are no more life-signs remaining on the ship. You strip it of useful materials.",
+                                                    "ref": "event_DEAD_CREW_DEFAULT_1_text"
+                                                  },
+                                                  "effects": [
+                                                    {
+                                                      "kind": "reward",
+                                                      "level": "HIGH",
+                                                      "tier": "standard"
+                                                    }
+                                                  ]
+                                                }
+                                              },
+                                              {
+                                                "share": null,
+                                                "child": {
+                                                  "text": {
+                                                    "value": "There are no more life-signs remaining on the ship. You strip it of useful materials.",
+                                                    "ref": "event_DEAD_CREW_DEFAULT_1_text"
+                                                  },
+                                                  "effects": [
+                                                    {
+                                                      "kind": "reward",
+                                                      "level": "HIGH",
+                                                      "tier": "standard"
+                                                    }
+                                                  ]
+                                                }
+                                              },
+                                              {
+                                                "share": null,
+                                                "child": {
+                                                  "text": {
+                                                    "value": "With the crew dead, you are able to take the fuel out of storage. You also take all the scrap you can manage.",
+                                                    "ref": "event_DEAD_CREW_DEFAULT_6_text"
+                                                  },
+                                                  "effects": [
+                                                    {
+                                                      "kind": "reward",
+                                                      "level": "HIGH",
+                                                      "tier": "fuel"
+                                                    }
+                                                  ]
+                                                }
+                                              },
+                                              {
+                                                "share": null,
+                                                "child": {
+                                                  "text": {
+                                                    "value": "With the crew dead, you are able to take the fuel out of storage. You also take all the scrap you can manage.",
+                                                    "ref": "event_DEAD_CREW_DEFAULT_6_text"
+                                                  },
+                                                  "effects": [
+                                                    {
+                                                      "kind": "reward",
+                                                      "level": "HIGH",
+                                                      "tier": "fuel"
+                                                    }
+                                                  ]
+                                                }
+                                              },
+                                              {
+                                                "share": null,
+                                                "child": {
+                                                  "text": {
+                                                    "value": "Now that their ship has been emptied of hostiles, you search it. Eventually you find a prisoner who offers to join your crew.",
+                                                    "ref": "event_DEAD_CREW_DEFAULT_8_text"
+                                                  },
+                                                  "effects": [
+                                                    {
+                                                      "kind": "crew_gain",
+                                                      "amount": 1
+                                                    },
+                                                    {
+                                                      "kind": "reward",
+                                                      "level": "LOW",
+                                                      "tier": "scrap_only"
+                                                    }
+                                                  ]
+                                                }
+                                              },
+                                              {
+                                                "share": null,
+                                                "child": {
+                                                  "text": {
+                                                    "value": "You find a weapon system on their ship. With no crew to stop you, you can install it on your own.",
+                                                    "ref": "event_DEAD_CREW_DEFAULT_9_text"
+                                                  },
+                                                  "effects": [
+                                                    {
+                                                      "kind": "reward",
+                                                      "level": "LOW",
+                                                      "tier": "weapon"
+                                                    }
+                                                  ]
+                                                }
+                                              }
+                                            ]
+                                          }
+                                        }
+                                      },
+                                      {
+                                        "on": "surrender",
+                                        "child": {
+                                          "text": {
+                                            "value": "\"Alright, you win! Here's some equipment from our stores, leave us alone!\"",
+                                            "ref": "PIRATE_SURRENDER_TEXT",
+                                            "variants": 23
+                                          },
+                                          "name": "PIRATE_SURRENDER",
+                                          "source": "raw/gamedata/events.xml",
+                                          "effects": [],
+                                          "node": {
+                                            "kind": "decision",
+                                            "options": [
+                                              {
+                                                "label": "Accept their offer.",
+                                                "gate": null,
+                                                "child": {
+                                                  "effects": [
+                                                    {
+                                                      "kind": "ship_hostility",
+                                                      "hostile": false
+                                                    },
+                                                    {
+                                                      "kind": "reward",
+                                                      "level": "RANDOM",
+                                                      "tier": "stuff"
+                                                    }
+                                                  ]
+                                                },
+                                                "label_ref": "event_PIRATE_SURRENDER_c1_choice"
+                                              },
+                                              {
+                                                "label": "We will not accept surrender!",
+                                                "gate": null,
+                                                "child": {
+                                                  "effects": []
+                                                },
+                                                "label_ref": "event_PIRATE_SURRENDER_c2_choice"
+                                              }
+                                            ]
+                                          }
+                                        },
+                                        "chance": "0.5",
+                                        "min": "3",
+                                        "max": "4"
+                                      },
+                                      {
+                                        "on": "escape",
+                                        "child": {
+                                          "text": {
+                                            "value": "The enemy ship appears to be powering up its FTL. It's trying to escape!",
+                                            "ref": "event_PIRATE_ESCAPE_text"
+                                          },
+                                          "name": "PIRATE_ESCAPE",
+                                          "source": "raw/gamedata/events.xml",
+                                          "effects": [
+                                            {
+                                              "kind": "ship_hostility",
+                                              "hostile": true
+                                            }
+                                          ]
+                                        },
+                                        "chance": "0.5",
+                                        "min": "2",
+                                        "max": "4"
+                                      },
+                                      {
+                                        "on": "gotaway",
+                                        "child": {
+                                          "text": {
+                                            "value": "The pirate jumped away.",
+                                            "ref": "ship_PIRATE_gotaway_text"
+                                          },
+                                          "effects": []
+                                        }
+                                      }
+                                    ]
+                                  }
+                                },
+                                "label_ref": "event_DOCK_DRONE_SALESMAN_c6_choice"
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    ]
+                  }
+                },
+                "label_ref": "event_CONTACT_PIRATE_SALESMAN_c3_choice"
+              },
+              {
+                "label": "(Hacking) Disable their Weapon system before docking.",
+                "gate": {
+                  "req": "hacking",
+                  "label": "Hacking"
+                },
+                "child": {
+                  "text": {
+                    "value": "You receive a hail as soon as your Hacking system finishes: \"What have you done!? You can never trust a Federation ship! Here, take your 'standard toll'. I really should do business elsewhere, scum.\"",
+                    "ref": "event_CONTACT_PIRATE_SALESMAN_c4_text"
+                  },
+                  "effects": [
+                    {
+                      "kind": "reward",
+                      "level": "LOW",
+                      "tier": "scrap_only"
+                    }
+                  ]
+                },
+                "label_ref": "event_CONTACT_PIRATE_SALESMAN_c4_choice",
+                "hidden": true
+              }
+            ]
+          }
+        },
+        "label_ref": "event_PIRATE_SALESMAN_c1_choice"
+      },
+      {
+        "label": "Attack him before he can attack!",
+        "gate": null,
+        "child": {
+          "effects": [],
+          "node": {
+            "kind": "combat",
+            "ship": "PIRATE",
+            "hostile": true,
+            "auto_blueprint": "SHIPS_PIRATE",
+            "source": "raw/gamedata/events_ships.xml",
+            "branches": [
+              {
+                "on": "destroyed",
+                "child": {
+                  "effects": [],
+                  "node": {
+                    "kind": "chance",
+                    "list": "DESTROYED_DEFAULT",
+                    "source": "raw/gamedata/events.xml",
+                    "odds_basis": "unweighted",
+                    "options": [
+                      {
+                        "share": null,
+                        "child": {
+                          "text": {
+                            "value": "The ship explodes, leaving behind a substantial collection of useful scrap material.",
+                            "ref": "event_DESTROYED_DEFAULT_1_text"
+                          },
+                          "effects": [
+                            {
+                              "kind": "reward",
+                              "level": "MED",
+                              "tier": "standard"
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "share": null,
+                        "child": {
+                          "text": {
+                            "value": "The ship explodes, leaving behind a substantial collection of useful scrap material.",
+                            "ref": "event_DESTROYED_DEFAULT_1_text"
+                          },
+                          "effects": [
+                            {
+                              "kind": "reward",
+                              "level": "MED",
+                              "tier": "standard"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                }
+              },
+              {
+                "on": "deadCrew",
+                "child": {
+                  "effects": [],
+                  "node": {
+                    "kind": "chance",
+                    "list": "DEAD_CREW_DEFAULT",
+                    "source": "raw/gamedata/events.xml",
+                    "odds_basis": "unweighted",
+                    "options": [
+                      {
+                        "share": null,
+                        "child": {
+                          "text": {
+                            "value": "There are no more life-signs remaining on the ship. You strip it of useful materials.",
+                            "ref": "event_DEAD_CREW_DEFAULT_1_text"
+                          },
+                          "effects": [
+                            {
+                              "kind": "reward",
+                              "level": "MED",
+                              "tier": "standard"
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "share": null,
+                        "child": {
+                          "text": {
+                            "value": "There are no more life-signs remaining on the ship. You strip it of useful materials.",
+                            "ref": "event_DEAD_CREW_DEFAULT_1_text"
+                          },
+                          "effects": [
+                            {
+                              "kind": "reward",
+                              "level": "MED",
+                              "tier": "standard"
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "share": null,
+                        "child": {
+                          "text": {
+                            "value": "There are no more life-signs remaining on the ship. You strip it of useful materials.",
+                            "ref": "event_DEAD_CREW_DEFAULT_1_text"
+                          },
+                          "effects": [
+                            {
+                              "kind": "reward",
+                              "level": "MED",
+                              "tier": "standard"
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "share": null,
+                        "child": {
+                          "text": {
+                            "value": "There are no more life-signs remaining on the ship. You strip it of useful materials.",
+                            "ref": "event_DEAD_CREW_DEFAULT_1_text"
+                          },
+                          "effects": [
+                            {
+                              "kind": "reward",
+                              "level": "HIGH",
+                              "tier": "standard"
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "share": null,
+                        "child": {
+                          "text": {
+                            "value": "There are no more life-signs remaining on the ship. You strip it of useful materials.",
+                            "ref": "event_DEAD_CREW_DEFAULT_1_text"
+                          },
+                          "effects": [
+                            {
+                              "kind": "reward",
+                              "level": "HIGH",
+                              "tier": "standard"
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "share": null,
+                        "child": {
+                          "text": {
+                            "value": "With the crew dead, you are able to take the fuel out of storage. You also take all the scrap you can manage.",
+                            "ref": "event_DEAD_CREW_DEFAULT_6_text"
+                          },
+                          "effects": [
+                            {
+                              "kind": "reward",
+                              "level": "HIGH",
+                              "tier": "fuel"
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "share": null,
+                        "child": {
+                          "text": {
+                            "value": "With the crew dead, you are able to take the fuel out of storage. You also take all the scrap you can manage.",
+                            "ref": "event_DEAD_CREW_DEFAULT_6_text"
+                          },
+                          "effects": [
+                            {
+                              "kind": "reward",
+                              "level": "HIGH",
+                              "tier": "fuel"
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "share": null,
+                        "child": {
+                          "text": {
+                            "value": "Now that their ship has been emptied of hostiles, you search it. Eventually you find a prisoner who offers to join your crew.",
+                            "ref": "event_DEAD_CREW_DEFAULT_8_text"
+                          },
+                          "effects": [
+                            {
+                              "kind": "crew_gain",
+                              "amount": 1
+                            },
+                            {
+                              "kind": "reward",
+                              "level": "LOW",
+                              "tier": "scrap_only"
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "share": null,
+                        "child": {
+                          "text": {
+                            "value": "You find a weapon system on their ship. With no crew to stop you, you can install it on your own.",
+                            "ref": "event_DEAD_CREW_DEFAULT_9_text"
+                          },
+                          "effects": [
+                            {
+                              "kind": "reward",
+                              "level": "LOW",
+                              "tier": "weapon"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                }
+              },
+              {
+                "on": "surrender",
+                "child": {
+                  "text": {
+                    "value": "\"Alright, you win! Here's some equipment from our stores, leave us alone!\"",
+                    "ref": "PIRATE_SURRENDER_TEXT",
+                    "variants": 23
+                  },
+                  "name": "PIRATE_SURRENDER",
+                  "source": "raw/gamedata/events.xml",
+                  "effects": [],
+                  "node": {
+                    "kind": "decision",
+                    "options": [
+                      {
+                        "label": "Accept their offer.",
+                        "gate": null,
+                        "child": {
+                          "effects": [
+                            {
+                              "kind": "ship_hostility",
+                              "hostile": false
+                            },
+                            {
+                              "kind": "reward",
+                              "level": "RANDOM",
+                              "tier": "stuff"
+                            }
+                          ]
+                        },
+                        "label_ref": "event_PIRATE_SURRENDER_c1_choice"
+                      },
+                      {
+                        "label": "We will not accept surrender!",
+                        "gate": null,
+                        "child": {
+                          "effects": []
+                        },
+                        "label_ref": "event_PIRATE_SURRENDER_c2_choice"
+                      }
+                    ]
+                  }
+                },
+                "chance": "0.5",
+                "min": "3",
+                "max": "4"
+              },
+              {
+                "on": "escape",
+                "child": {
+                  "text": {
+                    "value": "The enemy ship appears to be powering up its FTL. It's trying to escape!",
+                    "ref": "event_PIRATE_ESCAPE_text"
+                  },
+                  "name": "PIRATE_ESCAPE",
+                  "source": "raw/gamedata/events.xml",
+                  "effects": [
+                    {
+                      "kind": "ship_hostility",
+                      "hostile": true
+                    }
+                  ]
+                },
+                "chance": "0.5",
+                "min": "2",
+                "max": "4"
+              },
+              {
+                "on": "gotaway",
+                "child": {
+                  "text": {
+                    "value": "The pirate jumped away.",
+                    "ref": "ship_PIRATE_gotaway_text"
+                  },
+                  "effects": []
+                }
+              }
+            ]
+          }
+        },
+        "label_ref": "event_PIRATE_SALESMAN_c2_choice"
+      },
+      {
+        "label": "Quickly prepare to jump away.",
+        "gate": null,
+        "child": {
+          "effects": []
+        },
+        "label_ref": "event_PIRATE_SALESMAN_c3_choice"
+      }
+    ]
+  }
+}

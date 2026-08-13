@@ -1,0 +1,22 @@
+{
+  "schema": "ftl-event-tree/1",
+  "id": "STORE_LANIUS",
+  "slug": "store-lanius",
+  "title": "Store (Lanius)",
+  "extracted_from": "raw/gamedata/dlcEvents_anaerobic.xml",
+  "text": {
+    "value": "A large transport ship undergoing maintenance hails you. \"Greetings, friend. We're getting out of this sector as soon as this Coolant Shaft is fixed and I suggest you do the same. I half expect those damn metal freaks to come and try to melt down our ship at any moment. We're trying to offload some inventory - interested in buying something?\"",
+    "ref": "STORE_LANIUS",
+    "variants": 6
+  },
+  "name": "STORE_LANIUS",
+  "source": "raw/gamedata/dlcEvents_anaerobic.xml",
+  "effects": [
+    {
+      "kind": "store"
+    }
+  ],
+  "flags": {
+    "store": true
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "schema": "ftl-event-tree/1",
+  "id": "FREE_ITEMS",
+  "slug": "free-scrap-with-resources",
+  "title": "Free scrap with resources",
+  "extracted_from": "raw/gamedata/events.xml",
+  "text": {
+    "value": "You arrive in a system and immediately discover a pirate ship nearby. Strangely, scans indicate there are no lifeforms aboard. You salvage anything useful, but find no clue as to the whereabouts of the former crew.",
+    "ref": "FREE_ITEMS",
+    "variants": 6
+  },
+  "name": "FREE_ITEMS",
+  "source": "raw/gamedata/events.xml",
+  "effects": [
+    {
+      "kind": "reward",
+      "level": "MED",
+      "tier": "standard"
+    }
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "schema": "ftl-event-tree/1",
+  "id": "STALEMATE_SURRENDER",
+  "slug": "stalemate-surrender",
+  "title": "Stalemate surrender",
+  "extracted_from": "raw/gamedata/events.xml",
+  "text": {
+    "value": "The ship suddenly disables their weapons. There's no explanation and they don't respond to hails. It seems during the battle they lost some fuel cells from their storage. You quickly collect it and leave.",
+    "ref": "event_STALEMATE_SURRENDER_text"
+  },
+  "name": "STALEMATE_SURRENDER",
+  "source": "raw/gamedata/events.xml",
+  "effects": [
+    {
+      "kind": "resource",
+      "resource": "fuel",
+      "min": 2,
+      "max": 2
+    },
+    {
+      "kind": "ship_hostility",
+      "hostile": false
+    }
+  ]
+}

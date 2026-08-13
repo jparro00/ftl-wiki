@@ -1,0 +1,14 @@
+{
+  "schema": "ftl-event-tree/1",
+  "id": "BOSS_TEXT_2",
+  "slug": "boss-text-2",
+  "title": "Rebel Flagship, phase 2",
+  "extracted_from": "raw/gamedata/events_boss.xml",
+  "text": {
+    "value": "You chase down the flagship and discover it is heavily damaged from the previous fight. Scans indicate that it has redirected considerable power to its drones. Get ready for a fight.",
+    "ref": "event_BOSS_TEXT_2_text"
+  },
+  "name": "BOSS_TEXT_2",
+  "source": "raw/gamedata/events_boss.xml",
+  "effects": []
+}

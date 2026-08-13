@@ -1,0 +1,519 @@
+{
+  "schema": "ftl-event-tree/1",
+  "id": "STRANDED_BEACON",
+  "slug": "single-life-form-on-moon",
+  "title": "Single life form on moon",
+  "extracted_from": "raw/gamedata/events.xml",
+  "text": {
+    "value": "It appears the distress beacon is coming from the surface of a nearby moon. Your sensors are picking up a single life form.",
+    "ref": "event_STRANDED_BEACON_text"
+  },
+  "name": "STRANDED_BEACON",
+  "source": "raw/gamedata/events.xml",
+  "effects": [],
+  "flags": {
+    "unique": true,
+    "beacon": "distress"
+  },
+  "node": {
+    "kind": "decision",
+    "options": [
+      {
+        "label": "Go down to the surface to investigate.",
+        "gate": null,
+        "child": {
+          "effects": [],
+          "node": {
+            "kind": "chance",
+            "list": "STRANDED",
+            "source": "raw/gamedata/events.xml",
+            "odds_basis": "unweighted",
+            "options": [
+              {
+                "share": null,
+                "child": {
+                  "text": {
+                    "value": "You find a colony that seems to have been recently attacked. Exploring the devastation, you find a lone survivor.",
+                    "ref": "event_STRANDED_1_text"
+                  },
+                  "effects": [],
+                  "node": {
+                    "kind": "decision",
+                    "options": [
+                      {
+                        "label": "Invite him to join your crew.",
+                        "gate": null,
+                        "child": {
+                          "effects": [],
+                          "node": {
+                            "kind": "chance",
+                            "list": "STRANDED_CHARLIES",
+                            "dlc": true,
+                            "source": "raw/gamedata/events.xml",
+                            "odds_basis": "unweighted",
+                            "options": [
+                              {
+                                "share": null,
+                                "child": {
+                                  "text": {
+                                    "value": "He states that he was a weapons operator before being stranded. He happily offers his services for a time in exchange for \"getting off that rock\".",
+                                    "ref": "event_STRANDED_CHARLIES_1_text"
+                                  },
+                                  "effects": [
+                                    {
+                                      "kind": "crew_gain",
+                                      "amount": 1,
+                                      "name": "Charlie",
+                                      "skills": {
+                                        "weapons": 1
+                                      }
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "share": null,
+                                "child": {
+                                  "text": {
+                                    "value": "He states that he was a shield operator before being stranded. He happily offers his services for a time in exchange for \"getting off that rock\".",
+                                    "ref": "event_STRANDED_CHARLIES_2_text"
+                                  },
+                                  "effects": [
+                                    {
+                                      "kind": "crew_gain",
+                                      "amount": 1,
+                                      "name": "Charlie",
+                                      "skills": {
+                                        "shields": 1
+                                      }
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "share": null,
+                                "child": {
+                                  "text": {
+                                    "value": "He states that he was a pilot before being stranded. He happily offers his services for a time in exchange for \"getting off that rock\".",
+                                    "ref": "event_STRANDED_CHARLIES_3_text"
+                                  },
+                                  "effects": [
+                                    {
+                                      "kind": "crew_gain",
+                                      "amount": 1,
+                                      "name": "Charlie",
+                                      "skills": {
+                                        "pilot": 1
+                                      }
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "share": null,
+                                "child": {
+                                  "text": {
+                                    "value": "He states that he was an engineer before being stranded. He happily offers his services for a time in exchange for \"getting off that rock\".",
+                                    "ref": "event_STRANDED_CHARLIES_4_text"
+                                  },
+                                  "effects": [
+                                    {
+                                      "kind": "crew_gain",
+                                      "amount": 1,
+                                      "name": "Charlie",
+                                      "skills": {
+                                        "engines": 1
+                                      }
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "share": null,
+                                "child": {
+                                  "text": {
+                                    "value": "He states that he was an infantryman before being stranded. He happily offers his services for a time in exchange for \"getting off that rock\".",
+                                    "ref": "event_STRANDED_CHARLIES_5_text"
+                                  },
+                                  "effects": [
+                                    {
+                                      "kind": "crew_gain",
+                                      "amount": 1,
+                                      "name": "Charlie",
+                                      "skills": {
+                                        "combat": 1
+                                      }
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "share": null,
+                                "child": {
+                                  "text": {
+                                    "value": "He states that he was a shipwright before being stranded. He happily offers his services for a time in exchange for \"getting off that rock\".",
+                                    "ref": "event_STRANDED_CHARLIES_6_text"
+                                  },
+                                  "effects": [
+                                    {
+                                      "kind": "crew_gain",
+                                      "amount": 1,
+                                      "name": "Charlie",
+                                      "skills": {
+                                        "repair": 1
+                                      }
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          }
+                        },
+                        "label_ref": "event_STRANDED_1_c1_choice",
+                        "hidden": true,
+                        "dlc": true
+                      },
+                      {
+                        "label": "Take him home to his family on a nearby planet in this system.",
+                        "gate": null,
+                        "child": {
+                          "effects": [],
+                          "node": {
+                            "kind": "chance",
+                            "list": "FAMILY_RETURN",
+                            "source": "raw/gamedata/events.xml",
+                            "odds_basis": "unweighted",
+                            "options": [
+                              {
+                                "share": null,
+                                "child": {
+                                  "text": {
+                                    "value": "The family apparently owns one of the most valuable mining enterprises in the sector. For the safe return of his son, the patron of the family offers you a substantial reward.",
+                                    "ref": "event_FAMILY_RETURN_1_text"
+                                  },
+                                  "effects": [
+                                    {
+                                      "kind": "reward",
+                                      "level": "HIGH",
+                                      "tier": "scrap_only"
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "share": null,
+                                "child": {
+                                  "text": {
+                                    "value": "The survivor's family is of modest means, yet they manage to offer you a reward for your virtuous deed.",
+                                    "ref": "event_FAMILY_RETURN_2_text"
+                                  },
+                                  "effects": [
+                                    {
+                                      "kind": "reward",
+                                      "level": "MED",
+                                      "tier": "scrap_only"
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "share": null,
+                                "child": {
+                                  "text": {
+                                    "value": "Overjoyed with the return of their son, the family of the survivor arranges to repair your ship's hull as compensation.",
+                                    "ref": "event_FAMILY_RETURN_3_text"
+                                  },
+                                  "effects": [
+                                    {
+                                      "kind": "hull_repair",
+                                      "amount": 10
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          }
+                        },
+                        "label_ref": "event_STRANDED_1_c2_choice",
+                        "hidden": true
+                      }
+                    ]
+                  }
+                }
+              },
+              {
+                "share": null,
+                "child": {
+                  "text": {
+                    "value": "You find a man living alone in a cave. From the appearance of his wrecked ship, it seems he's been here for many years. He looks healthy, but his mental state is questionable.",
+                    "ref": "event_STRANDED_2_text"
+                  },
+                  "effects": [],
+                  "node": {
+                    "kind": "decision",
+                    "options": [
+                      {
+                        "label": "Bring him back to your ship in hopes of finding some help for him.",
+                        "gate": null,
+                        "child": {
+                          "effects": [],
+                          "node": {
+                            "kind": "chance",
+                            "list": "MADMAN",
+                            "source": "raw/gamedata/events.xml",
+                            "odds_basis": "unweighted",
+                            "options": [
+                              {
+                                "share": null,
+                                "child": {
+                                  "text": {
+                                    "value": "Once back in orbit, the man turns increasingly violent. Eventually he turns on your crew and manages to kill one before you can subdue him.",
+                                    "ref": "event_MADMAN_1_text"
+                                  },
+                                  "effects": [
+                                    {
+                                      "kind": "crew_loss",
+                                      "amount": 1,
+                                      "clone": true
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "share": null,
+                                "child": {
+                                  "text": {
+                                    "value": "He seems to improve immensely upon getting back to the ship. It might take a while for him to truly be well again, but until then he seems happy to serve as a member of your crew.",
+                                    "ref": "event_MADMAN_2_text"
+                                  },
+                                  "effects": [
+                                    {
+                                      "kind": "crew_gain",
+                                      "amount": 1,
+                                      "name": "Charlie"
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "share": null,
+                                "child": {
+                                  "text": {
+                                    "value": "Being back in space terrifies him. He goes mad and nearly blows a hole in the side of your ship with a makeshift explosive in an attempt to \"escape this metal prison.\" He dies in the explosion.",
+                                    "ref": "event_MADMAN_3_text"
+                                  },
+                                  "effects": [
+                                    {
+                                      "kind": "hull_damage",
+                                      "amount": 4
+                                    },
+                                    {
+                                      "kind": "system_damage",
+                                      "amount": 1,
+                                      "system": "random",
+                                      "dlc": true
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "share": null,
+                                "child": {
+                                  "text": {
+                                    "value": "It seems he was in worse health than we first thought. He collapses on the trip up to the ship. It doesn't look like he's going to make it...",
+                                    "ref": "event_MADMAN_4_text"
+                                  },
+                                  "effects": [],
+                                  "node": {
+                                    "kind": "decision",
+                                    "options": [
+                                      {
+                                        "label": "Continue...",
+                                        "gate": null,
+                                        "child": {
+                                          "effects": []
+                                        },
+                                        "label_ref": "continue"
+                                      },
+                                      {
+                                        "label": "(Improved Medbay) Quickly bring him to the medbay.",
+                                        "gate": {
+                                          "req": "medbay",
+                                          "label": "Medbay",
+                                          "lvl": "2"
+                                        },
+                                        "child": {
+                                          "text": {
+                                            "value": "Your improved medbay was able to resuscitate him. After a short time he recovers greatly saying, \"I really thought I was a goner... I haven't eaten for days. Would you mind if I stayed on your ship?\"",
+                                            "ref": "event_MADMAN_4_c2_text"
+                                          },
+                                          "effects": [
+                                            {
+                                              "kind": "crew_gain",
+                                              "amount": 1,
+                                              "name": "Charlie"
+                                            }
+                                          ]
+                                        },
+                                        "label_ref": "event_MADMAN_4_c2_choice",
+                                        "hidden": true
+                                      },
+                                      {
+                                        "label": "(Improved Clonebay) Quickly register him into the clonebay.",
+                                        "gate": {
+                                          "req": "clonebay",
+                                          "label": "Clone Bay",
+                                          "lvl": "2"
+                                        },
+                                        "child": {
+                                          "text": {
+                                            "value": "Your quick reaction allowed your Clonebay to revive him after he passes. After he steps out of the machine he states, \"How am I alive? Wasn't I just dying on some shuttle? Technology sure has changed.\"",
+                                            "ref": "event_MADMAN_4_c3_text"
+                                          },
+                                          "effects": [
+                                            {
+                                              "kind": "crew_gain",
+                                              "amount": 1,
+                                              "name": "Charlie"
+                                            }
+                                          ]
+                                        },
+                                        "label_ref": "event_MADMAN_4_c3_choice",
+                                        "hidden": true,
+                                        "dlc": true
+                                      }
+                                    ]
+                                  }
+                                }
+                              }
+                            ]
+                          }
+                        },
+                        "label_ref": "event_STRANDED_2_c1_choice",
+                        "hidden": true
+                      },
+                      {
+                        "label": "Leave the madman to his ravings, he's not worth the risk.",
+                        "gate": null,
+                        "child": {
+                          "effects": []
+                        },
+                        "label_ref": "event_STRANDED_2_c2_choice"
+                      },
+                      {
+                        "label": "(Improved Medbay) Bring him to your medbay.",
+                        "gate": {
+                          "req": "medbay",
+                          "label": "Medbay",
+                          "lvl": "2",
+                          "max_group": "0"
+                        },
+                        "child": {
+                          "text": {
+                            "value": "Once inside your medbay, the system is able to restore his body and undo some of the damage to his brain. Once awake he states, \"I feel almost like my old self again... Thank you. Please let me serve on your ship.\"",
+                            "ref": "event_STRANDED_2_c3_text"
+                          },
+                          "effects": [
+                            {
+                              "kind": "crew_gain",
+                              "amount": 1,
+                              "name": "Charlie"
+                            }
+                          ]
+                        },
+                        "label_ref": "event_STRANDED_2_c3_choice",
+                        "hidden": true
+                      },
+                      {
+                        "label": "(Advanced Medbay) Bring him to your medbay.",
+                        "gate": {
+                          "req": "medbay",
+                          "label": "Medbay",
+                          "lvl": "3",
+                          "max_group": "0"
+                        },
+                        "child": {
+                          "text": {
+                            "value": "Once inside your advanced medbay, the system is able to identify and minimize the trauma associated with being alone for so long. Once awake he states, \"I don't know how to repay you, I feel 10 years younger... Let me serve on your ship.\"",
+                            "ref": "event_STRANDED_2_c4_text"
+                          },
+                          "effects": [
+                            {
+                              "kind": "crew_gain",
+                              "amount": 1,
+                              "all_skills": 1,
+                              "name": "Charlie"
+                            }
+                          ]
+                        },
+                        "label_ref": "event_STRANDED_2_c4_choice",
+                        "hidden": true,
+                        "dlc": true
+                      },
+                      {
+                        "label": "(Slug Crew) \"Sir, allow me to assess his mental state.\"",
+                        "gate": {
+                          "req": "slug",
+                          "label": "Slug"
+                        },
+                        "child": {
+                          "effects": [],
+                          "node": {
+                            "kind": "chance",
+                            "list": "MADMAN_SLUG",
+                            "source": "raw/gamedata/events.xml",
+                            "odds_basis": "unweighted",
+                            "options": [
+                              {
+                                "share": null,
+                                "child": {
+                                  "text": {
+                                    "value": "You bring the ship closer. The Slug enters a trance-like state for 1 to 2 seconds, then quickly snaps out of it. He states, \"This person is clearly unstable. It is best we leave them alone.\"",
+                                    "ref": "event_MADMAN_SLUG_1_text"
+                                  },
+                                  "effects": []
+                                }
+                              },
+                              {
+                                "share": null,
+                                "child": {
+                                  "text": {
+                                    "value": "You bring the ship closer and the Slug, after a pause, says that the person is stable and with good intentions. You offer a position in your crew and it is graciously accepted.",
+                                    "ref": "event_MADMAN_SLUG_2_text"
+                                  },
+                                  "effects": [
+                                    {
+                                      "kind": "crew_gain",
+                                      "amount": 1,
+                                      "class": "human"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          }
+                        },
+                        "label_ref": "event_STRANDED_2_c5_choice",
+                        "hidden": true
+                      }
+                    ]
+                  }
+                }
+              }
+            ]
+          }
+        },
+        "label_ref": "event_STRANDED_BEACON_c1_choice",
+        "hidden": true
+      },
+      {
+        "label": "Ignore the signal.",
+        "gate": null,
+        "child": {
+          "effects": []
+        },
+        "label_ref": "event_STRANDED_BEACON_c2_choice"
+      }
+    ]
+  }
+}

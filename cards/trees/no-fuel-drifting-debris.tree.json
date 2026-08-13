@@ -1,0 +1,193 @@
+{
+  "schema": "ftl-event-tree/1",
+  "id": "FUEL_OFF_ROCK_WRECK",
+  "slug": "no-fuel-drifting-debris",
+  "title": "No fuel: drifting debris",
+  "extracted_from": "raw/gamedata/events_fuel.xml",
+  "text": {
+    "value": "As you await either salvation or death, your attention is drawn to a sea of debris drifting past the starboard view port. The chunks gliding by grow bigger in size until the stern of a Rock frigate, gutted in some distant war, comes into view.",
+    "ref": "event_FUEL_OFF_ROCK_WRECK_text"
+  },
+  "name": "FUEL_OFF_ROCK_WRECK",
+  "source": "raw/gamedata/events_fuel.xml",
+  "effects": [],
+  "node": {
+    "kind": "decision",
+    "options": [
+      {
+        "label": "Send an away team.",
+        "gate": null,
+        "child": {
+          "text": {
+            "value": "Perhaps there's some viable fuel left on board; a small away team boards the vessel.",
+            "ref": "event_FUEL_OFF_ROCK_WRECK_c1_text"
+          },
+          "effects": [],
+          "node": {
+            "kind": "decision",
+            "options": [
+              {
+                "label": "Report!",
+                "gate": null,
+                "child": {
+                  "effects": [],
+                  "node": {
+                    "kind": "chance",
+                    "list": "FUEL_OFF_ROCK_WRECK_LIST",
+                    "source": "raw/gamedata/events_fuel.xml",
+                    "odds_basis": "unweighted",
+                    "options": [
+                      {
+                        "share": null,
+                        "child": {
+                          "text": {
+                            "value": "A short time later the team returns with a stash of ammunition and scrap - but all the fuel on board is long gone.",
+                            "ref": "event_FUEL_OFF_ROCK_WRECK_LIST_1_text"
+                          },
+                          "effects": [
+                            {
+                              "kind": "reward",
+                              "level": "MED",
+                              "tier": "missiles"
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "share": null,
+                        "child": {
+                          "text": {
+                            "value": "One of the crew reports that the main computer was housed in this section and is still partially operational. They're able to download local telemetry as well the location of the ship's reserve fuel! Your map has been updated.",
+                            "ref": "event_FUEL_OFF_ROCK_WRECK_LIST_2_text"
+                          },
+                          "effects": [
+                            {
+                              "kind": "reveal_map"
+                            },
+                            {
+                              "kind": "reward",
+                              "level": "MED",
+                              "tier": "fuel_only"
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "share": null,
+                        "child": {
+                          "text": {
+                            "value": "The team returns home rather sooner than expected. Turns out just as they were making entry to the frigate, the ship's emergency fuel cell just happened to drift by!",
+                            "ref": "event_FUEL_OFF_ROCK_WRECK_LIST_3_text"
+                          },
+                          "effects": [
+                            {
+                              "kind": "reward",
+                              "level": "MED",
+                              "tier": "fuel_only"
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "share": null,
+                        "child": {
+                          "text": {
+                            "value": "The away team reports in, but then screams are heard and the comm goes dead! When it comes back online a Rockman can be heard - he's the lone survivor from the frigate's crew, and completely mad. He demands you pay a scrap ransom in return for your crew-member's life!",
+                            "ref": "event_FUEL_OFF_ROCK_WRECK_LIST_4_text"
+                          },
+                          "effects": [],
+                          "node": {
+                            "kind": "decision",
+                            "options": [
+                              {
+                                "label": "Pay.",
+                                "gate": null,
+                                "child": {
+                                  "text": {
+                                    "value": "Despite his fragile condition, the Rockman is good to his word and returns your crew-member, who is suitably grateful. Sadly, gratitude doesn't power the FTL drive.",
+                                    "ref": "event_FUEL_OFF_ROCK_WRECK_LIST_4_c1_text"
+                                  },
+                                  "effects": [
+                                    {
+                                      "kind": "resource",
+                                      "resource": "scrap",
+                                      "min": -40,
+                                      "max": -25
+                                    }
+                                  ]
+                                },
+                                "label_ref": "event_FUEL_OFF_ROCK_WRECK_LIST_4_c1_choice"
+                              },
+                              {
+                                "label": "Refuse.",
+                                "gate": null,
+                                "child": {
+                                  "text": {
+                                    "value": "It's a tough call, but it's for the Federation and the liberty of all. You set off before you can change your mind.",
+                                    "ref": "event_FUEL_OFF_ROCK_WRECK_LIST_4_c2_text"
+                                  },
+                                  "effects": [
+                                    {
+                                      "kind": "crew_loss",
+                                      "amount": 1,
+                                      "clone": false
+                                    }
+                                  ]
+                                },
+                                "label_ref": "event_FUEL_OFF_ROCK_WRECK_LIST_4_c2_choice"
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    ]
+                  }
+                },
+                "label_ref": "event_FUEL_OFF_ROCK_WRECK_c1_c1_choice",
+                "hidden": true
+              }
+            ]
+          }
+        },
+        "label_ref": "event_FUEL_OFF_ROCK_WRECK_c1_choice",
+        "hidden": true
+      },
+      {
+        "label": "Let it drift by.",
+        "gate": null,
+        "child": {
+          "text": {
+            "value": "The Rock don't take kindly to aliens picking through their belongings, no matter how decrepit they may seem, and you don't take risks in Rock territory.",
+            "ref": "event_FUEL_OFF_ROCK_WRECK_c2_text"
+          },
+          "effects": []
+        },
+        "label_ref": "event_FUEL_OFF_ROCK_WRECK_c2_choice",
+        "hidden": true
+      },
+      {
+        "label": "(Life Scanner) Run additional scans.",
+        "gate": {
+          "req": "LIFE_SCANNER",
+          "label": "Lifeform Scanner"
+        },
+        "child": {
+          "text": {
+            "value": "The ship appears to be entirely lifeless. Your crew is able to find some usable fuel cells after a brief search.",
+            "ref": "event_FUEL_OFF_ROCK_WRECK_c3_text"
+          },
+          "effects": [
+            {
+              "kind": "reward",
+              "level": "MED",
+              "tier": "fuel_only"
+            }
+          ]
+        },
+        "label_ref": "event_FUEL_OFF_ROCK_WRECK_c3_choice",
+        "hidden": true,
+        "dlc": true
+      }
+    ]
+  }
+}

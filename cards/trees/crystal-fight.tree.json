@@ -1,0 +1,456 @@
+{
+  "schema": "ftl-event-tree/1",
+  "id": "CRYSTAL_FIGHT",
+  "slug": "crystal-fight",
+  "title": "Crystal fight",
+  "extracted_from": "raw/gamedata/events_crystal.xml",
+  "text": {
+    "value": "You arrive near a fleet of crystal ships, civilian or mercantile from the looks of them. You pause to scan one but they react immediately and send an escort to fight you off. Prepare to engage!",
+    "ref": "CRYSTAL_FIGHT",
+    "variants": 14
+  },
+  "name": "CRYSTAL_FIGHT",
+  "source": "raw/gamedata/events_crystal.xml",
+  "effects": [],
+  "flags": {
+    "unique": false
+  },
+  "node": {
+    "kind": "combat",
+    "ship": "CRYSTAL_SHIP",
+    "ship_labels": [
+      "Crystal Scout",
+      "Crystal Bomber"
+    ],
+    "hostile": true,
+    "auto_blueprint": "SHIPS_CRYSTAL",
+    "source": "raw/gamedata/events_ships.xml",
+    "branches": [
+      {
+        "on": "destroyed",
+        "child": {
+          "effects": [],
+          "node": {
+            "kind": "chance",
+            "list": "DESTROYED_DEFAULT",
+            "source": "raw/gamedata/events.xml",
+            "odds_basis": "unweighted",
+            "options": [
+              {
+                "share": null,
+                "child": {
+                  "text": {
+                    "value": "The ship explodes, leaving behind a substantial collection of useful scrap material.",
+                    "ref": "event_DESTROYED_DEFAULT_1_text"
+                  },
+                  "effects": [
+                    {
+                      "kind": "reward",
+                      "level": "MED",
+                      "tier": "standard"
+                    }
+                  ]
+                }
+              },
+              {
+                "share": null,
+                "child": {
+                  "text": {
+                    "value": "The ship explodes, leaving behind a substantial collection of useful scrap material.",
+                    "ref": "event_DESTROYED_DEFAULT_1_text"
+                  },
+                  "effects": [
+                    {
+                      "kind": "reward",
+                      "level": "MED",
+                      "tier": "standard"
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        }
+      },
+      {
+        "on": "deadCrew",
+        "child": {
+          "effects": [],
+          "node": {
+            "kind": "chance",
+            "list": "DEAD_CREW_DEFAULT",
+            "source": "raw/gamedata/events.xml",
+            "odds_basis": "unweighted",
+            "options": [
+              {
+                "share": null,
+                "child": {
+                  "text": {
+                    "value": "There are no more life-signs remaining on the ship. You strip it of useful materials.",
+                    "ref": "event_DEAD_CREW_DEFAULT_1_text"
+                  },
+                  "effects": [
+                    {
+                      "kind": "reward",
+                      "level": "MED",
+                      "tier": "standard"
+                    }
+                  ]
+                }
+              },
+              {
+                "share": null,
+                "child": {
+                  "text": {
+                    "value": "There are no more life-signs remaining on the ship. You strip it of useful materials.",
+                    "ref": "event_DEAD_CREW_DEFAULT_1_text"
+                  },
+                  "effects": [
+                    {
+                      "kind": "reward",
+                      "level": "MED",
+                      "tier": "standard"
+                    }
+                  ]
+                }
+              },
+              {
+                "share": null,
+                "child": {
+                  "text": {
+                    "value": "There are no more life-signs remaining on the ship. You strip it of useful materials.",
+                    "ref": "event_DEAD_CREW_DEFAULT_1_text"
+                  },
+                  "effects": [
+                    {
+                      "kind": "reward",
+                      "level": "MED",
+                      "tier": "standard"
+                    }
+                  ]
+                }
+              },
+              {
+                "share": null,
+                "child": {
+                  "text": {
+                    "value": "There are no more life-signs remaining on the ship. You strip it of useful materials.",
+                    "ref": "event_DEAD_CREW_DEFAULT_1_text"
+                  },
+                  "effects": [
+                    {
+                      "kind": "reward",
+                      "level": "HIGH",
+                      "tier": "standard"
+                    }
+                  ]
+                }
+              },
+              {
+                "share": null,
+                "child": {
+                  "text": {
+                    "value": "There are no more life-signs remaining on the ship. You strip it of useful materials.",
+                    "ref": "event_DEAD_CREW_DEFAULT_1_text"
+                  },
+                  "effects": [
+                    {
+                      "kind": "reward",
+                      "level": "HIGH",
+                      "tier": "standard"
+                    }
+                  ]
+                }
+              },
+              {
+                "share": null,
+                "child": {
+                  "text": {
+                    "value": "With the crew dead, you are able to take the fuel out of storage. You also take all the scrap you can manage.",
+                    "ref": "event_DEAD_CREW_DEFAULT_6_text"
+                  },
+                  "effects": [
+                    {
+                      "kind": "reward",
+                      "level": "HIGH",
+                      "tier": "fuel"
+                    }
+                  ]
+                }
+              },
+              {
+                "share": null,
+                "child": {
+                  "text": {
+                    "value": "With the crew dead, you are able to take the fuel out of storage. You also take all the scrap you can manage.",
+                    "ref": "event_DEAD_CREW_DEFAULT_6_text"
+                  },
+                  "effects": [
+                    {
+                      "kind": "reward",
+                      "level": "HIGH",
+                      "tier": "fuel"
+                    }
+                  ]
+                }
+              },
+              {
+                "share": null,
+                "child": {
+                  "text": {
+                    "value": "Now that their ship has been emptied of hostiles, you search it. Eventually you find a prisoner who offers to join your crew.",
+                    "ref": "event_DEAD_CREW_DEFAULT_8_text"
+                  },
+                  "effects": [
+                    {
+                      "kind": "crew_gain",
+                      "amount": 1
+                    },
+                    {
+                      "kind": "reward",
+                      "level": "LOW",
+                      "tier": "scrap_only"
+                    }
+                  ]
+                }
+              },
+              {
+                "share": null,
+                "child": {
+                  "text": {
+                    "value": "You find a weapon system on their ship. With no crew to stop you, you can install it on your own.",
+                    "ref": "event_DEAD_CREW_DEFAULT_9_text"
+                  },
+                  "effects": [
+                    {
+                      "kind": "reward",
+                      "level": "LOW",
+                      "tier": "weapon"
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        }
+      },
+      {
+        "on": "surrender",
+        "child": {
+          "text": {
+            "value": "\"We yield, aliens. We have no wish to die fighting you.\"",
+            "ref": "CRYSTAL_SHIP_SURRENDER",
+            "variants": 10
+          },
+          "effects": [],
+          "node": {
+            "kind": "decision",
+            "options": [
+              {
+                "label": "Accept their surrender.",
+                "gate": null,
+                "child": {
+                  "effects": [],
+                  "node": {
+                    "kind": "chance",
+                    "list": "CRYSTAL_SHIP_SURRENDER",
+                    "source": "raw/gamedata/events_crystal.xml",
+                    "odds_basis": "unweighted",
+                    "options": [
+                      {
+                        "share": null,
+                        "child": {
+                          "text": {
+                            "value": "\"Thank you. We have misjudged you and will not forget your kindness.\" They leave without another word.",
+                            "ref": "event_CRYSTAL_SHIP_SURRENDER_1_text"
+                          },
+                          "effects": [
+                            {
+                              "kind": "ship_hostility",
+                              "hostile": false
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "share": null,
+                        "child": {
+                          "text": {
+                            "value": "They respond, \"Good. I'm glad to hear that there are still those who value life throughout the galaxy.\" They abruptly cut communications and prepare to jump away.",
+                            "ref": "event_CRYSTAL_SHIP_SURRENDER_2_text"
+                          },
+                          "effects": [
+                            {
+                              "kind": "ship_hostility",
+                              "hostile": false
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "share": null,
+                        "child": {
+                          "text": {
+                            "value": "\"Thank you. I hope our early aggression will not prevent a future accord between our peoples.\" They transfer some goods as a means of compensation.",
+                            "ref": "event_CRYSTAL_SHIP_SURRENDER_3_text"
+                          },
+                          "effects": [
+                            {
+                              "kind": "ship_hostility",
+                              "hostile": false
+                            },
+                            {
+                              "kind": "reward",
+                              "level": "RANDOM",
+                              "tier": "stuff"
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "share": null,
+                        "child": {
+                          "text": {
+                            "value": "\"Good. I see no need for bloodshed either.\" They release a cargo crate in your direction. \"Take this as a trophy for clearly besting us.\"",
+                            "ref": "event_CRYSTAL_SHIP_SURRENDER_4_text"
+                          },
+                          "effects": [
+                            {
+                              "kind": "ship_hostility",
+                              "hostile": false
+                            },
+                            {
+                              "kind": "reward",
+                              "level": "RANDOM",
+                              "tier": "stuff"
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "share": null,
+                        "child": {
+                          "text": {
+                            "value": "They thank you for sparing them, their extreme aggression quickly changing to a calm acceptance. You're not sure if they're mocking you when they dryly state that \"your species has a knack for warfare\".",
+                            "ref": "event_CRYSTAL_SHIP_SURRENDER_5_text"
+                          },
+                          "effects": [
+                            {
+                              "kind": "ship_hostility",
+                              "hostile": false
+                            },
+                            {
+                              "kind": "reward",
+                              "level": "RANDOM",
+                              "tier": "stuff"
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "share": null,
+                        "child": {
+                          "text": {
+                            "value": "\"We would like to apologize for our xenophobia. You have shown that aliens can be compassionate, a fact unwritten in our history records. Please, take this.\"",
+                            "ref": "event_CRYSTAL_SHIP_SURRENDER_6_text"
+                          },
+                          "effects": [
+                            {
+                              "kind": "ship_hostility",
+                              "hostile": false
+                            },
+                            {
+                              "kind": "reward",
+                              "level": "RANDOM",
+                              "tier": "stuff"
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "share": null,
+                        "child": {
+                          "text": {
+                            "value": "What appears to be a young soldier pushes its way onto the vid screen, \"A captain both able and merciful? I have always wanted to explore beyond our restricted sector... Please, permit me to join your crew?\"",
+                            "ref": "event_CRYSTAL_SHIP_SURRENDER_7_text"
+                          },
+                          "effects": [
+                            {
+                              "kind": "ship_hostility",
+                              "hostile": false
+                            }
+                          ],
+                          "node": {
+                            "kind": "decision",
+                            "options": [
+                              {
+                                "label": "Yes.",
+                                "gate": null,
+                                "child": {
+                                  "text": {
+                                    "value": "\"Great!\" As he brings his few belongings on board, you wonder how a being made of crystal can move with such lightness and enthusiasm.",
+                                    "ref": "event_CRYSTAL_SHIP_SURRENDER_7_c1_text"
+                                  },
+                                  "effects": [
+                                    {
+                                      "kind": "crew_gain",
+                                      "amount": 1,
+                                      "class": "crystal"
+                                    }
+                                  ]
+                                },
+                                "label_ref": "event_CRYSTAL_SHIP_SURRENDER_7_c1_choice",
+                                "hidden": true
+                              },
+                              {
+                                "label": "No.",
+                                "gate": null,
+                                "child": {
+                                  "text": {
+                                    "value": "\"I understand. We did try to kill you...\" They transfer some materials over before leaving.",
+                                    "ref": "event_CRYSTAL_SHIP_SURRENDER_7_c2_text"
+                                  },
+                                  "effects": [
+                                    {
+                                      "kind": "reward",
+                                      "level": "RANDOM",
+                                      "tier": "stuff"
+                                    }
+                                  ]
+                                },
+                                "label_ref": "event_CRYSTAL_SHIP_SURRENDER_7_c2_choice",
+                                "hidden": true
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    ]
+                  }
+                },
+                "label_ref": "ship_CRYSTAL_SHIP_surrender_c1_choice",
+                "hidden": true
+              },
+              {
+                "label": "Ignore them.",
+                "gate": null,
+                "child": {
+                  "text": {
+                    "value": "You cut off communications and prepare to finish them off.",
+                    "ref": "ship_CRYSTAL_SHIP_surrender_c2_text"
+                  },
+                  "effects": []
+                },
+                "label_ref": "ship_CRYSTAL_SHIP_surrender_c2_choice",
+                "hidden": true
+              }
+            ]
+          }
+        },
+        "chance": "0.6",
+        "min": "3",
+        "max": "4"
+      }
+    ]
+  }
+}

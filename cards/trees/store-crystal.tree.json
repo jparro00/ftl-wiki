@@ -1,0 +1,22 @@
+{
+  "schema": "ftl-event-tree/1",
+  "id": "STORE_CRYSTAL",
+  "slug": "store-crystal",
+  "title": "Store (Crystal)",
+  "extracted_from": "raw/gamedata/events_crystal.xml",
+  "text": {
+    "value": "You arrive in an area bustling with crystalline ships and stations. A merchant quickly messages you, \"You're from the outside, no? This is a great opportunity for both of us! Do you have anything you wish to sell or trade?\"",
+    "ref": "STORE_CRYSTAL",
+    "variants": 8
+  },
+  "name": "STORE_CRYSTAL",
+  "source": "raw/gamedata/events_crystal.xml",
+  "effects": [
+    {
+      "kind": "store"
+    }
+  ],
+  "flags": {
+    "store": true
+  }
+}

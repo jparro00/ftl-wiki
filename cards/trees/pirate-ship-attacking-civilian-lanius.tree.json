@@ -1,0 +1,387 @@
+{
+  "schema": "ftl-event-tree/1",
+  "id": "LANIUS_PIRATE_CIVILIAN",
+  "slug": "pirate-ship-attacking-civilian-lanius",
+  "title": "Pirate ship attacking civilian (Lanius)",
+  "extracted_from": "raw/gamedata/dlcEvents_anaerobic.xml",
+  "text": {
+    "value": "You discover an abandoned mining facility in the process of being 'acquired' by the Lanius. However, you immediately receive a call from a civilian transport vessel, \"Help! We were trying to escape before the Lanius came only to be caught by pirates!\" You see a lone pirate ship boarding the civilian craft.",
+    "ref": "LANIUS_PIRATE_CIVILIAN_TEXT",
+    "variants": 3
+  },
+  "name": "LANIUS_PIRATE_CIVILIAN",
+  "source": "raw/gamedata/dlcEvents_anaerobic.xml",
+  "effects": [],
+  "node": {
+    "kind": "decision",
+    "options": [
+      {
+        "label": "Attack the pirate.",
+        "gate": null,
+        "child": {
+          "text": {
+            "value": "You charge your weapons, which quickly gets the pirate ship's attention.",
+            "ref": "event_LANIUS_PIRATE_CIVILIAN_c1_text"
+          },
+          "effects": [
+            {
+              "kind": "ship_hostility",
+              "hostile": true
+            }
+          ]
+        },
+        "label_ref": "event_LANIUS_PIRATE_CIVILIAN_c1_choice",
+        "hidden": true
+      },
+      {
+        "label": "Avoid the conflict.",
+        "gate": null,
+        "child": {
+          "text": {
+            "value": "Unfortunately it is not your mission to save every person affected by this war or the Lanius invasion.",
+            "ref": "event_LANIUS_PIRATE_CIVILIAN_c2_text"
+          },
+          "effects": []
+        },
+        "label_ref": "event_LANIUS_PIRATE_CIVILIAN_c2_choice"
+      }
+    ],
+    "combat": {
+      "kind": "combat",
+      "ship": "PIRATE_CIVILIAN_LANIUS",
+      "hostile": false,
+      "auto_blueprint": "SHIPS_PIRATE",
+      "source": "raw/gamedata/dlcEvents_anaerobic.xml",
+      "branches": [
+        {
+          "on": "destroyed",
+          "child": {
+            "text": {
+              "value": "The pirate ship breaks apart. You hasten to contact the civilian ship.",
+              "ref": "ship_PIRATE_CIVILIAN_LANIUS_destroyed_text"
+            },
+            "effects": [
+              {
+                "kind": "reward",
+                "level": "MED",
+                "tier": "standard"
+              }
+            ],
+            "node": {
+              "kind": "decision",
+              "options": [
+                {
+                  "label": "Contact the civilian ship.",
+                  "gate": null,
+                  "child": {
+                    "effects": [],
+                    "node": {
+                      "kind": "chance",
+                      "list": "SAVE_CIVILIAN_LIST",
+                      "source": "raw/gamedata/events_pirate.xml",
+                      "odds_basis": "unweighted",
+                      "options": [
+                        {
+                          "share": null,
+                          "child": {
+                            "text": {
+                              "value": "The ship you saved was badly damaged in the battle. Most of the crew accepts your offer to be dropped off at a nearby station. One offers to join your crew.",
+                              "ref": "event_SAVE_CIVILIAN_LIST_1_text"
+                            },
+                            "effects": [],
+                            "node": {
+                              "kind": "decision",
+                              "options": [
+                                {
+                                  "label": "Welcome aboard!",
+                                  "gate": null,
+                                  "child": {
+                                    "text": {
+                                      "value": "The survivor gets on board the ship.",
+                                      "ref": "event_SAVE_CIVILIAN_LIST_1_c1_text"
+                                    },
+                                    "effects": [
+                                      {
+                                        "kind": "crew_gain",
+                                        "amount": 1
+                                      }
+                                    ]
+                                  },
+                                  "label_ref": "event_SAVE_CIVILIAN_LIST_1_c1_choice"
+                                },
+                                {
+                                  "label": "Decline their request.",
+                                  "gate": null,
+                                  "child": {
+                                    "effects": []
+                                  },
+                                  "label_ref": "event_SAVE_CIVILIAN_LIST_1_c2_choice"
+                                }
+                              ]
+                            }
+                          }
+                        },
+                        {
+                          "share": null,
+                          "child": {
+                            "text": {
+                              "value": "Apparently the ship that was being assaulted was a science vessel. They thank you for saving them and offer a small reward.",
+                              "ref": "event_SAVE_CIVILIAN_LIST_2_text"
+                            },
+                            "effects": [
+                              {
+                                "kind": "reward",
+                                "level": "MED",
+                                "tier": "standard"
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "share": null,
+                          "child": {
+                            "text": {
+                              "value": "It seems the crew did not survive the assault. You take what you can from the remains of the ship.",
+                              "ref": "event_SAVE_CIVILIAN_LIST_3_text"
+                            },
+                            "effects": [
+                              {
+                                "kind": "reward",
+                                "level": "LOW",
+                                "tier": "standard"
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "share": null,
+                          "child": {
+                            "text": {
+                              "value": "They respond, \"It's a good thing you came when you did; we'd be dead now otherwise. I'm a shipwright and I'd like to help you like you helped me.\"",
+                              "ref": "event_SAVE_CIVILIAN_LIST_4_text"
+                            },
+                            "effects": [],
+                            "node": {
+                              "kind": "decision",
+                              "options": [
+                                {
+                                  "label": "The captain offers to install a piece of equipment on your ship.",
+                                  "gate": null,
+                                  "child": {
+                                    "effects": [
+                                      {
+                                        "kind": "reward",
+                                        "level": "LOW",
+                                        "tier": "weapon"
+                                      }
+                                    ]
+                                  },
+                                  "label_ref": "event_SAVE_CIVILIAN_LIST_4_c1_choice"
+                                }
+                              ]
+                            }
+                          }
+                        },
+                        {
+                          "share": null,
+                          "child": {
+                            "text": {
+                              "value": "\"This sector has become increasingly dangerous for friends of the Federation. I think my crew can patch up some of your hull damage as thanks.\"",
+                              "ref": "event_SAVE_CIVILIAN_LIST_5_text"
+                            },
+                            "effects": [
+                              {
+                                "kind": "hull_repair",
+                                "amount": 5
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "share": null,
+                          "child": {
+                            "text": {
+                              "value": "The civilian ship wisely made a fast retreat while you distracted the hostile ship.",
+                              "ref": "event_SAVE_CIVILIAN_LIST_6_text"
+                            },
+                            "effects": []
+                          }
+                        }
+                      ]
+                    }
+                  },
+                  "label_ref": "ship_PIRATE_CIVILIAN_LANIUS_destroyed_c1_choice",
+                  "hidden": true
+                }
+              ]
+            }
+          }
+        },
+        {
+          "on": "deadCrew",
+          "child": {
+            "text": {
+              "value": "No more life signs detected on the pirate ship. You hasten to contact the civilian ship.",
+              "ref": "ship_PIRATE_CIVILIAN_LANIUS_deadCrew_text"
+            },
+            "effects": [
+              {
+                "kind": "reward",
+                "level": "HIGH",
+                "tier": "standard"
+              }
+            ],
+            "node": {
+              "kind": "decision",
+              "options": [
+                {
+                  "label": "Contact the civilian ship.",
+                  "gate": null,
+                  "child": {
+                    "effects": [],
+                    "node": {
+                      "kind": "chance",
+                      "list": "SAVE_CIVILIAN_LIST",
+                      "source": "raw/gamedata/events_pirate.xml",
+                      "odds_basis": "unweighted",
+                      "options": [
+                        {
+                          "share": null,
+                          "child": {
+                            "text": {
+                              "value": "The ship you saved was badly damaged in the battle. Most of the crew accepts your offer to be dropped off at a nearby station. One offers to join your crew.",
+                              "ref": "event_SAVE_CIVILIAN_LIST_1_text"
+                            },
+                            "effects": [],
+                            "node": {
+                              "kind": "decision",
+                              "options": [
+                                {
+                                  "label": "Welcome aboard!",
+                                  "gate": null,
+                                  "child": {
+                                    "text": {
+                                      "value": "The survivor gets on board the ship.",
+                                      "ref": "event_SAVE_CIVILIAN_LIST_1_c1_text"
+                                    },
+                                    "effects": [
+                                      {
+                                        "kind": "crew_gain",
+                                        "amount": 1
+                                      }
+                                    ]
+                                  },
+                                  "label_ref": "event_SAVE_CIVILIAN_LIST_1_c1_choice"
+                                },
+                                {
+                                  "label": "Decline their request.",
+                                  "gate": null,
+                                  "child": {
+                                    "effects": []
+                                  },
+                                  "label_ref": "event_SAVE_CIVILIAN_LIST_1_c2_choice"
+                                }
+                              ]
+                            }
+                          }
+                        },
+                        {
+                          "share": null,
+                          "child": {
+                            "text": {
+                              "value": "Apparently the ship that was being assaulted was a science vessel. They thank you for saving them and offer a small reward.",
+                              "ref": "event_SAVE_CIVILIAN_LIST_2_text"
+                            },
+                            "effects": [
+                              {
+                                "kind": "reward",
+                                "level": "MED",
+                                "tier": "standard"
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "share": null,
+                          "child": {
+                            "text": {
+                              "value": "It seems the crew did not survive the assault. You take what you can from the remains of the ship.",
+                              "ref": "event_SAVE_CIVILIAN_LIST_3_text"
+                            },
+                            "effects": [
+                              {
+                                "kind": "reward",
+                                "level": "LOW",
+                                "tier": "standard"
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "share": null,
+                          "child": {
+                            "text": {
+                              "value": "They respond, \"It's a good thing you came when you did; we'd be dead now otherwise. I'm a shipwright and I'd like to help you like you helped me.\"",
+                              "ref": "event_SAVE_CIVILIAN_LIST_4_text"
+                            },
+                            "effects": [],
+                            "node": {
+                              "kind": "decision",
+                              "options": [
+                                {
+                                  "label": "The captain offers to install a piece of equipment on your ship.",
+                                  "gate": null,
+                                  "child": {
+                                    "effects": [
+                                      {
+                                        "kind": "reward",
+                                        "level": "LOW",
+                                        "tier": "weapon"
+                                      }
+                                    ]
+                                  },
+                                  "label_ref": "event_SAVE_CIVILIAN_LIST_4_c1_choice"
+                                }
+                              ]
+                            }
+                          }
+                        },
+                        {
+                          "share": null,
+                          "child": {
+                            "text": {
+                              "value": "\"This sector has become increasingly dangerous for friends of the Federation. I think my crew can patch up some of your hull damage as thanks.\"",
+                              "ref": "event_SAVE_CIVILIAN_LIST_5_text"
+                            },
+                            "effects": [
+                              {
+                                "kind": "hull_repair",
+                                "amount": 5
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "share": null,
+                          "child": {
+                            "text": {
+                              "value": "The civilian ship wisely made a fast retreat while you distracted the hostile ship.",
+                              "ref": "event_SAVE_CIVILIAN_LIST_6_text"
+                            },
+                            "effects": []
+                          }
+                        }
+                      ]
+                    }
+                  },
+                  "label_ref": "ship_PIRATE_CIVILIAN_LANIUS_destroyed_c1_choice",
+                  "hidden": true
+                }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  }
+}

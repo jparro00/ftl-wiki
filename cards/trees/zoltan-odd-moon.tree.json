@@ -1,0 +1,241 @@
+{
+  "schema": "ftl-event-tree/1",
+  "id": "ZOLTAN_ODD_MOON",
+  "slug": "zoltan-odd-moon",
+  "title": "Zoltan odd moon",
+  "extracted_from": "raw/gamedata/events_zoltan.xml",
+  "text": {
+    "value": "Something strikes you as odd about a moon in the distance.",
+    "ref": "event_ZOLTAN_ODD_MOON_text"
+  },
+  "name": "ZOLTAN_ODD_MOON",
+  "source": "raw/gamedata/events_zoltan.xml",
+  "effects": [],
+  "flags": {
+    "unique": true
+  },
+  "node": {
+    "kind": "decision",
+    "options": [
+      {
+        "label": "Check it out.",
+        "gate": null,
+        "child": {
+          "effects": [],
+          "node": {
+            "kind": "chance",
+            "list": "ZOLTAN_ODD_MOON_CHECK",
+            "source": "raw/gamedata/events_zoltan.xml",
+            "odds_basis": "unweighted",
+            "options": [
+              {
+                "share": null,
+                "child": {
+                  "text": {
+                    "value": "A closer inspection reveals signs of habitation on the surface, but nothing else particularly interesting.",
+                    "ref": "event_ZOLTAN_ODD_MOON_CHECK_1_text"
+                  },
+                  "effects": []
+                }
+              },
+              {
+                "share": null,
+                "child": {
+                  "text": {
+                    "value": "Sending a shuttle to explore a beckoning cave system you discover signs of a battle - and a still-functioning weapon!",
+                    "ref": "event_ZOLTAN_ODD_MOON_CHECK_2_text"
+                  },
+                  "effects": [
+                    {
+                      "kind": "reward",
+                      "level": "LOW",
+                      "tier": "weapon"
+                    }
+                  ]
+                }
+              },
+              {
+                "share": null,
+                "child": {
+                  "text": {
+                    "value": "A deep scan of the surface reveals a cave system that runs for miles, and what looks like a scrap heap left over from some heavy-duty construction.",
+                    "ref": "event_ZOLTAN_ODD_MOON_CHECK_3_text"
+                  },
+                  "effects": [
+                    {
+                      "kind": "reward",
+                      "level": "MED",
+                      "tier": "scrap_only"
+                    }
+                  ]
+                }
+              },
+              {
+                "share": null,
+                "child": {
+                  "text": {
+                    "value": "It looks as if a team could break through the fragile layer of the moon's surface into a hidden cavern.",
+                    "ref": "event_ZOLTAN_ODD_MOON_CHECK_4_text"
+                  },
+                  "effects": [],
+                  "node": {
+                    "kind": "decision",
+                    "options": [
+                      {
+                        "label": "Attempt to detonate some explosives to break through the surface. [ Missiles: -1 ]",
+                        "gate": null,
+                        "child": {
+                          "effects": [],
+                          "node": {
+                            "kind": "chance",
+                            "list": "ZOLTAN_ODD_MOON_EXPLOSION",
+                            "source": "raw/gamedata/events_zoltan.xml",
+                            "odds_basis": "unweighted",
+                            "options": [
+                              {
+                                "share": null,
+                                "child": {
+                                  "text": {
+                                    "value": "A portion of the surface layer is destroyed in an impressive display, revealing miles of caves. You don't have time to fully explore them, but you find some remains of an old subterranean base that could be useful.",
+                                    "ref": "event_ZOLTAN_ODD_MOON_EXPLOSION_1_text"
+                                  },
+                                  "effects": [
+                                    {
+                                      "kind": "resource",
+                                      "resource": "missiles",
+                                      "min": -1,
+                                      "max": -1
+                                    },
+                                    {
+                                      "kind": "reward",
+                                      "level": "RANDOM",
+                                      "tier": "scrap_only"
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "share": null,
+                                "child": {
+                                  "text": {
+                                    "value": "The explosives are set remotely, but the detonation achieves nothing. What a waste.",
+                                    "ref": "event_ZOLTAN_ODD_MOON_EXPLOSION_2_text"
+                                  },
+                                  "effects": [
+                                    {
+                                      "kind": "resource",
+                                      "resource": "missiles",
+                                      "min": -1,
+                                      "max": -1
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "share": null,
+                                "child": {
+                                  "text": {
+                                    "value": "Your explosives reveal the 'cave' is actually a secret base, located in a network of bunkers just under the surface. Everyone inside is dead; some Mantis clearly came through here recently. It looks like the Zoltan were researching advanced ship weaponry. You take one of their better examples back to your ship.",
+                                    "ref": "event_ZOLTAN_ODD_MOON_EXPLOSION_3_text"
+                                  },
+                                  "effects": [
+                                    {
+                                      "kind": "reward",
+                                      "level": "RANDOM",
+                                      "tier": "weapon"
+                                    },
+                                    {
+                                      "kind": "resource",
+                                      "resource": "missiles",
+                                      "min": -1,
+                                      "max": -1
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          }
+                        },
+                        "label_ref": "event_ZOLTAN_ODD_MOON_CHECK_4_c1_choice",
+                        "hidden": true
+                      },
+                      {
+                        "label": "Explosives are too valuable to waste on excavation work. Let's get out of here.",
+                        "gate": null,
+                        "child": {
+                          "effects": []
+                        },
+                        "label_ref": "event_ZOLTAN_ODD_MOON_CHECK_4_c2_choice"
+                      }
+                    ]
+                  }
+                }
+              }
+            ]
+          }
+        },
+        "label_ref": "event_ZOLTAN_ODD_MOON_c1_choice",
+        "hidden": true
+      },
+      {
+        "label": "Leave it be.",
+        "gate": null,
+        "child": {
+          "text": {
+            "value": "You try not to fixate on the moon in the aft scanner as you set the coordinates for the next jump.",
+            "ref": "event_ZOLTAN_ODD_MOON_c2_text"
+          },
+          "effects": []
+        },
+        "label_ref": "event_ZOLTAN_ODD_MOON_c2_choice"
+      },
+      {
+        "label": "(Boarding Drone) Send a drone to probe the surface.",
+        "gate": {
+          "req": "BOARDER",
+          "label": "Boarding Drone"
+        },
+        "child": {
+          "text": {
+            "value": "Initial scans indicate a network of caves not far underground. You launch a boarding drone and it breaks through the surface into the cavern below.",
+            "ref": "event_ZOLTAN_ODD_MOON_c3_text"
+          },
+          "effects": [
+            {
+              "kind": "resource",
+              "resource": "drones",
+              "min": -1,
+              "max": -1
+            }
+          ],
+          "node": {
+            "kind": "decision",
+            "options": [
+              {
+                "label": "Continue...",
+                "gate": null,
+                "child": {
+                  "text": {
+                    "value": "Your drone discovers a vast cave network and evidence of excavation. Buried deep below you find a Zoltan scientist, still hard at work. He tells you that all his colleagues are long dead. You decide not to ask questions and offer to let him join your crew.",
+                    "ref": "event_ZOLTAN_ODD_MOON_c3_c1_text"
+                  },
+                  "effects": [
+                    {
+                      "kind": "crew_gain",
+                      "amount": 1,
+                      "class": "energy"
+                    }
+                  ]
+                },
+                "label_ref": "continue",
+                "hidden": true
+              }
+            ]
+          }
+        },
+        "label_ref": "event_ZOLTAN_ODD_MOON_c3_choice",
+        "hidden": true
+      }
+    ]
+  }
+}

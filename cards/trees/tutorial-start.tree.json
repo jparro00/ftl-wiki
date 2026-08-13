@@ -1,0 +1,48 @@
+{
+  "schema": "ftl-event-tree/1",
+  "id": "TUTORIAL_START",
+  "slug": "tutorial-start",
+  "title": "Tutorial start",
+  "extracted_from": "raw/gamedata/events.xml",
+  "text": {
+    "value": "Welcome to FTL! You are the captain of a Federation starship on a very important mission.",
+    "ref": "event_TUTORIAL_START_text"
+  },
+  "name": "TUTORIAL_START",
+  "source": "raw/gamedata/events.xml",
+  "effects": [],
+  "node": {
+    "kind": "decision",
+    "options": [
+      {
+        "label": "Continue...",
+        "gate": null,
+        "child": {
+          "text": {
+            "value": "The Federation is currently being torn apart by vicious Rebels. Your ship is carrying data vital to the defense of the Federation.",
+            "ref": "event_TUTORIAL_START_c1_text"
+          },
+          "effects": [],
+          "node": {
+            "kind": "decision",
+            "options": [
+              {
+                "label": "Continue...",
+                "gate": null,
+                "child": {
+                  "text": {
+                    "value": "You will be traveling through dangerous sectors of the galaxy with the Rebel fleet in hot pursuit. Make it to the exit beacon of each sector before the Rebels can catch you.",
+                    "ref": "event_TUTORIAL_START_c1_c1_text"
+                  },
+                  "effects": []
+                },
+                "label_ref": "continue"
+              }
+            ]
+          }
+        },
+        "label_ref": "continue"
+      }
+    ]
+  }
+}

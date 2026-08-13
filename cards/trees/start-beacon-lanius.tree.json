@@ -1,0 +1,15 @@
+{
+  "schema": "ftl-event-tree/1",
+  "id": "START_BEACON_LANIUS",
+  "slug": "start-beacon-lanius",
+  "title": "Start beacon (Lanius)",
+  "extracted_from": "raw/gamedata/dlcEvents_anaerobic.xml",
+  "text": {
+    "value": "This sector has been largely abandoned since a series of battles decimated the local population. An unusual alien race is reportedly scavenging in the area. You'd best be on guard.",
+    "ref": "START_BEACON_LANIUS",
+    "variants": 4
+  },
+  "name": "START_BEACON_LANIUS",
+  "source": "raw/gamedata/dlcEvents_anaerobic.xml",
+  "effects": []
+}

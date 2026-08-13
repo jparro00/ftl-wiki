@@ -1,0 +1,377 @@
+{
+  "schema": "ftl-event-tree/1",
+  "id": "NEBULA_SLUG_CHOOSE_DEATH",
+  "slug": "slug-hacker-choice",
+  "title": "Slug hacker (choice)",
+  "extracted_from": "raw/gamedata/events_slug.xml",
+  "text": {
+    "value": "You are immediately hailed by a dangerous looking ship guarding a station. \"I'm feeling generouss today. I shall allow you to choose your own death. Which do you like leasst: shields, oxygen, or weaponsss?\"",
+    "ref": "event_NEBULA_SLUG_CHOOSE_DEATH_text"
+  },
+  "name": "NEBULA_SLUG_CHOOSE_DEATH",
+  "source": "raw/gamedata/events_slug.xml",
+  "effects": [
+    {
+      "kind": "environment",
+      "environment": "nebula",
+      "target": "player"
+    }
+  ],
+  "flags": {
+    "unique": true,
+    "environment": "nebula",
+    "environment_target": "player"
+  },
+  "node": {
+    "kind": "decision",
+    "options": [
+      {
+        "label": "Shields.",
+        "gate": null,
+        "child": {
+          "text": {
+            "value": "\"Very good then!\" Your shield power suddenly drops and they charge.",
+            "ref": "event_NEBULA_SLUG_CHOOSE_DEATH_c1_text"
+          },
+          "effects": [
+            {
+              "kind": "status",
+              "status": "divide",
+              "target": "player",
+              "system": "shields",
+              "amount": 2
+            }
+          ],
+          "node": {
+            "kind": "combat",
+            "ship": "JELLY_STATUS_SHIELDS",
+            "ship_labels": [
+              "Slug Interceptor",
+              "Slug Light-Cruiser",
+              "Slug Assault"
+            ],
+            "hostile": true,
+            "auto_blueprint": "SHIPS_JELLY",
+            "source": "raw/gamedata/events_ships.xml",
+            "branches": [
+              {
+                "on": "destroyed",
+                "child": {
+                  "text": {
+                    "value": "The Slug ship breaks apart and your shields return to normal. You collect what you can.",
+                    "ref": "ship_JELLY_STATUS_SHIELDS_destroyed_text"
+                  },
+                  "effects": [
+                    {
+                      "kind": "reward",
+                      "level": "MED",
+                      "tier": "standard"
+                    },
+                    {
+                      "kind": "status",
+                      "status": "clear",
+                      "target": "player",
+                      "system": "shields",
+                      "amount": 100
+                    }
+                  ]
+                }
+              },
+              {
+                "on": "deadCrew",
+                "child": {
+                  "text": {
+                    "value": "With their crew dead, you quickly shut off their hacking module and your shields return to normal. You strip the ship.",
+                    "ref": "ship_JELLY_STATUS_SHIELDS_deadCrew_text"
+                  },
+                  "effects": [
+                    {
+                      "kind": "reward",
+                      "level": "HIGH",
+                      "tier": "standard"
+                    },
+                    {
+                      "kind": "status",
+                      "status": "clear",
+                      "target": "player",
+                      "system": "shields",
+                      "amount": 100
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        "label_ref": "event_NEBULA_SLUG_CHOOSE_DEATH_c1_choice",
+        "hidden": true
+      },
+      {
+        "label": "Oxygen.",
+        "gate": null,
+        "child": {
+          "text": {
+            "value": "\"A being that would choose sssuffocation? Who am I to judge...\" Your life support is sabatoged and they move in to attack.",
+            "ref": "event_NEBULA_SLUG_CHOOSE_DEATH_c2_text"
+          },
+          "effects": [
+            {
+              "kind": "status",
+              "status": "divide",
+              "target": "player",
+              "system": "oxygen",
+              "amount": 2
+            }
+          ],
+          "node": {
+            "kind": "combat",
+            "ship": "JELLY_STATUS_OXYGEN",
+            "ship_labels": [
+              "Slug Interceptor",
+              "Slug Light-Cruiser",
+              "Slug Assault"
+            ],
+            "hostile": true,
+            "auto_blueprint": "SHIPS_JELLY",
+            "source": "raw/gamedata/events_ships.xml",
+            "branches": [
+              {
+                "on": "destroyed",
+                "child": {
+                  "text": {
+                    "value": "The Slug ship breaks apart and your systems return to normal. You collect what you can.",
+                    "ref": "ship_JELLY_STATUS_OXYGEN_destroyed_text"
+                  },
+                  "effects": [
+                    {
+                      "kind": "reward",
+                      "level": "MED",
+                      "tier": "standard"
+                    },
+                    {
+                      "kind": "status",
+                      "status": "clear",
+                      "target": "player",
+                      "system": "oxygen",
+                      "amount": 100
+                    }
+                  ]
+                }
+              },
+              {
+                "on": "deadCrew",
+                "child": {
+                  "text": {
+                    "value": "With their crew dead, you quickly shut off their hacking module and your systems return to normal. You strip the ship.",
+                    "ref": "ship_JELLY_STATUS_OXYGEN_deadCrew_text"
+                  },
+                  "effects": [
+                    {
+                      "kind": "reward",
+                      "level": "MED",
+                      "tier": "standard"
+                    },
+                    {
+                      "kind": "status",
+                      "status": "clear",
+                      "target": "player",
+                      "system": "oxygen",
+                      "amount": 100
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        "label_ref": "event_NEBULA_SLUG_CHOOSE_DEATH_c2_choice",
+        "hidden": true
+      },
+      {
+        "label": "Weapons.",
+        "gate": null,
+        "child": {
+          "text": {
+            "value": "\"Your acceptance of death is almosst admirable... Almosst.\" Your weapons system registers a hacking module. You hardly have time to respond before they attack.",
+            "ref": "event_NEBULA_SLUG_CHOOSE_DEATH_c3_text"
+          },
+          "effects": [
+            {
+              "kind": "status",
+              "status": "divide",
+              "target": "player",
+              "system": "weapons",
+              "amount": 2
+            }
+          ],
+          "node": {
+            "kind": "combat",
+            "ship": "JELLY_STATUS_WEAPONS",
+            "ship_labels": [
+              "Slug Interceptor",
+              "Slug Light-Cruiser",
+              "Slug Assault"
+            ],
+            "hostile": true,
+            "auto_blueprint": "SHIPS_JELLY",
+            "source": "raw/gamedata/events_ships.xml",
+            "branches": [
+              {
+                "on": "destroyed",
+                "child": {
+                  "text": {
+                    "value": "The Slug ship breaks apart and your weapon system returns to normal. You collect what you can.",
+                    "ref": "ship_JELLY_STATUS_WEAPONS_destroyed_text"
+                  },
+                  "effects": [
+                    {
+                      "kind": "reward",
+                      "level": "HIGH",
+                      "tier": "standard"
+                    },
+                    {
+                      "kind": "status",
+                      "status": "clear",
+                      "target": "player",
+                      "system": "weapons",
+                      "amount": 0
+                    }
+                  ]
+                }
+              },
+              {
+                "on": "deadCrew",
+                "child": {
+                  "text": {
+                    "value": "With their crew dead, you quickly shut off their hacking module and your weapon system returns to normal. You strip the ship.",
+                    "ref": "ship_JELLY_STATUS_WEAPONS_deadCrew_text"
+                  },
+                  "effects": [
+                    {
+                      "kind": "reward",
+                      "level": "HIGH",
+                      "tier": "standard"
+                    },
+                    {
+                      "kind": "status",
+                      "status": "clear",
+                      "target": "player",
+                      "system": "weapons",
+                      "amount": 0
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        "label_ref": "event_NEBULA_SLUG_CHOOSE_DEATH_c3_choice",
+        "hidden": true
+      },
+      {
+        "label": "Offer 35 scrap to leave you alone.",
+        "gate": null,
+        "child": {
+          "text": {
+            "value": "\"I really am feeling generousss...\" They take the scrap and leave.",
+            "ref": "event_NEBULA_SLUG_CHOOSE_DEATH_c4_text"
+          },
+          "effects": [
+            {
+              "kind": "resource",
+              "resource": "scrap",
+              "min": -35,
+              "max": -35
+            }
+          ]
+        },
+        "label_ref": "event_NEBULA_SLUG_CHOOSE_DEATH_c4_choice",
+        "hidden": true
+      },
+      {
+        "label": "(Hacking System) Counter any hack attempt.",
+        "gate": {
+          "req": "hacking",
+          "label": "Hacking"
+        },
+        "child": {
+          "text": {
+            "value": "\"Sssilence won't protect you. I'll make the choice mysself... Wait. Why isn't this working?\" You cut transmission and move in to attack.",
+            "ref": "event_NEBULA_SLUG_CHOOSE_DEATH_c5_text"
+          },
+          "effects": [
+            {
+              "kind": "status",
+              "status": "limit",
+              "target": "player",
+              "system": "hacking",
+              "amount": 0
+            }
+          ],
+          "node": {
+            "kind": "combat",
+            "ship": "JELLY_STATUS_HACKING",
+            "ship_labels": [
+              "Slug Interceptor",
+              "Slug Light-Cruiser",
+              "Slug Assault"
+            ],
+            "hostile": true,
+            "auto_blueprint": "SHIPS_JELLY",
+            "source": "raw/gamedata/events_ships.xml",
+            "branches": [
+              {
+                "on": "destroyed",
+                "child": {
+                  "text": {
+                    "value": "The Slug ship breaks apart and their hacking module is destroyed. You collect what you can.",
+                    "ref": "ship_JELLY_STATUS_HACKING_destroyed_text"
+                  },
+                  "effects": [
+                    {
+                      "kind": "reward",
+                      "level": "HIGH",
+                      "tier": "standard"
+                    },
+                    {
+                      "kind": "status",
+                      "status": "clear",
+                      "target": "player",
+                      "system": "hacking",
+                      "amount": 0
+                    }
+                  ]
+                }
+              },
+              {
+                "on": "deadCrew",
+                "child": {
+                  "text": {
+                    "value": "With their crew dead, you quickly shut off their hacking module and your system returns to normal. You strip the ship.",
+                    "ref": "ship_JELLY_STATUS_HACKING_deadCrew_text"
+                  },
+                  "effects": [
+                    {
+                      "kind": "reward",
+                      "level": "HIGH",
+                      "tier": "standard"
+                    },
+                    {
+                      "kind": "status",
+                      "status": "clear",
+                      "target": "player",
+                      "system": "hacking",
+                      "amount": 0
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        "label_ref": "event_NEBULA_SLUG_CHOOSE_DEATH_c5_choice",
+        "hidden": true
+      }
+    ]
+  }
+}

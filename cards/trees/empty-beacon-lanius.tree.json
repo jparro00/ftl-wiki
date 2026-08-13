@@ -1,0 +1,15 @@
+{
+  "schema": "ftl-event-tree/1",
+  "id": "NOTHING_LANIUS",
+  "slug": "empty-beacon-lanius",
+  "title": "Empty beacon (Lanius)",
+  "extracted_from": "raw/gamedata/dlcEvents_anaerobic.xml",
+  "text": {
+    "value": "The charts indicate this was the location of a small skirmish over a military facility on a nearby moon. Oddly, scans pick up no signs of debris from either the battle or the station. Yet another area sucked dry by the Lanius.",
+    "ref": "NOTHING_LANIUS",
+    "variants": 8
+  },
+  "name": "NOTHING_LANIUS",
+  "source": "raw/gamedata/dlcEvents_anaerobic.xml",
+  "effects": []
+}

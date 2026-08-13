@@ -1,0 +1,260 @@
+{
+  "schema": "ftl-event-tree/1",
+  "id": "LANIUS_RESEARCHER_CRAFT",
+  "slug": "lanius-craftsmen",
+  "title": "Lanius craftsmen",
+  "extracted_from": "raw/gamedata/dlcEvents_anaerobic.xml",
+  "text": {
+    "value": "A merchant ship is docked with a Lanius transport. You message them to see if they need any help. It turns out they have been studying the Lanius's ability to reshape metal.",
+    "ref": "event_LANIUS_RESEARCHER_CRAFT_text"
+  },
+  "name": "LANIUS_RESEARCHER_CRAFT",
+  "source": "raw/gamedata/dlcEvents_anaerobic.xml",
+  "effects": [],
+  "flags": {
+    "unique": true
+  },
+  "node": {
+    "kind": "decision",
+    "options": [
+      {
+        "label": "Inquire about the process.",
+        "gate": null,
+        "child": {
+          "text": {
+            "value": "They respond, \"We haven't the foggiest idea how it works. They appear to meld part of their bodies into the metal and reshape it. They have been willing to demonstrate their ability if you have some extra metal that you would like converted into something.",
+            "ref": "event_LANIUS_RESEARCHER_CRAFT_c1_text"
+          },
+          "effects": [],
+          "node": {
+            "kind": "decision",
+            "options": [
+              {
+                "label": "Give 45 scrap to craft an augmentation.",
+                "gate": null,
+                "child": {
+                  "text": {
+                    "value": "You transfer over the scrap and watch the master craftsmen work. They easily reshape the metal into pieces they can use and then add various additional materials on their ship to construct the augmentation. You thank them and load it onto your ship.",
+                    "ref": "event_LANIUS_RESEARCHER_CRAFT_c1_c1_text"
+                  },
+                  "effects": [
+                    {
+                      "kind": "resource",
+                      "resource": "scrap",
+                      "min": -45,
+                      "max": -45
+                    },
+                    {
+                      "kind": "item",
+                      "item_kind": "augment",
+                      "id": "DLC_AUGMENTS",
+                      "label": "DLC_AUGMENTS",
+                      "from_list": true
+                    }
+                  ]
+                },
+                "label_ref": "event_LANIUS_RESEARCHER_CRAFT_c1_c1_choice",
+                "hidden": true
+              },
+              {
+                "label": "Give 50 scrap to craft a weapon.",
+                "gate": null,
+                "child": {
+                  "text": {
+                    "value": "You transfer over the scrap and watch the master craftsmen work. They easily reshape the metal into pieces they can use and then add various additional materials on their ship to construct the weapon. You thank them and load it onto your ship.",
+                    "ref": "event_LANIUS_RESEARCHER_CRAFT_c1_c2_text"
+                  },
+                  "effects": [
+                    {
+                      "kind": "resource",
+                      "resource": "scrap",
+                      "min": -50,
+                      "max": -50
+                    },
+                    {
+                      "kind": "item",
+                      "item_kind": "weapon",
+                      "id": "DLC_WEAPONS",
+                      "label": "DLC_WEAPONS",
+                      "from_list": true
+                    }
+                  ]
+                },
+                "label_ref": "event_LANIUS_RESEARCHER_CRAFT_c1_c2_choice",
+                "hidden": true
+              },
+              {
+                "label": "Give 40 scrap to craft a drone schematic.",
+                "gate": null,
+                "child": {
+                  "text": {
+                    "value": "You transfer over the scrap and watch the master craftsmen work. They easily reshape the metal into pieces they can use and then add various additional materials on their ship to construct the schematic. You thank them and load it onto your ship.",
+                    "ref": "event_LANIUS_RESEARCHER_CRAFT_c1_c3_text"
+                  },
+                  "effects": [
+                    {
+                      "kind": "resource",
+                      "resource": "scrap",
+                      "min": -40,
+                      "max": -40
+                    },
+                    {
+                      "kind": "item",
+                      "item_kind": "drone",
+                      "id": "DLC_DRONES",
+                      "label": "DLC_DRONES",
+                      "from_list": true
+                    }
+                  ]
+                },
+                "label_ref": "event_LANIUS_RESEARCHER_CRAFT_c1_c3_choice",
+                "hidden": true
+              },
+              {
+                "label": "Decline their offer.",
+                "gate": null,
+                "child": {
+                  "text": {
+                    "value": "You thank them for the information and prepare to jump.",
+                    "ref": "event_LANIUS_RESEARCHER_CRAFT_c1_c4_text"
+                  },
+                  "effects": []
+                },
+                "label_ref": "event_LANIUS_RESEARCHER_CRAFT_c1_c4_choice"
+              },
+              {
+                "label": "(Lanius Crew) Offer to help in the process.",
+                "gate": {
+                  "req": "anaerobic",
+                  "label": "Lanius"
+                },
+                "child": {
+                  "text": {
+                    "value": "Your crewmember offers to aid in the process to speed it along. They think it can be performed a bit more efficiently with the extra help and request less scrap.",
+                    "ref": "event_LANIUS_RESEARCHER_CRAFT_c1_c5_text"
+                  },
+                  "effects": [],
+                  "node": {
+                    "kind": "decision",
+                    "options": [
+                      {
+                        "label": "Give 35 scrap to craft an augmentation.",
+                        "gate": null,
+                        "child": {
+                          "text": {
+                            "value": "You transfer over the scrap and watch the master craftsmen work. They easily reshape the metal into pieces they can use and then add various additional materials on their ship to construct the augmentation. You thank them and load it onto your ship.",
+                            "ref": "event_LANIUS_RESEARCHER_CRAFT_c1_c1_text"
+                          },
+                          "effects": [
+                            {
+                              "kind": "resource",
+                              "resource": "scrap",
+                              "min": -35,
+                              "max": -35
+                            },
+                            {
+                              "kind": "item",
+                              "item_kind": "augment",
+                              "id": "DLC_AUGMENTS",
+                              "label": "DLC_AUGMENTS",
+                              "from_list": true
+                            }
+                          ]
+                        },
+                        "label_ref": "event_LANIUS_RESEARCHER_CRAFT_c1_c5_c1_choice",
+                        "hidden": true
+                      },
+                      {
+                        "label": "Give 40 scrap to craft a weapon.",
+                        "gate": null,
+                        "child": {
+                          "text": {
+                            "value": "You transfer over the scrap and watch the master craftsmen work. They easily reshape the metal into pieces they can use and then add various additional materials on their ship to construct the weapon. You thank them and load it onto your ship.",
+                            "ref": "event_LANIUS_RESEARCHER_CRAFT_c1_c2_text"
+                          },
+                          "effects": [
+                            {
+                              "kind": "resource",
+                              "resource": "scrap",
+                              "min": -40,
+                              "max": -40
+                            },
+                            {
+                              "kind": "item",
+                              "item_kind": "weapon",
+                              "id": "DLC_WEAPONS",
+                              "label": "DLC_WEAPONS",
+                              "from_list": true
+                            }
+                          ]
+                        },
+                        "label_ref": "event_LANIUS_RESEARCHER_CRAFT_c1_c5_c2_choice",
+                        "hidden": true
+                      },
+                      {
+                        "label": "Give 30 scrap to craft a drone schematic.",
+                        "gate": null,
+                        "child": {
+                          "text": {
+                            "value": "You transfer over the scrap and watch the master craftsmen work. They easily reshape the metal into pieces they can use and then add various additional materials on their ship to construct the schematic. You thank them and load it onto your ship.",
+                            "ref": "event_LANIUS_RESEARCHER_CRAFT_c1_c3_text"
+                          },
+                          "effects": [
+                            {
+                              "kind": "resource",
+                              "resource": "scrap",
+                              "min": -30,
+                              "max": -30
+                            },
+                            {
+                              "kind": "item",
+                              "item_kind": "drone",
+                              "id": "DLC_DRONES",
+                              "label": "DLC_DRONES",
+                              "from_list": true
+                            }
+                          ]
+                        },
+                        "label_ref": "event_LANIUS_RESEARCHER_CRAFT_c1_c5_c3_choice",
+                        "hidden": true
+                      },
+                      {
+                        "label": "Decline their offer.",
+                        "gate": null,
+                        "child": {
+                          "text": {
+                            "value": "You thank them for the information and prepare to jump.",
+                            "ref": "event_LANIUS_RESEARCHER_CRAFT_c1_c4_text"
+                          },
+                          "effects": []
+                        },
+                        "label_ref": "event_LANIUS_RESEARCHER_CRAFT_c1_c4_choice"
+                      }
+                    ]
+                  }
+                },
+                "label_ref": "event_LANIUS_RESEARCHER_CRAFT_c1_c5_choice",
+                "hidden": true
+              }
+            ]
+          }
+        },
+        "label_ref": "event_LANIUS_RESEARCHER_CRAFT_c1_choice",
+        "hidden": true
+      },
+      {
+        "label": "Leave them to their research.",
+        "gate": null,
+        "child": {
+          "text": {
+            "value": "While replicating their innate ability would have immeasurable consequences on commercial manufacturing, your mission has a much higher priority at the moment.",
+            "ref": "event_LANIUS_RESEARCHER_CRAFT_c2_text"
+          },
+          "effects": []
+        },
+        "label_ref": "event_LANIUS_RESEARCHER_CRAFT_c2_choice",
+        "hidden": true
+      }
+    ]
+  }
+}

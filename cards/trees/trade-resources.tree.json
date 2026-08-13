@@ -1,0 +1,120 @@
+{
+  "schema": "ftl-event-tree/1",
+  "id": "TRADER_CIV",
+  "slug": "trade-resources",
+  "title": "Trade resources",
+  "extracted_from": "raw/gamedata/events.xml",
+  "text": {
+    "value": "You arrive at a quiet spaceport and are immediately hailed by another ship at port with a \"once in a lifetime deal!\"",
+    "ref": "TRADER_CIV",
+    "variants": 6
+  },
+  "name": "TRADER_CIV",
+  "source": "raw/gamedata/events.xml",
+  "effects": [],
+  "node": {
+    "kind": "decision",
+    "options": [
+      {
+        "label": "Trade.",
+        "gate": null,
+        "child": {
+          "effects": [],
+          "node": {
+            "kind": "chance",
+            "list": "TRADER_LIST",
+            "source": "raw/gamedata/events.xml",
+            "odds_basis": "unweighted",
+            "options": [
+              {
+                "share": null,
+                "child": {
+                  "effects": [
+                    {
+                      "kind": "resource",
+                      "resource": "fuel",
+                      "min": 5,
+                      "max": 10
+                    },
+                    {
+                      "kind": "resource",
+                      "resource": "drones",
+                      "min": -2,
+                      "max": -1
+                    }
+                  ]
+                }
+              },
+              {
+                "share": null,
+                "child": {
+                  "effects": [
+                    {
+                      "kind": "resource",
+                      "resource": "missiles",
+                      "min": 4,
+                      "max": 5
+                    },
+                    {
+                      "kind": "resource",
+                      "resource": "fuel",
+                      "min": -2,
+                      "max": -1
+                    }
+                  ]
+                }
+              },
+              {
+                "share": null,
+                "child": {
+                  "effects": [
+                    {
+                      "kind": "resource",
+                      "resource": "drones",
+                      "min": 2,
+                      "max": 3
+                    },
+                    {
+                      "kind": "resource",
+                      "resource": "missiles",
+                      "min": -3,
+                      "max": -2
+                    }
+                  ]
+                }
+              },
+              {
+                "share": null,
+                "child": {
+                  "effects": [
+                    {
+                      "kind": "resource",
+                      "resource": "fuel",
+                      "min": 4,
+                      "max": 10
+                    },
+                    {
+                      "kind": "resource",
+                      "resource": "missiles",
+                      "min": -4,
+                      "max": -2
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        "label_ref": "event_TRADER_CIV_c1_choice"
+      },
+      {
+        "label": "Ignore.",
+        "gate": null,
+        "child": {
+          "effects": []
+        },
+        "label_ref": "event_TRADER_CIV_c2_choice"
+      }
+    ]
+  }
+}

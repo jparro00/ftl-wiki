@@ -1,0 +1,15 @@
+{
+  "schema": "ftl-event-tree/1",
+  "id": "NOTHING_PIRATE",
+  "slug": "empty-beacon-pirate",
+  "title": "Empty beacon (Pirate)",
+  "extracted_from": "raw/gamedata/events_pirate.xml",
+  "text": {
+    "value": "As soon as you arrive, a small ship de-cloaks behind yours. You immediately power up the shields and weapons, but they continue on their trajectory unimpressed. You try to calm your nerves.",
+    "ref": "NOTHING_PIRATE",
+    "variants": 4
+  },
+  "name": "NOTHING_PIRATE",
+  "source": "raw/gamedata/events_pirate.xml",
+  "effects": []
+}

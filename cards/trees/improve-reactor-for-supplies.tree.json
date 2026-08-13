@@ -1,0 +1,141 @@
+{
+  "schema": "ftl-event-tree/1",
+  "id": "TRADER_UPGRADES_EXCHANGE",
+  "slug": "improve-reactor-for-supplies",
+  "title": "Improve reactor for supplies",
+  "extracted_from": "raw/gamedata/newEvents.xml",
+  "text": {
+    "value": "\"You look like a military vessel. We're trying to get back to our homes alive. I'm an engineer by trade and could try to improve your reactor if you have any extra supplies.\"",
+    "ref": "TRADER_UPGRADES_EXCHANGE_TEXT",
+    "variants": 2
+  },
+  "name": "TRADER_UPGRADES_EXCHANGE",
+  "source": "raw/gamedata/newEvents.xml",
+  "effects": [],
+  "flags": {
+    "unique": true
+  },
+  "node": {
+    "kind": "decision",
+    "options": [
+      {
+        "label": "Agree to the trade.",
+        "gate": null,
+        "child": {
+          "effects": [],
+          "node": {
+            "kind": "chance",
+            "list": "TRADER_UPGRADES_EXCHANGE_LIST",
+            "source": "raw/gamedata/newEvents.xml",
+            "odds_basis": "unweighted",
+            "options": [
+              {
+                "share": null,
+                "child": {
+                  "text": {
+                    "value": "You make the exchange and their team comes on board to try to improve your reactor.",
+                    "ref": "event_TRADER_UPGRADES_EXCHANGE_LIST_1_text"
+                  },
+                  "effects": [
+                    {
+                      "kind": "resource",
+                      "resource": "missiles",
+                      "min": -5,
+                      "max": -3
+                    },
+                    {
+                      "kind": "resource",
+                      "resource": "drones",
+                      "min": -2,
+                      "max": 0
+                    },
+                    {
+                      "kind": "upgrade",
+                      "system": "reactor",
+                      "amount": 1
+                    }
+                  ]
+                }
+              },
+              {
+                "share": null,
+                "child": {
+                  "text": {
+                    "value": "You make the exchange and their team comes on board to try to improve your reactor.",
+                    "ref": "event_TRADER_UPGRADES_EXCHANGE_LIST_1_text"
+                  },
+                  "effects": [
+                    {
+                      "kind": "resource",
+                      "resource": "missiles",
+                      "min": -2,
+                      "max": 0
+                    },
+                    {
+                      "kind": "resource",
+                      "resource": "drones",
+                      "min": -3,
+                      "max": -2
+                    },
+                    {
+                      "kind": "upgrade",
+                      "system": "reactor",
+                      "amount": 1
+                    }
+                  ]
+                }
+              },
+              {
+                "share": null,
+                "child": {
+                  "text": {
+                    "value": "You make the exchange and their team comes on board to try to improve your reactor.",
+                    "ref": "event_TRADER_UPGRADES_EXCHANGE_LIST_1_text"
+                  },
+                  "effects": [
+                    {
+                      "kind": "resource",
+                      "resource": "missiles",
+                      "min": -2,
+                      "max": 0
+                    },
+                    {
+                      "kind": "resource",
+                      "resource": "drones",
+                      "min": -2,
+                      "max": 0
+                    },
+                    {
+                      "kind": "resource",
+                      "resource": "fuel",
+                      "min": -3,
+                      "max": -2
+                    },
+                    {
+                      "kind": "upgrade",
+                      "system": "reactor",
+                      "amount": 1
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        "label_ref": "event_TRADER_UPGRADES_EXCHANGE_c1_choice"
+      },
+      {
+        "label": "Respectfully decline.",
+        "gate": null,
+        "child": {
+          "text": {
+            "value": "You decide you need what supplies you have.",
+            "ref": "event_TRADER_UPGRADES_EXCHANGE_c2_text"
+          },
+          "effects": []
+        },
+        "label_ref": "event_TRADER_UPGRADES_EXCHANGE_c2_choice"
+      }
+    ]
+  }
+}

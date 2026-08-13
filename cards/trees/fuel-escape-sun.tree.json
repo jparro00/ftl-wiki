@@ -1,0 +1,14 @@
+{
+  "schema": "ftl-event-tree/1",
+  "id": "FUEL_ESCAPE_SUN",
+  "slug": "fuel-escape-sun",
+  "title": "Fuel escape (sun)",
+  "extracted_from": "raw/gamedata/events.xml",
+  "text": {
+    "value": "While waiting for help, you drained what little power you had left to pull away to a safe distance from the sun.",
+    "ref": "event_FUEL_ESCAPE_SUN_text"
+  },
+  "name": "FUEL_ESCAPE_SUN",
+  "source": "raw/gamedata/events.xml",
+  "effects": []
+}

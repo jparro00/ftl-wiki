@@ -1,0 +1,76 @@
+{
+  "schema": "ftl-event-tree/1",
+  "id": "ENGI_MONSTER",
+  "slug": "engi-monster",
+  "title": "Engi monster",
+  "extracted_from": "raw/gamedata/events_engi.xml",
+  "text": {
+    "value": "As you jump in you're hailed urgently by an Engi science vessel in the distance. \"We propose that you do not see the creature.\" There's nothing on the scanner, which is when you realize you can't see the creature because you're inside it!",
+    "ref": "event_ENGI_MONSTER_text"
+  },
+  "name": "ENGI_MONSTER",
+  "source": "raw/gamedata/events_engi.xml",
+  "effects": [],
+  "flags": {
+    "unique": true
+  },
+  "node": {
+    "kind": "decision",
+    "options": [
+      {
+        "label": "Jump away ASAP.",
+        "gate": null,
+        "child": {
+          "effects": []
+        },
+        "label_ref": "event_ENGI_MONSTER_c1_choice",
+        "hidden": true
+      },
+      {
+        "label": "(Improved Sensors) Scan the monstrosity.",
+        "gate": {
+          "req": "sensors",
+          "label": "Sensors",
+          "lvl": "3"
+        },
+        "child": {
+          "text": {
+            "value": "You detect a faint, arrhythmic sub-wave pattern. Could the creature be communicating? You forward your observations to the Engi vessel and they thank you in turn.",
+            "ref": "event_ENGI_MONSTER_c2_text"
+          },
+          "effects": [
+            {
+              "kind": "reward",
+              "level": "LOW",
+              "tier": "augment"
+            }
+          ]
+        },
+        "label_ref": "event_ENGI_MONSTER_c2_choice",
+        "hidden": true
+      },
+      {
+        "label": "(Long-Ranged Scanners) Scan the monstrosity.",
+        "gate": {
+          "req": "ADV_SCANNERS",
+          "label": "Long-Ranged Scanners"
+        },
+        "child": {
+          "text": {
+            "value": "You detect a faint, arrhythmic sub-wave pattern. Could the creature be communicating? You forward your observations to the Engi vessel and they thank you in turn.",
+            "ref": "event_ENGI_MONSTER_c2_text"
+          },
+          "effects": [
+            {
+              "kind": "reward",
+              "level": "LOW",
+              "tier": "augment"
+            }
+          ]
+        },
+        "label_ref": "event_ENGI_MONSTER_c3_choice",
+        "hidden": true
+      }
+    ]
+  }
+}

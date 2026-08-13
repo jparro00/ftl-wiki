@@ -1,0 +1,23 @@
+{
+  "schema": "ftl-event-tree/1",
+  "id": "LANIUS_FREE_STUFF",
+  "slug": "free-scrap-with-resources-lanius",
+  "title": "Free scrap with resources (Lanius)",
+  "extracted_from": "raw/gamedata/dlcEvents_anaerobic.xml",
+  "text": {
+    "value": "You stumble across a badly damaged Lanius craft. It jumps away as soon as it sees you. Looking around the area, you discover a number of destroyed Rebel automated ships. It must have been quite the fight. You scrap what remains.",
+    "ref": "event_LANIUS_FREE_STUFF_text"
+  },
+  "name": "LANIUS_FREE_STUFF",
+  "source": "raw/gamedata/dlcEvents_anaerobic.xml",
+  "effects": [
+    {
+      "kind": "reward",
+      "level": "HIGH",
+      "tier": "standard"
+    }
+  ],
+  "flags": {
+    "unique": true
+  }
+}

@@ -1,0 +1,86 @@
+{
+  "schema": "ftl-event-tree/1",
+  "id": "NEBULA_AUTO_WARNING",
+  "slug": "auto-ship-warning-in-nebula",
+  "title": "Auto-ship warning in nebula",
+  "extracted_from": "raw/gamedata/events_nebula.xml",
+  "text": {
+    "value": "It appears that an automated Rebel scout was positioned within the nebula to warn of your passing.",
+    "ref": "event_NEBULA_AUTO_WARNING_text"
+  },
+  "name": "NEBULA_AUTO_WARNING",
+  "source": "raw/gamedata/events_nebula.xml",
+  "effects": [
+    {
+      "kind": "environment",
+      "environment": "nebula",
+      "target": "player"
+    }
+  ],
+  "flags": {
+    "unique": true,
+    "environment": "nebula",
+    "environment_target": "player"
+  },
+  "node": {
+    "kind": "combat",
+    "ship": "REBEL_AUTO_WARNING",
+    "ship_labels": [
+      "Auto-Scout",
+      "Auto-Assault"
+    ],
+    "hostile": true,
+    "auto_blueprint": "SHIPS_AUTO",
+    "source": "raw/gamedata/events_ships.xml",
+    "branches": [
+      {
+        "on": "destroyed",
+        "child": {
+          "text": {
+            "value": "The ship breaks apart and you feel relief in the knowledge that you will hopefully still be one step ahead of the fleet.",
+            "ref": "ship_REBEL_AUTO_WARNING_destroyed_text"
+          },
+          "effects": [
+            {
+              "kind": "reward",
+              "level": "LOW",
+              "tier": "standard"
+            }
+          ]
+        }
+      },
+      {
+        "on": "escape",
+        "child": {
+          "text": {
+            "value": "The ship starts to power up its FTL Drive. If it gets away, it will no doubt warn the fleet of your position!",
+            "ref": "ship_REBEL_AUTO_WARNING_escape_text"
+          },
+          "effects": [
+            {
+              "kind": "ship_hostility",
+              "hostile": true
+            }
+          ]
+        },
+        "min": "22",
+        "max": "22"
+      },
+      {
+        "on": "gotaway",
+        "child": {
+          "text": {
+            "value": "The scout jumps away. It will certainly have informed the fleet of your position. You must get to the next sector as soon as possible!",
+            "ref": "ship_REBEL_AUTO_WARNING_gotaway_text"
+          },
+          "effects": [
+            {
+              "kind": "fleet_delay",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

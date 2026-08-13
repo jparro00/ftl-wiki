@@ -1,0 +1,22 @@
+{
+  "schema": "ftl-event-tree/1",
+  "id": "STORE_ENGI",
+  "slug": "store-engi",
+  "title": "Store (Engi)",
+  "extracted_from": "raw/gamedata/events_engi.xml",
+  "text": {
+    "value": "The Engi can do remarkable things with just a pile of scrap. The Engi hive at this beacon are selling equipment for just that.",
+    "ref": "STORE_ENGI",
+    "variants": 3
+  },
+  "name": "STORE_ENGI",
+  "source": "raw/gamedata/events_engi.xml",
+  "effects": [
+    {
+      "kind": "store"
+    }
+  ],
+  "flags": {
+    "store": true
+  }
+}

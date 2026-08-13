@@ -1,0 +1,130 @@
+{
+  "schema": "ftl-event-tree/1",
+  "id": "CRYSTAL_SCRAP_EXCITED",
+  "slug": "crystal-scrap-collector",
+  "title": "Crystal scrap collector",
+  "extracted_from": "raw/gamedata/events_crystal.xml",
+  "text": {
+    "value": "You receive a signal from a private relay on a nearby inhabited planet. \"Are you the alien ship they've been talking about?! You are! Please, I am a collector of alien artifacts, I'm sure what is scrap to you is priceless to me.\"",
+    "ref": "event_CRYSTAL_SCRAP_EXCITED_text"
+  },
+  "name": "CRYSTAL_SCRAP_EXCITED",
+  "source": "raw/gamedata/events_crystal.xml",
+  "effects": [],
+  "flags": {
+    "unique": true
+  },
+  "node": {
+    "kind": "decision",
+    "options": [
+      {
+        "label": "Offer 35 scrap.",
+        "gate": null,
+        "child": {
+          "text": {
+            "value": "\"My word! Is this... a 25th century Rockman thrust stabilizer?! What do you want for it? Wait, I have a better proposal. I long to see the galaxy. I propose I come with you. What do you say?\"",
+            "ref": "event_CRYSTAL_SCRAP_EXCITED_c1_text"
+          },
+          "effects": [
+            {
+              "kind": "resource",
+              "resource": "scrap",
+              "min": -35,
+              "max": -35
+            }
+          ],
+          "node": {
+            "kind": "decision",
+            "options": [
+              {
+                "label": "Accept.",
+                "gate": null,
+                "child": {
+                  "text": {
+                    "value": "\"I shan't even gather my belongings - only permit me to leave my family a message.\" The Crystalline Being joins your crew.",
+                    "ref": "event_CRYSTAL_SCRAP_EXCITED_c1_c1_text"
+                  },
+                  "effects": [
+                    {
+                      "kind": "crew_gain",
+                      "amount": 1,
+                      "class": "crystal"
+                    }
+                  ]
+                },
+                "label_ref": "event_CRYSTAL_SCRAP_EXCITED_c1_c1_choice",
+                "hidden": true
+              },
+              {
+                "label": "Request another payment.",
+                "gate": null,
+                "child": {
+                  "effects": [],
+                  "node": {
+                    "kind": "chance",
+                    "list": "CRYSTAL_SCRAP_EXCITED_LIST",
+                    "source": "raw/gamedata/events_crystal.xml",
+                    "odds_basis": "unweighted",
+                    "options": [
+                      {
+                        "share": null,
+                        "child": {
+                          "text": {
+                            "value": "\"Very well, a payment in kind. I have these explosives that emulate our race's innate ability. Perhaps that would interest you.\"",
+                            "ref": "event_CRYSTAL_SCRAP_EXCITED_LIST_1_text"
+                          },
+                          "effects": [
+                            {
+                              "kind": "item",
+                              "item_kind": "weapon",
+                              "id": "BOMB_LOCK",
+                              "label": "Crystal Lockdown Bomb"
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "share": null,
+                        "child": {
+                          "text": {
+                            "value": "\"Very well, a payment in kind. I have an extra ship weapon laying around here somewhere. Perhaps you could make use of it?\"",
+                            "ref": "event_CRYSTAL_SCRAP_EXCITED_LIST_2_text"
+                          },
+                          "effects": [
+                            {
+                              "kind": "item",
+                              "item_kind": "weapon",
+                              "id": "CRYSTAL_BURST_2",
+                              "label": "Crystal Burst Mark II"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                },
+                "label_ref": "event_CRYSTAL_SCRAP_EXCITED_c1_c2_choice",
+                "hidden": true
+              }
+            ]
+          }
+        },
+        "label_ref": "event_CRYSTAL_SCRAP_EXCITED_c1_choice",
+        "hidden": true
+      },
+      {
+        "label": "Turn him down.",
+        "gate": null,
+        "child": {
+          "text": {
+            "value": "Scrap is priceless no matter where you are in the galaxy. You hold onto your goods and prepare to jump.",
+            "ref": "event_CRYSTAL_SCRAP_EXCITED_c2_text"
+          },
+          "effects": []
+        },
+        "label_ref": "event_CRYSTAL_SCRAP_EXCITED_c2_choice",
+        "hidden": true
+      }
+    ]
+  }
+}

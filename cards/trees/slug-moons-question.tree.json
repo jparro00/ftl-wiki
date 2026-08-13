@@ -1,0 +1,672 @@
+{
+  "schema": "ftl-event-tree/1",
+  "id": "SLUG_DISTRESS_QUESTION",
+  "slug": "slug-moons-question",
+  "title": "Slug moons question",
+  "extracted_from": "raw/gamedata/events_slug.xml",
+  "text": {
+    "value": "You arrive near the distress beacon's signal.",
+    "ref": "event_SLUG_DISTRESS_QUESTION_text"
+  },
+  "name": "SLUG_DISTRESS_QUESTION",
+  "source": "raw/gamedata/events_slug.xml",
+  "effects": [
+    {
+      "kind": "environment",
+      "environment": "nebula",
+      "target": "player"
+    }
+  ],
+  "flags": {
+    "unique": true,
+    "beacon": "distress",
+    "environment": "nebula",
+    "environment_target": "player"
+  },
+  "node": {
+    "kind": "decision",
+    "options": [
+      {
+        "label": "Continue.",
+        "gate": null,
+        "child": {
+          "effects": [],
+          "node": {
+            "kind": "chance",
+            "list": "SLUG_DISTRESS_QUESTION_LIST",
+            "source": "raw/gamedata/events_slug.xml",
+            "odds_basis": "unweighted",
+            "options": [
+              {
+                "share": null,
+                "child": {
+                  "text": {
+                    "value": "You track the distress beacon with difficulty to one of the five moons of a planet hidden in the nebula.",
+                    "ref": "event_SLUG_DISTRESS_QUESTION_LIST_1_text"
+                  },
+                  "effects": [],
+                  "node": {
+                    "kind": "decision",
+                    "options": [
+                      {
+                        "label": "Investigate.",
+                        "gate": null,
+                        "child": {
+                          "text": {
+                            "value": "As you drift closer, you are contacted by a Slug marooned on the moon's surface. \"I shall join your crew, sssay I, if you can answer me this simple quesssstion. How many moons are there in orbit here?\"",
+                            "ref": "event_SLUG_DISTRESS_QUESTION_LIST_1_c1_text"
+                          },
+                          "effects": [],
+                          "node": {
+                            "kind": "decision",
+                            "options": [
+                              {
+                                "label": "Five.",
+                                "gate": null,
+                                "child": {
+                                  "text": {
+                                    "value": "\"That isss... correct. You sssurprise me. Human, is it? Yesss... we can be partners.\" The Slug beams aboard and joins your crew!",
+                                    "ref": "event_SLUG_DISTRESS_QUESTION_TRUE_text"
+                                  },
+                                  "name": "SLUG_DISTRESS_QUESTION_TRUE",
+                                  "source": "raw/gamedata/events_slug.xml",
+                                  "effects": [
+                                    {
+                                      "kind": "crew_gain",
+                                      "amount": 1,
+                                      "class": "slug"
+                                    }
+                                  ]
+                                },
+                                "label_ref": "event_SLUG_DISTRESS_QUESTION_LIST_1_c1_c1_choice",
+                                "hidden": true
+                              },
+                              {
+                                "label": "Six.",
+                                "gate": null,
+                                "child": {
+                                  "text": {
+                                    "value": "\"That issss... incorrect.\" Further, I have taken advantage of your lack of acuity to beam aboard your ship and steal your stuff!",
+                                    "ref": "event_SLUG_DISTRESS_QUESTION_FALSE_text"
+                                  },
+                                  "name": "SLUG_DISTRESS_QUESTION_FALSE",
+                                  "source": "raw/gamedata/events_slug.xml",
+                                  "effects": [
+                                    {
+                                      "kind": "resource",
+                                      "resource": "scrap",
+                                      "min": -35,
+                                      "max": -35
+                                    },
+                                    {
+                                      "kind": "resource",
+                                      "resource": "fuel",
+                                      "min": -4,
+                                      "max": -2
+                                    },
+                                    {
+                                      "kind": "resource",
+                                      "resource": "drones",
+                                      "min": -2,
+                                      "max": -1
+                                    }
+                                  ]
+                                },
+                                "label_ref": "event_SLUG_DISTRESS_QUESTION_LIST_1_c1_c2_choice",
+                                "hidden": true
+                              },
+                              {
+                                "label": "Seven.",
+                                "gate": null,
+                                "child": {
+                                  "text": {
+                                    "value": "\"That issss... incorrect.\" Further, I have taken advantage of your lack of acuity to beam aboard your ship and steal your stuff!",
+                                    "ref": "event_SLUG_DISTRESS_QUESTION_FALSE_text"
+                                  },
+                                  "name": "SLUG_DISTRESS_QUESTION_FALSE",
+                                  "source": "raw/gamedata/events_slug.xml",
+                                  "effects": [
+                                    {
+                                      "kind": "resource",
+                                      "resource": "scrap",
+                                      "min": -35,
+                                      "max": -35
+                                    },
+                                    {
+                                      "kind": "resource",
+                                      "resource": "fuel",
+                                      "min": -4,
+                                      "max": -2
+                                    },
+                                    {
+                                      "kind": "resource",
+                                      "resource": "drones",
+                                      "min": -2,
+                                      "max": -1
+                                    }
+                                  ]
+                                },
+                                "label_ref": "event_SLUG_DISTRESS_QUESTION_LIST_1_c1_c3_choice",
+                                "hidden": true
+                              },
+                              {
+                                "label": "Eleven.",
+                                "gate": null,
+                                "child": {
+                                  "text": {
+                                    "value": "\"That issss... incorrect.\" Further, I have taken advantage of your lack of acuity to beam aboard your ship and steal your stuff!",
+                                    "ref": "event_SLUG_DISTRESS_QUESTION_FALSE_text"
+                                  },
+                                  "name": "SLUG_DISTRESS_QUESTION_FALSE",
+                                  "source": "raw/gamedata/events_slug.xml",
+                                  "effects": [
+                                    {
+                                      "kind": "resource",
+                                      "resource": "scrap",
+                                      "min": -35,
+                                      "max": -35
+                                    },
+                                    {
+                                      "kind": "resource",
+                                      "resource": "fuel",
+                                      "min": -4,
+                                      "max": -2
+                                    },
+                                    {
+                                      "kind": "resource",
+                                      "resource": "drones",
+                                      "min": -2,
+                                      "max": -1
+                                    }
+                                  ]
+                                },
+                                "label_ref": "event_SLUG_DISTRESS_QUESTION_LIST_1_c1_c4_choice",
+                                "hidden": true
+                              }
+                            ]
+                          }
+                        },
+                        "label_ref": "event_SLUG_DISTRESS_QUESTION_LIST_1_c1_choice",
+                        "hidden": true
+                      }
+                    ]
+                  }
+                }
+              },
+              {
+                "share": null,
+                "child": {
+                  "text": {
+                    "value": "You track the distress beacon with difficulty to one of the six moons of a planet hidden in the nebula.",
+                    "ref": "event_SLUG_DISTRESS_QUESTION_LIST_2_text"
+                  },
+                  "effects": [],
+                  "node": {
+                    "kind": "decision",
+                    "options": [
+                      {
+                        "label": "Investigate.",
+                        "gate": null,
+                        "child": {
+                          "text": {
+                            "value": "As you drift closer, you are contacted by a Slug marooned on the moon's surface. \"I shall join your crew, sssay I, if you can answer me this simple quesssstion. How many moons are there in orbit here?\"",
+                            "ref": "event_SLUG_DISTRESS_QUESTION_LIST_1_c1_text"
+                          },
+                          "effects": [],
+                          "node": {
+                            "kind": "decision",
+                            "options": [
+                              {
+                                "label": "Five.",
+                                "gate": null,
+                                "child": {
+                                  "text": {
+                                    "value": "\"That issss... incorrect.\" Further, I have taken advantage of your lack of acuity to beam aboard your ship and steal your stuff!",
+                                    "ref": "event_SLUG_DISTRESS_QUESTION_FALSE_text"
+                                  },
+                                  "name": "SLUG_DISTRESS_QUESTION_FALSE",
+                                  "source": "raw/gamedata/events_slug.xml",
+                                  "effects": [
+                                    {
+                                      "kind": "resource",
+                                      "resource": "scrap",
+                                      "min": -35,
+                                      "max": -35
+                                    },
+                                    {
+                                      "kind": "resource",
+                                      "resource": "fuel",
+                                      "min": -4,
+                                      "max": -2
+                                    },
+                                    {
+                                      "kind": "resource",
+                                      "resource": "drones",
+                                      "min": -2,
+                                      "max": -1
+                                    }
+                                  ]
+                                },
+                                "label_ref": "event_SLUG_DISTRESS_QUESTION_LIST_1_c1_c1_choice",
+                                "hidden": true
+                              },
+                              {
+                                "label": "Six.",
+                                "gate": null,
+                                "child": {
+                                  "text": {
+                                    "value": "\"That isss... correct. You sssurprise me. Human, is it? Yesss... we can be partners.\" The Slug beams aboard and joins your crew!",
+                                    "ref": "event_SLUG_DISTRESS_QUESTION_TRUE_text"
+                                  },
+                                  "name": "SLUG_DISTRESS_QUESTION_TRUE",
+                                  "source": "raw/gamedata/events_slug.xml",
+                                  "effects": [
+                                    {
+                                      "kind": "crew_gain",
+                                      "amount": 1,
+                                      "class": "slug"
+                                    }
+                                  ]
+                                },
+                                "label_ref": "event_SLUG_DISTRESS_QUESTION_LIST_1_c1_c2_choice",
+                                "hidden": true
+                              },
+                              {
+                                "label": "Seven.",
+                                "gate": null,
+                                "child": {
+                                  "text": {
+                                    "value": "\"That issss... incorrect.\" Further, I have taken advantage of your lack of acuity to beam aboard your ship and steal your stuff!",
+                                    "ref": "event_SLUG_DISTRESS_QUESTION_FALSE_text"
+                                  },
+                                  "name": "SLUG_DISTRESS_QUESTION_FALSE",
+                                  "source": "raw/gamedata/events_slug.xml",
+                                  "effects": [
+                                    {
+                                      "kind": "resource",
+                                      "resource": "scrap",
+                                      "min": -35,
+                                      "max": -35
+                                    },
+                                    {
+                                      "kind": "resource",
+                                      "resource": "fuel",
+                                      "min": -4,
+                                      "max": -2
+                                    },
+                                    {
+                                      "kind": "resource",
+                                      "resource": "drones",
+                                      "min": -2,
+                                      "max": -1
+                                    }
+                                  ]
+                                },
+                                "label_ref": "event_SLUG_DISTRESS_QUESTION_LIST_1_c1_c3_choice",
+                                "hidden": true
+                              },
+                              {
+                                "label": "Eleven.",
+                                "gate": null,
+                                "child": {
+                                  "text": {
+                                    "value": "\"That issss... incorrect.\" Further, I have taken advantage of your lack of acuity to beam aboard your ship and steal your stuff!",
+                                    "ref": "event_SLUG_DISTRESS_QUESTION_FALSE_text"
+                                  },
+                                  "name": "SLUG_DISTRESS_QUESTION_FALSE",
+                                  "source": "raw/gamedata/events_slug.xml",
+                                  "effects": [
+                                    {
+                                      "kind": "resource",
+                                      "resource": "scrap",
+                                      "min": -35,
+                                      "max": -35
+                                    },
+                                    {
+                                      "kind": "resource",
+                                      "resource": "fuel",
+                                      "min": -4,
+                                      "max": -2
+                                    },
+                                    {
+                                      "kind": "resource",
+                                      "resource": "drones",
+                                      "min": -2,
+                                      "max": -1
+                                    }
+                                  ]
+                                },
+                                "label_ref": "event_SLUG_DISTRESS_QUESTION_LIST_1_c1_c4_choice",
+                                "hidden": true
+                              }
+                            ]
+                          }
+                        },
+                        "label_ref": "event_SLUG_DISTRESS_QUESTION_LIST_1_c1_choice",
+                        "hidden": true
+                      }
+                    ]
+                  }
+                }
+              },
+              {
+                "share": null,
+                "child": {
+                  "text": {
+                    "value": "You track the distress beacon with difficulty to one of the seven moons of a planet hidden in the nebula.",
+                    "ref": "event_SLUG_DISTRESS_QUESTION_LIST_3_text"
+                  },
+                  "effects": [],
+                  "node": {
+                    "kind": "decision",
+                    "options": [
+                      {
+                        "label": "Investigate.",
+                        "gate": null,
+                        "child": {
+                          "text": {
+                            "value": "As you drift closer, you are contacted by a Slug marooned on the moon's surface. \"I shall join your crew, sssay I, if you can answer me this simple quesssstion. How many moons are there in orbit here?\"",
+                            "ref": "event_SLUG_DISTRESS_QUESTION_LIST_1_c1_text"
+                          },
+                          "effects": [],
+                          "node": {
+                            "kind": "decision",
+                            "options": [
+                              {
+                                "label": "Five.",
+                                "gate": null,
+                                "child": {
+                                  "text": {
+                                    "value": "\"That issss... incorrect.\" Further, I have taken advantage of your lack of acuity to beam aboard your ship and steal your stuff!",
+                                    "ref": "event_SLUG_DISTRESS_QUESTION_FALSE_text"
+                                  },
+                                  "name": "SLUG_DISTRESS_QUESTION_FALSE",
+                                  "source": "raw/gamedata/events_slug.xml",
+                                  "effects": [
+                                    {
+                                      "kind": "resource",
+                                      "resource": "scrap",
+                                      "min": -35,
+                                      "max": -35
+                                    },
+                                    {
+                                      "kind": "resource",
+                                      "resource": "fuel",
+                                      "min": -4,
+                                      "max": -2
+                                    },
+                                    {
+                                      "kind": "resource",
+                                      "resource": "drones",
+                                      "min": -2,
+                                      "max": -1
+                                    }
+                                  ]
+                                },
+                                "label_ref": "event_SLUG_DISTRESS_QUESTION_LIST_1_c1_c1_choice",
+                                "hidden": true
+                              },
+                              {
+                                "label": "Six.",
+                                "gate": null,
+                                "child": {
+                                  "text": {
+                                    "value": "\"That issss... incorrect.\" Further, I have taken advantage of your lack of acuity to beam aboard your ship and steal your stuff!",
+                                    "ref": "event_SLUG_DISTRESS_QUESTION_FALSE_text"
+                                  },
+                                  "name": "SLUG_DISTRESS_QUESTION_FALSE",
+                                  "source": "raw/gamedata/events_slug.xml",
+                                  "effects": [
+                                    {
+                                      "kind": "resource",
+                                      "resource": "scrap",
+                                      "min": -35,
+                                      "max": -35
+                                    },
+                                    {
+                                      "kind": "resource",
+                                      "resource": "fuel",
+                                      "min": -4,
+                                      "max": -2
+                                    },
+                                    {
+                                      "kind": "resource",
+                                      "resource": "drones",
+                                      "min": -2,
+                                      "max": -1
+                                    }
+                                  ]
+                                },
+                                "label_ref": "event_SLUG_DISTRESS_QUESTION_LIST_1_c1_c2_choice",
+                                "hidden": true
+                              },
+                              {
+                                "label": "Seven.",
+                                "gate": null,
+                                "child": {
+                                  "text": {
+                                    "value": "\"That isss... correct. You sssurprise me. Human, is it? Yesss... we can be partners.\" The Slug beams aboard and joins your crew!",
+                                    "ref": "event_SLUG_DISTRESS_QUESTION_TRUE_text"
+                                  },
+                                  "name": "SLUG_DISTRESS_QUESTION_TRUE",
+                                  "source": "raw/gamedata/events_slug.xml",
+                                  "effects": [
+                                    {
+                                      "kind": "crew_gain",
+                                      "amount": 1,
+                                      "class": "slug"
+                                    }
+                                  ]
+                                },
+                                "label_ref": "event_SLUG_DISTRESS_QUESTION_LIST_1_c1_c3_choice",
+                                "hidden": true
+                              },
+                              {
+                                "label": "Eleven.",
+                                "gate": null,
+                                "child": {
+                                  "text": {
+                                    "value": "\"That issss... incorrect.\" Further, I have taken advantage of your lack of acuity to beam aboard your ship and steal your stuff!",
+                                    "ref": "event_SLUG_DISTRESS_QUESTION_FALSE_text"
+                                  },
+                                  "name": "SLUG_DISTRESS_QUESTION_FALSE",
+                                  "source": "raw/gamedata/events_slug.xml",
+                                  "effects": [
+                                    {
+                                      "kind": "resource",
+                                      "resource": "scrap",
+                                      "min": -35,
+                                      "max": -35
+                                    },
+                                    {
+                                      "kind": "resource",
+                                      "resource": "fuel",
+                                      "min": -4,
+                                      "max": -2
+                                    },
+                                    {
+                                      "kind": "resource",
+                                      "resource": "drones",
+                                      "min": -2,
+                                      "max": -1
+                                    }
+                                  ]
+                                },
+                                "label_ref": "event_SLUG_DISTRESS_QUESTION_LIST_1_c1_c4_choice",
+                                "hidden": true
+                              }
+                            ]
+                          }
+                        },
+                        "label_ref": "event_SLUG_DISTRESS_QUESTION_LIST_1_c1_choice",
+                        "hidden": true
+                      }
+                    ]
+                  }
+                }
+              },
+              {
+                "share": null,
+                "child": {
+                  "text": {
+                    "value": "You track the distress beacon with difficulty to one of the eleven moons of a planet hidden in the nebula.",
+                    "ref": "event_SLUG_DISTRESS_QUESTION_LIST_4_text"
+                  },
+                  "effects": [],
+                  "node": {
+                    "kind": "decision",
+                    "options": [
+                      {
+                        "label": "Investigate.",
+                        "gate": null,
+                        "child": {
+                          "text": {
+                            "value": "As you drift closer, you are contacted by a Slug marooned on the moon's surface. \"I shall join your crew, sssay I, if you can answer me this simple quesssstion. How many moons are there in orbit here?\"",
+                            "ref": "event_SLUG_DISTRESS_QUESTION_LIST_1_c1_text"
+                          },
+                          "effects": [],
+                          "node": {
+                            "kind": "decision",
+                            "options": [
+                              {
+                                "label": "Five.",
+                                "gate": null,
+                                "child": {
+                                  "text": {
+                                    "value": "\"That issss... incorrect.\" Further, I have taken advantage of your lack of acuity to beam aboard your ship and steal your stuff!",
+                                    "ref": "event_SLUG_DISTRESS_QUESTION_FALSE_text"
+                                  },
+                                  "name": "SLUG_DISTRESS_QUESTION_FALSE",
+                                  "source": "raw/gamedata/events_slug.xml",
+                                  "effects": [
+                                    {
+                                      "kind": "resource",
+                                      "resource": "scrap",
+                                      "min": -35,
+                                      "max": -35
+                                    },
+                                    {
+                                      "kind": "resource",
+                                      "resource": "fuel",
+                                      "min": -4,
+                                      "max": -2
+                                    },
+                                    {
+                                      "kind": "resource",
+                                      "resource": "drones",
+                                      "min": -2,
+                                      "max": -1
+                                    }
+                                  ]
+                                },
+                                "label_ref": "event_SLUG_DISTRESS_QUESTION_LIST_1_c1_c1_choice",
+                                "hidden": true
+                              },
+                              {
+                                "label": "Six.",
+                                "gate": null,
+                                "child": {
+                                  "text": {
+                                    "value": "\"That issss... incorrect.\" Further, I have taken advantage of your lack of acuity to beam aboard your ship and steal your stuff!",
+                                    "ref": "event_SLUG_DISTRESS_QUESTION_FALSE_text"
+                                  },
+                                  "name": "SLUG_DISTRESS_QUESTION_FALSE",
+                                  "source": "raw/gamedata/events_slug.xml",
+                                  "effects": [
+                                    {
+                                      "kind": "resource",
+                                      "resource": "scrap",
+                                      "min": -35,
+                                      "max": -35
+                                    },
+                                    {
+                                      "kind": "resource",
+                                      "resource": "fuel",
+                                      "min": -4,
+                                      "max": -2
+                                    },
+                                    {
+                                      "kind": "resource",
+                                      "resource": "drones",
+                                      "min": -2,
+                                      "max": -1
+                                    }
+                                  ]
+                                },
+                                "label_ref": "event_SLUG_DISTRESS_QUESTION_LIST_1_c1_c2_choice",
+                                "hidden": true
+                              },
+                              {
+                                "label": "Seven.",
+                                "gate": null,
+                                "child": {
+                                  "text": {
+                                    "value": "\"That issss... incorrect.\" Further, I have taken advantage of your lack of acuity to beam aboard your ship and steal your stuff!",
+                                    "ref": "event_SLUG_DISTRESS_QUESTION_FALSE_text"
+                                  },
+                                  "name": "SLUG_DISTRESS_QUESTION_FALSE",
+                                  "source": "raw/gamedata/events_slug.xml",
+                                  "effects": [
+                                    {
+                                      "kind": "resource",
+                                      "resource": "scrap",
+                                      "min": -35,
+                                      "max": -35
+                                    },
+                                    {
+                                      "kind": "resource",
+                                      "resource": "fuel",
+                                      "min": -4,
+                                      "max": -2
+                                    },
+                                    {
+                                      "kind": "resource",
+                                      "resource": "drones",
+                                      "min": -2,
+                                      "max": -1
+                                    }
+                                  ]
+                                },
+                                "label_ref": "event_SLUG_DISTRESS_QUESTION_LIST_1_c1_c3_choice",
+                                "hidden": true
+                              },
+                              {
+                                "label": "Eleven.",
+                                "gate": null,
+                                "child": {
+                                  "text": {
+                                    "value": "\"That isss... correct. You sssurprise me. Human, is it? Yesss... we can be partners.\" The Slug beams aboard and joins your crew!",
+                                    "ref": "event_SLUG_DISTRESS_QUESTION_TRUE_text"
+                                  },
+                                  "name": "SLUG_DISTRESS_QUESTION_TRUE",
+                                  "source": "raw/gamedata/events_slug.xml",
+                                  "effects": [
+                                    {
+                                      "kind": "crew_gain",
+                                      "amount": 1,
+                                      "class": "slug"
+                                    }
+                                  ]
+                                },
+                                "label_ref": "event_SLUG_DISTRESS_QUESTION_LIST_1_c1_c4_choice",
+                                "hidden": true
+                              }
+                            ]
+                          }
+                        },
+                        "label_ref": "event_SLUG_DISTRESS_QUESTION_LIST_1_c1_choice",
+                        "hidden": true
+                      }
+                    ]
+                  }
+                }
+              }
+            ]
+          }
+        },
+        "label_ref": "event_SLUG_DISTRESS_QUESTION_c1_choice",
+        "hidden": true
+      }
+    ]
+  }
+}

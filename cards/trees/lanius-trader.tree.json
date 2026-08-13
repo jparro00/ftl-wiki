@@ -1,0 +1,238 @@
+{
+  "schema": "ftl-event-tree/1",
+  "id": "LANIUS_TRADER",
+  "slug": "lanius-trader",
+  "title": "Lanius trader",
+  "extracted_from": "raw/gamedata/dlcEvents_anaerobic.xml",
+  "text": {
+    "value": "Aided by a modified translator, a nearby Lanius scavenger ship messages you, saying, \"Metal sufficient. Request exchange.\" It appears there are some Lanius who wish sociable interaction with other races.",
+    "ref": "LANIUS_TRADER_TEXT",
+    "variants": 3
+  },
+  "name": "LANIUS_TRADER",
+  "source": "raw/gamedata/dlcEvents_anaerobic.xml",
+  "effects": [],
+  "flags": {
+    "unique": true
+  },
+  "node": {
+    "kind": "decision",
+    "options": [
+      {
+        "label": "Agree to the exchange.",
+        "gate": null,
+        "child": {
+          "effects": [],
+          "node": {
+            "kind": "chance",
+            "list": "LANIUS_TRADER_LIST",
+            "source": "raw/gamedata/dlcEvents_anaerobic.xml",
+            "odds_basis": "unweighted",
+            "options": [
+              {
+                "share": null,
+                "child": {
+                  "text": {
+                    "value": "After the exchange is complete they leave without a word.",
+                    "ref": "event_LANIUS_TRADER_LIST_1_text"
+                  },
+                  "effects": [
+                    {
+                      "kind": "resource",
+                      "resource": "fuel",
+                      "min": -7,
+                      "max": -3
+                    },
+                    {
+                      "kind": "resource",
+                      "resource": "scrap",
+                      "min": 15,
+                      "max": 30
+                    }
+                  ]
+                }
+              },
+              {
+                "share": null,
+                "child": {
+                  "text": {
+                    "value": "After the exchange is complete they leave without a word.",
+                    "ref": "event_LANIUS_TRADER_LIST_1_text"
+                  },
+                  "effects": [
+                    {
+                      "kind": "resource",
+                      "resource": "missiles",
+                      "min": -7,
+                      "max": -3
+                    },
+                    {
+                      "kind": "resource",
+                      "resource": "scrap",
+                      "min": 20,
+                      "max": 40
+                    }
+                  ]
+                }
+              },
+              {
+                "share": null,
+                "child": {
+                  "text": {
+                    "value": "After the exchange is complete they leave without a word.",
+                    "ref": "event_LANIUS_TRADER_LIST_1_text"
+                  },
+                  "effects": [
+                    {
+                      "kind": "resource",
+                      "resource": "drones",
+                      "min": -7,
+                      "max": -3
+                    },
+                    {
+                      "kind": "resource",
+                      "resource": "scrap",
+                      "min": 20,
+                      "max": 40
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        "label_ref": "event_LANIUS_TRADER_c1_choice"
+      },
+      {
+        "label": "Decline.",
+        "gate": null,
+        "child": {
+          "text": {
+            "value": "They leave without a word.",
+            "ref": "event_LANIUS_TRADER_c2_text"
+          },
+          "effects": []
+        },
+        "label_ref": "event_LANIUS_TRADER_c2_choice"
+      },
+      {
+        "label": "(Lanius Crew) Ask for an alternative trade.",
+        "gate": {
+          "req": "anaerobic",
+          "label": "Lanius"
+        },
+        "child": {
+          "text": {
+            "value": "After a short discussion you do not understand, the trader comes back with a second proposal.",
+            "ref": "event_LANIUS_TRADER_c3_text"
+          },
+          "effects": [],
+          "node": {
+            "kind": "decision",
+            "options": [
+              {
+                "label": "Agree to the exchange.",
+                "gate": null,
+                "child": {
+                  "effects": [],
+                  "node": {
+                    "kind": "chance",
+                    "list": "LANIUS_TRADER_LIST2",
+                    "source": "raw/gamedata/dlcEvents_anaerobic.xml",
+                    "odds_basis": "unweighted",
+                    "options": [
+                      {
+                        "share": null,
+                        "child": {
+                          "text": {
+                            "value": "After the exchange is complete they leave without a word.",
+                            "ref": "event_LANIUS_TRADER_LIST2_1_text"
+                          },
+                          "effects": [
+                            {
+                              "kind": "resource",
+                              "resource": "fuel",
+                              "min": -7,
+                              "max": -3
+                            },
+                            {
+                              "kind": "resource",
+                              "resource": "scrap",
+                              "min": 20,
+                              "max": 35
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "share": null,
+                        "child": {
+                          "text": {
+                            "value": "After the exchange is complete they leave without a word.",
+                            "ref": "event_LANIUS_TRADER_LIST2_1_text"
+                          },
+                          "effects": [
+                            {
+                              "kind": "resource",
+                              "resource": "missiles",
+                              "min": -7,
+                              "max": -3
+                            },
+                            {
+                              "kind": "resource",
+                              "resource": "scrap",
+                              "min": 25,
+                              "max": 50
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "share": null,
+                        "child": {
+                          "text": {
+                            "value": "After the exchange is complete they leave without a word.",
+                            "ref": "event_LANIUS_TRADER_LIST2_1_text"
+                          },
+                          "effects": [
+                            {
+                              "kind": "resource",
+                              "resource": "drones",
+                              "min": -7,
+                              "max": -3
+                            },
+                            {
+                              "kind": "resource",
+                              "resource": "scrap",
+                              "min": 25,
+                              "max": 50
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                },
+                "label_ref": "event_LANIUS_TRADER_c1_choice"
+              },
+              {
+                "label": "Decline.",
+                "gate": null,
+                "child": {
+                  "text": {
+                    "value": "They leave without a word.",
+                    "ref": "event_LANIUS_TRADER_c2_text"
+                  },
+                  "effects": []
+                },
+                "label_ref": "event_LANIUS_TRADER_c2_choice"
+              }
+            ]
+          }
+        },
+        "label_ref": "event_LANIUS_TRADER_c3_choice",
+        "hidden": true
+      }
+    ]
+  }
+}

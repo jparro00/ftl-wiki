@@ -1,0 +1,164 @@
+{
+  "schema": "ftl-event-tree/1",
+  "id": "LANIUS_NOBOARDERS_PDS",
+  "slug": "lanius-fight-with-friendly-asb-support",
+  "title": "Lanius fight with friendly ASB support",
+  "extracted_from": "raw/gamedata/dlcEvents_anaerobic.xml",
+  "text": {
+    "value": "Upon arrival you are immediately surrounded by chaos: a planet's Anti-Ship Battery is firing on a number of Lanius ships; one of the combat ships mistakenly believes your ship has arrived to assist the planetary defenses. Combat positions!",
+    "ref": "event_LANIUS_NOBOARDERS_PDS_text"
+  },
+  "name": "LANIUS_NOBOARDERS_PDS",
+  "source": "raw/gamedata/dlcEvents_anaerobic.xml",
+  "effects": [
+    {
+      "kind": "environment",
+      "environment": "PDS",
+      "target": "enemy"
+    }
+  ],
+  "flags": {
+    "unique": true,
+    "environment": "PDS",
+    "environment_target": "enemy"
+  },
+  "node": {
+    "kind": "combat",
+    "ship": "LANIUS_BOARDERS_PDS",
+    "ship_labels": [
+      "Lanius Scout",
+      "Lanius Bomber"
+    ],
+    "hostile": true,
+    "auto_blueprint": "SHIPS_LANIUS",
+    "source": "raw/gamedata/dlcEvents_anaerobic.xml",
+    "branches": [
+      {
+        "on": "destroyed",
+        "child": {
+          "text": {
+            "value": "The ship breaks apart. You decide to salvage it when the opportunity arises.",
+            "ref": "ship_LANIUS_BOARDERS_PDS_destroyed_text"
+          },
+          "effects": [
+            {
+              "kind": "reward",
+              "level": "MED",
+              "tier": "standard"
+            }
+          ],
+          "node": {
+            "kind": "decision",
+            "options": [
+              {
+                "label": "Continue...",
+                "gate": null,
+                "child": {
+                  "effects": [],
+                  "node": {
+                    "kind": "chance",
+                    "list": "LANIUS_BOARDERS_PDS_LIST",
+                    "source": "raw/gamedata/dlcEvents_anaerobic.xml",
+                    "odds_basis": "unweighted",
+                    "options": [
+                      {
+                        "share": null,
+                        "child": {
+                          "text": {
+                            "value": "After your skirmish the fighting dies down and you're contacted by the planetary defense team. \"Sorry you got caught up in that fight, stranger. No matter how many of these monsters we blow out of the sky they just keep coming. We can patch up your ship for you.\"",
+                            "ref": "event_LANIUS_BOARDERS_PDS_LIST_1_text"
+                          },
+                          "effects": [
+                            {
+                              "kind": "hull_repair",
+                              "amount": 8
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "share": null,
+                        "child": {
+                          "text": {
+                            "value": "You finish off your assailant with the help of the Anti-Ship Battery but the fight rages on in the distance. You'd best leave before you get dragged into it again.",
+                            "ref": "event_LANIUS_BOARDERS_PDS_LIST_2_text"
+                          },
+                          "effects": []
+                        }
+                      }
+                    ]
+                  }
+                },
+                "label_ref": "continue",
+                "hidden": true
+              }
+            ]
+          }
+        }
+      },
+      {
+        "on": "deadCrew",
+        "child": {
+          "text": {
+            "value": "No more life signs detected on the Lanius ship. You decide to salvage it when the opportunity arises.",
+            "ref": "ship_LANIUS_BOARDERS_PDS_deadCrew_text"
+          },
+          "effects": [
+            {
+              "kind": "reward",
+              "level": "HIGH",
+              "tier": "standard"
+            }
+          ],
+          "node": {
+            "kind": "decision",
+            "options": [
+              {
+                "label": "Continue...",
+                "gate": null,
+                "child": {
+                  "effects": [],
+                  "node": {
+                    "kind": "chance",
+                    "list": "LANIUS_BOARDERS_PDS_LIST",
+                    "source": "raw/gamedata/dlcEvents_anaerobic.xml",
+                    "odds_basis": "unweighted",
+                    "options": [
+                      {
+                        "share": null,
+                        "child": {
+                          "text": {
+                            "value": "After your skirmish the fighting dies down and you're contacted by the planetary defense team. \"Sorry you got caught up in that fight, stranger. No matter how many of these monsters we blow out of the sky they just keep coming. We can patch up your ship for you.\"",
+                            "ref": "event_LANIUS_BOARDERS_PDS_LIST_1_text"
+                          },
+                          "effects": [
+                            {
+                              "kind": "hull_repair",
+                              "amount": 8
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "share": null,
+                        "child": {
+                          "text": {
+                            "value": "You finish off your assailant with the help of the Anti-Ship Battery but the fight rages on in the distance. You'd best leave before you get dragged into it again.",
+                            "ref": "event_LANIUS_BOARDERS_PDS_LIST_2_text"
+                          },
+                          "effects": []
+                        }
+                      }
+                    ]
+                  }
+                },
+                "label_ref": "continue",
+                "hidden": true
+              }
+            ]
+          }
+        }
+      }
+    ]
+  }
+}

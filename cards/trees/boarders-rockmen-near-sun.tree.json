@@ -1,0 +1,32 @@
+{
+  "schema": "ftl-event-tree/1",
+  "id": "ROCK_BOARDERS_SUN",
+  "slug": "boarders-rockmen-near-sun",
+  "title": "Boarders: Rockmen near sun",
+  "extracted_from": "raw/gamedata/events_rock.xml",
+  "text": {
+    "value": "As soon as you arrive you hear the telltale sounds of a teleporter and shouts reverberating through the ship, \"Prepare to burn, fleshy meat-sack aliens!\"",
+    "ref": "ROCK_BOARDERS_SUN",
+    "variants": 2
+  },
+  "name": "ROCK_BOARDERS_SUN",
+  "source": "raw/gamedata/events_rock.xml",
+  "effects": [
+    {
+      "kind": "environment",
+      "environment": "sun",
+      "target": "player"
+    },
+    {
+      "kind": "boarders",
+      "min": 2,
+      "max": 3,
+      "class": "rock"
+    }
+  ],
+  "flags": {
+    "unique": true,
+    "environment": "sun",
+    "environment_target": "player"
+  }
+}

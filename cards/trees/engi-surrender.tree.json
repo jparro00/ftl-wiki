@@ -1,0 +1,84 @@
+{
+  "schema": "ftl-event-tree/1",
+  "id": "ENGI_SURRENDER",
+  "slug": "engi-surrender",
+  "title": "Engi surrender",
+  "extracted_from": "raw/gamedata/events_engi.xml",
+  "text": {
+    "value": "An Engi ship in the vicinity, seeing you jump in armed to the teeth, immediately broadcasts its surrender: \"Subject goal: wealth. Engi motivation: survival. Transfer of goods acceptable?\"",
+    "ref": "event_ENGI_SURRENDER_text"
+  },
+  "name": "ENGI_SURRENDER",
+  "source": "raw/gamedata/events_engi.xml",
+  "effects": [],
+  "flags": {
+    "unique": true
+  },
+  "node": {
+    "kind": "decision",
+    "options": [
+      {
+        "label": "Explain that you're friendly.",
+        "gate": null,
+        "child": {
+          "effects": [],
+          "node": {
+            "kind": "chance",
+            "list": "ENGI_SURRENDER_LIST",
+            "source": "raw/gamedata/events_engi.xml",
+            "odds_basis": "unweighted",
+            "options": [
+              {
+                "share": null,
+                "child": {
+                  "text": {
+                    "value": "The Engi seem relieved, and eager to get underway. They set off without saying goodbye.",
+                    "ref": "event_ENGI_SURRENDER_LIST_1_text"
+                  },
+                  "effects": []
+                }
+              },
+              {
+                "share": null,
+                "child": {
+                  "text": {
+                    "value": "The Engi are satisfied with your explanation. \"Beneficial. Subject goal: long, long journey. Remains compatible with transfer of goods from Engi.\" They send over the gear willingly, and you feel better for it.",
+                    "ref": "event_ENGI_SURRENDER_LIST_2_text"
+                  },
+                  "effects": [
+                    {
+                      "kind": "reward",
+                      "level": "RANDOM",
+                      "tier": "standard"
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        "label_ref": "event_ENGI_SURRENDER_c1_choice",
+        "hidden": true
+      },
+      {
+        "label": "Accept their offer of surrender.",
+        "gate": null,
+        "child": {
+          "text": {
+            "value": "The Engi obediently transfer over the goods and get on their way. Money for nothing.",
+            "ref": "event_ENGI_SURRENDER_c2_text"
+          },
+          "effects": [
+            {
+              "kind": "reward",
+              "level": "RANDOM",
+              "tier": "standard"
+            }
+          ]
+        },
+        "label_ref": "event_ENGI_SURRENDER_c2_choice",
+        "hidden": true
+      }
+    ]
+  }
+}

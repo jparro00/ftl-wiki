@@ -1,0 +1,108 @@
+{
+  "schema": "ftl-event-tree/1",
+  "id": "REFUEL_STATION",
+  "slug": "refueling-station",
+  "title": "Refueling station",
+  "extracted_from": "raw/gamedata/events.xml",
+  "text": {
+    "value": "A ship refueling station is stationed at this beacon. We can purchase fuel here.",
+    "ref": "event_REFUEL_STATION_text"
+  },
+  "name": "REFUEL_STATION",
+  "source": "raw/gamedata/events.xml",
+  "effects": [],
+  "flags": {
+    "unique": true
+  },
+  "node": {
+    "kind": "decision",
+    "options": [
+      {
+        "label": "Buy 6 fuel for 12 scrap.",
+        "gate": null,
+        "child": {
+          "text": {
+            "value": "\"Thank you for your business.\"",
+            "ref": "event_REFUEL_STATION_c1_text"
+          },
+          "effects": [
+            {
+              "kind": "resource",
+              "resource": "fuel",
+              "min": 6,
+              "max": 6
+            },
+            {
+              "kind": "resource",
+              "resource": "scrap",
+              "min": -12,
+              "max": -12
+            }
+          ]
+        },
+        "label_ref": "event_REFUEL_STATION_c1_choice",
+        "hidden": false
+      },
+      {
+        "label": "Buy 3 fuel for 6 scrap.",
+        "gate": null,
+        "child": {
+          "text": {
+            "value": "\"Thank you for your business.\"",
+            "ref": "event_REFUEL_STATION_c1_text"
+          },
+          "effects": [
+            {
+              "kind": "resource",
+              "resource": "fuel",
+              "min": 3,
+              "max": 3
+            },
+            {
+              "kind": "resource",
+              "resource": "scrap",
+              "min": -6,
+              "max": -6
+            }
+          ]
+        },
+        "label_ref": "event_REFUEL_STATION_c2_choice",
+        "hidden": false
+      },
+      {
+        "label": "Buy 1 fuel for 2 scrap.",
+        "gate": null,
+        "child": {
+          "text": {
+            "value": "\"Thank you for your business.\"",
+            "ref": "event_REFUEL_STATION_c1_text"
+          },
+          "effects": [
+            {
+              "kind": "resource",
+              "resource": "fuel",
+              "min": 1,
+              "max": 1
+            },
+            {
+              "kind": "resource",
+              "resource": "scrap",
+              "min": -2,
+              "max": -2
+            }
+          ]
+        },
+        "label_ref": "event_REFUEL_STATION_c3_choice",
+        "hidden": false
+      },
+      {
+        "label": "Ignore the station.",
+        "gate": null,
+        "child": {
+          "effects": []
+        },
+        "label_ref": "event_REFUEL_STATION_c4_choice"
+      }
+    ]
+  }
+}

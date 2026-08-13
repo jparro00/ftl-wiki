@@ -1,0 +1,14 @@
+{
+  "schema": "ftl-event-tree/1",
+  "id": "BOSS_AUTOMATED",
+  "slug": "boss-automated",
+  "title": "Flagship goes automated",
+  "extracted_from": "raw/gamedata/events_boss.xml",
+  "text": {
+    "value": "It appears this ship is also equipped with an advanced AI system. Now that the crew is dead, it has taken control!",
+    "ref": "event_BOSS_AUTOMATED_text"
+  },
+  "name": "BOSS_AUTOMATED",
+  "source": "raw/gamedata/events_boss.xml",
+  "effects": []
+}

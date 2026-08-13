@@ -1,0 +1,168 @@
+{
+  "schema": "ftl-event-tree/1",
+  "id": "FUEL_SELLER_DISTRESS",
+  "slug": "no-fuel-automated-refueling-ship",
+  "title": "No fuel: automated refueling ship",
+  "extracted_from": "raw/gamedata/events_fuel.xml",
+  "text": {
+    "value": "A small ship arrives with a message, \"This automated ship will provide refueling services once a monetary exchange is complete. Complimentary amounts of fuel are available in emergencies only.\"",
+    "ref": "event_FUEL_SELLER_DISTRESS_text"
+  },
+  "name": "FUEL_SELLER_DISTRESS",
+  "source": "raw/gamedata/events_fuel.xml",
+  "effects": [],
+  "node": {
+    "kind": "decision",
+    "options": [
+      {
+        "label": "Request emergency fuel reserves.",
+        "gate": null,
+        "child": {
+          "text": {
+            "value": "\"This ship has registered that your one-time complimentary emergency fuel allowance has been consumed.\"",
+            "ref": "event_FUEL_SELLER_DISTRESS_c1_text"
+          },
+          "effects": [
+            {
+              "kind": "reward",
+              "level": "LOW",
+              "tier": "fuel_only"
+            }
+          ]
+        },
+        "label_ref": "event_FUEL_SELLER_DISTRESS_c1_choice",
+        "hidden": true
+      },
+      {
+        "label": "Buy 5 fuel for 20 scrap.",
+        "gate": null,
+        "child": {
+          "text": {
+            "value": "\"Automated refueling complete.\"",
+            "ref": "event_FUEL_SELLER_DISTRESS_c2_text"
+          },
+          "effects": [
+            {
+              "kind": "resource",
+              "resource": "fuel",
+              "min": 5,
+              "max": 5
+            },
+            {
+              "kind": "resource",
+              "resource": "scrap",
+              "min": -20,
+              "max": -20
+            }
+          ]
+        },
+        "label_ref": "event_FUEL_SELLER_DISTRESS_c2_choice",
+        "hidden": false
+      },
+      {
+        "label": "Buy 2 fuel for 8 scrap.",
+        "gate": null,
+        "child": {
+          "text": {
+            "value": "\"Automated refueling complete.\"",
+            "ref": "event_FUEL_SELLER_DISTRESS_c2_text"
+          },
+          "effects": [
+            {
+              "kind": "resource",
+              "resource": "fuel",
+              "min": 2,
+              "max": 2
+            },
+            {
+              "kind": "resource",
+              "resource": "scrap",
+              "min": -8,
+              "max": -8
+            }
+          ]
+        },
+        "label_ref": "event_FUEL_SELLER_DISTRESS_c3_choice",
+        "hidden": false
+      },
+      {
+        "label": "Attack the automated ship.",
+        "gate": null,
+        "child": {
+          "effects": [
+            {
+              "kind": "ship_hostility",
+              "hostile": true
+            }
+          ]
+        },
+        "label_ref": "event_FUEL_SELLER_DISTRESS_c4_choice"
+      }
+    ],
+    "combat": {
+      "kind": "combat",
+      "ship": "AUTO_FUEL_SELLER",
+      "ship_labels": [
+        "Auto-Scout",
+        "Auto-Assault"
+      ],
+      "hostile": false,
+      "auto_blueprint": "SHIPS_AUTO",
+      "source": "raw/gamedata/events_ships.xml",
+      "branches": [
+        {
+          "on": "destroyed",
+          "child": {
+            "text": {
+              "value": "As the ship breaks apart, you frantically try to salvage the remaining fuel from its cargo.",
+              "ref": "ship_AUTO_FUEL_SELLER_destroyed_text"
+            },
+            "effects": [
+              {
+                "kind": "reward",
+                "level": "MED",
+                "tier": "fuel"
+              }
+            ]
+          }
+        },
+        {
+          "on": "escape",
+          "child": {
+            "effects": []
+          },
+          "min": "30",
+          "max": "30"
+        },
+        {
+          "on": "escape",
+          "child": {
+            "text": {
+              "value": "It is apparent that the ship was not intended for combat. It seems to be trying to jump away.",
+              "ref": "ship_AUTO_FUEL_SELLER_escape_text"
+            },
+            "effects": [
+              {
+                "kind": "ship_hostility",
+                "hostile": true
+              }
+            ]
+          },
+          "chance": "0.5",
+          "min": "2",
+          "max": "5"
+        },
+        {
+          "on": "gotaway",
+          "child": {
+            "text": {
+              "value": "The ship jumps away without a word. You hope they didn't leave to get reinforcements.",
+              "ref": "ship_AUTO_FUEL_SELLER_gotaway_text"
+            },
+            "effects": []
+          }
+        }
+      ]
+    }
+  }
+}

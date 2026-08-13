@@ -1,0 +1,663 @@
+{
+  "schema": "ftl-event-tree/1",
+  "id": "CRYSTAL_CACHE",
+  "slug": "crystalline-cache",
+  "title": "Crystalline cache",
+  "extracted_from": "raw/gamedata/events_crystal.xml",
+  "text": {
+    "value": "Odd radar pings from a huge, orbiting asteroid here reveal a Crystalline cache of some kind. A deep crater has been sealed over with a thick layer of crystal to keep whatever's inside safe - it'd take some serious firepower to break though.",
+    "ref": "event_CRYSTAL_CACHE_text"
+  },
+  "name": "CRYSTAL_CACHE",
+  "source": "raw/gamedata/events_crystal.xml",
+  "effects": [],
+  "flags": {
+    "unique": true
+  },
+  "node": {
+    "kind": "decision",
+    "options": [
+      {
+        "label": "Attempt to break through with the weapons you have.",
+        "gate": null,
+        "child": {
+          "effects": [],
+          "node": {
+            "kind": "chance",
+            "list": "CRYSTAL_CACHE_BREAK",
+            "source": "raw/gamedata/events_crystal.xml",
+            "odds_basis": "unweighted",
+            "options": [
+              {
+                "share": null,
+                "child": {
+                  "text": {
+                    "value": "You fire everything you have, but the crystal barrier remains strong. After a time you give up and move on.",
+                    "ref": "event_CRYSTAL_CACHE_BREAK_1_text"
+                  },
+                  "effects": []
+                }
+              },
+              {
+                "share": null,
+                "child": {
+                  "text": {
+                    "value": "You fire everything you have, but the crystal barrier remains strong. After a time you give up and move on.",
+                    "ref": "event_CRYSTAL_CACHE_BREAK_1_text"
+                  },
+                  "effects": []
+                }
+              },
+              {
+                "share": null,
+                "child": {
+                  "text": {
+                    "value": "Against all odds, a lucky shot strikes an existing fracture in the crystal, compounding it into a crack that grows until an entire section of the barrier falls away!",
+                    "ref": "event_CRYSTAL_CACHE_BREAK_3_text"
+                  },
+                  "effects": [],
+                  "node": {
+                    "kind": "decision",
+                    "options": [
+                      {
+                        "label": "Investigate the cache.",
+                        "gate": null,
+                        "child": {
+                          "effects": [],
+                          "node": {
+                            "kind": "chance",
+                            "list": "CRYSTAL_CACHE_LIST",
+                            "source": "raw/gamedata/events_crystal.xml",
+                            "odds_basis": "unweighted",
+                            "options": [
+                              {
+                                "share": null,
+                                "child": {
+                                  "text": {
+                                    "value": "On arriving at the base of the crater, your team discovers a long-forgotten weapons cache. Most of the equipment is out of action, but not all of it!",
+                                    "ref": "event_CRYSTAL_CACHE_LIST_1_text"
+                                  },
+                                  "effects": [
+                                    {
+                                      "kind": "item",
+                                      "item_kind": "weapon",
+                                      "id": "WEAPONS_CRYSTAL",
+                                      "label": "WEAPONS_CRYSTAL",
+                                      "from_list": true
+                                    },
+                                    {
+                                      "kind": "reward",
+                                      "level": "LOW",
+                                      "tier": "stuff"
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "share": null,
+                                "child": {
+                                  "text": {
+                                    "value": "Your away team is greeted at the crater by the owners of the cache, who are none too happy. You grab what you can and run back to the ship, but not before they teleport aboard!",
+                                    "ref": "event_CRYSTAL_CACHE_LIST_2_text"
+                                  },
+                                  "effects": [
+                                    {
+                                      "kind": "item",
+                                      "item_kind": "weapon",
+                                      "id": "WEAPONS_CRYSTAL",
+                                      "label": "WEAPONS_CRYSTAL",
+                                      "from_list": true
+                                    },
+                                    {
+                                      "kind": "reward",
+                                      "level": "LOW",
+                                      "tier": "stuff"
+                                    },
+                                    {
+                                      "kind": "boarders",
+                                      "min": 2,
+                                      "max": 3,
+                                      "class": "crystal"
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "share": null,
+                                "child": {
+                                  "text": {
+                                    "value": "You send a crewmember down to check out the cache. The comm goes dead, and shortly thereafter massive gravity readings are detected on the asteroid. You must have triggered some kind of singularity booby trap! We've got to leave now before we're pulled in!",
+                                    "ref": "event_CRYSTAL_CACHE_LIST_3_text"
+                                  },
+                                  "effects": [],
+                                  "node": {
+                                    "kind": "decision",
+                                    "options": [
+                                      {
+                                        "label": "Pull out now!",
+                                        "gate": null,
+                                        "child": {
+                                          "text": {
+                                            "value": "You push the impulse engines to their limit and are able to break out of the gravity well. Your crewmember, along with the stockpile, is reduced to the size of a tennis ball - but you're left in one piece.",
+                                            "ref": "event_CRYSTAL_CACHE_LIST_3_c1_text"
+                                          },
+                                          "effects": [
+                                            {
+                                              "kind": "crew_loss",
+                                              "amount": 1,
+                                              "clone": true
+                                            }
+                                          ]
+                                        },
+                                        "label_ref": "event_CRYSTAL_CACHE_LIST_3_c1_choice",
+                                        "hidden": true
+                                      },
+                                      {
+                                        "label": "Detonate your entire fuel reserves to escape with your crew and the cargo.",
+                                        "gate": null,
+                                        "child": {
+                                          "text": {
+                                            "value": "You swoop into the heart of the distortion and pick up your crewmember and the cargo. You then eject your FTL fuel and ignite it, sending a shock wave that thrusts your ship well beyond the event horizon of the singularity. That was close.",
+                                            "ref": "event_CRYSTAL_CACHE_LIST_3_c2_text"
+                                          },
+                                          "effects": [
+                                            {
+                                              "kind": "resource",
+                                              "resource": "fuel",
+                                              "min": -100,
+                                              "max": -100
+                                            },
+                                            {
+                                              "kind": "item",
+                                              "item_kind": "weapon",
+                                              "id": "RANDOM",
+                                              "label": "RANDOM"
+                                            },
+                                            {
+                                              "kind": "reward",
+                                              "level": "LOW",
+                                              "tier": "stuff"
+                                            }
+                                          ]
+                                        },
+                                        "label_ref": "event_CRYSTAL_CACHE_LIST_3_c2_choice",
+                                        "hidden": true
+                                      },
+                                      {
+                                        "label": "(Improved Teleporter) Beam your crewmember back on board.",
+                                        "gate": {
+                                          "req": "teleporter",
+                                          "label": "Crew Teleporter",
+                                          "lvl": "2"
+                                        },
+                                        "child": {
+                                          "text": {
+                                            "value": "You floor the engines to escape the gravity well while trying to get a teleporter lock on your crewmember despite the massive interference. You're barely able to get them back on board before the entire area is consumed into the singularity.",
+                                            "ref": "event_CRYSTAL_CACHE_LIST_3_c3_text"
+                                          },
+                                          "effects": []
+                                        },
+                                        "label_ref": "event_CRYSTAL_CACHE_LIST_3_c3_choice",
+                                        "hidden": true
+                                      },
+                                      {
+                                        "label": "(Advanced Engines) Rescue your crewmember and the cargo.",
+                                        "gate": {
+                                          "req": "engines",
+                                          "label": "Engines",
+                                          "lvl": "7"
+                                        },
+                                        "child": {
+                                          "text": {
+                                            "value": "You swoop into the heart of the distortion and pick up your crewmember and the cargo. Your top of the line impulse engines are barely able to get your ship out of the gravity well before the whole ship is consumed. That was close.",
+                                            "ref": "event_CRYSTAL_CACHE_LIST_3_c4_text"
+                                          },
+                                          "effects": [
+                                            {
+                                              "kind": "item",
+                                              "item_kind": "weapon",
+                                              "id": "RANDOM",
+                                              "label": "RANDOM"
+                                            },
+                                            {
+                                              "kind": "reward",
+                                              "level": "LOW",
+                                              "tier": "stuff"
+                                            }
+                                          ]
+                                        },
+                                        "label_ref": "event_CRYSTAL_CACHE_LIST_3_c4_choice",
+                                        "hidden": true
+                                      }
+                                    ]
+                                  }
+                                }
+                              }
+                            ]
+                          }
+                        },
+                        "label_ref": "event_CRYSTAL_CACHE_BREAK_3_c1_choice",
+                        "hidden": true
+                      }
+                    ]
+                  }
+                }
+              }
+            ]
+          }
+        },
+        "label_ref": "event_CRYSTAL_CACHE_c1_choice",
+        "hidden": true
+      },
+      {
+        "label": "(Breach Missiles) Use a Breach Missile.",
+        "gate": {
+          "req": "MISSILES_BREACH",
+          "label": "Breach Missiles"
+        },
+        "child": {
+          "text": {
+            "value": "Your Breach warheads dislodge and shatter a massive shard of crystal, leaving your away team enough space to climb down and take a look.",
+            "ref": "event_CRYSTAL_CACHE_c2_text"
+          },
+          "effects": [
+            {
+              "kind": "resource",
+              "resource": "missiles",
+              "min": -1,
+              "max": -1
+            }
+          ],
+          "node": {
+            "kind": "decision",
+            "options": [
+              {
+                "label": "Investigate the cache.",
+                "gate": null,
+                "child": {
+                  "effects": [],
+                  "node": {
+                    "kind": "chance",
+                    "list": "CRYSTAL_CACHE_LIST",
+                    "source": "raw/gamedata/events_crystal.xml",
+                    "odds_basis": "unweighted",
+                    "options": [
+                      {
+                        "share": null,
+                        "child": {
+                          "text": {
+                            "value": "On arriving at the base of the crater, your team discovers a long-forgotten weapons cache. Most of the equipment is out of action, but not all of it!",
+                            "ref": "event_CRYSTAL_CACHE_LIST_1_text"
+                          },
+                          "effects": [
+                            {
+                              "kind": "item",
+                              "item_kind": "weapon",
+                              "id": "WEAPONS_CRYSTAL",
+                              "label": "WEAPONS_CRYSTAL",
+                              "from_list": true
+                            },
+                            {
+                              "kind": "reward",
+                              "level": "LOW",
+                              "tier": "stuff"
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "share": null,
+                        "child": {
+                          "text": {
+                            "value": "Your away team is greeted at the crater by the owners of the cache, who are none too happy. You grab what you can and run back to the ship, but not before they teleport aboard!",
+                            "ref": "event_CRYSTAL_CACHE_LIST_2_text"
+                          },
+                          "effects": [
+                            {
+                              "kind": "item",
+                              "item_kind": "weapon",
+                              "id": "WEAPONS_CRYSTAL",
+                              "label": "WEAPONS_CRYSTAL",
+                              "from_list": true
+                            },
+                            {
+                              "kind": "reward",
+                              "level": "LOW",
+                              "tier": "stuff"
+                            },
+                            {
+                              "kind": "boarders",
+                              "min": 2,
+                              "max": 3,
+                              "class": "crystal"
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "share": null,
+                        "child": {
+                          "text": {
+                            "value": "You send a crewmember down to check out the cache. The comm goes dead, and shortly thereafter massive gravity readings are detected on the asteroid. You must have triggered some kind of singularity booby trap! We've got to leave now before we're pulled in!",
+                            "ref": "event_CRYSTAL_CACHE_LIST_3_text"
+                          },
+                          "effects": [],
+                          "node": {
+                            "kind": "decision",
+                            "options": [
+                              {
+                                "label": "Pull out now!",
+                                "gate": null,
+                                "child": {
+                                  "text": {
+                                    "value": "You push the impulse engines to their limit and are able to break out of the gravity well. Your crewmember, along with the stockpile, is reduced to the size of a tennis ball - but you're left in one piece.",
+                                    "ref": "event_CRYSTAL_CACHE_LIST_3_c1_text"
+                                  },
+                                  "effects": [
+                                    {
+                                      "kind": "crew_loss",
+                                      "amount": 1,
+                                      "clone": true
+                                    }
+                                  ]
+                                },
+                                "label_ref": "event_CRYSTAL_CACHE_LIST_3_c1_choice",
+                                "hidden": true
+                              },
+                              {
+                                "label": "Detonate your entire fuel reserves to escape with your crew and the cargo.",
+                                "gate": null,
+                                "child": {
+                                  "text": {
+                                    "value": "You swoop into the heart of the distortion and pick up your crewmember and the cargo. You then eject your FTL fuel and ignite it, sending a shock wave that thrusts your ship well beyond the event horizon of the singularity. That was close.",
+                                    "ref": "event_CRYSTAL_CACHE_LIST_3_c2_text"
+                                  },
+                                  "effects": [
+                                    {
+                                      "kind": "resource",
+                                      "resource": "fuel",
+                                      "min": -100,
+                                      "max": -100
+                                    },
+                                    {
+                                      "kind": "item",
+                                      "item_kind": "weapon",
+                                      "id": "RANDOM",
+                                      "label": "RANDOM"
+                                    },
+                                    {
+                                      "kind": "reward",
+                                      "level": "LOW",
+                                      "tier": "stuff"
+                                    }
+                                  ]
+                                },
+                                "label_ref": "event_CRYSTAL_CACHE_LIST_3_c2_choice",
+                                "hidden": true
+                              },
+                              {
+                                "label": "(Improved Teleporter) Beam your crewmember back on board.",
+                                "gate": {
+                                  "req": "teleporter",
+                                  "label": "Crew Teleporter",
+                                  "lvl": "2"
+                                },
+                                "child": {
+                                  "text": {
+                                    "value": "You floor the engines to escape the gravity well while trying to get a teleporter lock on your crewmember despite the massive interference. You're barely able to get them back on board before the entire area is consumed into the singularity.",
+                                    "ref": "event_CRYSTAL_CACHE_LIST_3_c3_text"
+                                  },
+                                  "effects": []
+                                },
+                                "label_ref": "event_CRYSTAL_CACHE_LIST_3_c3_choice",
+                                "hidden": true
+                              },
+                              {
+                                "label": "(Advanced Engines) Rescue your crewmember and the cargo.",
+                                "gate": {
+                                  "req": "engines",
+                                  "label": "Engines",
+                                  "lvl": "7"
+                                },
+                                "child": {
+                                  "text": {
+                                    "value": "You swoop into the heart of the distortion and pick up your crewmember and the cargo. Your top of the line impulse engines are barely able to get your ship out of the gravity well before the whole ship is consumed. That was close.",
+                                    "ref": "event_CRYSTAL_CACHE_LIST_3_c4_text"
+                                  },
+                                  "effects": [
+                                    {
+                                      "kind": "item",
+                                      "item_kind": "weapon",
+                                      "id": "RANDOM",
+                                      "label": "RANDOM"
+                                    },
+                                    {
+                                      "kind": "reward",
+                                      "level": "LOW",
+                                      "tier": "stuff"
+                                    }
+                                  ]
+                                },
+                                "label_ref": "event_CRYSTAL_CACHE_LIST_3_c4_choice",
+                                "hidden": true
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    ]
+                  }
+                },
+                "label_ref": "event_CRYSTAL_CACHE_c2_c1_choice",
+                "hidden": true
+              }
+            ]
+          }
+        },
+        "label_ref": "event_CRYSTAL_CACHE_c2_choice",
+        "hidden": true
+      },
+      {
+        "label": "(Crystal crewmember) Have your Crystalline Being recalibrate your weapons.",
+        "gate": {
+          "req": "crystal",
+          "label": "Crystal"
+        },
+        "child": {
+          "text": {
+            "value": "Your Crystalline crew-member is able to adjust the detonation frequency of your weapons to resonate with this type of crystal, and the barrier gives little resistance.",
+            "ref": "event_CRYSTAL_CACHE_c3_text"
+          },
+          "effects": [],
+          "node": {
+            "kind": "decision",
+            "options": [
+              {
+                "label": "Investigate the cache.",
+                "gate": null,
+                "child": {
+                  "effects": [],
+                  "node": {
+                    "kind": "chance",
+                    "list": "CRYSTAL_CACHE_LIST",
+                    "source": "raw/gamedata/events_crystal.xml",
+                    "odds_basis": "unweighted",
+                    "options": [
+                      {
+                        "share": null,
+                        "child": {
+                          "text": {
+                            "value": "On arriving at the base of the crater, your team discovers a long-forgotten weapons cache. Most of the equipment is out of action, but not all of it!",
+                            "ref": "event_CRYSTAL_CACHE_LIST_1_text"
+                          },
+                          "effects": [
+                            {
+                              "kind": "item",
+                              "item_kind": "weapon",
+                              "id": "WEAPONS_CRYSTAL",
+                              "label": "WEAPONS_CRYSTAL",
+                              "from_list": true
+                            },
+                            {
+                              "kind": "reward",
+                              "level": "LOW",
+                              "tier": "stuff"
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "share": null,
+                        "child": {
+                          "text": {
+                            "value": "Your away team is greeted at the crater by the owners of the cache, who are none too happy. You grab what you can and run back to the ship, but not before they teleport aboard!",
+                            "ref": "event_CRYSTAL_CACHE_LIST_2_text"
+                          },
+                          "effects": [
+                            {
+                              "kind": "item",
+                              "item_kind": "weapon",
+                              "id": "WEAPONS_CRYSTAL",
+                              "label": "WEAPONS_CRYSTAL",
+                              "from_list": true
+                            },
+                            {
+                              "kind": "reward",
+                              "level": "LOW",
+                              "tier": "stuff"
+                            },
+                            {
+                              "kind": "boarders",
+                              "min": 2,
+                              "max": 3,
+                              "class": "crystal"
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "share": null,
+                        "child": {
+                          "text": {
+                            "value": "You send a crewmember down to check out the cache. The comm goes dead, and shortly thereafter massive gravity readings are detected on the asteroid. You must have triggered some kind of singularity booby trap! We've got to leave now before we're pulled in!",
+                            "ref": "event_CRYSTAL_CACHE_LIST_3_text"
+                          },
+                          "effects": [],
+                          "node": {
+                            "kind": "decision",
+                            "options": [
+                              {
+                                "label": "Pull out now!",
+                                "gate": null,
+                                "child": {
+                                  "text": {
+                                    "value": "You push the impulse engines to their limit and are able to break out of the gravity well. Your crewmember, along with the stockpile, is reduced to the size of a tennis ball - but you're left in one piece.",
+                                    "ref": "event_CRYSTAL_CACHE_LIST_3_c1_text"
+                                  },
+                                  "effects": [
+                                    {
+                                      "kind": "crew_loss",
+                                      "amount": 1,
+                                      "clone": true
+                                    }
+                                  ]
+                                },
+                                "label_ref": "event_CRYSTAL_CACHE_LIST_3_c1_choice",
+                                "hidden": true
+                              },
+                              {
+                                "label": "Detonate your entire fuel reserves to escape with your crew and the cargo.",
+                                "gate": null,
+                                "child": {
+                                  "text": {
+                                    "value": "You swoop into the heart of the distortion and pick up your crewmember and the cargo. You then eject your FTL fuel and ignite it, sending a shock wave that thrusts your ship well beyond the event horizon of the singularity. That was close.",
+                                    "ref": "event_CRYSTAL_CACHE_LIST_3_c2_text"
+                                  },
+                                  "effects": [
+                                    {
+                                      "kind": "resource",
+                                      "resource": "fuel",
+                                      "min": -100,
+                                      "max": -100
+                                    },
+                                    {
+                                      "kind": "item",
+                                      "item_kind": "weapon",
+                                      "id": "RANDOM",
+                                      "label": "RANDOM"
+                                    },
+                                    {
+                                      "kind": "reward",
+                                      "level": "LOW",
+                                      "tier": "stuff"
+                                    }
+                                  ]
+                                },
+                                "label_ref": "event_CRYSTAL_CACHE_LIST_3_c2_choice",
+                                "hidden": true
+                              },
+                              {
+                                "label": "(Improved Teleporter) Beam your crewmember back on board.",
+                                "gate": {
+                                  "req": "teleporter",
+                                  "label": "Crew Teleporter",
+                                  "lvl": "2"
+                                },
+                                "child": {
+                                  "text": {
+                                    "value": "You floor the engines to escape the gravity well while trying to get a teleporter lock on your crewmember despite the massive interference. You're barely able to get them back on board before the entire area is consumed into the singularity.",
+                                    "ref": "event_CRYSTAL_CACHE_LIST_3_c3_text"
+                                  },
+                                  "effects": []
+                                },
+                                "label_ref": "event_CRYSTAL_CACHE_LIST_3_c3_choice",
+                                "hidden": true
+                              },
+                              {
+                                "label": "(Advanced Engines) Rescue your crewmember and the cargo.",
+                                "gate": {
+                                  "req": "engines",
+                                  "label": "Engines",
+                                  "lvl": "7"
+                                },
+                                "child": {
+                                  "text": {
+                                    "value": "You swoop into the heart of the distortion and pick up your crewmember and the cargo. Your top of the line impulse engines are barely able to get your ship out of the gravity well before the whole ship is consumed. That was close.",
+                                    "ref": "event_CRYSTAL_CACHE_LIST_3_c4_text"
+                                  },
+                                  "effects": [
+                                    {
+                                      "kind": "item",
+                                      "item_kind": "weapon",
+                                      "id": "RANDOM",
+                                      "label": "RANDOM"
+                                    },
+                                    {
+                                      "kind": "reward",
+                                      "level": "LOW",
+                                      "tier": "stuff"
+                                    }
+                                  ]
+                                },
+                                "label_ref": "event_CRYSTAL_CACHE_LIST_3_c4_choice",
+                                "hidden": true
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    ]
+                  }
+                },
+                "label_ref": "event_CRYSTAL_CACHE_c2_c1_choice",
+                "hidden": true
+              }
+            ]
+          }
+        },
+        "label_ref": "event_CRYSTAL_CACHE_c3_choice",
+        "hidden": true
+      }
+    ]
+  }
+}

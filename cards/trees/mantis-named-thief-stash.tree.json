@@ -1,0 +1,20 @@
+{
+  "schema": "ftl-event-tree/1",
+  "id": "MANTIS_NAMED_THIEF_STASH",
+  "slug": "mantis-named-thief-stash",
+  "title": "KazaaakplethKilik's stash",
+  "extracted_from": "raw/gamedata/events_mantis.xml",
+  "text": {
+    "value": "You arrive at small asteroid field and discover the hidden cache among the debris. You input the codes given to you by KazaaakplethKilik and find a weapon inside.",
+    "ref": "event_MANTIS_NAMED_THIEF_STASH_text"
+  },
+  "name": "MANTIS_NAMED_THIEF_STASH",
+  "source": "raw/gamedata/events_mantis.xml",
+  "effects": [
+    {
+      "kind": "reward",
+      "level": "HIGH",
+      "tier": "weapon"
+    }
+  ]
+}

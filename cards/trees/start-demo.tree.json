@@ -1,0 +1,14 @@
+{
+  "schema": "ftl-event-tree/1",
+  "id": "START_DEMO",
+  "slug": "start-demo",
+  "title": "Start demo",
+  "extracted_from": "raw/gamedata/events.xml",
+  "text": {
+    "value": "Welcome to the Federation training simulation! You're about to be sent on a very dangerous mission carrying data vital to the Federation fleet. We've put this simulator together to give you an idea of what to expect on the actual journey. Explore the sector, gather supplies, but get to the exit before the simulated Rebel fleet catches up!",
+    "ref": "event_START_DEMO_text"
+  },
+  "name": "START_DEMO",
+  "source": "raw/gamedata/events.xml",
+  "effects": []
+}

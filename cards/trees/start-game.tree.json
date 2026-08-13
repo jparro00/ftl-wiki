@@ -1,0 +1,14 @@
+{
+  "schema": "ftl-event-tree/1",
+  "id": "START_GAME",
+  "slug": "start-game",
+  "title": "Start game",
+  "extracted_from": "raw/gamedata/events.xml",
+  "text": {
+    "value": "The data you carry is vital to the remaining Federation fleet. You'll need supplies for the journey, so make sure to explore each sector before moving on to the next. But get to the exit before the pursuing Rebel fleet can catch up!",
+    "ref": "event_START_GAME_text"
+  },
+  "name": "START_GAME",
+  "source": "raw/gamedata/events.xml",
+  "effects": []
+}

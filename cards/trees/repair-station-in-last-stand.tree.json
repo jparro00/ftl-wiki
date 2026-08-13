@@ -1,0 +1,47 @@
+{
+  "schema": "ftl-event-tree/1",
+  "id": "BOSS_REPAIR_STATION",
+  "slug": "repair-station-in-last-stand",
+  "title": "Repair station in Last Stand",
+  "extracted_from": "raw/gamedata/events_boss.xml",
+  "text": {
+    "value": "There is a a mobile ship construction platform stationed at this beacon. After a brief exchange they give you clearance to receive emergency repairs and military supplies.",
+    "ref": "BOSS_REPAIR_STATION",
+    "variants": 5
+  },
+  "name": "BOSS_REPAIR_STATION",
+  "source": "raw/gamedata/events_boss.xml",
+  "effects": [
+    {
+      "kind": "hull_repair",
+      "amount": 15
+    },
+    {
+      "kind": "repair_all"
+    },
+    {
+      "kind": "resource",
+      "resource": "missiles",
+      "min": 4,
+      "max": 4
+    },
+    {
+      "kind": "resource",
+      "resource": "fuel",
+      "min": 5,
+      "max": 5
+    },
+    {
+      "kind": "resource",
+      "resource": "drones",
+      "min": 5,
+      "max": 5
+    },
+    {
+      "kind": "resource",
+      "resource": "scrap",
+      "min": 22,
+      "max": 44
+    }
+  ]
+}

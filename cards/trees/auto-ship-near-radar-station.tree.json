@@ -1,0 +1,413 @@
+{
+  "schema": "ftl-event-tree/1",
+  "id": "AUTO_DEFENSE_RADAR",
+  "slug": "auto-ship-near-radar-station",
+  "title": "Auto-ship near radar station",
+  "extracted_from": "raw/gamedata/events_rebel.xml",
+  "text": {
+    "value": "A Rebel automated ship sits dormant near a Rebel forward radar station.",
+    "ref": "event_AUTO_DEFENSE_RADAR_text"
+  },
+  "name": "AUTO_DEFENSE_RADAR",
+  "source": "raw/gamedata/events_rebel.xml",
+  "effects": [],
+  "flags": {
+    "unique": true
+  },
+  "node": {
+    "kind": "decision",
+    "options": [
+      {
+        "label": "Approach the station.",
+        "gate": null,
+        "child": {
+          "text": {
+            "value": "The ship powers up and targets you.",
+            "ref": "event_AUTO_DEFENSE_RADAR_c1_text"
+          },
+          "effects": [
+            {
+              "kind": "ship_hostility",
+              "hostile": true
+            }
+          ]
+        },
+        "label_ref": "event_AUTO_DEFENSE_RADAR_c1_choice"
+      },
+      {
+        "label": "Keep your distance and wait for the FTL to charge.",
+        "gate": null,
+        "child": {
+          "effects": []
+        },
+        "label_ref": "event_AUTO_DEFENSE_RADAR_c2_choice"
+      },
+      {
+        "label": "(Combat Drone) Send a drone to distract the automated ship.",
+        "gate": {
+          "req": "COMBAT_DRONE_LIST"
+        },
+        "child": {
+          "effects": [],
+          "node": {
+            "kind": "chance",
+            "list": "AUTO_DEFENSE_RADAR_COMBAT",
+            "source": "raw/gamedata/events_rebel.xml",
+            "odds_basis": "unweighted",
+            "options": [
+              {
+                "share": null,
+                "child": {
+                  "text": {
+                    "value": "Your combat drone attacks the automated ship and then retreats, luring it away. You quickly move up to the radar station to access it.",
+                    "ref": "event_AUTO_DEFENSE_RADAR_COMBAT_1_text"
+                  },
+                  "effects": [
+                    {
+                      "kind": "resource",
+                      "resource": "drones",
+                      "min": -1,
+                      "max": -1
+                    }
+                  ],
+                  "node": {
+                    "kind": "decision",
+                    "options": [
+                      {
+                        "label": "Continue...",
+                        "gate": null,
+                        "child": {
+                          "effects": [],
+                          "node": {
+                            "kind": "chance",
+                            "list": "DEFENSE_RADAR_LIST",
+                            "source": "raw/gamedata/events_rebel.xml",
+                            "odds_basis": "unweighted",
+                            "options": [
+                              {
+                                "share": null,
+                                "child": {
+                                  "text": {
+                                    "value": "You successfully hack into their system and transmit false information about your location. That should hold off the fleet for at least a little while.",
+                                    "ref": "event_DEFENSE_RADAR_LIST_1_text"
+                                  },
+                                  "effects": [
+                                    {
+                                      "kind": "fleet_delay",
+                                      "amount": -1
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "share": null,
+                                "child": {
+                                  "text": {
+                                    "value": "The firewalls prove too difficult to bypass. As you are about to disconnect, you stumble across unprotected information about the surrounding beacons. Your map is updated.",
+                                    "ref": "event_DEFENSE_RADAR_LIST_2_text"
+                                  },
+                                  "effects": [
+                                    {
+                                      "kind": "reveal_map"
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "share": null,
+                                "child": {
+                                  "text": {
+                                    "value": "You are unable to penetrate the computer's defenses. You give up and return to the ship.",
+                                    "ref": "event_DEFENSE_RADAR_LIST_3_text"
+                                  },
+                                  "effects": []
+                                }
+                              },
+                              {
+                                "share": null,
+                                "child": {
+                                  "text": {
+                                    "value": "As you attempt to hack in, you set off a hidden alarm system. It seems that now the Rebels must surely be aware of your position! You hasten back to the ship to jump away.",
+                                    "ref": "event_DEFENSE_RADAR_LIST_4_text"
+                                  },
+                                  "effects": [
+                                    {
+                                      "kind": "fleet_delay",
+                                      "amount": 1
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          }
+                        },
+                        "label_ref": "continue"
+                      }
+                    ]
+                  }
+                }
+              },
+              {
+                "share": null,
+                "child": {
+                  "text": {
+                    "value": "Your combat drone repeatedly fires at the automated ship. It can't break through its shields, but is at least enough of a distraction to allow you to access the radar station.",
+                    "ref": "event_AUTO_DEFENSE_RADAR_COMBAT_2_text"
+                  },
+                  "effects": [
+                    {
+                      "kind": "resource",
+                      "resource": "drones",
+                      "min": -1,
+                      "max": -1
+                    }
+                  ],
+                  "node": {
+                    "kind": "decision",
+                    "options": [
+                      {
+                        "label": "Continue...",
+                        "gate": null,
+                        "child": {
+                          "effects": [],
+                          "node": {
+                            "kind": "chance",
+                            "list": "DEFENSE_RADAR_LIST",
+                            "source": "raw/gamedata/events_rebel.xml",
+                            "odds_basis": "unweighted",
+                            "options": [
+                              {
+                                "share": null,
+                                "child": {
+                                  "text": {
+                                    "value": "You successfully hack into their system and transmit false information about your location. That should hold off the fleet for at least a little while.",
+                                    "ref": "event_DEFENSE_RADAR_LIST_1_text"
+                                  },
+                                  "effects": [
+                                    {
+                                      "kind": "fleet_delay",
+                                      "amount": -1
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "share": null,
+                                "child": {
+                                  "text": {
+                                    "value": "The firewalls prove too difficult to bypass. As you are about to disconnect, you stumble across unprotected information about the surrounding beacons. Your map is updated.",
+                                    "ref": "event_DEFENSE_RADAR_LIST_2_text"
+                                  },
+                                  "effects": [
+                                    {
+                                      "kind": "reveal_map"
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "share": null,
+                                "child": {
+                                  "text": {
+                                    "value": "You are unable to penetrate the computer's defenses. You give up and return to the ship.",
+                                    "ref": "event_DEFENSE_RADAR_LIST_3_text"
+                                  },
+                                  "effects": []
+                                }
+                              },
+                              {
+                                "share": null,
+                                "child": {
+                                  "text": {
+                                    "value": "As you attempt to hack in, you set off a hidden alarm system. It seems that now the Rebels must surely be aware of your position! You hasten back to the ship to jump away.",
+                                    "ref": "event_DEFENSE_RADAR_LIST_4_text"
+                                  },
+                                  "effects": [
+                                    {
+                                      "kind": "fleet_delay",
+                                      "amount": 1
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          }
+                        },
+                        "label_ref": "continue"
+                      }
+                    ]
+                  }
+                }
+              },
+              {
+                "share": null,
+                "child": {
+                  "text": {
+                    "value": "Before your drone has a chance to attack, the automated ship activates and shoots it down. It then detects your ship and moves in on your position.",
+                    "ref": "event_AUTO_DEFENSE_RADAR_COMBAT_3_text"
+                  },
+                  "effects": [
+                    {
+                      "kind": "ship_hostility",
+                      "hostile": true
+                    },
+                    {
+                      "kind": "resource",
+                      "resource": "drones",
+                      "min": -1,
+                      "max": -1
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        "label_ref": "event_AUTO_DEFENSE_RADAR_c3_choice",
+        "hidden": true
+      }
+    ],
+    "combat": {
+      "kind": "combat",
+      "ship": "REBEL_AUTO_RADAR",
+      "ship_labels": [
+        "Auto-Scout",
+        "Auto-Assault"
+      ],
+      "hostile": false,
+      "auto_blueprint": "SHIPS_AUTO",
+      "source": "raw/gamedata/events_ships.xml",
+      "branches": [
+        {
+          "on": "destroyed",
+          "child": {
+            "text": {
+              "value": "You salvage what you can and approach the station. It is used to relay information to the Rebel Fleet. You could attempt to hack it to give the Rebels false information.",
+              "ref": "ship_REBEL_AUTO_RADAR_destroyed_text"
+            },
+            "effects": [
+              {
+                "kind": "reward",
+                "level": "MED",
+                "tier": "scrap_only"
+              }
+            ],
+            "node": {
+              "kind": "decision",
+              "options": [
+                {
+                  "label": "Attempt to manually hack into the station.",
+                  "gate": null,
+                  "child": {
+                    "effects": [],
+                    "node": {
+                      "kind": "chance",
+                      "list": "DEFENSE_RADAR_LIST",
+                      "source": "raw/gamedata/events_rebel.xml",
+                      "odds_basis": "unweighted",
+                      "options": [
+                        {
+                          "share": null,
+                          "child": {
+                            "text": {
+                              "value": "You successfully hack into their system and transmit false information about your location. That should hold off the fleet for at least a little while.",
+                              "ref": "event_DEFENSE_RADAR_LIST_1_text"
+                            },
+                            "effects": [
+                              {
+                                "kind": "fleet_delay",
+                                "amount": -1
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "share": null,
+                          "child": {
+                            "text": {
+                              "value": "The firewalls prove too difficult to bypass. As you are about to disconnect, you stumble across unprotected information about the surrounding beacons. Your map is updated.",
+                              "ref": "event_DEFENSE_RADAR_LIST_2_text"
+                            },
+                            "effects": [
+                              {
+                                "kind": "reveal_map"
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "share": null,
+                          "child": {
+                            "text": {
+                              "value": "You are unable to penetrate the computer's defenses. You give up and return to the ship.",
+                              "ref": "event_DEFENSE_RADAR_LIST_3_text"
+                            },
+                            "effects": []
+                          }
+                        },
+                        {
+                          "share": null,
+                          "child": {
+                            "text": {
+                              "value": "As you attempt to hack in, you set off a hidden alarm system. It seems that now the Rebels must surely be aware of your position! You hasten back to the ship to jump away.",
+                              "ref": "event_DEFENSE_RADAR_LIST_4_text"
+                            },
+                            "effects": [
+                              {
+                                "kind": "fleet_delay",
+                                "amount": 1
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    }
+                  },
+                  "label_ref": "ship_REBEL_AUTO_RADAR_destroyed_c1_choice"
+                },
+                {
+                  "label": "Don't risk it. Leave the station.",
+                  "gate": null,
+                  "child": {
+                    "effects": []
+                  },
+                  "label_ref": "ship_REBEL_AUTO_RADAR_destroyed_c2_choice"
+                },
+                {
+                  "label": "(Hacking) Use a drone to hack into the station.",
+                  "gate": {
+                    "req": "hacking",
+                    "label": "Hacking"
+                  },
+                  "child": {
+                    "text": {
+                      "value": "You successfully hack into their system and transmit false information about your location. That should hold off the fleet for at least a little while. You also are able to download data about the surrounding beacons.",
+                      "ref": "ship_REBEL_AUTO_RADAR_destroyed_c3_text"
+                    },
+                    "effects": [
+                      {
+                        "kind": "reveal_map"
+                      },
+                      {
+                        "kind": "fleet_delay",
+                        "amount": -1
+                      },
+                      {
+                        "kind": "resource",
+                        "resource": "drones",
+                        "min": -1,
+                        "max": -1
+                      }
+                    ]
+                  },
+                  "label_ref": "ship_REBEL_AUTO_RADAR_destroyed_c3_choice",
+                  "hidden": true
+                }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  }
+}

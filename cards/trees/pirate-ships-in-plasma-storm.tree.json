@@ -1,0 +1,211 @@
+{
+  "schema": "ftl-event-tree/1",
+  "id": "STORM_ZOLTAN_SUPPLY_CHOICE",
+  "slug": "pirate-ships-in-plasma-storm",
+  "title": "Pirate ships in plasma storm",
+  "extracted_from": "raw/gamedata/events_zoltan.xml",
+  "text": {
+    "value": "You spy two pirate ships lurking in the nebula here. They remain unaware of your presence; you're able to get your scanners to at least identify their cargo: One is carrying the fuel supplies, the other the ammunition. They begin to drift away from each other in the storm.",
+    "ref": "event_STORM_ZOLTAN_SUPPLY_CHOICE_text"
+  },
+  "name": "STORM_ZOLTAN_SUPPLY_CHOICE",
+  "source": "raw/gamedata/events_zoltan.xml",
+  "effects": [
+    {
+      "kind": "environment",
+      "environment": "storm",
+      "target": "player"
+    }
+  ],
+  "flags": {
+    "unique": true,
+    "environment": "storm",
+    "environment_target": "player"
+  },
+  "node": {
+    "kind": "decision",
+    "options": [
+      {
+        "label": "Secure the fuel supply.",
+        "gate": null,
+        "child": {
+          "text": {
+            "value": "You jet toward the pirate with the fuel supplies and engage - hopefully you can leave the ship in one piece!",
+            "ref": "event_STORM_ZOLTAN_SUPPLY_CHOICE_c1_text"
+          },
+          "effects": [],
+          "node": {
+            "kind": "combat",
+            "ship": "STORM_PIRATE_SUPPLY_FUEL",
+            "hostile": true,
+            "auto_blueprint": "SHIPS_PIRATE",
+            "source": "raw/gamedata/events_ships.xml",
+            "branches": [
+              {
+                "on": "destroyed",
+                "child": {
+                  "text": {
+                    "value": "The ship obliterated, only scant fuel canisters can be scavenged from the wreckage before the ion storm clears and you have to jump away.",
+                    "ref": "ship_STORM_PIRATE_SUPPLY_FUEL_destroyed_text"
+                  },
+                  "effects": [
+                    {
+                      "kind": "reward",
+                      "level": "LOW",
+                      "tier": "fuel"
+                    }
+                  ]
+                }
+              },
+              {
+                "on": "deadCrew",
+                "child": {
+                  "text": {
+                    "value": "With the ship in one piece, you are able to salvage most of the fuel supplies before the ion storm clears and you have to jump away.",
+                    "ref": "ship_STORM_PIRATE_SUPPLY_FUEL_deadCrew_text"
+                  },
+                  "effects": [
+                    {
+                      "kind": "reward",
+                      "level": "HIGH",
+                      "tier": "fuel"
+                    }
+                  ]
+                }
+              },
+              {
+                "on": "escape",
+                "child": {
+                  "text": {
+                    "value": "The enemy ship appears to be powering up its FTL. It's trying to escape!",
+                    "ref": "event_PIRATE_ESCAPE_text"
+                  },
+                  "name": "PIRATE_ESCAPE",
+                  "source": "raw/gamedata/events.xml",
+                  "effects": [
+                    {
+                      "kind": "ship_hostility",
+                      "hostile": true
+                    }
+                  ]
+                },
+                "chance": "0.5",
+                "min": "2",
+                "max": "4"
+              },
+              {
+                "on": "gotaway",
+                "child": {
+                  "text": {
+                    "value": "The pirate jumped away.",
+                    "ref": "ship_STORM_PIRATE_SUPPLY_FUEL_gotaway_text"
+                  },
+                  "effects": []
+                }
+              }
+            ]
+          }
+        },
+        "label_ref": "event_STORM_ZOLTAN_SUPPLY_CHOICE_c1_choice",
+        "hidden": true
+      },
+      {
+        "label": "Secure the ammunition.",
+        "gate": null,
+        "child": {
+          "text": {
+            "value": "You jet toward the pirate with the ammunition and engage - hopefully you can leave the ship in one piece!",
+            "ref": "event_STORM_ZOLTAN_SUPPLY_CHOICE_c2_text"
+          },
+          "effects": [],
+          "node": {
+            "kind": "combat",
+            "ship": "STORM_PIRATE_SUPPLY_AMMO",
+            "hostile": true,
+            "auto_blueprint": "SHIPS_PIRATE",
+            "source": "raw/gamedata/events_ships.xml",
+            "branches": [
+              {
+                "on": "destroyed",
+                "child": {
+                  "text": {
+                    "value": "The ship obliterated, only scant ammunition crates can be scavenged from the wreckage before the ion storm clears and you have to jump away.",
+                    "ref": "ship_STORM_PIRATE_SUPPLY_AMMO_destroyed_text"
+                  },
+                  "effects": [
+                    {
+                      "kind": "reward",
+                      "level": "LOW",
+                      "tier": "missiles"
+                    }
+                  ]
+                }
+              },
+              {
+                "on": "deadCrew",
+                "child": {
+                  "text": {
+                    "value": "With the ship in one piece, you are able to salvage most of the ammunition before the ion storm clears and you have to jump away.",
+                    "ref": "ship_STORM_PIRATE_SUPPLY_AMMO_deadCrew_text"
+                  },
+                  "effects": [
+                    {
+                      "kind": "reward",
+                      "level": "HIGH",
+                      "tier": "missiles"
+                    }
+                  ]
+                }
+              },
+              {
+                "on": "escape",
+                "child": {
+                  "text": {
+                    "value": "The enemy ship appears to be powering up its FTL. It's trying to escape!",
+                    "ref": "event_PIRATE_ESCAPE_text"
+                  },
+                  "name": "PIRATE_ESCAPE",
+                  "source": "raw/gamedata/events.xml",
+                  "effects": [
+                    {
+                      "kind": "ship_hostility",
+                      "hostile": true
+                    }
+                  ]
+                },
+                "chance": "0.5",
+                "min": "2",
+                "max": "4"
+              },
+              {
+                "on": "gotaway",
+                "child": {
+                  "text": {
+                    "value": "The pirate jumped away.",
+                    "ref": "ship_STORM_PIRATE_SUPPLY_AMMO_gotaway_text"
+                  },
+                  "effects": []
+                }
+              }
+            ]
+          }
+        },
+        "label_ref": "event_STORM_ZOLTAN_SUPPLY_CHOICE_c2_choice",
+        "hidden": true
+      },
+      {
+        "label": "Let them leave.",
+        "gate": null,
+        "child": {
+          "text": {
+            "value": "Sometimes discretion is the better part of valor.",
+            "ref": "event_STORM_ZOLTAN_SUPPLY_CHOICE_c3_text"
+          },
+          "effects": []
+        },
+        "label_ref": "event_STORM_ZOLTAN_SUPPLY_CHOICE_c3_choice",
+        "hidden": true
+      }
+    ]
+  }
+}

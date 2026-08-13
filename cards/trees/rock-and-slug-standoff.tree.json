@@ -1,0 +1,595 @@
+{
+  "schema": "ftl-event-tree/1",
+  "id": "ROCK_SLUG_ARGUMENT",
+  "slug": "rock-and-slug-standoff",
+  "title": "Rock and Slug standoff",
+  "extracted_from": "raw/gamedata/newEvents.xml",
+  "text": {
+    "value": "You find a Slug Cruiser and Rock ship at a standoff, both with weapons armed and ready to fight. You could intervene before this gets out of hand.",
+    "ref": "event_ROCK_SLUG_ARGUMENT_text"
+  },
+  "name": "ROCK_SLUG_ARGUMENT",
+  "source": "raw/gamedata/newEvents.xml",
+  "effects": [],
+  "flags": {
+    "unique": true
+  },
+  "node": {
+    "kind": "decision",
+    "options": [
+      {
+        "label": "Hail them to see what's wrong.",
+        "gate": null,
+        "child": {
+          "text": {
+            "value": "The Slug captain explains that they upgraded the Rock ship's reactor and now the 'thick boulder heads' are refusing to pay for the work done. The Rock Captain says the 'slime balls' did a poor job that is not worth their agreed upon price.",
+            "ref": "event_ROCK_SLUG_ARGUMENT_c1_text"
+          },
+          "effects": [],
+          "node": {
+            "kind": "decision",
+            "options": [
+              {
+                "label": "Offer to pay off the Rock debt.",
+                "gate": null,
+                "child": {
+                  "text": {
+                    "value": "You pay off the debt. The Rock Captain still seems annoyed at the Slug's getting their 'undeserved' scrap, but at least the situation will remain peaceful.",
+                    "ref": "event_ROCK_SLUG_ARGUMENT_c1_c1_text"
+                  },
+                  "effects": [
+                    {
+                      "kind": "resource",
+                      "resource": "scrap",
+                      "min": -15,
+                      "max": -10
+                    }
+                  ],
+                  "node": {
+                    "kind": "decision",
+                    "options": [
+                      {
+                        "label": "Continue...",
+                        "gate": null,
+                        "child": {
+                          "effects": [],
+                          "node": {
+                            "kind": "chance",
+                            "list": "ROCK_SLUG_GRATEFUL",
+                            "source": "raw/gamedata/newEvents.xml",
+                            "odds_basis": "unweighted",
+                            "options": [
+                              {
+                                "share": null,
+                                "child": {
+                                  "text": {
+                                    "value": "The Slugs offer their thanks for your help, and jump away. Their true appreciation is questionable, but at least you can get back to your mission.",
+                                    "ref": "event_ROCK_SLUG_GRATEFUL_1_text"
+                                  },
+                                  "effects": []
+                                }
+                              },
+                              {
+                                "share": null,
+                                "child": {
+                                  "text": {
+                                    "value": "The Slug Captain offers a free reactor upgrade for your help. It never hurts to get a little power boost!",
+                                    "ref": "event_ROCK_SLUG_GRATEFUL_2_text"
+                                  },
+                                  "effects": [
+                                    {
+                                      "kind": "upgrade",
+                                      "system": "reactor",
+                                      "amount": 1
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "share": null,
+                                "child": {
+                                  "text": {
+                                    "value": "The Slug Captain, thankful for your help, offers a reactor upgrade for your ship... for a 'fair' price.",
+                                    "ref": "event_ROCK_SLUG_GRATEFUL_3_text"
+                                  },
+                                  "effects": [],
+                                  "node": {
+                                    "kind": "decision",
+                                    "options": [
+                                      {
+                                        "label": "Agree to the price.",
+                                        "gate": {
+                                          "req": "reactor",
+                                          "max_lvl": "24",
+                                          "blue": "false"
+                                        },
+                                        "child": {
+                                          "text": {
+                                            "value": "You let their team on board and after a short time they finish their work.",
+                                            "ref": "event_ROCK_SLUG_GRATEFUL_3_c1_text"
+                                          },
+                                          "effects": [
+                                            {
+                                              "kind": "resource",
+                                              "resource": "scrap",
+                                              "min": -15,
+                                              "max": -10
+                                            },
+                                            {
+                                              "kind": "upgrade",
+                                              "system": "reactor",
+                                              "amount": 1
+                                            }
+                                          ]
+                                        },
+                                        "label_ref": "event_ROCK_SLUG_GRATEFUL_3_c1_choice"
+                                      },
+                                      {
+                                        "label": "Decline the offer.",
+                                        "gate": null,
+                                        "child": {
+                                          "text": {
+                                            "value": "You break communications and prepare to move on.",
+                                            "ref": "event_ROCK_SLUG_GRATEFUL_3_c2_text"
+                                          },
+                                          "effects": []
+                                        },
+                                        "label_ref": "event_ROCK_SLUG_GRATEFUL_3_c2_choice"
+                                      }
+                                    ]
+                                  }
+                                }
+                              }
+                            ]
+                          }
+                        },
+                        "label_ref": "continue",
+                        "hidden": true
+                      }
+                    ]
+                  }
+                },
+                "label_ref": "event_ROCK_SLUG_ARGUMENT_c1_c1_choice"
+              },
+              {
+                "label": "Demand the Rock ship pay the agreed upon price.",
+                "gate": null,
+                "child": {
+                  "effects": [],
+                  "node": {
+                    "kind": "chance",
+                    "list": "ROCK_SLUG_COMMAND",
+                    "source": "raw/gamedata/newEvents.xml",
+                    "odds_basis": "unweighted",
+                    "options": [
+                      {
+                        "share": null,
+                        "child": {
+                          "text": {
+                            "value": "Apparently the Rock Captain was more annoyed than you thought, they shut off all communication and turn on you, the 'slime balls' defender.'",
+                            "ref": "event_ROCK_SLUG_COMMAND_1_text"
+                          },
+                          "effects": [],
+                          "node": {
+                            "kind": "combat",
+                            "ship": "ROCK_SLUG_REACTOR_SHIP",
+                            "ship_labels": [
+                              "Rock Scout",
+                              "Rock Fighter",
+                              "Rock Assault"
+                            ],
+                            "hostile": true,
+                            "auto_blueprint": "SHIPS_ROCK",
+                            "source": "raw/gamedata/newEvents.xml",
+                            "branches": [
+                              {
+                                "on": "destroyed",
+                                "child": {
+                                  "text": {
+                                    "value": "With the Rock Ship destroyed, you take the time to collect what little scrap remains.",
+                                    "ref": "ship_ROCK_SLUG_REACTOR_SHIP_destroyed_text"
+                                  },
+                                  "effects": [
+                                    {
+                                      "kind": "reward",
+                                      "level": "LOW",
+                                      "tier": "standard"
+                                    }
+                                  ],
+                                  "node": {
+                                    "kind": "decision",
+                                    "options": [
+                                      {
+                                        "label": "Contact the Slugs.",
+                                        "gate": null,
+                                        "child": {
+                                          "effects": [],
+                                          "node": {
+                                            "kind": "chance",
+                                            "list": "ROCK_SLUG_GRATEFUL",
+                                            "source": "raw/gamedata/newEvents.xml",
+                                            "odds_basis": "unweighted",
+                                            "options": [
+                                              {
+                                                "share": null,
+                                                "child": {
+                                                  "text": {
+                                                    "value": "The Slugs offer their thanks for your help, and jump away. Their true appreciation is questionable, but at least you can get back to your mission.",
+                                                    "ref": "event_ROCK_SLUG_GRATEFUL_1_text"
+                                                  },
+                                                  "effects": []
+                                                }
+                                              },
+                                              {
+                                                "share": null,
+                                                "child": {
+                                                  "text": {
+                                                    "value": "The Slug Captain offers a free reactor upgrade for your help. It never hurts to get a little power boost!",
+                                                    "ref": "event_ROCK_SLUG_GRATEFUL_2_text"
+                                                  },
+                                                  "effects": [
+                                                    {
+                                                      "kind": "upgrade",
+                                                      "system": "reactor",
+                                                      "amount": 1
+                                                    }
+                                                  ]
+                                                }
+                                              },
+                                              {
+                                                "share": null,
+                                                "child": {
+                                                  "text": {
+                                                    "value": "The Slug Captain, thankful for your help, offers a reactor upgrade for your ship... for a 'fair' price.",
+                                                    "ref": "event_ROCK_SLUG_GRATEFUL_3_text"
+                                                  },
+                                                  "effects": [],
+                                                  "node": {
+                                                    "kind": "decision",
+                                                    "options": [
+                                                      {
+                                                        "label": "Agree to the price.",
+                                                        "gate": {
+                                                          "req": "reactor",
+                                                          "max_lvl": "24",
+                                                          "blue": "false"
+                                                        },
+                                                        "child": {
+                                                          "text": {
+                                                            "value": "You let their team on board and after a short time they finish their work.",
+                                                            "ref": "event_ROCK_SLUG_GRATEFUL_3_c1_text"
+                                                          },
+                                                          "effects": [
+                                                            {
+                                                              "kind": "resource",
+                                                              "resource": "scrap",
+                                                              "min": -15,
+                                                              "max": -10
+                                                            },
+                                                            {
+                                                              "kind": "upgrade",
+                                                              "system": "reactor",
+                                                              "amount": 1
+                                                            }
+                                                          ]
+                                                        },
+                                                        "label_ref": "event_ROCK_SLUG_GRATEFUL_3_c1_choice"
+                                                      },
+                                                      {
+                                                        "label": "Decline the offer.",
+                                                        "gate": null,
+                                                        "child": {
+                                                          "text": {
+                                                            "value": "You break communications and prepare to move on.",
+                                                            "ref": "event_ROCK_SLUG_GRATEFUL_3_c2_text"
+                                                          },
+                                                          "effects": []
+                                                        },
+                                                        "label_ref": "event_ROCK_SLUG_GRATEFUL_3_c2_choice"
+                                                      }
+                                                    ]
+                                                  }
+                                                }
+                                              }
+                                            ]
+                                          }
+                                        },
+                                        "label_ref": "ship_ROCK_SLUG_REACTOR_SHIP_destroyed_c1_choice",
+                                        "hidden": true
+                                      }
+                                    ]
+                                  }
+                                }
+                              },
+                              {
+                                "on": "deadCrew",
+                                "child": {
+                                  "text": {
+                                    "value": "With the Rock crew dead, you scrap the ship for supplies.",
+                                    "ref": "ship_ROCK_SLUG_REACTOR_SHIP_deadCrew_text"
+                                  },
+                                  "effects": [
+                                    {
+                                      "kind": "reward",
+                                      "level": "MED",
+                                      "tier": "standard"
+                                    }
+                                  ],
+                                  "node": {
+                                    "kind": "decision",
+                                    "options": [
+                                      {
+                                        "label": "Contact the Slugs.",
+                                        "gate": null,
+                                        "child": {
+                                          "effects": [],
+                                          "node": {
+                                            "kind": "chance",
+                                            "list": "ROCK_SLUG_GRATEFUL",
+                                            "source": "raw/gamedata/newEvents.xml",
+                                            "odds_basis": "unweighted",
+                                            "options": [
+                                              {
+                                                "share": null,
+                                                "child": {
+                                                  "text": {
+                                                    "value": "The Slugs offer their thanks for your help, and jump away. Their true appreciation is questionable, but at least you can get back to your mission.",
+                                                    "ref": "event_ROCK_SLUG_GRATEFUL_1_text"
+                                                  },
+                                                  "effects": []
+                                                }
+                                              },
+                                              {
+                                                "share": null,
+                                                "child": {
+                                                  "text": {
+                                                    "value": "The Slug Captain offers a free reactor upgrade for your help. It never hurts to get a little power boost!",
+                                                    "ref": "event_ROCK_SLUG_GRATEFUL_2_text"
+                                                  },
+                                                  "effects": [
+                                                    {
+                                                      "kind": "upgrade",
+                                                      "system": "reactor",
+                                                      "amount": 1
+                                                    }
+                                                  ]
+                                                }
+                                              },
+                                              {
+                                                "share": null,
+                                                "child": {
+                                                  "text": {
+                                                    "value": "The Slug Captain, thankful for your help, offers a reactor upgrade for your ship... for a 'fair' price.",
+                                                    "ref": "event_ROCK_SLUG_GRATEFUL_3_text"
+                                                  },
+                                                  "effects": [],
+                                                  "node": {
+                                                    "kind": "decision",
+                                                    "options": [
+                                                      {
+                                                        "label": "Agree to the price.",
+                                                        "gate": {
+                                                          "req": "reactor",
+                                                          "max_lvl": "24",
+                                                          "blue": "false"
+                                                        },
+                                                        "child": {
+                                                          "text": {
+                                                            "value": "You let their team on board and after a short time they finish their work.",
+                                                            "ref": "event_ROCK_SLUG_GRATEFUL_3_c1_text"
+                                                          },
+                                                          "effects": [
+                                                            {
+                                                              "kind": "resource",
+                                                              "resource": "scrap",
+                                                              "min": -15,
+                                                              "max": -10
+                                                            },
+                                                            {
+                                                              "kind": "upgrade",
+                                                              "system": "reactor",
+                                                              "amount": 1
+                                                            }
+                                                          ]
+                                                        },
+                                                        "label_ref": "event_ROCK_SLUG_GRATEFUL_3_c1_choice"
+                                                      },
+                                                      {
+                                                        "label": "Decline the offer.",
+                                                        "gate": null,
+                                                        "child": {
+                                                          "text": {
+                                                            "value": "You break communications and prepare to move on.",
+                                                            "ref": "event_ROCK_SLUG_GRATEFUL_3_c2_text"
+                                                          },
+                                                          "effects": []
+                                                        },
+                                                        "label_ref": "event_ROCK_SLUG_GRATEFUL_3_c2_choice"
+                                                      }
+                                                    ]
+                                                  }
+                                                }
+                                              }
+                                            ]
+                                          }
+                                        },
+                                        "label_ref": "ship_ROCK_SLUG_REACTOR_SHIP_destroyed_c1_choice",
+                                        "hidden": true
+                                      }
+                                    ]
+                                  }
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      },
+                      {
+                        "share": null,
+                        "child": {
+                          "text": {
+                            "value": "With much grumbling, the Rock Captain agrees to pay the price.",
+                            "ref": "event_ROCK_SLUG_COMMAND_2_text"
+                          },
+                          "effects": [],
+                          "node": {
+                            "kind": "decision",
+                            "options": [
+                              {
+                                "label": "Continue...",
+                                "gate": null,
+                                "child": {
+                                  "effects": [],
+                                  "node": {
+                                    "kind": "chance",
+                                    "list": "ROCK_SLUG_GRATEFUL",
+                                    "source": "raw/gamedata/newEvents.xml",
+                                    "odds_basis": "unweighted",
+                                    "options": [
+                                      {
+                                        "share": null,
+                                        "child": {
+                                          "text": {
+                                            "value": "The Slugs offer their thanks for your help, and jump away. Their true appreciation is questionable, but at least you can get back to your mission.",
+                                            "ref": "event_ROCK_SLUG_GRATEFUL_1_text"
+                                          },
+                                          "effects": []
+                                        }
+                                      },
+                                      {
+                                        "share": null,
+                                        "child": {
+                                          "text": {
+                                            "value": "The Slug Captain offers a free reactor upgrade for your help. It never hurts to get a little power boost!",
+                                            "ref": "event_ROCK_SLUG_GRATEFUL_2_text"
+                                          },
+                                          "effects": [
+                                            {
+                                              "kind": "upgrade",
+                                              "system": "reactor",
+                                              "amount": 1
+                                            }
+                                          ]
+                                        }
+                                      },
+                                      {
+                                        "share": null,
+                                        "child": {
+                                          "text": {
+                                            "value": "The Slug Captain, thankful for your help, offers a reactor upgrade for your ship... for a 'fair' price.",
+                                            "ref": "event_ROCK_SLUG_GRATEFUL_3_text"
+                                          },
+                                          "effects": [],
+                                          "node": {
+                                            "kind": "decision",
+                                            "options": [
+                                              {
+                                                "label": "Agree to the price.",
+                                                "gate": {
+                                                  "req": "reactor",
+                                                  "max_lvl": "24",
+                                                  "blue": "false"
+                                                },
+                                                "child": {
+                                                  "text": {
+                                                    "value": "You let their team on board and after a short time they finish their work.",
+                                                    "ref": "event_ROCK_SLUG_GRATEFUL_3_c1_text"
+                                                  },
+                                                  "effects": [
+                                                    {
+                                                      "kind": "resource",
+                                                      "resource": "scrap",
+                                                      "min": -15,
+                                                      "max": -10
+                                                    },
+                                                    {
+                                                      "kind": "upgrade",
+                                                      "system": "reactor",
+                                                      "amount": 1
+                                                    }
+                                                  ]
+                                                },
+                                                "label_ref": "event_ROCK_SLUG_GRATEFUL_3_c1_choice"
+                                              },
+                                              {
+                                                "label": "Decline the offer.",
+                                                "gate": null,
+                                                "child": {
+                                                  "text": {
+                                                    "value": "You break communications and prepare to move on.",
+                                                    "ref": "event_ROCK_SLUG_GRATEFUL_3_c2_text"
+                                                  },
+                                                  "effects": []
+                                                },
+                                                "label_ref": "event_ROCK_SLUG_GRATEFUL_3_c2_choice"
+                                              }
+                                            ]
+                                          }
+                                        }
+                                      }
+                                    ]
+                                  }
+                                },
+                                "label_ref": "continue",
+                                "hidden": true
+                              }
+                            ]
+                          }
+                        }
+                      },
+                      {
+                        "share": null,
+                        "child": {
+                          "text": {
+                            "value": "A massive explosion emanates from the Rock Ship, shattering its hull and sending debris on an unavoidable collision course to your ship. Seems like that reactor upgrade was poorly done after all, and the Slugs took the opportunity to jump away.",
+                            "ref": "event_ROCK_SLUG_COMMAND_3_text"
+                          },
+                          "effects": [
+                            {
+                              "kind": "hull_damage",
+                              "amount": 3
+                            },
+                            {
+                              "kind": "system_damage",
+                              "amount": 1,
+                              "system": "random"
+                            },
+                            {
+                              "kind": "system_damage",
+                              "amount": 1,
+                              "system": "random",
+                              "dlc": true
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                },
+                "label_ref": "event_ROCK_SLUG_ARGUMENT_c1_c2_choice",
+                "hidden": true
+              },
+              {
+                "label": "You have better things to attend to, leave them.",
+                "gate": null,
+                "child": {
+                  "effects": []
+                },
+                "label_ref": "event_ROCK_SLUG_ARGUMENT_c1_c3_choice"
+              }
+            ]
+          }
+        },
+        "label_ref": "event_ROCK_SLUG_ARGUMENT_c1_choice"
+      },
+      {
+        "label": "Leave them be.",
+        "gate": null,
+        "child": {
+          "effects": []
+        },
+        "label_ref": "event_ROCK_SLUG_ARGUMENT_c2_choice"
+      }
+    ]
+  }
+}

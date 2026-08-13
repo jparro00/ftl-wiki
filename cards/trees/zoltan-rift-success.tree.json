@@ -1,0 +1,20 @@
+{
+  "schema": "ftl-event-tree/1",
+  "id": "ZOLTAN_RIFT_SUCCESS",
+  "slug": "zoltan-rift-success",
+  "title": "Zoltan rift — victory aftermath",
+  "extracted_from": "raw/gamedata/events_zoltan.xml",
+  "text": {
+    "value": "When he sees you have emerged victorious, the Zoltan wise man enters a rage. Rifts threaten to tear space apart until, instead, the Zoltan implodes, sending a blast wave of scrap and salvage dragged here from distant worlds in your direction.",
+    "ref": "event_ZOLTAN_RIFT_SUCCESS_text"
+  },
+  "name": "ZOLTAN_RIFT_SUCCESS",
+  "source": "raw/gamedata/events_zoltan.xml",
+  "effects": [
+    {
+      "kind": "reward",
+      "level": "HIGH",
+      "tier": "standard"
+    }
+  ]
+}

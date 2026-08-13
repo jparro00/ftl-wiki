@@ -1,0 +1,64 @@
+{
+  "schema": "ftl-event-tree/1",
+  "id": "ENGI_FLEET_DELAY",
+  "slug": "engi-cache",
+  "title": "Engi cache",
+  "extracted_from": "raw/gamedata/events_engi.xml",
+  "text": {
+    "value": "You notice an Engi colony hiding on the other side of a nearby moon. It turns out they're excavating an equipment cache from the Federation-Mantis War, and they suggest it might be used to lure the pursuing rebel fleet.",
+    "ref": "event_ENGI_FLEET_DELAY_text"
+  },
+  "name": "ENGI_FLEET_DELAY",
+  "source": "raw/gamedata/events_engi.xml",
+  "effects": [],
+  "flags": {
+    "unique": true
+  },
+  "node": {
+    "kind": "decision",
+    "options": [
+      {
+        "label": "Booby trap the cache.",
+        "gate": null,
+        "child": {
+          "text": {
+            "value": "You transfer down some missile warheads and the Engi rig them to blow before setting a distress signal to attract the fleet's attention.",
+            "ref": "event_ENGI_FLEET_DELAY_c1_text"
+          },
+          "effects": [
+            {
+              "kind": "resource",
+              "resource": "missiles",
+              "min": -2,
+              "max": -2
+            },
+            {
+              "kind": "fleet_delay",
+              "amount": -2
+            }
+          ]
+        },
+        "label_ref": "event_ENGI_FLEET_DELAY_c1_choice"
+      },
+      {
+        "label": "Secure the cache.",
+        "gate": null,
+        "child": {
+          "text": {
+            "value": "You have the Engi complete their excavations and bring the supplies on-board.",
+            "ref": "event_ENGI_FLEET_DELAY_c2_text"
+          },
+          "effects": [
+            {
+              "kind": "reward",
+              "level": "MED",
+              "tier": "drone"
+            }
+          ]
+        },
+        "label_ref": "event_ENGI_FLEET_DELAY_c2_choice",
+        "hidden": true
+      }
+    ]
+  }
+}

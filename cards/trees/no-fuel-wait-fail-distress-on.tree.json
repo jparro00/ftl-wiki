@@ -1,0 +1,15 @@
+{
+  "schema": "ftl-event-tree/1",
+  "id": "FUEL_NOTHING_DISTRESS",
+  "slug": "no-fuel-wait-fail-distress-on",
+  "title": "No fuel: wait fail (distress on)",
+  "extracted_from": "raw/gamedata/events_fuel.xml",
+  "text": {
+    "value": "You contemplate that it is fortunate the ship's life support system does not rely on FTL fuel cells.",
+    "ref": "FUEL_NOTHING_DISTRESS_LIST",
+    "variants": 7
+  },
+  "name": "FUEL_NOTHING_DISTRESS",
+  "source": "raw/gamedata/events_fuel.xml",
+  "effects": []
+}

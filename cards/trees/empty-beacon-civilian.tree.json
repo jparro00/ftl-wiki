@@ -1,0 +1,15 @@
+{
+  "schema": "ftl-event-tree/1",
+  "id": "NOTHING",
+  "slug": "empty-beacon-civilian",
+  "title": "Empty beacon (Civilian)",
+  "extracted_from": "raw/gamedata/events.xml",
+  "text": {
+    "value": "Your jump leads you to nothing but empty space. This Jump Beacon serves no purpose other than as a connection.",
+    "ref": "NOTHING",
+    "variants": 9
+  },
+  "name": "NOTHING",
+  "source": "raw/gamedata/events.xml",
+  "effects": []
+}

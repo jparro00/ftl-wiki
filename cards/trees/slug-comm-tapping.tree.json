@@ -1,0 +1,271 @@
+{
+  "schema": "ftl-event-tree/1",
+  "id": "QUEST_SLUG_PIRATE_TRAP",
+  "slug": "slug-comm-tapping",
+  "title": "Slug comm tapping",
+  "extracted_from": "raw/gamedata/events_slug.xml",
+  "text": {
+    "value": "You arrive to the sight of two Slug ships in communication range. They don't see you.",
+    "ref": "event_QUEST_SLUG_PIRATE_TRAP_text"
+  },
+  "name": "QUEST_SLUG_PIRATE_TRAP",
+  "source": "raw/gamedata/events_slug.xml",
+  "effects": [
+    {
+      "kind": "environment",
+      "environment": "nebula",
+      "target": "player"
+    }
+  ],
+  "flags": {
+    "unique": true,
+    "environment": "nebula",
+    "environment_target": "player"
+  },
+  "node": {
+    "kind": "decision",
+    "options": [
+      {
+        "label": "Tap their comm frequency.",
+        "gate": null,
+        "child": {
+          "text": {
+            "value": "You overhear their conversation and learn they're planning to raid an infamous and likely wealthy pirate ship in the area. The pair jump off and you note down their target co-ordinates.",
+            "ref": "event_QUEST_SLUG_PIRATE_TRAP_c1_text"
+          },
+          "effects": [
+            {
+              "kind": "quest",
+              "event": "QUEST_SLUG_PIRATE_TRAP2"
+            }
+          ]
+        },
+        "label_ref": "event_QUEST_SLUG_PIRATE_TRAP_c1_choice",
+        "hidden": true
+      },
+      {
+        "label": "Ignore them.",
+        "gate": null,
+        "child": {
+          "text": {
+            "value": "You have no interest in anything the Slugs could make business out of. Time to move on.",
+            "ref": "event_QUEST_SLUG_PIRATE_TRAP_c2_text"
+          },
+          "effects": []
+        },
+        "label_ref": "event_QUEST_SLUG_PIRATE_TRAP_c2_choice",
+        "hidden": true
+      }
+    ]
+  },
+  "chain": [
+    {
+      "id": "QUEST_SLUG_PIRATE_TRAP2",
+      "from": "QUEST_SLUG_PIRATE_TRAP",
+      "slug": "quest-slug-pirate-trap2",
+      "title": "Slug raid, joined",
+      "text": {
+        "value": "You catch up with the two Slug ships and they're already carrying out their raid! One is in close combat with the pirate, the other seems to be heading for a small space cache the pirate was protecting.",
+        "ref": "event_QUEST_SLUG_PIRATE_TRAP2_text"
+      },
+      "name": "QUEST_SLUG_PIRATE_TRAP2",
+      "source": "raw/gamedata/events_slug.xml",
+      "effects": [
+        {
+          "kind": "environment",
+          "environment": "nebula",
+          "target": "player"
+        }
+      ],
+      "flags": {
+        "environment": "nebula",
+        "environment_target": "player"
+      },
+      "node": {
+        "kind": "decision",
+        "options": [
+          {
+            "label": "Continue...",
+            "gate": null,
+            "child": {
+              "text": {
+                "value": "Suddenly the first ship bursts into flames, and an urgent call arrives from the remaining Slugs. \"We sssugest you distract the pirate vesssel while we retrieve the valuables. Fifty fifty sssplit.\"",
+                "ref": "event_QUEST_SLUG_PIRATE_TRAP2_c1_text"
+              },
+              "effects": [],
+              "node": {
+                "kind": "decision",
+                "options": [
+                  {
+                    "label": "Engage the pirate.",
+                    "gate": null,
+                    "child": {
+                      "text": {
+                        "value": "There's money to be made here. The Slugs know that. You turn on the pirate and intercept just before he can reach the cache!",
+                        "ref": "event_QUEST_SLUG_PIRATE_TRAP2_c1_c1_text"
+                      },
+                      "effects": [],
+                      "node": {
+                        "kind": "combat",
+                        "ship": "QUEST_SLUG_PIRATE_TRAP1",
+                        "hostile": true,
+                        "auto_blueprint": "SHIPS_PIRATE",
+                        "source": "raw/gamedata/events_ships.xml",
+                        "branches": [
+                          {
+                            "on": "destroyed",
+                            "child": {
+                              "text": {
+                                "value": "With the pirate defeated you scan the debris for anything useful. The Slug ship is long gone, spoils from the cache in hand.",
+                                "ref": "ship_QUEST_SLUG_PIRATE_TRAP1_destroyed_text"
+                              },
+                              "effects": [
+                                {
+                                  "kind": "reward",
+                                  "level": "MED",
+                                  "tier": "standard"
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "on": "deadCrew",
+                            "child": {
+                              "text": {
+                                "value": "With the pirate defeated you scan the debris for anything useful. The Slug ship is long gone, spoils from the cache in hand.",
+                                "ref": "ship_QUEST_SLUG_PIRATE_TRAP1_destroyed_text"
+                              },
+                              "effects": [
+                                {
+                                  "kind": "reward",
+                                  "level": "HIGH",
+                                  "tier": "standard"
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "on": "surrender",
+                            "child": {
+                              "text": {
+                                "value": "When the pirate ship looks ready to break apart you notice the Slug ship has secured the loot and is preparing to jump away!",
+                                "ref": "ship_QUEST_SLUG_PIRATE_TRAP1_surrender_text"
+                              },
+                              "effects": [],
+                              "node": {
+                                "kind": "decision",
+                                "options": [
+                                  {
+                                    "label": "Continue fighting the pirate.",
+                                    "gate": null,
+                                    "child": {
+                                      "text": {
+                                        "value": "It's best you finish this - but you wonder whether what the pirate is carrying will be as valuable as what the Slugs snuck off with.",
+                                        "ref": "ship_QUEST_SLUG_PIRATE_TRAP1_surrender_c1_text"
+                                      },
+                                      "effects": []
+                                    },
+                                    "label_ref": "ship_QUEST_SLUG_PIRATE_TRAP1_surrender_c1_choice",
+                                    "hidden": true
+                                  },
+                                  {
+                                    "label": "Let the pirate escape and go after the Slugman ship.",
+                                    "gate": null,
+                                    "child": {
+                                      "text": {
+                                        "value": "The pirate's too badly damaged to pursue you, and you catch up to the Slugs before they jump. \"Ah, of courssse, we would never leave without providing the agreed upon ssspoils.\" They transfer over a decent chunk of the profits and set off.",
+                                        "ref": "ship_QUEST_SLUG_PIRATE_TRAP1_surrender_c2_text"
+                                      },
+                                      "effects": [
+                                        {
+                                          "kind": "reward",
+                                          "level": "HIGH",
+                                          "tier": "scrap_only"
+                                        },
+                                        {
+                                          "kind": "ship_hostility",
+                                          "hostile": false
+                                        }
+                                      ]
+                                    },
+                                    "label_ref": "ship_QUEST_SLUG_PIRATE_TRAP1_surrender_c2_choice",
+                                    "hidden": true
+                                  }
+                                ]
+                              }
+                            },
+                            "chance": "0",
+                            "min": "3",
+                            "max": "4"
+                          }
+                        ]
+                      }
+                    },
+                    "label_ref": "event_QUEST_SLUG_PIRATE_TRAP2_c1_c1_choice",
+                    "hidden": true
+                  },
+                  {
+                    "label": "Head for the cache.",
+                    "gate": null,
+                    "child": {
+                      "text": {
+                        "value": "When he sees you making for the cache the Slug captain hails: \"Foolish alienss, no eye for profit. Bessst of luck to you.\" They jump off, leaving you toe to toe with the pirate!",
+                        "ref": "event_QUEST_SLUG_PIRATE_TRAP2_c1_c2_text"
+                      },
+                      "effects": [],
+                      "node": {
+                        "kind": "combat",
+                        "ship": "QUEST_SLUG_PIRATE_TRAP2",
+                        "hostile": true,
+                        "auto_blueprint": "SHIPS_PIRATE",
+                        "source": "raw/gamedata/events_ships.xml",
+                        "branches": [
+                          {
+                            "on": "destroyed",
+                            "child": {
+                              "text": {
+                                "value": "With the pirate taken care of, you search again for the cache he was protecting, but it's lost in the clouds. You console yourself with the salvage from the well-armed pirate ship.",
+                                "ref": "ship_QUEST_SLUG_PIRATE_TRAP2_destroyed_text"
+                              },
+                              "effects": [
+                                {
+                                  "kind": "reward",
+                                  "level": "LOW",
+                                  "tier": "standard"
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "on": "deadCrew",
+                            "child": {
+                              "text": {
+                                "value": "With the pirate defeated, you search again for the cache he was protecting, but it's lost in the clouds. You console yourself with the salvage from the well-armed pirate ship.",
+                                "ref": "ship_QUEST_SLUG_PIRATE_TRAP2_deadCrew_text"
+                              },
+                              "effects": [
+                                {
+                                  "kind": "reward",
+                                  "level": "MED",
+                                  "tier": "standard"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    "label_ref": "event_QUEST_SLUG_PIRATE_TRAP2_c1_c2_choice",
+                    "hidden": true
+                  }
+                ]
+              }
+            },
+            "label_ref": "continue",
+            "hidden": true
+          }
+        ]
+      }
+    }
+  ]
+}

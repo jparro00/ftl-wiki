@@ -1,0 +1,15 @@
+{
+  "schema": "ftl-event-tree/1",
+  "id": "START_BEACON_PIRATE",
+  "slug": "start-beacon-pirate",
+  "title": "Start beacon (Pirate)",
+  "extracted_from": "raw/gamedata/events_pirate.xml",
+  "text": {
+    "value": "A few years ago this region was bustling with trade activity. Now it is overrun with bandits and marauders. You should tread lightly here.",
+    "ref": "START_BEACON_PIRATE",
+    "variants": 4
+  },
+  "name": "START_BEACON_PIRATE",
+  "source": "raw/gamedata/events_pirate.xml",
+  "effects": []
+}

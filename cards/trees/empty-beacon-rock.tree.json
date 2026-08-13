@@ -1,0 +1,15 @@
+{
+  "schema": "ftl-event-tree/1",
+  "id": "NOTHING_ROCK",
+  "slug": "empty-beacon-rock",
+  "title": "Empty beacon (Rock)",
+  "extracted_from": "raw/gamedata/events_rock.xml",
+  "text": {
+    "value": "You receive a message meant to degrade you as aliens. You half expect an attack but it seems to have come from a small civilian shuttle.",
+    "ref": "NOTHING_ROCK",
+    "variants": 7
+  },
+  "name": "NOTHING_ROCK",
+  "source": "raw/gamedata/events_rock.xml",
+  "effects": []
+}

@@ -1,0 +1,236 @@
+{
+  "schema": "ftl-event-tree/1",
+  "id": "STORM_ITEMS",
+  "slug": "plasma-storm-incapacitated-ships",
+  "title": "Plasma storm incapacitated ships",
+  "extracted_from": "raw/gamedata/events_nebula.xml",
+  "text": {
+    "value": "You jump into the middle of a plasma storm. Multiple recently incapacitated ships loom in the shadows, briefly illuminated by the lightning.",
+    "ref": "event_STORM_ITEMS_text"
+  },
+  "name": "STORM_ITEMS",
+  "source": "raw/gamedata/events_nebula.xml",
+  "effects": [
+    {
+      "kind": "environment",
+      "environment": "storm",
+      "target": "player"
+    }
+  ],
+  "flags": {
+    "unique": true,
+    "environment": "storm",
+    "environment_target": "player"
+  },
+  "node": {
+    "kind": "decision",
+    "options": [
+      {
+        "label": "Manually search the wreckage for survivors and equipment.",
+        "gate": null,
+        "child": {
+          "effects": [],
+          "node": {
+            "kind": "chance",
+            "list": "STORM_ITEMS_LIST",
+            "source": "raw/gamedata/events_nebula.xml",
+            "odds_basis": "unweighted",
+            "options": [
+              {
+                "share": null,
+                "child": {
+                  "text": {
+                    "value": "Despite your caution, the lack of detection equipment allows debris to crash into your ship, damaging the hull. You salvage what you can and prepare to jump before anything worse happens.",
+                    "ref": "event_STORM_ITEMS_LIST_1_text"
+                  },
+                  "effects": [
+                    {
+                      "kind": "hull_damage",
+                      "amount": 4
+                    },
+                    {
+                      "kind": "hazard",
+                      "hazard": "breach",
+                      "dlc": true
+                    },
+                    {
+                      "kind": "reward",
+                      "level": "HIGH",
+                      "tier": "stuff"
+                    }
+                  ]
+                }
+              },
+              {
+                "share": null,
+                "child": {
+                  "text": {
+                    "value": "Within the ship graveyard you find one ship that seems relatively untouched. On board you find an unconscious passenger, and take them back to the ship. Once awake they offer to join your crew in thanks.",
+                    "ref": "event_STORM_ITEMS_LIST_2_text"
+                  },
+                  "effects": [
+                    {
+                      "kind": "crew_gain",
+                      "amount": 1
+                    },
+                    {
+                      "kind": "reward",
+                      "level": "LOW",
+                      "tier": "standard"
+                    }
+                  ]
+                }
+              },
+              {
+                "share": null,
+                "child": {
+                  "text": {
+                    "value": "While the crew is off the ship searching through the wrecks, two hulls crash into each other breaking the crew's tethers. You have no time to react as someone is knocked away, floating helplessly into the gaseous clouds...",
+                    "ref": "event_STORM_ITEMS_LIST_3_text"
+                  },
+                  "effects": [
+                    {
+                      "kind": "crew_loss",
+                      "amount": 1,
+                      "clone": true
+                    },
+                    {
+                      "kind": "reward",
+                      "level": "LOW",
+                      "tier": "standard"
+                    }
+                  ]
+                }
+              },
+              {
+                "share": null,
+                "child": {
+                  "text": {
+                    "value": "Among the junk and scrap you find a salvageable drone schematic. You decide to quit while ahead and prepare to jump with your recent find.",
+                    "ref": "event_STORM_ITEMS_LIST_4_text"
+                  },
+                  "effects": [
+                    {
+                      "kind": "reward",
+                      "level": "MED",
+                      "tier": "drone"
+                    }
+                  ]
+                }
+              },
+              {
+                "share": null,
+                "child": {
+                  "text": {
+                    "value": "Most of the debris is hardly even usable as scrap. However, you eventually find an intact weapon that can be mounted on your ship.",
+                    "ref": "event_STORM_ITEMS_LIST_5_text"
+                  },
+                  "effects": [
+                    {
+                      "kind": "reward",
+                      "level": "MED",
+                      "tier": "weapon"
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        "label_ref": "event_STORM_ITEMS_c1_choice",
+        "hidden": true
+      },
+      {
+        "label": "Avoid the risk and wait to jump away unscathed.",
+        "gate": null,
+        "child": {
+          "effects": []
+        },
+        "label_ref": "event_STORM_ITEMS_c2_choice"
+      },
+      {
+        "label": "(Piloting) Have your pilot carefully explore the debris.",
+        "gate": {
+          "req": "pilot",
+          "label": "Piloting",
+          "lvl": "2"
+        },
+        "child": {
+          "effects": [],
+          "node": {
+            "kind": "chance",
+            "list": "STORM_ITEMS_PILOTING",
+            "source": "raw/gamedata/events_nebula.xml",
+            "odds_basis": "unweighted",
+            "options": [
+              {
+                "share": null,
+                "child": {
+                  "text": {
+                    "value": "Within the ship graveyard you find one ship that seems relatively untouched. On board you find an unconscious passenger and take him back to the ship. Once awake they offer to join your crew in thanks.",
+                    "ref": "event_STORM_ITEMS_PILOTING_1_text"
+                  },
+                  "effects": [
+                    {
+                      "kind": "crew_gain",
+                      "amount": 1
+                    },
+                    {
+                      "kind": "reward",
+                      "level": "LOW",
+                      "tier": "standard"
+                    }
+                  ]
+                }
+              },
+              {
+                "share": null,
+                "child": {
+                  "text": {
+                    "value": "Among the junk and scrap you find a salvageable drone schematic. You decide to quit while ahead and prepare to jump with your recent find.",
+                    "ref": "event_STORM_ITEMS_PILOTING_2_text"
+                  },
+                  "effects": [
+                    {
+                      "kind": "reward",
+                      "level": "MED",
+                      "tier": "drone"
+                    }
+                  ]
+                }
+              },
+              {
+                "share": null,
+                "child": {
+                  "text": {
+                    "value": "Most of the debris is hardly even usable as scrap. However, you eventually find an intact weapon that can be mounted on your ship.",
+                    "ref": "event_STORM_ITEMS_PILOTING_3_text"
+                  },
+                  "effects": [
+                    {
+                      "kind": "reward",
+                      "level": "LOW",
+                      "tier": "weapon"
+                    }
+                  ]
+                }
+              },
+              {
+                "share": null,
+                "child": {
+                  "text": {
+                    "value": "Your pilot carefully explores the wrecks, but the storm has taken its toll. Any crew are long-since dead and the floating debris has been scorched beyond repair.",
+                    "ref": "event_STORM_ITEMS_PILOTING_4_text"
+                  },
+                  "effects": []
+                }
+              }
+            ]
+          }
+        },
+        "label_ref": "event_STORM_ITEMS_c3_choice",
+        "hidden": true
+      }
+    ]
+  }
+}

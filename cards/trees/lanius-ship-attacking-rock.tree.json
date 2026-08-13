@@ -1,0 +1,188 @@
+{
+  "schema": "ftl-event-tree/1",
+  "id": "LANIUS_ROCK_DISTRESS",
+  "slug": "lanius-ship-attacking-rock",
+  "title": "Lanius ship attacking Rock",
+  "extracted_from": "raw/gamedata/dlcEvents_anaerobic.xml",
+  "text": {
+    "value": "A distress beacon pulses weakly from a Rockman ship in this system... their hull (and their crew) are being mined by the Lanius, lasers and weapons tearing through the ship!",
+    "ref": "event_LANIUS_ROCK_DISTRESS_text"
+  },
+  "name": "LANIUS_ROCK_DISTRESS",
+  "source": "raw/gamedata/dlcEvents_anaerobic.xml",
+  "effects": [],
+  "flags": {
+    "unique": true,
+    "beacon": "distress"
+  },
+  "node": {
+    "kind": "decision",
+    "options": [
+      {
+        "label": "Attack the Lanius ship.",
+        "gate": null,
+        "child": {
+          "text": {
+            "value": "The Rockmen need your help - you target the Lanius ship and grimly prepare for battle.",
+            "ref": "event_LANIUS_ROCK_DISTRESS_c1_text"
+          },
+          "effects": [],
+          "node": {
+            "kind": "combat",
+            "ship": "LANIUS_ROCK_DISTRESS_SHIP",
+            "ship_labels": [
+              "Lanius Scout",
+              "Lanius Bomber"
+            ],
+            "hostile": true,
+            "auto_blueprint": "SHIPS_LANIUS",
+            "source": "raw/gamedata/dlcEvents_anaerobic.xml",
+            "branches": [
+              {
+                "on": "destroyed",
+                "child": {
+                  "text": {
+                    "value": "The ship explodes, leaving behind a collection of useful scrap material.",
+                    "ref": "ship_LANIUS_ROCK_DISTRESS_SHIP_destroyed_text"
+                  },
+                  "effects": [
+                    {
+                      "kind": "reward",
+                      "level": "MED",
+                      "tier": "standard"
+                    }
+                  ],
+                  "node": {
+                    "kind": "decision",
+                    "options": [
+                      {
+                        "label": "Contact the Rockmen.",
+                        "gate": null,
+                        "child": {
+                          "effects": [],
+                          "node": {
+                            "kind": "chance",
+                            "list": "LANIUS_ROCK_DISTRESS_END",
+                            "source": "raw/gamedata/dlcEvents_anaerobic.xml",
+                            "odds_basis": "unweighted",
+                            "options": [
+                              {
+                                "share": null,
+                                "child": {
+                                  "text": {
+                                    "value": "The Rockmen give an awkwardly-translated message that seems to indicate something about gratitude. They then jump away without another word.",
+                                    "ref": "event_LANIUS_ROCK_DISTRESS_END_1_text"
+                                  },
+                                  "effects": []
+                                }
+                              },
+                              {
+                                "share": null,
+                                "child": {
+                                  "text": {
+                                    "value": "The Rockman ship jumped away during the battle, but it left much of its hull and spare parts floating behind - you salvage what you can, and prepare to jump.",
+                                    "ref": "event_LANIUS_ROCK_DISTRESS_END_2_text"
+                                  },
+                                  "effects": [
+                                    {
+                                      "kind": "reward",
+                                      "level": "MED",
+                                      "tier": "standard"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          }
+                        },
+                        "label_ref": "ship_LANIUS_ROCK_DISTRESS_SHIP_destroyed_c1_choice",
+                        "hidden": true
+                      }
+                    ]
+                  }
+                }
+              },
+              {
+                "on": "deadCrew",
+                "child": {
+                  "text": {
+                    "value": "There are no more life-signs remaining on the ship. You strip it of useful materials.",
+                    "ref": "ship_LANIUS_ROCK_DISTRESS_SHIP_deadCrew_text"
+                  },
+                  "effects": [
+                    {
+                      "kind": "reward",
+                      "level": "MED",
+                      "tier": "standard"
+                    }
+                  ],
+                  "node": {
+                    "kind": "decision",
+                    "options": [
+                      {
+                        "label": "Contact the Rockmen.",
+                        "gate": null,
+                        "child": {
+                          "effects": [],
+                          "node": {
+                            "kind": "chance",
+                            "list": "LANIUS_ROCK_DISTRESS_END",
+                            "source": "raw/gamedata/dlcEvents_anaerobic.xml",
+                            "odds_basis": "unweighted",
+                            "options": [
+                              {
+                                "share": null,
+                                "child": {
+                                  "text": {
+                                    "value": "The Rockmen give an awkwardly-translated message that seems to indicate something about gratitude. They then jump away without another word.",
+                                    "ref": "event_LANIUS_ROCK_DISTRESS_END_1_text"
+                                  },
+                                  "effects": []
+                                }
+                              },
+                              {
+                                "share": null,
+                                "child": {
+                                  "text": {
+                                    "value": "The Rockman ship jumped away during the battle, but it left much of its hull and spare parts floating behind - you salvage what you can, and prepare to jump.",
+                                    "ref": "event_LANIUS_ROCK_DISTRESS_END_2_text"
+                                  },
+                                  "effects": [
+                                    {
+                                      "kind": "reward",
+                                      "level": "MED",
+                                      "tier": "standard"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          }
+                        },
+                        "label_ref": "ship_LANIUS_ROCK_DISTRESS_SHIP_destroyed_c1_choice",
+                        "hidden": true
+                      }
+                    ]
+                  }
+                }
+              }
+            ]
+          }
+        },
+        "label_ref": "event_LANIUS_ROCK_DISTRESS_c1_choice"
+      },
+      {
+        "label": "Leave the Rockmen to their fate.",
+        "gate": null,
+        "child": {
+          "text": {
+            "value": "As you make your escape, the Rockman's ship's engines explode, and you watch the Lanius ship slowly feed on the remains - and the crew.",
+            "ref": "event_LANIUS_ROCK_DISTRESS_c2_text"
+          },
+          "effects": []
+        },
+        "label_ref": "event_LANIUS_ROCK_DISTRESS_c2_choice"
+      }
+    ]
+  }
+}

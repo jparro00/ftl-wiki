@@ -1,0 +1,756 @@
+{
+  "schema": "ftl-event-tree/1",
+  "id": "CIVILIAN_ASTEROIDS_BEACON_2",
+  "slug": "civilian-asteroids-beacon-2",
+  "title": "Civilian asteroids beacon 2",
+  "extracted_from": "raw/gamedata/events.xml",
+  "text": {
+    "value": "They respond: \"Help! Our shields are down and we won't last long!\"",
+    "ref": "event_CIVILIAN_ASTEROIDS_BEACON_2_text"
+  },
+  "name": "CIVILIAN_ASTEROIDS_BEACON_2",
+  "source": "raw/gamedata/events.xml",
+  "effects": [],
+  "node": {
+    "kind": "decision",
+    "options": [
+      {
+        "label": "Try to shield their ship with yours.",
+        "gate": null,
+        "child": {
+          "effects": [],
+          "node": {
+            "kind": "chance",
+            "list": "CIVILIAN_ASTEROIDS_BEACON_LIST1",
+            "source": "raw/gamedata/events.xml",
+            "odds_basis": "unweighted",
+            "options": [
+              {
+                "share": null,
+                "child": {
+                  "text": {
+                    "value": "You succeed in preventing them from being entirely destroyed, but your ship took a number of hits in the process. They offer some of the scrap and fuel they were mining out of the asteroid as thanks.",
+                    "ref": "event_CIVILIAN_ASTEROIDS_BEACON_LIST1_1_text"
+                  },
+                  "effects": [
+                    {
+                      "kind": "reward",
+                      "level": "HIGH",
+                      "tier": "fuel"
+                    },
+                    {
+                      "kind": "system_damage",
+                      "amount": 1,
+                      "system": "room",
+                      "dlc": true
+                    },
+                    {
+                      "kind": "hazard",
+                      "hazard": "fire",
+                      "dlc": true
+                    }
+                  ]
+                }
+              },
+              {
+                "share": null,
+                "child": {
+                  "text": {
+                    "value": "You try your best but one stray rock hits a key structure in their ship. It breaks apart in front of your eyes. You salvage what you can before leaving, and try not to think about the lost crew.",
+                    "ref": "event_CIVILIAN_ASTEROIDS_BEACON_LIST1_2_text"
+                  },
+                  "effects": [
+                    {
+                      "kind": "reward",
+                      "level": "LOW",
+                      "tier": "scrap_only"
+                    }
+                  ]
+                }
+              },
+              {
+                "share": null,
+                "child": {
+                  "text": {
+                    "value": "Despite your best efforts, the civilian ship breaks apart from the constant barrage. You are barely able to break out of the asteroid field yourself. The ship sustains some damage in the process.",
+                    "ref": "event_CIVILIAN_ASTEROIDS_BEACON_LIST1_3_text"
+                  },
+                  "effects": [
+                    {
+                      "kind": "hull_damage",
+                      "amount": 4
+                    },
+                    {
+                      "kind": "reward",
+                      "level": "LOW",
+                      "tier": "scrap_only"
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        "label_ref": "event_CIVILIAN_ASTEROIDS_BEACON_2_c1_choice",
+        "hidden": true
+      },
+      {
+        "label": "Don't risk our ship. Leave them to their fate.",
+        "gate": null,
+        "child": {
+          "effects": [],
+          "node": {
+            "kind": "chance",
+            "list": "CIVILIAN_ASTEROIDS_BEACON_LIST4",
+            "source": "raw/gamedata/events.xml",
+            "odds_basis": "unweighted",
+            "options": [
+              {
+                "share": null,
+                "child": {
+                  "text": {
+                    "value": "You regretfully leave the area, not able to watch them get destroyed. A short while later you get a second message, \"We survived, no thanks to you! Don't think I don't know that the Rebels are hunting for you. I'll be sure to tell them where you are the next time I see them!\"",
+                    "ref": "event_CIVILIAN_ASTEROIDS_BEACON_LIST4_1_text"
+                  },
+                  "effects": [
+                    {
+                      "kind": "fleet_delay",
+                      "amount": 1
+                    }
+                  ]
+                }
+              },
+              {
+                "share": null,
+                "child": {
+                  "text": {
+                    "value": "You watch helplessly as their ship smashes against a cruiser-sized rock...",
+                    "ref": "event_CIVILIAN_ASTEROIDS_BEACON_LIST4_2_text"
+                  },
+                  "effects": []
+                }
+              }
+            ]
+          }
+        },
+        "label_ref": "event_CIVILIAN_ASTEROIDS_BEACON_2_c2_choice"
+      },
+      {
+        "label": "(Defense Drone) Use a Defense Drone to protect their ship.",
+        "gate": {
+          "req": "DRONES_DEFENSE_LIST"
+        },
+        "child": {
+          "effects": [],
+          "node": {
+            "kind": "chance",
+            "list": "CIVILIAN_ASTEROIDS_BEACON_LIST2",
+            "source": "raw/gamedata/events.xml",
+            "odds_basis": "unweighted",
+            "options": [
+              {
+                "share": null,
+                "child": {
+                  "text": {
+                    "value": "Your drone succeeds in keeping their ship from breaking apart while they fix it, however you take some damage while attempting to leave the asteroid field. They offer you some military supplies as thanks for saving them.",
+                    "ref": "event_CIVILIAN_ASTEROIDS_BEACON_LIST2_1_text"
+                  },
+                  "effects": [
+                    {
+                      "kind": "reward",
+                      "level": "MED",
+                      "tier": "weapon"
+                    },
+                    {
+                      "kind": "resource",
+                      "resource": "drones",
+                      "min": -1,
+                      "max": -1
+                    },
+                    {
+                      "kind": "hull_damage",
+                      "amount": 2
+                    },
+                    {
+                      "kind": "system_damage",
+                      "amount": 1,
+                      "system": "random",
+                      "dlc": true
+                    },
+                    {
+                      "kind": "system_damage",
+                      "amount": 1,
+                      "system": "room"
+                    },
+                    {
+                      "kind": "hazard",
+                      "hazard": "fire"
+                    }
+                  ]
+                }
+              },
+              {
+                "share": null,
+                "child": {
+                  "text": {
+                    "value": "The drone keeps the ship stable enough to allow them to escape the asteroid field. They message you with map coordinates, \"You're that Federation ship the Rebels are after, aren't you? I can't offer much but I heard there was a Federation loyalist base nearby. Maybe they can help you?\"",
+                    "ref": "event_CIVILIAN_ASTEROIDS_BEACON_LIST2_2_text"
+                  },
+                  "effects": [
+                    {
+                      "kind": "quest",
+                      "event": "HIDDEN_FEDERATION_BASE_LIST"
+                    },
+                    {
+                      "kind": "resource",
+                      "resource": "drones",
+                      "min": -1,
+                      "max": -1
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        "label_ref": "event_CIVILIAN_ASTEROIDS_BEACON_2_c3_choice",
+        "hidden": true
+      },
+      {
+        "label": "(Repair Drone) Send a Repair Drone to fix their Shields.",
+        "gate": {
+          "req": "REPAIR",
+          "label": "System Repair Drone"
+        },
+        "child": {
+          "effects": [],
+          "node": {
+            "kind": "chance",
+            "list": "CIVILIAN_ASTEROIDS_BEACON_LIST2",
+            "source": "raw/gamedata/events.xml",
+            "odds_basis": "unweighted",
+            "options": [
+              {
+                "share": null,
+                "child": {
+                  "text": {
+                    "value": "Your drone succeeds in keeping their ship from breaking apart while they fix it, however you take some damage while attempting to leave the asteroid field. They offer you some military supplies as thanks for saving them.",
+                    "ref": "event_CIVILIAN_ASTEROIDS_BEACON_LIST2_1_text"
+                  },
+                  "effects": [
+                    {
+                      "kind": "reward",
+                      "level": "MED",
+                      "tier": "weapon"
+                    },
+                    {
+                      "kind": "resource",
+                      "resource": "drones",
+                      "min": -1,
+                      "max": -1
+                    },
+                    {
+                      "kind": "hull_damage",
+                      "amount": 2
+                    },
+                    {
+                      "kind": "system_damage",
+                      "amount": 1,
+                      "system": "random",
+                      "dlc": true
+                    },
+                    {
+                      "kind": "system_damage",
+                      "amount": 1,
+                      "system": "room"
+                    },
+                    {
+                      "kind": "hazard",
+                      "hazard": "fire"
+                    }
+                  ]
+                }
+              },
+              {
+                "share": null,
+                "child": {
+                  "text": {
+                    "value": "The drone keeps the ship stable enough to allow them to escape the asteroid field. They message you with map coordinates, \"You're that Federation ship the Rebels are after, aren't you? I can't offer much but I heard there was a Federation loyalist base nearby. Maybe they can help you?\"",
+                    "ref": "event_CIVILIAN_ASTEROIDS_BEACON_LIST2_2_text"
+                  },
+                  "effects": [
+                    {
+                      "kind": "quest",
+                      "event": "HIDDEN_FEDERATION_BASE_LIST"
+                    },
+                    {
+                      "kind": "resource",
+                      "resource": "drones",
+                      "min": -1,
+                      "max": -1
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        "label_ref": "event_CIVILIAN_ASTEROIDS_BEACON_2_c4_choice",
+        "hidden": true
+      },
+      {
+        "label": "(Teleporter) Offer to beam them aboard your ship.",
+        "gate": {
+          "req": "teleporter",
+          "label": "Crew Teleporter"
+        },
+        "child": {
+          "effects": [],
+          "node": {
+            "kind": "chance",
+            "list": "CIVILIAN_ASTEROIDS_BEACON_LIST3",
+            "source": "raw/gamedata/events.xml",
+            "odds_basis": "unweighted",
+            "options": [
+              {
+                "share": null,
+                "child": {
+                  "text": {
+                    "value": "They reluctantly agree. Once aboard, you watch as their ship crashes against a massive rock. They thank you, but say \"I don't know what we'll do without our ship. As the Captain, I feel obligated to help you with your mission.\"",
+                    "ref": "event_CIVILIAN_ASTEROIDS_BEACON_LIST3_1_text"
+                  },
+                  "effects": [
+                    {
+                      "kind": "crew_gain",
+                      "amount": 1
+                    }
+                  ]
+                }
+              },
+              {
+                "share": null,
+                "child": {
+                  "text": {
+                    "value": "They refuse at first, but after another blast rocks their ship they agree and beam aboard your ship. They say, \"Thank you but we really should return to our families... I'm sure we can muster up a reward if you take us home.\"",
+                    "ref": "event_CIVILIAN_ASTEROIDS_BEACON_LIST3_2_text"
+                  },
+                  "effects": [],
+                  "node": {
+                    "kind": "decision",
+                    "options": [
+                      {
+                        "label": "Take them to the nearby planet, where they're from.",
+                        "gate": null,
+                        "child": {
+                          "effects": [],
+                          "node": {
+                            "kind": "chance",
+                            "list": "FAMILY_RETURN",
+                            "source": "raw/gamedata/events.xml",
+                            "odds_basis": "unweighted",
+                            "options": [
+                              {
+                                "share": null,
+                                "child": {
+                                  "text": {
+                                    "value": "The family apparently owns one of the most valuable mining enterprises in the sector. For the safe return of his son, the patron of the family offers you a substantial reward.",
+                                    "ref": "event_FAMILY_RETURN_1_text"
+                                  },
+                                  "effects": [
+                                    {
+                                      "kind": "reward",
+                                      "level": "HIGH",
+                                      "tier": "scrap_only"
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "share": null,
+                                "child": {
+                                  "text": {
+                                    "value": "The survivor's family is of modest means, yet they manage to offer you a reward for your virtuous deed.",
+                                    "ref": "event_FAMILY_RETURN_2_text"
+                                  },
+                                  "effects": [
+                                    {
+                                      "kind": "reward",
+                                      "level": "MED",
+                                      "tier": "scrap_only"
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "share": null,
+                                "child": {
+                                  "text": {
+                                    "value": "Overjoyed with the return of their son, the family of the survivor arranges to repair your ship's hull as compensation.",
+                                    "ref": "event_FAMILY_RETURN_3_text"
+                                  },
+                                  "effects": [
+                                    {
+                                      "kind": "hull_repair",
+                                      "amount": 10
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          }
+                        },
+                        "label_ref": "event_CIVILIAN_ASTEROIDS_BEACON_LIST3_2_c1_choice",
+                        "hidden": true
+                      }
+                    ]
+                  }
+                }
+              }
+            ]
+          }
+        },
+        "label_ref": "event_CIVILIAN_ASTEROIDS_BEACON_2_c5_choice",
+        "hidden": true
+      },
+      {
+        "label": "(Rock Armor) Shield their ship with yours and escort them out.",
+        "gate": {
+          "req": "ROCK_ARMOR",
+          "label": "Rock Plating"
+        },
+        "child": {
+          "text": {
+            "value": "You succeed in preventing them from being entirely destroyed, your improved hull taking the brunt of the asteroids that make it past your defenses. They offer you some of the scrap and fuel they were mining out of the asteroid as thanks.",
+            "ref": "event_CIVILIAN_ASTEROIDS_BEACON_2_c6_text"
+          },
+          "effects": [
+            {
+              "kind": "reward",
+              "level": "MED",
+              "tier": "fuel"
+            }
+          ]
+        },
+        "label_ref": "event_CIVILIAN_ASTEROIDS_BEACON_2_c6_choice",
+        "hidden": true
+      }
+    ]
+  },
+  "chain": [
+    {
+      "id": "HIDDEN_FEDERATION_BASE_LIST",
+      "from": "CIVILIAN_ASTEROIDS_BEACON_2",
+      "effects": [],
+      "node": {
+        "kind": "chance",
+        "list": "HIDDEN_FEDERATION_BASE_LIST",
+        "source": "raw/gamedata/events.xml",
+        "odds_basis": "unweighted",
+        "options": [
+          {
+            "share": null,
+            "child": {
+              "text": {
+                "value": "You find the planet at the indicated coordinates. Your initial scans show the planet to be barren and devoid of life, but you get a prompt reply when you broadcast on Federation frequencies. \"Hello! So nice to see friends. We'll bring you up some supplies.\"",
+                "ref": "event_HIDDEN_FEDERATION_BASE_LIST_1_text"
+              },
+              "effects": [
+                {
+                  "kind": "reward",
+                  "level": "HIGH",
+                  "tier": "drone"
+                }
+              ]
+            }
+          },
+          {
+            "share": null,
+            "child": {
+              "text": {
+                "value": "By following the directions given to you, you find a well-disguised outpost. You are welcomed by a friendly face who offers to assist you in your quest by joining your crew.",
+                "ref": "event_HIDDEN_FEDERATION_BASE_LIST_2_text"
+              },
+              "effects": [
+                {
+                  "kind": "reward",
+                  "level": "LOW",
+                  "tier": "standard"
+                },
+                {
+                  "kind": "crew_gain",
+                  "amount": 1
+                }
+              ]
+            }
+          },
+          {
+            "share": null,
+            "child": {
+              "text": {
+                "value": "After a quick search you discover the hidden Federation space-dock. They offer you some supplies in addition to fully repairing your ship.",
+                "ref": "event_HIDDEN_FEDERATION_BASE_LIST_3_text"
+              },
+              "effects": [
+                {
+                  "kind": "reward",
+                  "level": "MED",
+                  "tier": "standard"
+                },
+                {
+                  "kind": "hull_repair",
+                  "amount": 35
+                }
+              ]
+            }
+          },
+          {
+            "share": null,
+            "child": {
+              "text": {
+                "value": "You search near the coordinates given to you, but your search yields no results. Perhaps they were mistaken.",
+                "ref": "event_HIDDEN_FEDERATION_BASE_LIST_4_text"
+              },
+              "effects": [],
+              "node": {
+                "kind": "decision",
+                "options": [
+                  {
+                    "label": "Leave.",
+                    "gate": null,
+                    "child": {
+                      "effects": []
+                    },
+                    "label_ref": "event_HIDDEN_FEDERATION_BASE_LIST_4_c1_choice"
+                  },
+                  {
+                    "label": "(Improved Sensors) Run a second scan pass.",
+                    "gate": {
+                      "req": "sensors",
+                      "label": "Sensors",
+                      "lvl": "2",
+                      "max_group": "0"
+                    },
+                    "child": {
+                      "text": {
+                        "value": "Your Advanced Sensors pick faint signatures of what appears to be a storage space hidden under the rock. You find the access point and discover a supply cache whose Federation signal emitter has malfunctioned.",
+                        "ref": "event_HIDDEN_FEDERATION_BASE_LIST_4_c2_text"
+                      },
+                      "effects": [
+                        {
+                          "kind": "reward",
+                          "level": "MED",
+                          "tier": "standard"
+                        }
+                      ]
+                    },
+                    "label_ref": "event_HIDDEN_FEDERATION_BASE_LIST_4_c2_choice",
+                    "hidden": true,
+                    "dlc": true
+                  },
+                  {
+                    "label": "(Advanced Sensors) Run a second scan pass.",
+                    "gate": {
+                      "req": "sensors",
+                      "label": "Sensors",
+                      "lvl": "3",
+                      "max_group": "0"
+                    },
+                    "child": {
+                      "text": {
+                        "value": "Your advanced sensors pick faint signatures of what appears to be a storage space hidden under the rock. You find the access point and discover a weapons cache whose Federation signal emitter has malfunctioned.",
+                        "ref": "event_HIDDEN_FEDERATION_BASE_LIST_4_c3_text"
+                      },
+                      "effects": [
+                        {
+                          "kind": "reward",
+                          "level": "MED",
+                          "tier": "weapon"
+                        }
+                      ]
+                    },
+                    "label_ref": "event_HIDDEN_FEDERATION_BASE_LIST_4_c3_choice",
+                    "hidden": true
+                  },
+                  {
+                    "label": "(Long-Ranged Scanners) Run a second scan pass.",
+                    "gate": {
+                      "req": "ADV_SCANNERS",
+                      "label": "Long-Ranged Scanners"
+                    },
+                    "child": {
+                      "text": {
+                        "value": "Your improved scanners pick faint signatures of what appears to be a storage space hidden under the rock. You find the access point and discover a weapons cache whose Federation signal emitter has malfunctioned.",
+                        "ref": "event_HIDDEN_FEDERATION_BASE_LIST_4_c4_text"
+                      },
+                      "effects": [
+                        {
+                          "kind": "reward",
+                          "level": "MED",
+                          "tier": "weapon"
+                        }
+                      ]
+                    },
+                    "label_ref": "event_HIDDEN_FEDERATION_BASE_LIST_4_c4_choice",
+                    "hidden": true
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "share": null,
+            "child": {
+              "effects": [],
+              "node": {
+                "kind": "chance",
+                "list": "FEDERATION_BASE_ASSIST",
+                "source": "raw/gamedata/events.xml",
+                "odds_basis": "unweighted",
+                "options": [
+                  {
+                    "share": null,
+                    "child": {
+                      "text": {
+                        "value": "You arrive in the sector to see a small outpost being bombarded by an automated drone. This must be the Federation base you were told about!",
+                        "ref": "event_FEDERATION_BASE_ASSIST_1_text"
+                      },
+                      "effects": [],
+                      "node": {
+                        "kind": "combat",
+                        "ship": "AUTO_FEDERATION_BASE",
+                        "ship_labels": [
+                          "Auto-Scout",
+                          "Auto-Assault"
+                        ],
+                        "hostile": true,
+                        "auto_blueprint": "SHIPS_AUTO",
+                        "source": "raw/gamedata/events_ships.xml",
+                        "branches": [
+                          {
+                            "on": "destroyed",
+                            "child": {
+                              "text": {
+                                "value": "You scrap the wreckage.",
+                                "ref": "ship_AUTO_FEDERATION_BASE_destroyed_text"
+                              },
+                              "effects": [
+                                {
+                                  "kind": "reward",
+                                  "level": "LOW",
+                                  "tier": "standard"
+                                }
+                              ],
+                              "node": {
+                                "kind": "decision",
+                                "options": [
+                                  {
+                                    "label": "Continue...",
+                                    "gate": null,
+                                    "child": {
+                                      "text": {
+                                        "value": "With the threat gone, you contact the Federation outpost. They respond, \"Our location has been compromised! Take everything you can and please drop our survivors off at the next station.\" One soldier offers to stay and fight.",
+                                        "ref": "ship_AUTO_FEDERATION_BASE_destroyed_c1_text"
+                                      },
+                                      "effects": [
+                                        {
+                                          "kind": "crew_gain",
+                                          "amount": 1
+                                        },
+                                        {
+                                          "kind": "reward",
+                                          "level": "LOW",
+                                          "tier": "weapon"
+                                        }
+                                      ]
+                                    },
+                                    "label_ref": "continue",
+                                    "hidden": true
+                                  }
+                                ]
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  },
+                  {
+                    "share": null,
+                    "child": {
+                      "text": {
+                        "value": "You arrive in the sector to see a small outpost being bombarded by an automated drone. This must be the Federation base you were told about!",
+                        "ref": "event_FEDERATION_BASE_ASSIST_1_text"
+                      },
+                      "effects": [],
+                      "node": {
+                        "kind": "combat",
+                        "ship": "AUTO_FEDERATION_BASE2",
+                        "ship_labels": [
+                          "Auto-Scout",
+                          "Auto-Assault"
+                        ],
+                        "hostile": true,
+                        "auto_blueprint": "SHIPS_AUTO",
+                        "source": "raw/gamedata/events_ships.xml",
+                        "branches": [
+                          {
+                            "on": "destroyed",
+                            "child": {
+                              "text": {
+                                "value": "You scrap the wreckage.",
+                                "ref": "ship_AUTO_FEDERATION_BASE2_destroyed_text"
+                              },
+                              "effects": [
+                                {
+                                  "kind": "reward",
+                                  "level": "LOW",
+                                  "tier": "standard"
+                                }
+                              ],
+                              "node": {
+                                "kind": "decision",
+                                "options": [
+                                  {
+                                    "label": "Continue...",
+                                    "gate": null,
+                                    "child": {
+                                      "text": {
+                                        "value": "You contact the station once the Rebel ship is destroyed. The lone survivor responds, \"This base is no longer safe. Let me join your crew and I'll have the station's drones patch up your ship.\"",
+                                        "ref": "ship_AUTO_FEDERATION_BASE2_destroyed_c1_text"
+                                      },
+                                      "effects": [
+                                        {
+                                          "kind": "crew_gain",
+                                          "amount": 1
+                                        },
+                                        {
+                                          "kind": "reward",
+                                          "level": "HIGH",
+                                          "tier": "standard"
+                                        },
+                                        {
+                                          "kind": "hull_repair",
+                                          "amount": 7
+                                        }
+                                      ]
+                                    },
+                                    "label_ref": "continue",
+                                    "hidden": true
+                                  }
+                                ]
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,69 @@
+{
+  "schema": "ftl-event-tree/1",
+  "id": "ENGI_UNLOCK_4",
+  "slug": "engi-unlock-4",
+  "title": "Engi unlock — Project X-ME56",
+  "extracted_from": "raw/gamedata/events_engi.xml",
+  "text": {
+    "value": "The Engi emerge victorious from their battles with only minor losses. They message you, \"Project X-ME56 commissioned by Federation military research division. Advanced stealth cruiser. Project finished during rebellion. Unable to reconnect with Federation military command.\"",
+    "ref": "event_ENGI_UNLOCK_4_text"
+  },
+  "name": "ENGI_UNLOCK_4",
+  "source": "raw/gamedata/events_engi.xml",
+  "effects": [],
+  "node": {
+    "kind": "decision",
+    "options": [
+      {
+        "label": "Ask about the Mantis ships.",
+        "gate": null,
+        "child": {
+          "text": {
+            "value": "\"Likely ploy by Rebels to avoid breaking non-aggression pact with Engi. 97.56 percent likely. Your mission to assist last Federation fleet, correct? Coordinates?\"",
+            "ref": "event_ENGI_UNLOCK_4_c1_text"
+          },
+          "effects": [],
+          "node": {
+            "kind": "decision",
+            "options": [
+              {
+                "label": "Transmit coordinates of Federation command.",
+                "gate": null,
+                "child": {
+                  "text": {
+                    "value": "\"Satisfactory. Delivery of tech will assist in Federation cause. Gratitude alone insufficient. Commencing ship repair and compensation.\" Their crews deliver an advanced augmentation for installation but you're more pleased to hear that the Federation will have an improved arsenal.",
+                    "ref": "event_ENGI_UNLOCK_4_c1_c1_text"
+                  },
+                  "effects": [
+                    {
+                      "kind": "hull_repair",
+                      "amount": 20
+                    },
+                    {
+                      "kind": "reward",
+                      "level": "HIGH",
+                      "tier": "standard"
+                    },
+                    {
+                      "kind": "item",
+                      "item_kind": "augment",
+                      "id": "SYSTEM_CASING",
+                      "label": "Titanium System Casing"
+                    },
+                    {
+                      "kind": "unlock_ship",
+                      "id": "1"
+                    }
+                  ]
+                },
+                "label_ref": "event_ENGI_UNLOCK_4_c1_c1_choice",
+                "hidden": true
+              }
+            ]
+          }
+        },
+        "label_ref": "event_ENGI_UNLOCK_4_c1_choice"
+      }
+    ]
+  }
+}

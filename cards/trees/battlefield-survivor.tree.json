@@ -1,0 +1,1648 @@
+{
+  "schema": "ftl-event-tree/1",
+  "id": "BATTLEFIELD_SURVIVOR",
+  "slug": "battlefield-survivor",
+  "title": "Battlefield survivor",
+  "extracted_from": "raw/gamedata/events_slug.xml",
+  "text": {
+    "value": "Your bring the survivor aboard, but discover their wounds are severe. They won't live much longer.",
+    "ref": "event_BATTLEFIELD_SURVIVOR_text"
+  },
+  "name": "BATTLEFIELD_SURVIVOR",
+  "source": "raw/gamedata/events_slug.xml",
+  "effects": [],
+  "node": {
+    "kind": "decision",
+    "options": [
+      {
+        "label": "Make them comfortable for their final moments.",
+        "gate": null,
+        "child": {
+          "text": {
+            "value": "On their death bed, they croak out a series of coordinates and beg you to go there - when you attempt to ask them why, the survivor simply says, \"ABADOTH\" and perishes.",
+            "ref": "event_BATTLEFIELD_SURVIVOR_c1_text"
+          },
+          "effects": [
+            {
+              "kind": "quest",
+              "event": "SECRET_WORD_ABADOTH"
+            }
+          ]
+        },
+        "label_ref": "event_BATTLEFIELD_SURVIVOR_c1_choice"
+      },
+      {
+        "label": "(Advanced Medbay) Get them into the medbay!",
+        "gate": {
+          "req": "medbay",
+          "label": "Medbay",
+          "lvl": "2"
+        },
+        "child": {
+          "text": {
+            "value": "Using your upgraded medical bay, you are able to heal the survivor's wounds and they recover quickly. Grateful to be saved, they offer to join your crew and help however they can.",
+            "ref": "event_BATTLEFIELD_SURVIVOR_c2_text"
+          },
+          "effects": [
+            {
+              "kind": "crew_gain",
+              "amount": 1
+            }
+          ]
+        },
+        "label_ref": "event_BATTLEFIELD_SURVIVOR_c2_choice",
+        "hidden": true
+      },
+      {
+        "label": "(Clonebay) Try to clone them before it's too late.",
+        "gate": {
+          "req": "clonebay",
+          "label": "Clone Bay"
+        },
+        "child": {
+          "text": {
+            "value": "You clone the individual and let the host pass away. The clone decides to join you - although it has little choice in the matter.",
+            "ref": "event_BATTLEFIELD_SURVIVOR_c3_text"
+          },
+          "effects": [
+            {
+              "kind": "crew_gain",
+              "amount": 1
+            }
+          ]
+        },
+        "label_ref": "event_BATTLEFIELD_SURVIVOR_c3_choice",
+        "hidden": true
+      }
+    ]
+  },
+  "chain": [
+    {
+      "id": "SECRET_WORD_ABADOTH",
+      "from": "BATTLEFIELD_SURVIVOR",
+      "slug": "secret-word-abadoth",
+      "title": "Secret word: ABADOTH",
+      "text": {
+        "value": "You have arrived at the coordinates given to you by the dead crewman you attempted to save. There doesn't seem to be anything here - no planets, no vessels, and no clue as to what he meant by sending you here.",
+        "ref": "event_SECRET_WORD_ABADOTH_text"
+      },
+      "name": "SECRET_WORD_ABADOTH",
+      "source": "raw/gamedata/events_slug.xml",
+      "effects": [],
+      "node": {
+        "kind": "decision",
+        "options": [
+          {
+            "label": "(Slug Crew) Ask your Slug crewmember to scan for life forms.",
+            "gate": {
+              "req": "slug",
+              "label": "Slug"
+            },
+            "child": {
+              "text": {
+                "value": "A Zoltan ship decloaks and demands your reason for being here!",
+                "ref": "event_SECRET_WORD_ABADOTH_CONCLUSION_text"
+              },
+              "name": "SECRET_WORD_ABADOTH_CONCLUSION",
+              "source": "raw/gamedata/events_slug.xml",
+              "effects": [],
+              "node": {
+                "kind": "decision",
+                "options": [
+                  {
+                    "label": "Explain about finding the dead crewman.",
+                    "gate": null,
+                    "child": {
+                      "text": {
+                        "value": "There is a moment of silence, and suddenly the Zoltan ship cloaks - must have been the wrong word to use... now you've got a fight on your hands!",
+                        "ref": "event_SECRET_WORD_ABADOTH_CONCLUSION_c1_text"
+                      },
+                      "effects": [],
+                      "node": {
+                        "kind": "combat",
+                        "ship": "ZOLTAN_SHIP",
+                        "ship_labels": [
+                          "Energy Fighter",
+                          "Energy Bomber"
+                        ],
+                        "hostile": true,
+                        "auto_blueprint": "SHIPS_ZOLTAN",
+                        "source": "raw/gamedata/events_ships.xml",
+                        "branches": [
+                          {
+                            "on": "destroyed",
+                            "child": {
+                              "effects": [],
+                              "node": {
+                                "kind": "chance",
+                                "list": "DESTROYED_DEFAULT",
+                                "source": "raw/gamedata/events.xml",
+                                "odds_basis": "unweighted",
+                                "options": [
+                                  {
+                                    "share": null,
+                                    "child": {
+                                      "text": {
+                                        "value": "The ship explodes, leaving behind a substantial collection of useful scrap material.",
+                                        "ref": "event_DESTROYED_DEFAULT_1_text"
+                                      },
+                                      "effects": [
+                                        {
+                                          "kind": "reward",
+                                          "level": "MED",
+                                          "tier": "standard"
+                                        }
+                                      ]
+                                    }
+                                  },
+                                  {
+                                    "share": null,
+                                    "child": {
+                                      "text": {
+                                        "value": "The ship explodes, leaving behind a substantial collection of useful scrap material.",
+                                        "ref": "event_DESTROYED_DEFAULT_1_text"
+                                      },
+                                      "effects": [
+                                        {
+                                          "kind": "reward",
+                                          "level": "MED",
+                                          "tier": "standard"
+                                        }
+                                      ]
+                                    }
+                                  }
+                                ]
+                              }
+                            }
+                          },
+                          {
+                            "on": "deadCrew",
+                            "child": {
+                              "effects": [],
+                              "node": {
+                                "kind": "chance",
+                                "list": "DEAD_CREW_DEFAULT",
+                                "source": "raw/gamedata/events.xml",
+                                "odds_basis": "unweighted",
+                                "options": [
+                                  {
+                                    "share": null,
+                                    "child": {
+                                      "text": {
+                                        "value": "There are no more life-signs remaining on the ship. You strip it of useful materials.",
+                                        "ref": "event_DEAD_CREW_DEFAULT_1_text"
+                                      },
+                                      "effects": [
+                                        {
+                                          "kind": "reward",
+                                          "level": "MED",
+                                          "tier": "standard"
+                                        }
+                                      ]
+                                    }
+                                  },
+                                  {
+                                    "share": null,
+                                    "child": {
+                                      "text": {
+                                        "value": "There are no more life-signs remaining on the ship. You strip it of useful materials.",
+                                        "ref": "event_DEAD_CREW_DEFAULT_1_text"
+                                      },
+                                      "effects": [
+                                        {
+                                          "kind": "reward",
+                                          "level": "MED",
+                                          "tier": "standard"
+                                        }
+                                      ]
+                                    }
+                                  },
+                                  {
+                                    "share": null,
+                                    "child": {
+                                      "text": {
+                                        "value": "There are no more life-signs remaining on the ship. You strip it of useful materials.",
+                                        "ref": "event_DEAD_CREW_DEFAULT_1_text"
+                                      },
+                                      "effects": [
+                                        {
+                                          "kind": "reward",
+                                          "level": "MED",
+                                          "tier": "standard"
+                                        }
+                                      ]
+                                    }
+                                  },
+                                  {
+                                    "share": null,
+                                    "child": {
+                                      "text": {
+                                        "value": "There are no more life-signs remaining on the ship. You strip it of useful materials.",
+                                        "ref": "event_DEAD_CREW_DEFAULT_1_text"
+                                      },
+                                      "effects": [
+                                        {
+                                          "kind": "reward",
+                                          "level": "HIGH",
+                                          "tier": "standard"
+                                        }
+                                      ]
+                                    }
+                                  },
+                                  {
+                                    "share": null,
+                                    "child": {
+                                      "text": {
+                                        "value": "There are no more life-signs remaining on the ship. You strip it of useful materials.",
+                                        "ref": "event_DEAD_CREW_DEFAULT_1_text"
+                                      },
+                                      "effects": [
+                                        {
+                                          "kind": "reward",
+                                          "level": "HIGH",
+                                          "tier": "standard"
+                                        }
+                                      ]
+                                    }
+                                  },
+                                  {
+                                    "share": null,
+                                    "child": {
+                                      "text": {
+                                        "value": "With the crew dead, you are able to take the fuel out of storage. You also take all the scrap you can manage.",
+                                        "ref": "event_DEAD_CREW_DEFAULT_6_text"
+                                      },
+                                      "effects": [
+                                        {
+                                          "kind": "reward",
+                                          "level": "HIGH",
+                                          "tier": "fuel"
+                                        }
+                                      ]
+                                    }
+                                  },
+                                  {
+                                    "share": null,
+                                    "child": {
+                                      "text": {
+                                        "value": "With the crew dead, you are able to take the fuel out of storage. You also take all the scrap you can manage.",
+                                        "ref": "event_DEAD_CREW_DEFAULT_6_text"
+                                      },
+                                      "effects": [
+                                        {
+                                          "kind": "reward",
+                                          "level": "HIGH",
+                                          "tier": "fuel"
+                                        }
+                                      ]
+                                    }
+                                  },
+                                  {
+                                    "share": null,
+                                    "child": {
+                                      "text": {
+                                        "value": "Now that their ship has been emptied of hostiles, you search it. Eventually you find a prisoner who offers to join your crew.",
+                                        "ref": "event_DEAD_CREW_DEFAULT_8_text"
+                                      },
+                                      "effects": [
+                                        {
+                                          "kind": "crew_gain",
+                                          "amount": 1
+                                        },
+                                        {
+                                          "kind": "reward",
+                                          "level": "LOW",
+                                          "tier": "scrap_only"
+                                        }
+                                      ]
+                                    }
+                                  },
+                                  {
+                                    "share": null,
+                                    "child": {
+                                      "text": {
+                                        "value": "You find a weapon system on their ship. With no crew to stop you, you can install it on your own.",
+                                        "ref": "event_DEAD_CREW_DEFAULT_9_text"
+                                      },
+                                      "effects": [
+                                        {
+                                          "kind": "reward",
+                                          "level": "LOW",
+                                          "tier": "weapon"
+                                        }
+                                      ]
+                                    }
+                                  }
+                                ]
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    "label_ref": "event_SECRET_WORD_ABADOTH_CONCLUSION_c1_choice"
+                  },
+                  {
+                    "label": "(Engi Crew) Say ABADOTH.",
+                    "gate": {
+                      "req": "engi",
+                      "label": "Engi"
+                    },
+                    "child": {
+                      "text": {
+                        "value": "Your Engi crewman easily recalls the phrase the deadman used from its memory banks. There is a moment of silence, and the ship's captain solemnly thanks you for the information. He wishes you well on your journey, and he offers several upgrades to assist you in exchange for your service to the Zoltan race.",
+                        "ref": "event_SECRET_WORD_ABADOTH_CONCLUSION_c2_text"
+                      },
+                      "effects": [
+                        {
+                          "kind": "reward",
+                          "level": "MED",
+                          "tier": "standard"
+                        }
+                      ]
+                    },
+                    "label_ref": "event_SECRET_WORD_ABADOTH_CONCLUSION_c2_choice",
+                    "hidden": true
+                  },
+                  {
+                    "label": "Say ANODYNE.",
+                    "gate": null,
+                    "child": {
+                      "text": {
+                        "value": "There is a moment of silence, and suddenly the Zoltan ship cloaks - must have been the wrong word to use... now you've got a fight on your hands!",
+                        "ref": "event_SECRET_WORD_ABADOTH_CONCLUSION_c1_text"
+                      },
+                      "effects": [],
+                      "node": {
+                        "kind": "combat",
+                        "ship": "ZOLTAN_SHIP",
+                        "ship_labels": [
+                          "Energy Fighter",
+                          "Energy Bomber"
+                        ],
+                        "hostile": true,
+                        "auto_blueprint": "SHIPS_ZOLTAN",
+                        "source": "raw/gamedata/events_ships.xml",
+                        "branches": [
+                          {
+                            "on": "destroyed",
+                            "child": {
+                              "effects": [],
+                              "node": {
+                                "kind": "chance",
+                                "list": "DESTROYED_DEFAULT",
+                                "source": "raw/gamedata/events.xml",
+                                "odds_basis": "unweighted",
+                                "options": [
+                                  {
+                                    "share": null,
+                                    "child": {
+                                      "text": {
+                                        "value": "The ship explodes, leaving behind a substantial collection of useful scrap material.",
+                                        "ref": "event_DESTROYED_DEFAULT_1_text"
+                                      },
+                                      "effects": [
+                                        {
+                                          "kind": "reward",
+                                          "level": "MED",
+                                          "tier": "standard"
+                                        }
+                                      ]
+                                    }
+                                  },
+                                  {
+                                    "share": null,
+                                    "child": {
+                                      "text": {
+                                        "value": "The ship explodes, leaving behind a substantial collection of useful scrap material.",
+                                        "ref": "event_DESTROYED_DEFAULT_1_text"
+                                      },
+                                      "effects": [
+                                        {
+                                          "kind": "reward",
+                                          "level": "MED",
+                                          "tier": "standard"
+                                        }
+                                      ]
+                                    }
+                                  }
+                                ]
+                              }
+                            }
+                          },
+                          {
+                            "on": "deadCrew",
+                            "child": {
+                              "effects": [],
+                              "node": {
+                                "kind": "chance",
+                                "list": "DEAD_CREW_DEFAULT",
+                                "source": "raw/gamedata/events.xml",
+                                "odds_basis": "unweighted",
+                                "options": [
+                                  {
+                                    "share": null,
+                                    "child": {
+                                      "text": {
+                                        "value": "There are no more life-signs remaining on the ship. You strip it of useful materials.",
+                                        "ref": "event_DEAD_CREW_DEFAULT_1_text"
+                                      },
+                                      "effects": [
+                                        {
+                                          "kind": "reward",
+                                          "level": "MED",
+                                          "tier": "standard"
+                                        }
+                                      ]
+                                    }
+                                  },
+                                  {
+                                    "share": null,
+                                    "child": {
+                                      "text": {
+                                        "value": "There are no more life-signs remaining on the ship. You strip it of useful materials.",
+                                        "ref": "event_DEAD_CREW_DEFAULT_1_text"
+                                      },
+                                      "effects": [
+                                        {
+                                          "kind": "reward",
+                                          "level": "MED",
+                                          "tier": "standard"
+                                        }
+                                      ]
+                                    }
+                                  },
+                                  {
+                                    "share": null,
+                                    "child": {
+                                      "text": {
+                                        "value": "There are no more life-signs remaining on the ship. You strip it of useful materials.",
+                                        "ref": "event_DEAD_CREW_DEFAULT_1_text"
+                                      },
+                                      "effects": [
+                                        {
+                                          "kind": "reward",
+                                          "level": "MED",
+                                          "tier": "standard"
+                                        }
+                                      ]
+                                    }
+                                  },
+                                  {
+                                    "share": null,
+                                    "child": {
+                                      "text": {
+                                        "value": "There are no more life-signs remaining on the ship. You strip it of useful materials.",
+                                        "ref": "event_DEAD_CREW_DEFAULT_1_text"
+                                      },
+                                      "effects": [
+                                        {
+                                          "kind": "reward",
+                                          "level": "HIGH",
+                                          "tier": "standard"
+                                        }
+                                      ]
+                                    }
+                                  },
+                                  {
+                                    "share": null,
+                                    "child": {
+                                      "text": {
+                                        "value": "There are no more life-signs remaining on the ship. You strip it of useful materials.",
+                                        "ref": "event_DEAD_CREW_DEFAULT_1_text"
+                                      },
+                                      "effects": [
+                                        {
+                                          "kind": "reward",
+                                          "level": "HIGH",
+                                          "tier": "standard"
+                                        }
+                                      ]
+                                    }
+                                  },
+                                  {
+                                    "share": null,
+                                    "child": {
+                                      "text": {
+                                        "value": "With the crew dead, you are able to take the fuel out of storage. You also take all the scrap you can manage.",
+                                        "ref": "event_DEAD_CREW_DEFAULT_6_text"
+                                      },
+                                      "effects": [
+                                        {
+                                          "kind": "reward",
+                                          "level": "HIGH",
+                                          "tier": "fuel"
+                                        }
+                                      ]
+                                    }
+                                  },
+                                  {
+                                    "share": null,
+                                    "child": {
+                                      "text": {
+                                        "value": "With the crew dead, you are able to take the fuel out of storage. You also take all the scrap you can manage.",
+                                        "ref": "event_DEAD_CREW_DEFAULT_6_text"
+                                      },
+                                      "effects": [
+                                        {
+                                          "kind": "reward",
+                                          "level": "HIGH",
+                                          "tier": "fuel"
+                                        }
+                                      ]
+                                    }
+                                  },
+                                  {
+                                    "share": null,
+                                    "child": {
+                                      "text": {
+                                        "value": "Now that their ship has been emptied of hostiles, you search it. Eventually you find a prisoner who offers to join your crew.",
+                                        "ref": "event_DEAD_CREW_DEFAULT_8_text"
+                                      },
+                                      "effects": [
+                                        {
+                                          "kind": "crew_gain",
+                                          "amount": 1
+                                        },
+                                        {
+                                          "kind": "reward",
+                                          "level": "LOW",
+                                          "tier": "scrap_only"
+                                        }
+                                      ]
+                                    }
+                                  },
+                                  {
+                                    "share": null,
+                                    "child": {
+                                      "text": {
+                                        "value": "You find a weapon system on their ship. With no crew to stop you, you can install it on your own.",
+                                        "ref": "event_DEAD_CREW_DEFAULT_9_text"
+                                      },
+                                      "effects": [
+                                        {
+                                          "kind": "reward",
+                                          "level": "LOW",
+                                          "tier": "weapon"
+                                        }
+                                      ]
+                                    }
+                                  }
+                                ]
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    "label_ref": "event_SECRET_WORD_ABADOTH_CONCLUSION_c3_choice",
+                    "hidden": true
+                  },
+                  {
+                    "label": "Say ABADOTH.",
+                    "gate": null,
+                    "child": {
+                      "text": {
+                        "value": "There is a moment of silence, and the ship's captain solemnly thanks you for the information. He wishes you well on your journey, and he offers several upgrades to assist you in exchange for your service to the Zoltan race.",
+                        "ref": "event_SECRET_WORD_ABADOTH_CONCLUSION_c4_text"
+                      },
+                      "effects": [
+                        {
+                          "kind": "reward",
+                          "level": "MED",
+                          "tier": "standard"
+                        }
+                      ]
+                    },
+                    "label_ref": "event_SECRET_WORD_ABADOTH_CONCLUSION_c4_choice",
+                    "hidden": true
+                  },
+                  {
+                    "label": "Say ABATODH.",
+                    "gate": null,
+                    "child": {
+                      "text": {
+                        "value": "There is a moment of silence, and suddenly the Zoltan ship cloaks - must have been the wrong word to use... now you've got a fight on your hands!",
+                        "ref": "event_SECRET_WORD_ABADOTH_CONCLUSION_c1_text"
+                      },
+                      "effects": [],
+                      "node": {
+                        "kind": "combat",
+                        "ship": "ZOLTAN_SHIP",
+                        "ship_labels": [
+                          "Energy Fighter",
+                          "Energy Bomber"
+                        ],
+                        "hostile": true,
+                        "auto_blueprint": "SHIPS_ZOLTAN",
+                        "source": "raw/gamedata/events_ships.xml",
+                        "branches": [
+                          {
+                            "on": "destroyed",
+                            "child": {
+                              "effects": [],
+                              "node": {
+                                "kind": "chance",
+                                "list": "DESTROYED_DEFAULT",
+                                "source": "raw/gamedata/events.xml",
+                                "odds_basis": "unweighted",
+                                "options": [
+                                  {
+                                    "share": null,
+                                    "child": {
+                                      "text": {
+                                        "value": "The ship explodes, leaving behind a substantial collection of useful scrap material.",
+                                        "ref": "event_DESTROYED_DEFAULT_1_text"
+                                      },
+                                      "effects": [
+                                        {
+                                          "kind": "reward",
+                                          "level": "MED",
+                                          "tier": "standard"
+                                        }
+                                      ]
+                                    }
+                                  },
+                                  {
+                                    "share": null,
+                                    "child": {
+                                      "text": {
+                                        "value": "The ship explodes, leaving behind a substantial collection of useful scrap material.",
+                                        "ref": "event_DESTROYED_DEFAULT_1_text"
+                                      },
+                                      "effects": [
+                                        {
+                                          "kind": "reward",
+                                          "level": "MED",
+                                          "tier": "standard"
+                                        }
+                                      ]
+                                    }
+                                  }
+                                ]
+                              }
+                            }
+                          },
+                          {
+                            "on": "deadCrew",
+                            "child": {
+                              "effects": [],
+                              "node": {
+                                "kind": "chance",
+                                "list": "DEAD_CREW_DEFAULT",
+                                "source": "raw/gamedata/events.xml",
+                                "odds_basis": "unweighted",
+                                "options": [
+                                  {
+                                    "share": null,
+                                    "child": {
+                                      "text": {
+                                        "value": "There are no more life-signs remaining on the ship. You strip it of useful materials.",
+                                        "ref": "event_DEAD_CREW_DEFAULT_1_text"
+                                      },
+                                      "effects": [
+                                        {
+                                          "kind": "reward",
+                                          "level": "MED",
+                                          "tier": "standard"
+                                        }
+                                      ]
+                                    }
+                                  },
+                                  {
+                                    "share": null,
+                                    "child": {
+                                      "text": {
+                                        "value": "There are no more life-signs remaining on the ship. You strip it of useful materials.",
+                                        "ref": "event_DEAD_CREW_DEFAULT_1_text"
+                                      },
+                                      "effects": [
+                                        {
+                                          "kind": "reward",
+                                          "level": "MED",
+                                          "tier": "standard"
+                                        }
+                                      ]
+                                    }
+                                  },
+                                  {
+                                    "share": null,
+                                    "child": {
+                                      "text": {
+                                        "value": "There are no more life-signs remaining on the ship. You strip it of useful materials.",
+                                        "ref": "event_DEAD_CREW_DEFAULT_1_text"
+                                      },
+                                      "effects": [
+                                        {
+                                          "kind": "reward",
+                                          "level": "MED",
+                                          "tier": "standard"
+                                        }
+                                      ]
+                                    }
+                                  },
+                                  {
+                                    "share": null,
+                                    "child": {
+                                      "text": {
+                                        "value": "There are no more life-signs remaining on the ship. You strip it of useful materials.",
+                                        "ref": "event_DEAD_CREW_DEFAULT_1_text"
+                                      },
+                                      "effects": [
+                                        {
+                                          "kind": "reward",
+                                          "level": "HIGH",
+                                          "tier": "standard"
+                                        }
+                                      ]
+                                    }
+                                  },
+                                  {
+                                    "share": null,
+                                    "child": {
+                                      "text": {
+                                        "value": "There are no more life-signs remaining on the ship. You strip it of useful materials.",
+                                        "ref": "event_DEAD_CREW_DEFAULT_1_text"
+                                      },
+                                      "effects": [
+                                        {
+                                          "kind": "reward",
+                                          "level": "HIGH",
+                                          "tier": "standard"
+                                        }
+                                      ]
+                                    }
+                                  },
+                                  {
+                                    "share": null,
+                                    "child": {
+                                      "text": {
+                                        "value": "With the crew dead, you are able to take the fuel out of storage. You also take all the scrap you can manage.",
+                                        "ref": "event_DEAD_CREW_DEFAULT_6_text"
+                                      },
+                                      "effects": [
+                                        {
+                                          "kind": "reward",
+                                          "level": "HIGH",
+                                          "tier": "fuel"
+                                        }
+                                      ]
+                                    }
+                                  },
+                                  {
+                                    "share": null,
+                                    "child": {
+                                      "text": {
+                                        "value": "With the crew dead, you are able to take the fuel out of storage. You also take all the scrap you can manage.",
+                                        "ref": "event_DEAD_CREW_DEFAULT_6_text"
+                                      },
+                                      "effects": [
+                                        {
+                                          "kind": "reward",
+                                          "level": "HIGH",
+                                          "tier": "fuel"
+                                        }
+                                      ]
+                                    }
+                                  },
+                                  {
+                                    "share": null,
+                                    "child": {
+                                      "text": {
+                                        "value": "Now that their ship has been emptied of hostiles, you search it. Eventually you find a prisoner who offers to join your crew.",
+                                        "ref": "event_DEAD_CREW_DEFAULT_8_text"
+                                      },
+                                      "effects": [
+                                        {
+                                          "kind": "crew_gain",
+                                          "amount": 1
+                                        },
+                                        {
+                                          "kind": "reward",
+                                          "level": "LOW",
+                                          "tier": "scrap_only"
+                                        }
+                                      ]
+                                    }
+                                  },
+                                  {
+                                    "share": null,
+                                    "child": {
+                                      "text": {
+                                        "value": "You find a weapon system on their ship. With no crew to stop you, you can install it on your own.",
+                                        "ref": "event_DEAD_CREW_DEFAULT_9_text"
+                                      },
+                                      "effects": [
+                                        {
+                                          "kind": "reward",
+                                          "level": "LOW",
+                                          "tier": "weapon"
+                                        }
+                                      ]
+                                    }
+                                  }
+                                ]
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    "label_ref": "event_SECRET_WORD_ABADOTH_CONCLUSION_c5_choice",
+                    "hidden": true
+                  }
+                ]
+              }
+            },
+            "label_ref": "event_SECRET_WORD_ABADOTH_c1_choice",
+            "hidden": true
+          },
+          {
+            "label": "Do a full system scan - though you're sure to lose some of your lead with the Rebels.",
+            "gate": null,
+            "child": {
+              "text": {
+                "value": "You start the arduous task of a full system scan. This better be worth it.",
+                "ref": "event_SECRET_WORD_ABADOTH_c2_text"
+              },
+              "effects": [
+                {
+                  "kind": "fleet_delay",
+                  "amount": 1
+                }
+              ],
+              "node": {
+                "kind": "decision",
+                "options": [
+                  {
+                    "label": "Continue...",
+                    "gate": null,
+                    "child": {
+                      "text": {
+                        "value": "A Zoltan ship decloaks and demands your reason for being here!",
+                        "ref": "event_SECRET_WORD_ABADOTH_CONCLUSION_text"
+                      },
+                      "name": "SECRET_WORD_ABADOTH_CONCLUSION",
+                      "source": "raw/gamedata/events_slug.xml",
+                      "effects": [],
+                      "node": {
+                        "kind": "decision",
+                        "options": [
+                          {
+                            "label": "Explain about finding the dead crewman.",
+                            "gate": null,
+                            "child": {
+                              "text": {
+                                "value": "There is a moment of silence, and suddenly the Zoltan ship cloaks - must have been the wrong word to use... now you've got a fight on your hands!",
+                                "ref": "event_SECRET_WORD_ABADOTH_CONCLUSION_c1_text"
+                              },
+                              "effects": [],
+                              "node": {
+                                "kind": "combat",
+                                "ship": "ZOLTAN_SHIP",
+                                "ship_labels": [
+                                  "Energy Fighter",
+                                  "Energy Bomber"
+                                ],
+                                "hostile": true,
+                                "auto_blueprint": "SHIPS_ZOLTAN",
+                                "source": "raw/gamedata/events_ships.xml",
+                                "branches": [
+                                  {
+                                    "on": "destroyed",
+                                    "child": {
+                                      "effects": [],
+                                      "node": {
+                                        "kind": "chance",
+                                        "list": "DESTROYED_DEFAULT",
+                                        "source": "raw/gamedata/events.xml",
+                                        "odds_basis": "unweighted",
+                                        "options": [
+                                          {
+                                            "share": null,
+                                            "child": {
+                                              "text": {
+                                                "value": "The ship explodes, leaving behind a substantial collection of useful scrap material.",
+                                                "ref": "event_DESTROYED_DEFAULT_1_text"
+                                              },
+                                              "effects": [
+                                                {
+                                                  "kind": "reward",
+                                                  "level": "MED",
+                                                  "tier": "standard"
+                                                }
+                                              ]
+                                            }
+                                          },
+                                          {
+                                            "share": null,
+                                            "child": {
+                                              "text": {
+                                                "value": "The ship explodes, leaving behind a substantial collection of useful scrap material.",
+                                                "ref": "event_DESTROYED_DEFAULT_1_text"
+                                              },
+                                              "effects": [
+                                                {
+                                                  "kind": "reward",
+                                                  "level": "MED",
+                                                  "tier": "standard"
+                                                }
+                                              ]
+                                            }
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  },
+                                  {
+                                    "on": "deadCrew",
+                                    "child": {
+                                      "effects": [],
+                                      "node": {
+                                        "kind": "chance",
+                                        "list": "DEAD_CREW_DEFAULT",
+                                        "source": "raw/gamedata/events.xml",
+                                        "odds_basis": "unweighted",
+                                        "options": [
+                                          {
+                                            "share": null,
+                                            "child": {
+                                              "text": {
+                                                "value": "There are no more life-signs remaining on the ship. You strip it of useful materials.",
+                                                "ref": "event_DEAD_CREW_DEFAULT_1_text"
+                                              },
+                                              "effects": [
+                                                {
+                                                  "kind": "reward",
+                                                  "level": "MED",
+                                                  "tier": "standard"
+                                                }
+                                              ]
+                                            }
+                                          },
+                                          {
+                                            "share": null,
+                                            "child": {
+                                              "text": {
+                                                "value": "There are no more life-signs remaining on the ship. You strip it of useful materials.",
+                                                "ref": "event_DEAD_CREW_DEFAULT_1_text"
+                                              },
+                                              "effects": [
+                                                {
+                                                  "kind": "reward",
+                                                  "level": "MED",
+                                                  "tier": "standard"
+                                                }
+                                              ]
+                                            }
+                                          },
+                                          {
+                                            "share": null,
+                                            "child": {
+                                              "text": {
+                                                "value": "There are no more life-signs remaining on the ship. You strip it of useful materials.",
+                                                "ref": "event_DEAD_CREW_DEFAULT_1_text"
+                                              },
+                                              "effects": [
+                                                {
+                                                  "kind": "reward",
+                                                  "level": "MED",
+                                                  "tier": "standard"
+                                                }
+                                              ]
+                                            }
+                                          },
+                                          {
+                                            "share": null,
+                                            "child": {
+                                              "text": {
+                                                "value": "There are no more life-signs remaining on the ship. You strip it of useful materials.",
+                                                "ref": "event_DEAD_CREW_DEFAULT_1_text"
+                                              },
+                                              "effects": [
+                                                {
+                                                  "kind": "reward",
+                                                  "level": "HIGH",
+                                                  "tier": "standard"
+                                                }
+                                              ]
+                                            }
+                                          },
+                                          {
+                                            "share": null,
+                                            "child": {
+                                              "text": {
+                                                "value": "There are no more life-signs remaining on the ship. You strip it of useful materials.",
+                                                "ref": "event_DEAD_CREW_DEFAULT_1_text"
+                                              },
+                                              "effects": [
+                                                {
+                                                  "kind": "reward",
+                                                  "level": "HIGH",
+                                                  "tier": "standard"
+                                                }
+                                              ]
+                                            }
+                                          },
+                                          {
+                                            "share": null,
+                                            "child": {
+                                              "text": {
+                                                "value": "With the crew dead, you are able to take the fuel out of storage. You also take all the scrap you can manage.",
+                                                "ref": "event_DEAD_CREW_DEFAULT_6_text"
+                                              },
+                                              "effects": [
+                                                {
+                                                  "kind": "reward",
+                                                  "level": "HIGH",
+                                                  "tier": "fuel"
+                                                }
+                                              ]
+                                            }
+                                          },
+                                          {
+                                            "share": null,
+                                            "child": {
+                                              "text": {
+                                                "value": "With the crew dead, you are able to take the fuel out of storage. You also take all the scrap you can manage.",
+                                                "ref": "event_DEAD_CREW_DEFAULT_6_text"
+                                              },
+                                              "effects": [
+                                                {
+                                                  "kind": "reward",
+                                                  "level": "HIGH",
+                                                  "tier": "fuel"
+                                                }
+                                              ]
+                                            }
+                                          },
+                                          {
+                                            "share": null,
+                                            "child": {
+                                              "text": {
+                                                "value": "Now that their ship has been emptied of hostiles, you search it. Eventually you find a prisoner who offers to join your crew.",
+                                                "ref": "event_DEAD_CREW_DEFAULT_8_text"
+                                              },
+                                              "effects": [
+                                                {
+                                                  "kind": "crew_gain",
+                                                  "amount": 1
+                                                },
+                                                {
+                                                  "kind": "reward",
+                                                  "level": "LOW",
+                                                  "tier": "scrap_only"
+                                                }
+                                              ]
+                                            }
+                                          },
+                                          {
+                                            "share": null,
+                                            "child": {
+                                              "text": {
+                                                "value": "You find a weapon system on their ship. With no crew to stop you, you can install it on your own.",
+                                                "ref": "event_DEAD_CREW_DEFAULT_9_text"
+                                              },
+                                              "effects": [
+                                                {
+                                                  "kind": "reward",
+                                                  "level": "LOW",
+                                                  "tier": "weapon"
+                                                }
+                                              ]
+                                            }
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  }
+                                ]
+                              }
+                            },
+                            "label_ref": "event_SECRET_WORD_ABADOTH_CONCLUSION_c1_choice"
+                          },
+                          {
+                            "label": "(Engi Crew) Say ABADOTH.",
+                            "gate": {
+                              "req": "engi",
+                              "label": "Engi"
+                            },
+                            "child": {
+                              "text": {
+                                "value": "Your Engi crewman easily recalls the phrase the deadman used from its memory banks. There is a moment of silence, and the ship's captain solemnly thanks you for the information. He wishes you well on your journey, and he offers several upgrades to assist you in exchange for your service to the Zoltan race.",
+                                "ref": "event_SECRET_WORD_ABADOTH_CONCLUSION_c2_text"
+                              },
+                              "effects": [
+                                {
+                                  "kind": "reward",
+                                  "level": "MED",
+                                  "tier": "standard"
+                                }
+                              ]
+                            },
+                            "label_ref": "event_SECRET_WORD_ABADOTH_CONCLUSION_c2_choice",
+                            "hidden": true
+                          },
+                          {
+                            "label": "Say ANODYNE.",
+                            "gate": null,
+                            "child": {
+                              "text": {
+                                "value": "There is a moment of silence, and suddenly the Zoltan ship cloaks - must have been the wrong word to use... now you've got a fight on your hands!",
+                                "ref": "event_SECRET_WORD_ABADOTH_CONCLUSION_c1_text"
+                              },
+                              "effects": [],
+                              "node": {
+                                "kind": "combat",
+                                "ship": "ZOLTAN_SHIP",
+                                "ship_labels": [
+                                  "Energy Fighter",
+                                  "Energy Bomber"
+                                ],
+                                "hostile": true,
+                                "auto_blueprint": "SHIPS_ZOLTAN",
+                                "source": "raw/gamedata/events_ships.xml",
+                                "branches": [
+                                  {
+                                    "on": "destroyed",
+                                    "child": {
+                                      "effects": [],
+                                      "node": {
+                                        "kind": "chance",
+                                        "list": "DESTROYED_DEFAULT",
+                                        "source": "raw/gamedata/events.xml",
+                                        "odds_basis": "unweighted",
+                                        "options": [
+                                          {
+                                            "share": null,
+                                            "child": {
+                                              "text": {
+                                                "value": "The ship explodes, leaving behind a substantial collection of useful scrap material.",
+                                                "ref": "event_DESTROYED_DEFAULT_1_text"
+                                              },
+                                              "effects": [
+                                                {
+                                                  "kind": "reward",
+                                                  "level": "MED",
+                                                  "tier": "standard"
+                                                }
+                                              ]
+                                            }
+                                          },
+                                          {
+                                            "share": null,
+                                            "child": {
+                                              "text": {
+                                                "value": "The ship explodes, leaving behind a substantial collection of useful scrap material.",
+                                                "ref": "event_DESTROYED_DEFAULT_1_text"
+                                              },
+                                              "effects": [
+                                                {
+                                                  "kind": "reward",
+                                                  "level": "MED",
+                                                  "tier": "standard"
+                                                }
+                                              ]
+                                            }
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  },
+                                  {
+                                    "on": "deadCrew",
+                                    "child": {
+                                      "effects": [],
+                                      "node": {
+                                        "kind": "chance",
+                                        "list": "DEAD_CREW_DEFAULT",
+                                        "source": "raw/gamedata/events.xml",
+                                        "odds_basis": "unweighted",
+                                        "options": [
+                                          {
+                                            "share": null,
+                                            "child": {
+                                              "text": {
+                                                "value": "There are no more life-signs remaining on the ship. You strip it of useful materials.",
+                                                "ref": "event_DEAD_CREW_DEFAULT_1_text"
+                                              },
+                                              "effects": [
+                                                {
+                                                  "kind": "reward",
+                                                  "level": "MED",
+                                                  "tier": "standard"
+                                                }
+                                              ]
+                                            }
+                                          },
+                                          {
+                                            "share": null,
+                                            "child": {
+                                              "text": {
+                                                "value": "There are no more life-signs remaining on the ship. You strip it of useful materials.",
+                                                "ref": "event_DEAD_CREW_DEFAULT_1_text"
+                                              },
+                                              "effects": [
+                                                {
+                                                  "kind": "reward",
+                                                  "level": "MED",
+                                                  "tier": "standard"
+                                                }
+                                              ]
+                                            }
+                                          },
+                                          {
+                                            "share": null,
+                                            "child": {
+                                              "text": {
+                                                "value": "There are no more life-signs remaining on the ship. You strip it of useful materials.",
+                                                "ref": "event_DEAD_CREW_DEFAULT_1_text"
+                                              },
+                                              "effects": [
+                                                {
+                                                  "kind": "reward",
+                                                  "level": "MED",
+                                                  "tier": "standard"
+                                                }
+                                              ]
+                                            }
+                                          },
+                                          {
+                                            "share": null,
+                                            "child": {
+                                              "text": {
+                                                "value": "There are no more life-signs remaining on the ship. You strip it of useful materials.",
+                                                "ref": "event_DEAD_CREW_DEFAULT_1_text"
+                                              },
+                                              "effects": [
+                                                {
+                                                  "kind": "reward",
+                                                  "level": "HIGH",
+                                                  "tier": "standard"
+                                                }
+                                              ]
+                                            }
+                                          },
+                                          {
+                                            "share": null,
+                                            "child": {
+                                              "text": {
+                                                "value": "There are no more life-signs remaining on the ship. You strip it of useful materials.",
+                                                "ref": "event_DEAD_CREW_DEFAULT_1_text"
+                                              },
+                                              "effects": [
+                                                {
+                                                  "kind": "reward",
+                                                  "level": "HIGH",
+                                                  "tier": "standard"
+                                                }
+                                              ]
+                                            }
+                                          },
+                                          {
+                                            "share": null,
+                                            "child": {
+                                              "text": {
+                                                "value": "With the crew dead, you are able to take the fuel out of storage. You also take all the scrap you can manage.",
+                                                "ref": "event_DEAD_CREW_DEFAULT_6_text"
+                                              },
+                                              "effects": [
+                                                {
+                                                  "kind": "reward",
+                                                  "level": "HIGH",
+                                                  "tier": "fuel"
+                                                }
+                                              ]
+                                            }
+                                          },
+                                          {
+                                            "share": null,
+                                            "child": {
+                                              "text": {
+                                                "value": "With the crew dead, you are able to take the fuel out of storage. You also take all the scrap you can manage.",
+                                                "ref": "event_DEAD_CREW_DEFAULT_6_text"
+                                              },
+                                              "effects": [
+                                                {
+                                                  "kind": "reward",
+                                                  "level": "HIGH",
+                                                  "tier": "fuel"
+                                                }
+                                              ]
+                                            }
+                                          },
+                                          {
+                                            "share": null,
+                                            "child": {
+                                              "text": {
+                                                "value": "Now that their ship has been emptied of hostiles, you search it. Eventually you find a prisoner who offers to join your crew.",
+                                                "ref": "event_DEAD_CREW_DEFAULT_8_text"
+                                              },
+                                              "effects": [
+                                                {
+                                                  "kind": "crew_gain",
+                                                  "amount": 1
+                                                },
+                                                {
+                                                  "kind": "reward",
+                                                  "level": "LOW",
+                                                  "tier": "scrap_only"
+                                                }
+                                              ]
+                                            }
+                                          },
+                                          {
+                                            "share": null,
+                                            "child": {
+                                              "text": {
+                                                "value": "You find a weapon system on their ship. With no crew to stop you, you can install it on your own.",
+                                                "ref": "event_DEAD_CREW_DEFAULT_9_text"
+                                              },
+                                              "effects": [
+                                                {
+                                                  "kind": "reward",
+                                                  "level": "LOW",
+                                                  "tier": "weapon"
+                                                }
+                                              ]
+                                            }
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  }
+                                ]
+                              }
+                            },
+                            "label_ref": "event_SECRET_WORD_ABADOTH_CONCLUSION_c3_choice",
+                            "hidden": true
+                          },
+                          {
+                            "label": "Say ABADOTH.",
+                            "gate": null,
+                            "child": {
+                              "text": {
+                                "value": "There is a moment of silence, and the ship's captain solemnly thanks you for the information. He wishes you well on your journey, and he offers several upgrades to assist you in exchange for your service to the Zoltan race.",
+                                "ref": "event_SECRET_WORD_ABADOTH_CONCLUSION_c4_text"
+                              },
+                              "effects": [
+                                {
+                                  "kind": "reward",
+                                  "level": "MED",
+                                  "tier": "standard"
+                                }
+                              ]
+                            },
+                            "label_ref": "event_SECRET_WORD_ABADOTH_CONCLUSION_c4_choice",
+                            "hidden": true
+                          },
+                          {
+                            "label": "Say ABATODH.",
+                            "gate": null,
+                            "child": {
+                              "text": {
+                                "value": "There is a moment of silence, and suddenly the Zoltan ship cloaks - must have been the wrong word to use... now you've got a fight on your hands!",
+                                "ref": "event_SECRET_WORD_ABADOTH_CONCLUSION_c1_text"
+                              },
+                              "effects": [],
+                              "node": {
+                                "kind": "combat",
+                                "ship": "ZOLTAN_SHIP",
+                                "ship_labels": [
+                                  "Energy Fighter",
+                                  "Energy Bomber"
+                                ],
+                                "hostile": true,
+                                "auto_blueprint": "SHIPS_ZOLTAN",
+                                "source": "raw/gamedata/events_ships.xml",
+                                "branches": [
+                                  {
+                                    "on": "destroyed",
+                                    "child": {
+                                      "effects": [],
+                                      "node": {
+                                        "kind": "chance",
+                                        "list": "DESTROYED_DEFAULT",
+                                        "source": "raw/gamedata/events.xml",
+                                        "odds_basis": "unweighted",
+                                        "options": [
+                                          {
+                                            "share": null,
+                                            "child": {
+                                              "text": {
+                                                "value": "The ship explodes, leaving behind a substantial collection of useful scrap material.",
+                                                "ref": "event_DESTROYED_DEFAULT_1_text"
+                                              },
+                                              "effects": [
+                                                {
+                                                  "kind": "reward",
+                                                  "level": "MED",
+                                                  "tier": "standard"
+                                                }
+                                              ]
+                                            }
+                                          },
+                                          {
+                                            "share": null,
+                                            "child": {
+                                              "text": {
+                                                "value": "The ship explodes, leaving behind a substantial collection of useful scrap material.",
+                                                "ref": "event_DESTROYED_DEFAULT_1_text"
+                                              },
+                                              "effects": [
+                                                {
+                                                  "kind": "reward",
+                                                  "level": "MED",
+                                                  "tier": "standard"
+                                                }
+                                              ]
+                                            }
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  },
+                                  {
+                                    "on": "deadCrew",
+                                    "child": {
+                                      "effects": [],
+                                      "node": {
+                                        "kind": "chance",
+                                        "list": "DEAD_CREW_DEFAULT",
+                                        "source": "raw/gamedata/events.xml",
+                                        "odds_basis": "unweighted",
+                                        "options": [
+                                          {
+                                            "share": null,
+                                            "child": {
+                                              "text": {
+                                                "value": "There are no more life-signs remaining on the ship. You strip it of useful materials.",
+                                                "ref": "event_DEAD_CREW_DEFAULT_1_text"
+                                              },
+                                              "effects": [
+                                                {
+                                                  "kind": "reward",
+                                                  "level": "MED",
+                                                  "tier": "standard"
+                                                }
+                                              ]
+                                            }
+                                          },
+                                          {
+                                            "share": null,
+                                            "child": {
+                                              "text": {
+                                                "value": "There are no more life-signs remaining on the ship. You strip it of useful materials.",
+                                                "ref": "event_DEAD_CREW_DEFAULT_1_text"
+                                              },
+                                              "effects": [
+                                                {
+                                                  "kind": "reward",
+                                                  "level": "MED",
+                                                  "tier": "standard"
+                                                }
+                                              ]
+                                            }
+                                          },
+                                          {
+                                            "share": null,
+                                            "child": {
+                                              "text": {
+                                                "value": "There are no more life-signs remaining on the ship. You strip it of useful materials.",
+                                                "ref": "event_DEAD_CREW_DEFAULT_1_text"
+                                              },
+                                              "effects": [
+                                                {
+                                                  "kind": "reward",
+                                                  "level": "MED",
+                                                  "tier": "standard"
+                                                }
+                                              ]
+                                            }
+                                          },
+                                          {
+                                            "share": null,
+                                            "child": {
+                                              "text": {
+                                                "value": "There are no more life-signs remaining on the ship. You strip it of useful materials.",
+                                                "ref": "event_DEAD_CREW_DEFAULT_1_text"
+                                              },
+                                              "effects": [
+                                                {
+                                                  "kind": "reward",
+                                                  "level": "HIGH",
+                                                  "tier": "standard"
+                                                }
+                                              ]
+                                            }
+                                          },
+                                          {
+                                            "share": null,
+                                            "child": {
+                                              "text": {
+                                                "value": "There are no more life-signs remaining on the ship. You strip it of useful materials.",
+                                                "ref": "event_DEAD_CREW_DEFAULT_1_text"
+                                              },
+                                              "effects": [
+                                                {
+                                                  "kind": "reward",
+                                                  "level": "HIGH",
+                                                  "tier": "standard"
+                                                }
+                                              ]
+                                            }
+                                          },
+                                          {
+                                            "share": null,
+                                            "child": {
+                                              "text": {
+                                                "value": "With the crew dead, you are able to take the fuel out of storage. You also take all the scrap you can manage.",
+                                                "ref": "event_DEAD_CREW_DEFAULT_6_text"
+                                              },
+                                              "effects": [
+                                                {
+                                                  "kind": "reward",
+                                                  "level": "HIGH",
+                                                  "tier": "fuel"
+                                                }
+                                              ]
+                                            }
+                                          },
+                                          {
+                                            "share": null,
+                                            "child": {
+                                              "text": {
+                                                "value": "With the crew dead, you are able to take the fuel out of storage. You also take all the scrap you can manage.",
+                                                "ref": "event_DEAD_CREW_DEFAULT_6_text"
+                                              },
+                                              "effects": [
+                                                {
+                                                  "kind": "reward",
+                                                  "level": "HIGH",
+                                                  "tier": "fuel"
+                                                }
+                                              ]
+                                            }
+                                          },
+                                          {
+                                            "share": null,
+                                            "child": {
+                                              "text": {
+                                                "value": "Now that their ship has been emptied of hostiles, you search it. Eventually you find a prisoner who offers to join your crew.",
+                                                "ref": "event_DEAD_CREW_DEFAULT_8_text"
+                                              },
+                                              "effects": [
+                                                {
+                                                  "kind": "crew_gain",
+                                                  "amount": 1
+                                                },
+                                                {
+                                                  "kind": "reward",
+                                                  "level": "LOW",
+                                                  "tier": "scrap_only"
+                                                }
+                                              ]
+                                            }
+                                          },
+                                          {
+                                            "share": null,
+                                            "child": {
+                                              "text": {
+                                                "value": "You find a weapon system on their ship. With no crew to stop you, you can install it on your own.",
+                                                "ref": "event_DEAD_CREW_DEFAULT_9_text"
+                                              },
+                                              "effects": [
+                                                {
+                                                  "kind": "reward",
+                                                  "level": "LOW",
+                                                  "tier": "weapon"
+                                                }
+                                              ]
+                                            }
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  }
+                                ]
+                              }
+                            },
+                            "label_ref": "event_SECRET_WORD_ABADOTH_CONCLUSION_c5_choice",
+                            "hidden": true
+                          }
+                        ]
+                      }
+                    },
+                    "label_ref": "continue"
+                  }
+                ]
+              }
+            },
+            "label_ref": "event_SECRET_WORD_ABADOTH_c2_choice",
+            "hidden": true
+          }
+        ]
+      }
+    }
+  ]
+}

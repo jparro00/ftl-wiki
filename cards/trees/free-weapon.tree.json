@@ -1,0 +1,21 @@
+{
+  "schema": "ftl-event-tree/1",
+  "id": "FIND_WEAPON",
+  "slug": "free-weapon",
+  "title": "Free weapon",
+  "extracted_from": "raw/gamedata/events.xml",
+  "text": {
+    "value": "Holy crap! A weapon is just floating in space!",
+    "ref": "FIND_WEAPON",
+    "variants": 6
+  },
+  "name": "FIND_WEAPON",
+  "source": "raw/gamedata/events.xml",
+  "effects": [
+    {
+      "kind": "reward",
+      "level": "LOW",
+      "tier": "weapon"
+    }
+  ]
+}

@@ -1,0 +1,241 @@
+<!--
+  FTL event card — reusable template.
+  See tools/EVENT-CARD.md for how to fill this in.
+
+  Three things to edit, all marked EDIT below:
+    1. <title>
+    2. the header block (eyebrow / h1 / hail)
+    3. the ROWS array at the bottom
+  Everything else is the shared shell — leave it alone unless you are changing
+  the design for every card.
+-->
+<title>EDIT — event name</title>
+<style>
+  :root {
+    --void:   #070B10;   /* page ground, deep space */
+    --panel:  #101822;   /* card */
+    --edge:   #1F2E3C;   /* hairlines */
+    --ink:    #D6E2EC;   /* primary text, cool white */
+    --dim:    #7C8FA3;   /* secondary text, blue-grey */
+    --cyan:   #5FD3E8;   /* FTL's own blue-option colour */
+    --green:  #78C46B;   /* gains */
+    --amber:  #E8B84B;   /* scrap in or out */
+    --red:    #E0685C;   /* hostiles */
+    --rail:   #22384A;   /* indent guides */
+    --hex:    rgba(95,211,232,.035);
+    --hover:  rgba(95,211,232,.06);
+    --sunk:   rgba(0,0,0,.22);  /* nested block ground */
+
+    --sans: ui-sans-serif, system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+  }
+  @media (prefers-color-scheme: light) {
+    :root {
+      --void: #EEF1F4; --panel: #FFFFFF; --edge: #D3DBE2; --ink: #14202B;
+      --dim: #5B6C7B; --cyan: #12708A; --green: #3B7A31; --amber: #8A6606;
+      --red: #AF3B2E; --rail: #C2CDD6; --hex: rgba(18,112,138,.045);
+      --hover: rgba(18,112,138,.055); --sunk: rgba(20,32,43,.035);
+    }
+  }
+  :root[data-theme="dark"] {
+    --void: #070B10; --panel: #101822; --edge: #1F2E3C; --ink: #D6E2EC;
+    --dim: #7C8FA3; --cyan: #5FD3E8; --green: #78C46B; --amber: #E8B84B;
+    --red: #E0685C; --rail: #22384A; --hex: rgba(95,211,232,.035);
+    --hover: rgba(95,211,232,.06); --sunk: rgba(0,0,0,.22);
+  }
+  :root[data-theme="light"] {
+    --void: #EEF1F4; --panel: #FFFFFF; --edge: #D3DBE2; --ink: #14202B;
+    --dim: #5B6C7B; --cyan: #12708A; --green: #3B7A31; --amber: #8A6606;
+    --red: #AF3B2E; --rail: #C2CDD6; --hex: rgba(18,112,138,.045);
+    --hover: rgba(18,112,138,.055); --sunk: rgba(20,32,43,.035);
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; padding: 2.4rem 1.15rem 4rem;
+    background: var(--void);
+    background-image: radial-gradient(var(--hex) 1px, transparent 1.6px);
+    background-size: 22px 22px;
+    color: var(--ink); font-family: var(--sans); line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 40rem; margin: 0 auto; }
+
+  header { margin-bottom: 1.7rem; }
+  .eyebrow {
+    font-size: .66rem; letter-spacing: .18em; text-transform: uppercase;
+    color: var(--cyan); margin: 0 0 .5rem;
+  }
+  h1 { font-size: 1.6rem; font-weight: 600; letter-spacing: -.01em; margin: 0 0 .9rem; text-wrap: balance; }
+  .hail {
+    font-family: var(--mono); font-size: .8rem; line-height: 1.65;
+    color: var(--dim); border-left: 2px solid var(--rail);
+    padding: .1rem 0 .1rem .85rem; margin: 0;
+  }
+
+  .card {
+    background: var(--panel); border: 1px solid var(--edge);
+    border-radius: 3px; overflow: hidden;
+  }
+
+  .row {
+    display: flex; flex-wrap: wrap; align-items: baseline; gap: .35rem .8rem;
+    width: 100%; text-align: left;
+    padding: .62rem .85rem .62rem .8rem;
+    border: 0; border-top: 1px solid var(--edge);
+    border-left: 2px solid transparent;
+    background: transparent; color: inherit;
+    font-family: var(--mono); font-size: .82rem; line-height: 1.5;
+  }
+  .card > .node:first-child > .row { border-top: 0; }
+
+  button.row { cursor: pointer; transition: background .12s ease, border-color .12s ease; }
+  button.row:hover { background: var(--hover); }
+  button.row:focus-visible { outline: 2px solid var(--cyan); outline-offset: -2px; }
+  button.row .caret {
+    color: var(--dim); font-size: .7rem; margin-left: auto;
+    transition: transform .16s ease, color .12s ease;
+  }
+  button.row[aria-expanded="true"] { border-left-color: var(--cyan); background: var(--hover); }
+  button.row[aria-expanded="true"] .caret { transform: rotate(90deg); color: var(--cyan); }
+
+  .kids { border-top: 1px solid var(--edge); background: var(--sunk); padding: .5rem 0 .55rem 0; }
+  .kids[hidden] { display: none; }
+  .kids > .klabel {
+    font-family: var(--sans); font-size: .6rem; letter-spacing: .16em;
+    text-transform: uppercase; color: var(--dim);
+    padding: .1rem .85rem .35rem 1.85rem;
+  }
+  .kids > .node > .row { border-top: 0; padding-left: 1.85rem; position: relative; }
+  .kids > .node > .row::before {
+    content: ""; position: absolute; left: 1.15rem; top: 0; bottom: 0;
+    width: 1px; background: var(--rail);
+  }
+  .kids .kids > .node > .row { padding-left: 2.9rem; }
+  .kids .kids > .node > .row::before { left: 2.2rem; }
+  .kids .kids > .klabel { padding-left: 2.9rem; }
+  .kids .kids .kids > .node > .row { padding-left: 3.95rem; }
+  .kids .kids .kids > .node > .row::before { left: 3.25rem; }
+  .kids .kids .kids > .klabel { padding-left: 3.95rem; }
+
+  .choice { flex: 1 1 10rem; min-width: 0; }
+  .effect { color: var(--dim); flex: 0 1 auto; }
+  .effect b { color: var(--ink); font-weight: 600; }
+  .effect b.up { color: var(--green); }   /* a gain inside an otherwise costly row */
+  .gate { color: var(--cyan); }
+  .none { color: var(--dim); opacity: .8; }
+  .gain  b { color: var(--green); }
+  .cost  b { color: var(--amber); }
+  .fight b { color: var(--red); }
+
+  .odds {
+    font-family: var(--mono); font-variant-numeric: tabular-nums;
+    font-size: .68rem; letter-spacing: .04em;
+    border: 1px solid var(--edge); border-radius: 2px;
+    padding: .06rem .38rem; color: var(--dim); white-space: nowrap;
+  }
+  .odds.hit { color: var(--cyan); border-color: color-mix(in srgb, var(--cyan) 40%, transparent); }
+
+  @media (prefers-reduced-motion: reduce) {
+    button.row, button.row .caret { transition: none; }
+  }
+
+  .note { font-family: var(--mono); font-size: .76rem; color: var(--dim); margin: 1.5rem 0 0; }
+
+  @media (max-width: 30rem) {
+    .row { font-size: .78rem; }
+    h1 { font-size: 1.35rem; }
+    .kids .kids .kids > .node > .row { padding-left: 3.2rem; }
+    .kids .kids .kids > .node > .row::before { left: 2.6rem; }
+  }
+</style>
+
+<div class="wrap">
+  <!-- EDIT: eyebrow = who is hailing / what the beacon is. h1 = the event's player-facing
+       name. hail = the in-game intro text, quoted verbatim from text_events.xml. -->
+  <header>
+    <p class="eyebrow">EDIT — who or what</p>
+    <h1>EDIT — event name</h1>
+    <p class="hail">"EDIT — verbatim intro text so the player can match it to their screen."</p>
+  </header>
+
+  <div class="card" id="tree"></div>
+
+  <!-- EDIT: one factual line. No advice. -->
+  <p class="note">EDIT — e.g. Declining costs nothing. Fires at most once per run.</p>
+</div>
+
+<script>
+  /* EDIT — the tree.
+     A row with `kids` is expandable; a row without is terminal and states its
+     own outcome in `effect`. See tools/EVENT-CARD.md for the full field list. */
+  const ROWS = [
+    {
+      text: "1. First choice", effect: "→ what it leads to",
+      kids: {
+        label: "Sub-menu name",
+        rows: [
+          { text: "An option", odds: "50%", effect: "→ <b>a thing</b>", tone: "gain" },
+          { gate: "Sensors 2", text: "A gated option", odds: "always", hit: true, effect: "→ <b>a thing</b>" },
+          { text: "An option that goes deeper", odds: "1/3", effect: "→ choice",
+            kids: { label: "Deeper menu", rows: [
+              { text: "Terminal option", effect: "→ nothing happens", tone: "none" }
+            ] } }
+        ]
+      }
+    },
+    { text: "2. Decline", effect: "→ nothing happens", tone: "none" }
+  ];
+
+  /* ---- shared renderer, no need to edit ---- */
+  let uid = 0;
+
+  function buildNode(row) {
+    const node = document.createElement("div");
+    node.className = "node";
+
+    const el = document.createElement(row.kids ? "button" : "div");
+    el.className = "row" + (row.tone ? " " + row.tone : "");
+    const gate = row.gate ? '<span class="gate">(' + row.gate + ")</span> " : "";
+    let html =
+      '<span class="choice">' + gate + row.text + "</span>" +
+      (row.odds ? '<span class="odds' + (row.hit ? " hit" : "") + '">' + row.odds + "</span>" : "") +
+      '<span class="effect">' + row.effect + "</span>";
+
+    if (row.kids) {
+      const id = "kids-" + (++uid);
+      el.type = "button";
+      el.setAttribute("aria-expanded", "false");
+      el.setAttribute("aria-controls", id);
+      html += '<span class="caret" aria-hidden="true">▸</span>';
+      el.innerHTML = html;
+      node.appendChild(el);
+
+      const kids = document.createElement("div");
+      kids.className = "kids";
+      kids.id = id;
+      kids.hidden = true;
+      if (row.kids.label) {
+        const lab = document.createElement("div");
+        lab.className = "klabel";
+        lab.textContent = row.kids.label;
+        kids.appendChild(lab);
+      }
+      row.kids.rows.forEach(r => kids.appendChild(buildNode(r)));
+      node.appendChild(kids);
+
+      el.addEventListener("click", () => {
+        const open = el.getAttribute("aria-expanded") === "true";
+        el.setAttribute("aria-expanded", String(!open));
+        kids.hidden = open;
+      });
+    } else {
+      el.innerHTML = html;
+      node.appendChild(el);
+    }
+    return node;
+  }
+
+  const tree = document.getElementById("tree");
+  ROWS.forEach(r => tree.appendChild(buildNode(r)));
+</script>

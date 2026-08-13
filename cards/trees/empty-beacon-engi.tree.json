@@ -1,0 +1,15 @@
+{
+  "schema": "ftl-event-tree/1",
+  "id": "NOTHING_ENGI",
+  "slug": "empty-beacon-engi",
+  "title": "Empty beacon (Engi)",
+  "extracted_from": "raw/gamedata/events_engi.xml",
+  "text": {
+    "value": "The complex arrangements of ship hulls and FTL drive capacitors floating abandoned in space suggest the Engi were here not too long ago; but no longer.",
+    "ref": "NOTHING_ENGI",
+    "variants": 10
+  },
+  "name": "NOTHING_ENGI",
+  "source": "raw/gamedata/events_engi.xml",
+  "effects": []
+}

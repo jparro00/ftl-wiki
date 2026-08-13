@@ -1,0 +1,15 @@
+{
+  "schema": "ftl-event-tree/1",
+  "id": "START_BEACON_ROCK",
+  "slug": "start-beacon-rock",
+  "title": "Start beacon (Rock)",
+  "extracted_from": "raw/gamedata/events_rock.xml",
+  "text": {
+    "value": "The Rock people have a particularly aggressive stance toward alien races trespassing in their space. You should tread carefully here.",
+    "ref": "START_BEACON_ROCK",
+    "variants": 2
+  },
+  "name": "START_BEACON_ROCK",
+  "source": "raw/gamedata/events_rock.xml",
+  "effects": []
+}

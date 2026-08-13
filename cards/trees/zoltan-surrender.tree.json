@@ -1,0 +1,46 @@
+{
+  "schema": "ftl-event-tree/1",
+  "id": "ZOLTAN_SURRENDER",
+  "slug": "zoltan-surrender",
+  "title": "Zoltan surrender",
+  "extracted_from": "raw/gamedata/events_zoltan.xml",
+  "text": {
+    "value": "\"Yes, yes, you've demonstrated your species' capacity for violence quite extensively, well done. If we reward your efforts will you bother someone else?\"",
+    "ref": "ZOLTAN_SURRENDER",
+    "variants": 12
+  },
+  "name": "ZOLTAN_SURRENDER",
+  "source": "raw/gamedata/events_zoltan.xml",
+  "effects": [],
+  "node": {
+    "kind": "decision",
+    "options": [
+      {
+        "label": "Accept their offer.",
+        "gate": null,
+        "child": {
+          "effects": [
+            {
+              "kind": "ship_hostility",
+              "hostile": false
+            },
+            {
+              "kind": "reward",
+              "level": "RANDOM",
+              "tier": "stuff"
+            }
+          ]
+        },
+        "label_ref": "event_ZOLTAN_SURRENDER_c1_choice"
+      },
+      {
+        "label": "We will not accept surrender!",
+        "gate": null,
+        "child": {
+          "effects": []
+        },
+        "label_ref": "event_ZOLTAN_SURRENDER_c2_choice"
+      }
+    ]
+  }
+}

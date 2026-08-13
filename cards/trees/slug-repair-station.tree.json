@@ -1,0 +1,1697 @@
+{
+  "schema": "ftl-event-tree/1",
+  "id": "NEBULA_SLUG_HULLFIX",
+  "slug": "slug-repair-station",
+  "title": "Slug repair station",
+  "extracted_from": "raw/gamedata/events_slug.xml",
+  "text": {
+    "value": "You arrive to find a small Slug repair station. \"Greetingsss traveller! Care for a fix up? We could eassily patch up ssome of that damage.\"",
+    "ref": "event_NEBULA_SLUG_HULLFIX_text"
+  },
+  "name": "NEBULA_SLUG_HULLFIX",
+  "source": "raw/gamedata/events_slug.xml",
+  "effects": [
+    {
+      "kind": "environment",
+      "environment": "nebula",
+      "target": "player"
+    }
+  ],
+  "flags": {
+    "unique": true,
+    "environment": "nebula",
+    "environment_target": "player"
+  },
+  "node": {
+    "kind": "decision",
+    "options": [
+      {
+        "label": "No thanks.",
+        "gate": null,
+        "child": {
+          "text": {
+            "value": "\"Too bad! Trussst iss a rare commodity these days.\" You prepare to jump.",
+            "ref": "event_NEBULA_SLUG_HULLFIX_c1_text"
+          },
+          "effects": []
+        },
+        "label_ref": "event_NEBULA_SLUG_HULLFIX_c1_choice",
+        "hidden": true
+      },
+      {
+        "label": "Sure.",
+        "gate": null,
+        "child": {
+          "effects": [],
+          "node": {
+            "kind": "chance",
+            "list": "NEBULA_SLUG_HULLFIX_RESULT1",
+            "source": "raw/gamedata/events_slug.xml",
+            "odds_basis": "unweighted",
+            "options": [
+              {
+                "share": null,
+                "child": {
+                  "text": {
+                    "value": "You pull up to the automatic station and after a short time they repair 10 hull damage. You begin to offer your thanks but discover that you can't detach from the station.",
+                    "ref": "event_NEBULA_SLUG_HULLFIX_RESULT1_1_text"
+                  },
+                  "effects": [
+                    {
+                      "kind": "hull_repair",
+                      "amount": 10
+                    }
+                  ],
+                  "node": {
+                    "kind": "decision",
+                    "options": [
+                      {
+                        "label": "Demand an explanation.",
+                        "gate": null,
+                        "child": {
+                          "effects": [],
+                          "node": {
+                            "kind": "chance",
+                            "list": "NEBULA_SLUG_HULLFIX_RESULT2",
+                            "source": "raw/gamedata/events_slug.xml",
+                            "odds_basis": "unweighted",
+                            "options": [
+                              {
+                                "share": null,
+                                "child": {
+                                  "text": {
+                                    "value": "\"We're glad you have enjoyed our servicessss. Perhaps some fuel would be an appropriate compensssation?\"",
+                                    "ref": "event_NEBULA_SLUG_HULLFIX_RESULT2_1_text"
+                                  },
+                                  "effects": [],
+                                  "node": {
+                                    "kind": "decision",
+                                    "options": [
+                                      {
+                                        "label": "Give them the 15 fuel they demand.",
+                                        "gate": null,
+                                        "child": {
+                                          "text": {
+                                            "value": "You transfer the fuel and they release your ship. \"Tell your friendsss about us!\" Their portable station slips into the clouds.",
+                                            "ref": "event_NEBULA_SLUG_HULLFIX_RESULT2_1_c1_text"
+                                          },
+                                          "effects": [
+                                            {
+                                              "kind": "resource",
+                                              "resource": "fuel",
+                                              "min": -15,
+                                              "max": -15
+                                            }
+                                          ]
+                                        },
+                                        "label_ref": "event_NEBULA_SLUG_HULLFIX_RESULT2_1_c1_choice",
+                                        "hidden": true
+                                      },
+                                      {
+                                        "label": "That's ridiculous!",
+                                        "gate": null,
+                                        "child": {
+                                          "text": {
+                                            "value": "\"I'm ssssorry to hear that.\" He presses a button and an explosion rocks the ship. They must have planted a bomb while 'repairing'! Prepare for a fight!",
+                                            "ref": "event_NEBULA_SLUG_HULLFIX_RESULT2_1_c2_text"
+                                          },
+                                          "effects": [
+                                            {
+                                              "kind": "hull_damage",
+                                              "amount": 4
+                                            },
+                                            {
+                                              "kind": "system_damage",
+                                              "amount": 1,
+                                              "system": "random",
+                                              "dlc": true
+                                            }
+                                          ],
+                                          "node": {
+                                            "kind": "combat",
+                                            "ship": "JELLY",
+                                            "ship_labels": [
+                                              "Slug Interceptor",
+                                              "Slug Light-Cruiser",
+                                              "Slug Assault"
+                                            ],
+                                            "hostile": true,
+                                            "auto_blueprint": "SHIPS_JELLY",
+                                            "source": "raw/gamedata/events_ships.xml",
+                                            "branches": [
+                                              {
+                                                "on": "destroyed",
+                                                "child": {
+                                                  "effects": [],
+                                                  "node": {
+                                                    "kind": "chance",
+                                                    "list": "DESTROYED_DEFAULT",
+                                                    "source": "raw/gamedata/events.xml",
+                                                    "odds_basis": "unweighted",
+                                                    "options": [
+                                                      {
+                                                        "share": null,
+                                                        "child": {
+                                                          "text": {
+                                                            "value": "The ship explodes, leaving behind a substantial collection of useful scrap material.",
+                                                            "ref": "event_DESTROYED_DEFAULT_1_text"
+                                                          },
+                                                          "effects": [
+                                                            {
+                                                              "kind": "reward",
+                                                              "level": "MED",
+                                                              "tier": "standard"
+                                                            }
+                                                          ]
+                                                        }
+                                                      },
+                                                      {
+                                                        "share": null,
+                                                        "child": {
+                                                          "text": {
+                                                            "value": "The ship explodes, leaving behind a substantial collection of useful scrap material.",
+                                                            "ref": "event_DESTROYED_DEFAULT_1_text"
+                                                          },
+                                                          "effects": [
+                                                            {
+                                                              "kind": "reward",
+                                                              "level": "MED",
+                                                              "tier": "standard"
+                                                            }
+                                                          ]
+                                                        }
+                                                      }
+                                                    ]
+                                                  }
+                                                }
+                                              },
+                                              {
+                                                "on": "deadCrew",
+                                                "child": {
+                                                  "effects": [],
+                                                  "node": {
+                                                    "kind": "chance",
+                                                    "list": "DEAD_CREW_DEFAULT",
+                                                    "source": "raw/gamedata/events.xml",
+                                                    "odds_basis": "unweighted",
+                                                    "options": [
+                                                      {
+                                                        "share": null,
+                                                        "child": {
+                                                          "text": {
+                                                            "value": "There are no more life-signs remaining on the ship. You strip it of useful materials.",
+                                                            "ref": "event_DEAD_CREW_DEFAULT_1_text"
+                                                          },
+                                                          "effects": [
+                                                            {
+                                                              "kind": "reward",
+                                                              "level": "MED",
+                                                              "tier": "standard"
+                                                            }
+                                                          ]
+                                                        }
+                                                      },
+                                                      {
+                                                        "share": null,
+                                                        "child": {
+                                                          "text": {
+                                                            "value": "There are no more life-signs remaining on the ship. You strip it of useful materials.",
+                                                            "ref": "event_DEAD_CREW_DEFAULT_1_text"
+                                                          },
+                                                          "effects": [
+                                                            {
+                                                              "kind": "reward",
+                                                              "level": "MED",
+                                                              "tier": "standard"
+                                                            }
+                                                          ]
+                                                        }
+                                                      },
+                                                      {
+                                                        "share": null,
+                                                        "child": {
+                                                          "text": {
+                                                            "value": "There are no more life-signs remaining on the ship. You strip it of useful materials.",
+                                                            "ref": "event_DEAD_CREW_DEFAULT_1_text"
+                                                          },
+                                                          "effects": [
+                                                            {
+                                                              "kind": "reward",
+                                                              "level": "MED",
+                                                              "tier": "standard"
+                                                            }
+                                                          ]
+                                                        }
+                                                      },
+                                                      {
+                                                        "share": null,
+                                                        "child": {
+                                                          "text": {
+                                                            "value": "There are no more life-signs remaining on the ship. You strip it of useful materials.",
+                                                            "ref": "event_DEAD_CREW_DEFAULT_1_text"
+                                                          },
+                                                          "effects": [
+                                                            {
+                                                              "kind": "reward",
+                                                              "level": "HIGH",
+                                                              "tier": "standard"
+                                                            }
+                                                          ]
+                                                        }
+                                                      },
+                                                      {
+                                                        "share": null,
+                                                        "child": {
+                                                          "text": {
+                                                            "value": "There are no more life-signs remaining on the ship. You strip it of useful materials.",
+                                                            "ref": "event_DEAD_CREW_DEFAULT_1_text"
+                                                          },
+                                                          "effects": [
+                                                            {
+                                                              "kind": "reward",
+                                                              "level": "HIGH",
+                                                              "tier": "standard"
+                                                            }
+                                                          ]
+                                                        }
+                                                      },
+                                                      {
+                                                        "share": null,
+                                                        "child": {
+                                                          "text": {
+                                                            "value": "With the crew dead, you are able to take the fuel out of storage. You also take all the scrap you can manage.",
+                                                            "ref": "event_DEAD_CREW_DEFAULT_6_text"
+                                                          },
+                                                          "effects": [
+                                                            {
+                                                              "kind": "reward",
+                                                              "level": "HIGH",
+                                                              "tier": "fuel"
+                                                            }
+                                                          ]
+                                                        }
+                                                      },
+                                                      {
+                                                        "share": null,
+                                                        "child": {
+                                                          "text": {
+                                                            "value": "With the crew dead, you are able to take the fuel out of storage. You also take all the scrap you can manage.",
+                                                            "ref": "event_DEAD_CREW_DEFAULT_6_text"
+                                                          },
+                                                          "effects": [
+                                                            {
+                                                              "kind": "reward",
+                                                              "level": "HIGH",
+                                                              "tier": "fuel"
+                                                            }
+                                                          ]
+                                                        }
+                                                      },
+                                                      {
+                                                        "share": null,
+                                                        "child": {
+                                                          "text": {
+                                                            "value": "Now that their ship has been emptied of hostiles, you search it. Eventually you find a prisoner who offers to join your crew.",
+                                                            "ref": "event_DEAD_CREW_DEFAULT_8_text"
+                                                          },
+                                                          "effects": [
+                                                            {
+                                                              "kind": "crew_gain",
+                                                              "amount": 1
+                                                            },
+                                                            {
+                                                              "kind": "reward",
+                                                              "level": "LOW",
+                                                              "tier": "scrap_only"
+                                                            }
+                                                          ]
+                                                        }
+                                                      },
+                                                      {
+                                                        "share": null,
+                                                        "child": {
+                                                          "text": {
+                                                            "value": "You find a weapon system on their ship. With no crew to stop you, you can install it on your own.",
+                                                            "ref": "event_DEAD_CREW_DEFAULT_9_text"
+                                                          },
+                                                          "effects": [
+                                                            {
+                                                              "kind": "reward",
+                                                              "level": "LOW",
+                                                              "tier": "weapon"
+                                                            }
+                                                          ]
+                                                        }
+                                                      }
+                                                    ]
+                                                  }
+                                                }
+                                              },
+                                              {
+                                                "on": "surrender",
+                                                "child": {
+                                                  "text": {
+                                                    "value": "\"You have besssted us! Will you accept what is in our storeesss in exchange for our livess?\"",
+                                                    "ref": "event_SLUG_SURRENDER_text"
+                                                  },
+                                                  "name": "SLUG_SURRENDER",
+                                                  "source": "raw/gamedata/events_slug.xml",
+                                                  "effects": [],
+                                                  "node": {
+                                                    "kind": "decision",
+                                                    "options": [
+                                                      {
+                                                        "label": "Let them live.",
+                                                        "gate": null,
+                                                        "child": {
+                                                          "effects": [],
+                                                          "node": {
+                                                            "kind": "chance",
+                                                            "list": "SLUG_SURRENDER_LIST",
+                                                            "source": "raw/gamedata/events_slug.xml",
+                                                            "odds_basis": "unweighted",
+                                                            "options": [
+                                                              {
+                                                                "share": null,
+                                                                "child": {
+                                                                  "text": {
+                                                                    "value": "\"Here! We have lotsss of fuel! Take it all!\"",
+                                                                    "ref": "event_SLUG_SURRENDER_LIST_1_text"
+                                                                  },
+                                                                  "effects": [
+                                                                    {
+                                                                      "kind": "reward",
+                                                                      "level": "HIGH",
+                                                                      "tier": "fuel_only"
+                                                                    },
+                                                                    {
+                                                                      "kind": "ship_hostility",
+                                                                      "hostile": false
+                                                                    }
+                                                                  ]
+                                                                }
+                                                              },
+                                                              {
+                                                                "share": null,
+                                                                "child": {
+                                                                  "text": {
+                                                                    "value": "They transfer a meager amount of material. \"There... now keep your word...\"",
+                                                                    "ref": "event_SLUG_SURRENDER_LIST_2_text"
+                                                                  },
+                                                                  "effects": [
+                                                                    {
+                                                                      "kind": "reward",
+                                                                      "level": "LOW",
+                                                                      "tier": "stuff"
+                                                                    },
+                                                                    {
+                                                                      "kind": "ship_hostility",
+                                                                      "hostile": false
+                                                                    }
+                                                                  ]
+                                                                }
+                                                              },
+                                                              {
+                                                                "share": null,
+                                                                "child": {
+                                                                  "text": {
+                                                                    "value": "\"Take it and leave ussss be.\"",
+                                                                    "ref": "event_SLUG_SURRENDER_LIST_3_text"
+                                                                  },
+                                                                  "effects": [
+                                                                    {
+                                                                      "kind": "reward",
+                                                                      "level": "MED",
+                                                                      "tier": "stuff"
+                                                                    },
+                                                                    {
+                                                                      "kind": "ship_hostility",
+                                                                      "hostile": false
+                                                                    }
+                                                                  ]
+                                                                }
+                                                              }
+                                                            ]
+                                                          }
+                                                        },
+                                                        "label_ref": "event_SLUG_SURRENDER_c1_choice",
+                                                        "hidden": true
+                                                      },
+                                                      {
+                                                        "label": "We will not accept surrender!",
+                                                        "gate": null,
+                                                        "child": {
+                                                          "effects": []
+                                                        },
+                                                        "label_ref": "event_SLUG_SURRENDER_c2_choice",
+                                                        "hidden": true
+                                                      }
+                                                    ]
+                                                  }
+                                                },
+                                                "chance": "0.5",
+                                                "min": "3",
+                                                "max": "4"
+                                              },
+                                              {
+                                                "on": "escape",
+                                                "child": {
+                                                  "text": {
+                                                    "value": "The enemy ship appears to be powering up its FTL. It's trying to escape!",
+                                                    "ref": "event_PIRATE_ESCAPE_text"
+                                                  },
+                                                  "name": "PIRATE_ESCAPE",
+                                                  "source": "raw/gamedata/events.xml",
+                                                  "effects": [
+                                                    {
+                                                      "kind": "ship_hostility",
+                                                      "hostile": true
+                                                    }
+                                                  ]
+                                                },
+                                                "chance": "0.5",
+                                                "min": "3",
+                                                "max": "4"
+                                              }
+                                            ]
+                                          }
+                                        },
+                                        "label_ref": "event_NEBULA_SLUG_HULLFIX_RESULT2_1_c2_choice",
+                                        "hidden": true
+                                      }
+                                    ]
+                                  }
+                                }
+                              },
+                              {
+                                "share": null,
+                                "child": {
+                                  "text": {
+                                    "value": "\"We're glad you have enjoyed our servicessss. Now for payment. To enssssure your cooperation we've taken the liberty of installing a limiter on your weapons system.\"",
+                                    "ref": "event_NEBULA_SLUG_HULLFIX_RESULT2_2_text"
+                                  },
+                                  "effects": [],
+                                  "node": {
+                                    "kind": "decision",
+                                    "options": [
+                                      {
+                                        "label": "Give them the 50 scrap they demand.",
+                                        "gate": null,
+                                        "child": {
+                                          "text": {
+                                            "value": "You transfer the scrap and they release your ship. \"Tell your friendsss about us!\" Their portable station slips into the clouds.",
+                                            "ref": "event_NEBULA_SLUG_HULLFIX_RESULT2_2_c1_text"
+                                          },
+                                          "effects": [
+                                            {
+                                              "kind": "resource",
+                                              "resource": "scrap",
+                                              "min": -50,
+                                              "max": -50
+                                            }
+                                          ]
+                                        },
+                                        "label_ref": "event_NEBULA_SLUG_HULLFIX_RESULT2_2_c1_choice",
+                                        "hidden": true
+                                      },
+                                      {
+                                        "label": "Let's get out of here!",
+                                        "gate": null,
+                                        "child": {
+                                          "text": {
+                                            "value": "You activate your thrusters and force your way away from the station. A ship quickly moves in to engage. You'll need to get out of here fast; there may not be time to get the weapons fully operational!",
+                                            "ref": "event_NEBULA_SLUG_HULLFIX_RESULT2_2_c2_text"
+                                          },
+                                          "effects": [
+                                            {
+                                              "kind": "status",
+                                              "status": "divide",
+                                              "target": "player",
+                                              "system": "weapons",
+                                              "amount": 2
+                                            }
+                                          ],
+                                          "node": {
+                                            "kind": "combat",
+                                            "ship": "JELLY_STATUS_WEAPONS",
+                                            "ship_labels": [
+                                              "Slug Interceptor",
+                                              "Slug Light-Cruiser",
+                                              "Slug Assault"
+                                            ],
+                                            "hostile": true,
+                                            "auto_blueprint": "SHIPS_JELLY",
+                                            "source": "raw/gamedata/events_ships.xml",
+                                            "branches": [
+                                              {
+                                                "on": "destroyed",
+                                                "child": {
+                                                  "text": {
+                                                    "value": "The Slug ship breaks apart and your weapon system returns to normal. You collect what you can.",
+                                                    "ref": "ship_JELLY_STATUS_WEAPONS_destroyed_text"
+                                                  },
+                                                  "effects": [
+                                                    {
+                                                      "kind": "reward",
+                                                      "level": "HIGH",
+                                                      "tier": "standard"
+                                                    },
+                                                    {
+                                                      "kind": "status",
+                                                      "status": "clear",
+                                                      "target": "player",
+                                                      "system": "weapons",
+                                                      "amount": 0
+                                                    }
+                                                  ]
+                                                }
+                                              },
+                                              {
+                                                "on": "deadCrew",
+                                                "child": {
+                                                  "text": {
+                                                    "value": "With their crew dead, you quickly shut off their hacking module and your weapon system returns to normal. You strip the ship.",
+                                                    "ref": "ship_JELLY_STATUS_WEAPONS_deadCrew_text"
+                                                  },
+                                                  "effects": [
+                                                    {
+                                                      "kind": "reward",
+                                                      "level": "HIGH",
+                                                      "tier": "standard"
+                                                    },
+                                                    {
+                                                      "kind": "status",
+                                                      "status": "clear",
+                                                      "target": "player",
+                                                      "system": "weapons",
+                                                      "amount": 0
+                                                    }
+                                                  ]
+                                                }
+                                              }
+                                            ]
+                                          }
+                                        },
+                                        "label_ref": "event_NEBULA_SLUG_HULLFIX_RESULT2_2_c2_choice",
+                                        "hidden": true
+                                      }
+                                    ]
+                                  }
+                                }
+                              }
+                            ]
+                          }
+                        },
+                        "label_ref": "event_NEBULA_SLUG_HULLFIX_RESULT1_1_c1_choice"
+                      }
+                    ]
+                  }
+                }
+              },
+              {
+                "share": null,
+                "child": {
+                  "text": {
+                    "value": "You dock with the station hoping for a quick turnaround, but the automatic machines take their sweet time. When the process finally finishes, you notice only one damage has been repaired.",
+                    "ref": "event_NEBULA_SLUG_HULLFIX_RESULT1_2_text"
+                  },
+                  "effects": [
+                    {
+                      "kind": "hull_repair",
+                      "amount": 1
+                    }
+                  ],
+                  "node": {
+                    "kind": "decision",
+                    "options": [
+                      {
+                        "label": "Demand an explanation.",
+                        "gate": null,
+                        "child": {
+                          "effects": [],
+                          "node": {
+                            "kind": "chance",
+                            "list": "NEBULA_SLUG_HULLFIX_RESULT2",
+                            "source": "raw/gamedata/events_slug.xml",
+                            "odds_basis": "unweighted",
+                            "options": [
+                              {
+                                "share": null,
+                                "child": {
+                                  "text": {
+                                    "value": "\"We're glad you have enjoyed our servicessss. Perhaps some fuel would be an appropriate compensssation?\"",
+                                    "ref": "event_NEBULA_SLUG_HULLFIX_RESULT2_1_text"
+                                  },
+                                  "effects": [],
+                                  "node": {
+                                    "kind": "decision",
+                                    "options": [
+                                      {
+                                        "label": "Give them the 15 fuel they demand.",
+                                        "gate": null,
+                                        "child": {
+                                          "text": {
+                                            "value": "You transfer the fuel and they release your ship. \"Tell your friendsss about us!\" Their portable station slips into the clouds.",
+                                            "ref": "event_NEBULA_SLUG_HULLFIX_RESULT2_1_c1_text"
+                                          },
+                                          "effects": [
+                                            {
+                                              "kind": "resource",
+                                              "resource": "fuel",
+                                              "min": -15,
+                                              "max": -15
+                                            }
+                                          ]
+                                        },
+                                        "label_ref": "event_NEBULA_SLUG_HULLFIX_RESULT2_1_c1_choice",
+                                        "hidden": true
+                                      },
+                                      {
+                                        "label": "That's ridiculous!",
+                                        "gate": null,
+                                        "child": {
+                                          "text": {
+                                            "value": "\"I'm ssssorry to hear that.\" He presses a button and an explosion rocks the ship. They must have planted a bomb while 'repairing'! Prepare for a fight!",
+                                            "ref": "event_NEBULA_SLUG_HULLFIX_RESULT2_1_c2_text"
+                                          },
+                                          "effects": [
+                                            {
+                                              "kind": "hull_damage",
+                                              "amount": 4
+                                            },
+                                            {
+                                              "kind": "system_damage",
+                                              "amount": 1,
+                                              "system": "random",
+                                              "dlc": true
+                                            }
+                                          ],
+                                          "node": {
+                                            "kind": "combat",
+                                            "ship": "JELLY",
+                                            "ship_labels": [
+                                              "Slug Interceptor",
+                                              "Slug Light-Cruiser",
+                                              "Slug Assault"
+                                            ],
+                                            "hostile": true,
+                                            "auto_blueprint": "SHIPS_JELLY",
+                                            "source": "raw/gamedata/events_ships.xml",
+                                            "branches": [
+                                              {
+                                                "on": "destroyed",
+                                                "child": {
+                                                  "effects": [],
+                                                  "node": {
+                                                    "kind": "chance",
+                                                    "list": "DESTROYED_DEFAULT",
+                                                    "source": "raw/gamedata/events.xml",
+                                                    "odds_basis": "unweighted",
+                                                    "options": [
+                                                      {
+                                                        "share": null,
+                                                        "child": {
+                                                          "text": {
+                                                            "value": "The ship explodes, leaving behind a substantial collection of useful scrap material.",
+                                                            "ref": "event_DESTROYED_DEFAULT_1_text"
+                                                          },
+                                                          "effects": [
+                                                            {
+                                                              "kind": "reward",
+                                                              "level": "MED",
+                                                              "tier": "standard"
+                                                            }
+                                                          ]
+                                                        }
+                                                      },
+                                                      {
+                                                        "share": null,
+                                                        "child": {
+                                                          "text": {
+                                                            "value": "The ship explodes, leaving behind a substantial collection of useful scrap material.",
+                                                            "ref": "event_DESTROYED_DEFAULT_1_text"
+                                                          },
+                                                          "effects": [
+                                                            {
+                                                              "kind": "reward",
+                                                              "level": "MED",
+                                                              "tier": "standard"
+                                                            }
+                                                          ]
+                                                        }
+                                                      }
+                                                    ]
+                                                  }
+                                                }
+                                              },
+                                              {
+                                                "on": "deadCrew",
+                                                "child": {
+                                                  "effects": [],
+                                                  "node": {
+                                                    "kind": "chance",
+                                                    "list": "DEAD_CREW_DEFAULT",
+                                                    "source": "raw/gamedata/events.xml",
+                                                    "odds_basis": "unweighted",
+                                                    "options": [
+                                                      {
+                                                        "share": null,
+                                                        "child": {
+                                                          "text": {
+                                                            "value": "There are no more life-signs remaining on the ship. You strip it of useful materials.",
+                                                            "ref": "event_DEAD_CREW_DEFAULT_1_text"
+                                                          },
+                                                          "effects": [
+                                                            {
+                                                              "kind": "reward",
+                                                              "level": "MED",
+                                                              "tier": "standard"
+                                                            }
+                                                          ]
+                                                        }
+                                                      },
+                                                      {
+                                                        "share": null,
+                                                        "child": {
+                                                          "text": {
+                                                            "value": "There are no more life-signs remaining on the ship. You strip it of useful materials.",
+                                                            "ref": "event_DEAD_CREW_DEFAULT_1_text"
+                                                          },
+                                                          "effects": [
+                                                            {
+                                                              "kind": "reward",
+                                                              "level": "MED",
+                                                              "tier": "standard"
+                                                            }
+                                                          ]
+                                                        }
+                                                      },
+                                                      {
+                                                        "share": null,
+                                                        "child": {
+                                                          "text": {
+                                                            "value": "There are no more life-signs remaining on the ship. You strip it of useful materials.",
+                                                            "ref": "event_DEAD_CREW_DEFAULT_1_text"
+                                                          },
+                                                          "effects": [
+                                                            {
+                                                              "kind": "reward",
+                                                              "level": "MED",
+                                                              "tier": "standard"
+                                                            }
+                                                          ]
+                                                        }
+                                                      },
+                                                      {
+                                                        "share": null,
+                                                        "child": {
+                                                          "text": {
+                                                            "value": "There are no more life-signs remaining on the ship. You strip it of useful materials.",
+                                                            "ref": "event_DEAD_CREW_DEFAULT_1_text"
+                                                          },
+                                                          "effects": [
+                                                            {
+                                                              "kind": "reward",
+                                                              "level": "HIGH",
+                                                              "tier": "standard"
+                                                            }
+                                                          ]
+                                                        }
+                                                      },
+                                                      {
+                                                        "share": null,
+                                                        "child": {
+                                                          "text": {
+                                                            "value": "There are no more life-signs remaining on the ship. You strip it of useful materials.",
+                                                            "ref": "event_DEAD_CREW_DEFAULT_1_text"
+                                                          },
+                                                          "effects": [
+                                                            {
+                                                              "kind": "reward",
+                                                              "level": "HIGH",
+                                                              "tier": "standard"
+                                                            }
+                                                          ]
+                                                        }
+                                                      },
+                                                      {
+                                                        "share": null,
+                                                        "child": {
+                                                          "text": {
+                                                            "value": "With the crew dead, you are able to take the fuel out of storage. You also take all the scrap you can manage.",
+                                                            "ref": "event_DEAD_CREW_DEFAULT_6_text"
+                                                          },
+                                                          "effects": [
+                                                            {
+                                                              "kind": "reward",
+                                                              "level": "HIGH",
+                                                              "tier": "fuel"
+                                                            }
+                                                          ]
+                                                        }
+                                                      },
+                                                      {
+                                                        "share": null,
+                                                        "child": {
+                                                          "text": {
+                                                            "value": "With the crew dead, you are able to take the fuel out of storage. You also take all the scrap you can manage.",
+                                                            "ref": "event_DEAD_CREW_DEFAULT_6_text"
+                                                          },
+                                                          "effects": [
+                                                            {
+                                                              "kind": "reward",
+                                                              "level": "HIGH",
+                                                              "tier": "fuel"
+                                                            }
+                                                          ]
+                                                        }
+                                                      },
+                                                      {
+                                                        "share": null,
+                                                        "child": {
+                                                          "text": {
+                                                            "value": "Now that their ship has been emptied of hostiles, you search it. Eventually you find a prisoner who offers to join your crew.",
+                                                            "ref": "event_DEAD_CREW_DEFAULT_8_text"
+                                                          },
+                                                          "effects": [
+                                                            {
+                                                              "kind": "crew_gain",
+                                                              "amount": 1
+                                                            },
+                                                            {
+                                                              "kind": "reward",
+                                                              "level": "LOW",
+                                                              "tier": "scrap_only"
+                                                            }
+                                                          ]
+                                                        }
+                                                      },
+                                                      {
+                                                        "share": null,
+                                                        "child": {
+                                                          "text": {
+                                                            "value": "You find a weapon system on their ship. With no crew to stop you, you can install it on your own.",
+                                                            "ref": "event_DEAD_CREW_DEFAULT_9_text"
+                                                          },
+                                                          "effects": [
+                                                            {
+                                                              "kind": "reward",
+                                                              "level": "LOW",
+                                                              "tier": "weapon"
+                                                            }
+                                                          ]
+                                                        }
+                                                      }
+                                                    ]
+                                                  }
+                                                }
+                                              },
+                                              {
+                                                "on": "surrender",
+                                                "child": {
+                                                  "text": {
+                                                    "value": "\"You have besssted us! Will you accept what is in our storeesss in exchange for our livess?\"",
+                                                    "ref": "event_SLUG_SURRENDER_text"
+                                                  },
+                                                  "name": "SLUG_SURRENDER",
+                                                  "source": "raw/gamedata/events_slug.xml",
+                                                  "effects": [],
+                                                  "node": {
+                                                    "kind": "decision",
+                                                    "options": [
+                                                      {
+                                                        "label": "Let them live.",
+                                                        "gate": null,
+                                                        "child": {
+                                                          "effects": [],
+                                                          "node": {
+                                                            "kind": "chance",
+                                                            "list": "SLUG_SURRENDER_LIST",
+                                                            "source": "raw/gamedata/events_slug.xml",
+                                                            "odds_basis": "unweighted",
+                                                            "options": [
+                                                              {
+                                                                "share": null,
+                                                                "child": {
+                                                                  "text": {
+                                                                    "value": "\"Here! We have lotsss of fuel! Take it all!\"",
+                                                                    "ref": "event_SLUG_SURRENDER_LIST_1_text"
+                                                                  },
+                                                                  "effects": [
+                                                                    {
+                                                                      "kind": "reward",
+                                                                      "level": "HIGH",
+                                                                      "tier": "fuel_only"
+                                                                    },
+                                                                    {
+                                                                      "kind": "ship_hostility",
+                                                                      "hostile": false
+                                                                    }
+                                                                  ]
+                                                                }
+                                                              },
+                                                              {
+                                                                "share": null,
+                                                                "child": {
+                                                                  "text": {
+                                                                    "value": "They transfer a meager amount of material. \"There... now keep your word...\"",
+                                                                    "ref": "event_SLUG_SURRENDER_LIST_2_text"
+                                                                  },
+                                                                  "effects": [
+                                                                    {
+                                                                      "kind": "reward",
+                                                                      "level": "LOW",
+                                                                      "tier": "stuff"
+                                                                    },
+                                                                    {
+                                                                      "kind": "ship_hostility",
+                                                                      "hostile": false
+                                                                    }
+                                                                  ]
+                                                                }
+                                                              },
+                                                              {
+                                                                "share": null,
+                                                                "child": {
+                                                                  "text": {
+                                                                    "value": "\"Take it and leave ussss be.\"",
+                                                                    "ref": "event_SLUG_SURRENDER_LIST_3_text"
+                                                                  },
+                                                                  "effects": [
+                                                                    {
+                                                                      "kind": "reward",
+                                                                      "level": "MED",
+                                                                      "tier": "stuff"
+                                                                    },
+                                                                    {
+                                                                      "kind": "ship_hostility",
+                                                                      "hostile": false
+                                                                    }
+                                                                  ]
+                                                                }
+                                                              }
+                                                            ]
+                                                          }
+                                                        },
+                                                        "label_ref": "event_SLUG_SURRENDER_c1_choice",
+                                                        "hidden": true
+                                                      },
+                                                      {
+                                                        "label": "We will not accept surrender!",
+                                                        "gate": null,
+                                                        "child": {
+                                                          "effects": []
+                                                        },
+                                                        "label_ref": "event_SLUG_SURRENDER_c2_choice",
+                                                        "hidden": true
+                                                      }
+                                                    ]
+                                                  }
+                                                },
+                                                "chance": "0.5",
+                                                "min": "3",
+                                                "max": "4"
+                                              },
+                                              {
+                                                "on": "escape",
+                                                "child": {
+                                                  "text": {
+                                                    "value": "The enemy ship appears to be powering up its FTL. It's trying to escape!",
+                                                    "ref": "event_PIRATE_ESCAPE_text"
+                                                  },
+                                                  "name": "PIRATE_ESCAPE",
+                                                  "source": "raw/gamedata/events.xml",
+                                                  "effects": [
+                                                    {
+                                                      "kind": "ship_hostility",
+                                                      "hostile": true
+                                                    }
+                                                  ]
+                                                },
+                                                "chance": "0.5",
+                                                "min": "3",
+                                                "max": "4"
+                                              }
+                                            ]
+                                          }
+                                        },
+                                        "label_ref": "event_NEBULA_SLUG_HULLFIX_RESULT2_1_c2_choice",
+                                        "hidden": true
+                                      }
+                                    ]
+                                  }
+                                }
+                              },
+                              {
+                                "share": null,
+                                "child": {
+                                  "text": {
+                                    "value": "\"We're glad you have enjoyed our servicessss. Now for payment. To enssssure your cooperation we've taken the liberty of installing a limiter on your weapons system.\"",
+                                    "ref": "event_NEBULA_SLUG_HULLFIX_RESULT2_2_text"
+                                  },
+                                  "effects": [],
+                                  "node": {
+                                    "kind": "decision",
+                                    "options": [
+                                      {
+                                        "label": "Give them the 50 scrap they demand.",
+                                        "gate": null,
+                                        "child": {
+                                          "text": {
+                                            "value": "You transfer the scrap and they release your ship. \"Tell your friendsss about us!\" Their portable station slips into the clouds.",
+                                            "ref": "event_NEBULA_SLUG_HULLFIX_RESULT2_2_c1_text"
+                                          },
+                                          "effects": [
+                                            {
+                                              "kind": "resource",
+                                              "resource": "scrap",
+                                              "min": -50,
+                                              "max": -50
+                                            }
+                                          ]
+                                        },
+                                        "label_ref": "event_NEBULA_SLUG_HULLFIX_RESULT2_2_c1_choice",
+                                        "hidden": true
+                                      },
+                                      {
+                                        "label": "Let's get out of here!",
+                                        "gate": null,
+                                        "child": {
+                                          "text": {
+                                            "value": "You activate your thrusters and force your way away from the station. A ship quickly moves in to engage. You'll need to get out of here fast; there may not be time to get the weapons fully operational!",
+                                            "ref": "event_NEBULA_SLUG_HULLFIX_RESULT2_2_c2_text"
+                                          },
+                                          "effects": [
+                                            {
+                                              "kind": "status",
+                                              "status": "divide",
+                                              "target": "player",
+                                              "system": "weapons",
+                                              "amount": 2
+                                            }
+                                          ],
+                                          "node": {
+                                            "kind": "combat",
+                                            "ship": "JELLY_STATUS_WEAPONS",
+                                            "ship_labels": [
+                                              "Slug Interceptor",
+                                              "Slug Light-Cruiser",
+                                              "Slug Assault"
+                                            ],
+                                            "hostile": true,
+                                            "auto_blueprint": "SHIPS_JELLY",
+                                            "source": "raw/gamedata/events_ships.xml",
+                                            "branches": [
+                                              {
+                                                "on": "destroyed",
+                                                "child": {
+                                                  "text": {
+                                                    "value": "The Slug ship breaks apart and your weapon system returns to normal. You collect what you can.",
+                                                    "ref": "ship_JELLY_STATUS_WEAPONS_destroyed_text"
+                                                  },
+                                                  "effects": [
+                                                    {
+                                                      "kind": "reward",
+                                                      "level": "HIGH",
+                                                      "tier": "standard"
+                                                    },
+                                                    {
+                                                      "kind": "status",
+                                                      "status": "clear",
+                                                      "target": "player",
+                                                      "system": "weapons",
+                                                      "amount": 0
+                                                    }
+                                                  ]
+                                                }
+                                              },
+                                              {
+                                                "on": "deadCrew",
+                                                "child": {
+                                                  "text": {
+                                                    "value": "With their crew dead, you quickly shut off their hacking module and your weapon system returns to normal. You strip the ship.",
+                                                    "ref": "ship_JELLY_STATUS_WEAPONS_deadCrew_text"
+                                                  },
+                                                  "effects": [
+                                                    {
+                                                      "kind": "reward",
+                                                      "level": "HIGH",
+                                                      "tier": "standard"
+                                                    },
+                                                    {
+                                                      "kind": "status",
+                                                      "status": "clear",
+                                                      "target": "player",
+                                                      "system": "weapons",
+                                                      "amount": 0
+                                                    }
+                                                  ]
+                                                }
+                                              }
+                                            ]
+                                          }
+                                        },
+                                        "label_ref": "event_NEBULA_SLUG_HULLFIX_RESULT2_2_c2_choice",
+                                        "hidden": true
+                                      }
+                                    ]
+                                  }
+                                }
+                              }
+                            ]
+                          }
+                        },
+                        "label_ref": "event_NEBULA_SLUG_HULLFIX_RESULT1_1_c1_choice"
+                      }
+                    ]
+                  }
+                }
+              },
+              {
+                "share": null,
+                "child": {
+                  "text": {
+                    "value": "As you dock with the station your readings go haywire. An EMP blast resonates throughout the ship and your engines shut down. You're a sitting duck as a ship reveals itself and silently moves in to attack!",
+                    "ref": "event_NEBULA_SLUG_HULLFIX_RESULT1_3_text"
+                  },
+                  "effects": [
+                    {
+                      "kind": "status",
+                      "status": "limit",
+                      "target": "player",
+                      "system": "engines",
+                      "amount": 1
+                    }
+                  ],
+                  "node": {
+                    "kind": "combat",
+                    "ship": "JELLY_STATUS_ENGINES",
+                    "ship_labels": [
+                      "Slug Interceptor",
+                      "Slug Light-Cruiser",
+                      "Slug Assault"
+                    ],
+                    "hostile": true,
+                    "auto_blueprint": "SHIPS_JELLY",
+                    "source": "raw/gamedata/events_ships.xml",
+                    "branches": [
+                      {
+                        "on": "destroyed",
+                        "child": {
+                          "text": {
+                            "value": "The Slug ship breaks apart and your engines return to normal. You collect what you can.",
+                            "ref": "ship_JELLY_STATUS_ENGINES_destroyed_text"
+                          },
+                          "effects": [
+                            {
+                              "kind": "reward",
+                              "level": "MED",
+                              "tier": "standard"
+                            },
+                            {
+                              "kind": "status",
+                              "status": "clear",
+                              "target": "player",
+                              "system": "engines",
+                              "amount": 100
+                            },
+                            {
+                              "kind": "status",
+                              "status": "clear",
+                              "target": "player",
+                              "system": "hacking",
+                              "amount": 100
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "on": "deadCrew",
+                        "child": {
+                          "text": {
+                            "value": "With their crew dead, you quickly shut off their hacking module and your engines return to normal. You strip the ship.",
+                            "ref": "ship_JELLY_STATUS_ENGINES_deadCrew_text"
+                          },
+                          "effects": [
+                            {
+                              "kind": "reward",
+                              "level": "HIGH",
+                              "tier": "standard"
+                            },
+                            {
+                              "kind": "status",
+                              "status": "clear",
+                              "target": "player",
+                              "system": "engines",
+                              "amount": 100
+                            },
+                            {
+                              "kind": "status",
+                              "status": "clear",
+                              "target": "player",
+                              "system": "hacking",
+                              "amount": 100
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            ]
+          }
+        },
+        "label_ref": "event_NEBULA_SLUG_HULLFIX_c2_choice",
+        "hidden": true
+      },
+      {
+        "label": "Ask if they would like payment.",
+        "gate": null,
+        "child": {
+          "effects": [],
+          "node": {
+            "kind": "chance",
+            "list": "NEBULA_SLUG_HULLFIX_REQUEST",
+            "source": "raw/gamedata/events_slug.xml",
+            "odds_basis": "unweighted",
+            "options": [
+              {
+                "share": null,
+                "child": {
+                  "text": {
+                    "value": "\"Ahhh. A fellow businessman. We offer to fix 10 damage for 50 ssscrap.\"",
+                    "ref": "event_NEBULA_SLUG_HULLFIX_REQUEST_1_text"
+                  },
+                  "effects": [],
+                  "node": {
+                    "kind": "decision",
+                    "options": [
+                      {
+                        "label": "Accept.",
+                        "gate": null,
+                        "child": {
+                          "text": {
+                            "value": "You perform the transaction and watch carefully as their machines patch the hull. However, everything seems fine. Once they're complete you get ready to jump.",
+                            "ref": "event_NEBULA_SLUG_HULLFIX_REQUEST_1_c1_text"
+                          },
+                          "effects": [
+                            {
+                              "kind": "hull_repair",
+                              "amount": 10
+                            },
+                            {
+                              "kind": "resource",
+                              "resource": "scrap",
+                              "min": -50,
+                              "max": -50
+                            }
+                          ]
+                        },
+                        "label_ref": "event_NEBULA_SLUG_HULLFIX_REQUEST_1_c1_choice",
+                        "hidden": true
+                      },
+                      {
+                        "label": "Decline.",
+                        "gate": null,
+                        "child": {
+                          "text": {
+                            "value": "\"Too bad. Farewell, traveller.\" Their mobile station slips into the clouds.",
+                            "ref": "event_NEBULA_SLUG_HULLFIX_REQUEST_1_c2_text"
+                          },
+                          "effects": []
+                        },
+                        "label_ref": "event_NEBULA_SLUG_HULLFIX_REQUEST_1_c2_choice",
+                        "hidden": true
+                      }
+                    ]
+                  }
+                }
+              },
+              {
+                "share": null,
+                "child": {
+                  "text": {
+                    "value": "Just before the transmission is cut you hear, \"They're not falling for it. Just kill the crew and we can ssstrip...\" Looks like you're not getting out of here without a fight.",
+                    "ref": "event_NEBULA_SLUG_HULLFIX_REQUEST_2_text"
+                  },
+                  "effects": [],
+                  "node": {
+                    "kind": "combat",
+                    "ship": "JELLY",
+                    "ship_labels": [
+                      "Slug Interceptor",
+                      "Slug Light-Cruiser",
+                      "Slug Assault"
+                    ],
+                    "hostile": true,
+                    "auto_blueprint": "SHIPS_JELLY",
+                    "source": "raw/gamedata/events_ships.xml",
+                    "branches": [
+                      {
+                        "on": "destroyed",
+                        "child": {
+                          "effects": [],
+                          "node": {
+                            "kind": "chance",
+                            "list": "DESTROYED_DEFAULT",
+                            "source": "raw/gamedata/events.xml",
+                            "odds_basis": "unweighted",
+                            "options": [
+                              {
+                                "share": null,
+                                "child": {
+                                  "text": {
+                                    "value": "The ship explodes, leaving behind a substantial collection of useful scrap material.",
+                                    "ref": "event_DESTROYED_DEFAULT_1_text"
+                                  },
+                                  "effects": [
+                                    {
+                                      "kind": "reward",
+                                      "level": "MED",
+                                      "tier": "standard"
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "share": null,
+                                "child": {
+                                  "text": {
+                                    "value": "The ship explodes, leaving behind a substantial collection of useful scrap material.",
+                                    "ref": "event_DESTROYED_DEFAULT_1_text"
+                                  },
+                                  "effects": [
+                                    {
+                                      "kind": "reward",
+                                      "level": "MED",
+                                      "tier": "standard"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      },
+                      {
+                        "on": "deadCrew",
+                        "child": {
+                          "effects": [],
+                          "node": {
+                            "kind": "chance",
+                            "list": "DEAD_CREW_DEFAULT",
+                            "source": "raw/gamedata/events.xml",
+                            "odds_basis": "unweighted",
+                            "options": [
+                              {
+                                "share": null,
+                                "child": {
+                                  "text": {
+                                    "value": "There are no more life-signs remaining on the ship. You strip it of useful materials.",
+                                    "ref": "event_DEAD_CREW_DEFAULT_1_text"
+                                  },
+                                  "effects": [
+                                    {
+                                      "kind": "reward",
+                                      "level": "MED",
+                                      "tier": "standard"
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "share": null,
+                                "child": {
+                                  "text": {
+                                    "value": "There are no more life-signs remaining on the ship. You strip it of useful materials.",
+                                    "ref": "event_DEAD_CREW_DEFAULT_1_text"
+                                  },
+                                  "effects": [
+                                    {
+                                      "kind": "reward",
+                                      "level": "MED",
+                                      "tier": "standard"
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "share": null,
+                                "child": {
+                                  "text": {
+                                    "value": "There are no more life-signs remaining on the ship. You strip it of useful materials.",
+                                    "ref": "event_DEAD_CREW_DEFAULT_1_text"
+                                  },
+                                  "effects": [
+                                    {
+                                      "kind": "reward",
+                                      "level": "MED",
+                                      "tier": "standard"
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "share": null,
+                                "child": {
+                                  "text": {
+                                    "value": "There are no more life-signs remaining on the ship. You strip it of useful materials.",
+                                    "ref": "event_DEAD_CREW_DEFAULT_1_text"
+                                  },
+                                  "effects": [
+                                    {
+                                      "kind": "reward",
+                                      "level": "HIGH",
+                                      "tier": "standard"
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "share": null,
+                                "child": {
+                                  "text": {
+                                    "value": "There are no more life-signs remaining on the ship. You strip it of useful materials.",
+                                    "ref": "event_DEAD_CREW_DEFAULT_1_text"
+                                  },
+                                  "effects": [
+                                    {
+                                      "kind": "reward",
+                                      "level": "HIGH",
+                                      "tier": "standard"
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "share": null,
+                                "child": {
+                                  "text": {
+                                    "value": "With the crew dead, you are able to take the fuel out of storage. You also take all the scrap you can manage.",
+                                    "ref": "event_DEAD_CREW_DEFAULT_6_text"
+                                  },
+                                  "effects": [
+                                    {
+                                      "kind": "reward",
+                                      "level": "HIGH",
+                                      "tier": "fuel"
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "share": null,
+                                "child": {
+                                  "text": {
+                                    "value": "With the crew dead, you are able to take the fuel out of storage. You also take all the scrap you can manage.",
+                                    "ref": "event_DEAD_CREW_DEFAULT_6_text"
+                                  },
+                                  "effects": [
+                                    {
+                                      "kind": "reward",
+                                      "level": "HIGH",
+                                      "tier": "fuel"
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "share": null,
+                                "child": {
+                                  "text": {
+                                    "value": "Now that their ship has been emptied of hostiles, you search it. Eventually you find a prisoner who offers to join your crew.",
+                                    "ref": "event_DEAD_CREW_DEFAULT_8_text"
+                                  },
+                                  "effects": [
+                                    {
+                                      "kind": "crew_gain",
+                                      "amount": 1
+                                    },
+                                    {
+                                      "kind": "reward",
+                                      "level": "LOW",
+                                      "tier": "scrap_only"
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "share": null,
+                                "child": {
+                                  "text": {
+                                    "value": "You find a weapon system on their ship. With no crew to stop you, you can install it on your own.",
+                                    "ref": "event_DEAD_CREW_DEFAULT_9_text"
+                                  },
+                                  "effects": [
+                                    {
+                                      "kind": "reward",
+                                      "level": "LOW",
+                                      "tier": "weapon"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      },
+                      {
+                        "on": "surrender",
+                        "child": {
+                          "text": {
+                            "value": "\"You have besssted us! Will you accept what is in our storeesss in exchange for our livess?\"",
+                            "ref": "event_SLUG_SURRENDER_text"
+                          },
+                          "name": "SLUG_SURRENDER",
+                          "source": "raw/gamedata/events_slug.xml",
+                          "effects": [],
+                          "node": {
+                            "kind": "decision",
+                            "options": [
+                              {
+                                "label": "Let them live.",
+                                "gate": null,
+                                "child": {
+                                  "effects": [],
+                                  "node": {
+                                    "kind": "chance",
+                                    "list": "SLUG_SURRENDER_LIST",
+                                    "source": "raw/gamedata/events_slug.xml",
+                                    "odds_basis": "unweighted",
+                                    "options": [
+                                      {
+                                        "share": null,
+                                        "child": {
+                                          "text": {
+                                            "value": "\"Here! We have lotsss of fuel! Take it all!\"",
+                                            "ref": "event_SLUG_SURRENDER_LIST_1_text"
+                                          },
+                                          "effects": [
+                                            {
+                                              "kind": "reward",
+                                              "level": "HIGH",
+                                              "tier": "fuel_only"
+                                            },
+                                            {
+                                              "kind": "ship_hostility",
+                                              "hostile": false
+                                            }
+                                          ]
+                                        }
+                                      },
+                                      {
+                                        "share": null,
+                                        "child": {
+                                          "text": {
+                                            "value": "They transfer a meager amount of material. \"There... now keep your word...\"",
+                                            "ref": "event_SLUG_SURRENDER_LIST_2_text"
+                                          },
+                                          "effects": [
+                                            {
+                                              "kind": "reward",
+                                              "level": "LOW",
+                                              "tier": "stuff"
+                                            },
+                                            {
+                                              "kind": "ship_hostility",
+                                              "hostile": false
+                                            }
+                                          ]
+                                        }
+                                      },
+                                      {
+                                        "share": null,
+                                        "child": {
+                                          "text": {
+                                            "value": "\"Take it and leave ussss be.\"",
+                                            "ref": "event_SLUG_SURRENDER_LIST_3_text"
+                                          },
+                                          "effects": [
+                                            {
+                                              "kind": "reward",
+                                              "level": "MED",
+                                              "tier": "stuff"
+                                            },
+                                            {
+                                              "kind": "ship_hostility",
+                                              "hostile": false
+                                            }
+                                          ]
+                                        }
+                                      }
+                                    ]
+                                  }
+                                },
+                                "label_ref": "event_SLUG_SURRENDER_c1_choice",
+                                "hidden": true
+                              },
+                              {
+                                "label": "We will not accept surrender!",
+                                "gate": null,
+                                "child": {
+                                  "effects": []
+                                },
+                                "label_ref": "event_SLUG_SURRENDER_c2_choice",
+                                "hidden": true
+                              }
+                            ]
+                          }
+                        },
+                        "chance": "0.5",
+                        "min": "3",
+                        "max": "4"
+                      },
+                      {
+                        "on": "escape",
+                        "child": {
+                          "text": {
+                            "value": "The enemy ship appears to be powering up its FTL. It's trying to escape!",
+                            "ref": "event_PIRATE_ESCAPE_text"
+                          },
+                          "name": "PIRATE_ESCAPE",
+                          "source": "raw/gamedata/events.xml",
+                          "effects": [
+                            {
+                              "kind": "ship_hostility",
+                              "hostile": true
+                            }
+                          ]
+                        },
+                        "chance": "0.5",
+                        "min": "3",
+                        "max": "4"
+                      }
+                    ]
+                  }
+                }
+              }
+            ]
+          }
+        },
+        "label_ref": "event_NEBULA_SLUG_HULLFIX_c3_choice",
+        "hidden": true
+      }
+    ]
+  }
+}

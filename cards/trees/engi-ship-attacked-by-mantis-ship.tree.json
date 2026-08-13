@@ -1,0 +1,999 @@
+{
+  "schema": "ftl-event-tree/1",
+  "id": "ENGI_STATION_DISTRESS",
+  "slug": "engi-ship-attacked-by-mantis-ship",
+  "title": "Engi ship attacked by Mantis ship",
+  "extracted_from": "raw/gamedata/events_engi.xml",
+  "text": {
+    "value": "You receive a distress call from a nearby Engi ship. \"Assistance requested. Danger present. Imminent destruction.\"",
+    "ref": "event_ENGI_STATION_DISTRESS_text"
+  },
+  "name": "ENGI_STATION_DISTRESS",
+  "source": "raw/gamedata/events_engi.xml",
+  "effects": [],
+  "flags": {
+    "unique": false
+  },
+  "node": {
+    "kind": "decision",
+    "options": [
+      {
+        "label": "Respond to the call and move in to assist.",
+        "gate": null,
+        "child": {
+          "effects": [],
+          "node": {
+            "kind": "chance",
+            "list": "ENGI_STATION_DISTRESS_LIST",
+            "source": "raw/gamedata/events_engi.xml",
+            "odds_basis": "unweighted",
+            "options": [
+              {
+                "share": null,
+                "child": {
+                  "text": {
+                    "value": "You receive another message from the ship, this time with a Mantis at the comm-log. \"Foolish meatsacks,\" he yells. Sensors indicate the ship is moving in to attack and boarders teleport from the station.",
+                    "ref": "event_ENGI_STATION_DISTRESS_LIST_1_text"
+                  },
+                  "effects": [
+                    {
+                      "kind": "boarders",
+                      "min": 1,
+                      "max": 2,
+                      "class": "mantis"
+                    }
+                  ],
+                  "node": {
+                    "kind": "combat",
+                    "ship": "ENGI_MANTIS_CONTROLLED",
+                    "ship_labels": [
+                      "Engi Scout",
+                      "Engi Bomber"
+                    ],
+                    "hostile": true,
+                    "auto_blueprint": "SHIPS_CIRCLE",
+                    "source": "raw/gamedata/events_ships.xml",
+                    "branches": [
+                      {
+                        "on": "destroyed",
+                        "child": {
+                          "effects": [],
+                          "node": {
+                            "kind": "chance",
+                            "list": "DESTROYED_DEFAULT",
+                            "source": "raw/gamedata/events.xml",
+                            "odds_basis": "unweighted",
+                            "options": [
+                              {
+                                "share": null,
+                                "child": {
+                                  "text": {
+                                    "value": "The ship explodes, leaving behind a substantial collection of useful scrap material.",
+                                    "ref": "event_DESTROYED_DEFAULT_1_text"
+                                  },
+                                  "effects": [
+                                    {
+                                      "kind": "reward",
+                                      "level": "MED",
+                                      "tier": "standard"
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "share": null,
+                                "child": {
+                                  "text": {
+                                    "value": "The ship explodes, leaving behind a substantial collection of useful scrap material.",
+                                    "ref": "event_DESTROYED_DEFAULT_1_text"
+                                  },
+                                  "effects": [
+                                    {
+                                      "kind": "reward",
+                                      "level": "MED",
+                                      "tier": "standard"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      },
+                      {
+                        "on": "deadCrew",
+                        "child": {
+                          "effects": [],
+                          "node": {
+                            "kind": "chance",
+                            "list": "DEAD_CREW_DEFAULT",
+                            "source": "raw/gamedata/events.xml",
+                            "odds_basis": "unweighted",
+                            "options": [
+                              {
+                                "share": null,
+                                "child": {
+                                  "text": {
+                                    "value": "There are no more life-signs remaining on the ship. You strip it of useful materials.",
+                                    "ref": "event_DEAD_CREW_DEFAULT_1_text"
+                                  },
+                                  "effects": [
+                                    {
+                                      "kind": "reward",
+                                      "level": "MED",
+                                      "tier": "standard"
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "share": null,
+                                "child": {
+                                  "text": {
+                                    "value": "There are no more life-signs remaining on the ship. You strip it of useful materials.",
+                                    "ref": "event_DEAD_CREW_DEFAULT_1_text"
+                                  },
+                                  "effects": [
+                                    {
+                                      "kind": "reward",
+                                      "level": "MED",
+                                      "tier": "standard"
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "share": null,
+                                "child": {
+                                  "text": {
+                                    "value": "There are no more life-signs remaining on the ship. You strip it of useful materials.",
+                                    "ref": "event_DEAD_CREW_DEFAULT_1_text"
+                                  },
+                                  "effects": [
+                                    {
+                                      "kind": "reward",
+                                      "level": "MED",
+                                      "tier": "standard"
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "share": null,
+                                "child": {
+                                  "text": {
+                                    "value": "There are no more life-signs remaining on the ship. You strip it of useful materials.",
+                                    "ref": "event_DEAD_CREW_DEFAULT_1_text"
+                                  },
+                                  "effects": [
+                                    {
+                                      "kind": "reward",
+                                      "level": "HIGH",
+                                      "tier": "standard"
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "share": null,
+                                "child": {
+                                  "text": {
+                                    "value": "There are no more life-signs remaining on the ship. You strip it of useful materials.",
+                                    "ref": "event_DEAD_CREW_DEFAULT_1_text"
+                                  },
+                                  "effects": [
+                                    {
+                                      "kind": "reward",
+                                      "level": "HIGH",
+                                      "tier": "standard"
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "share": null,
+                                "child": {
+                                  "text": {
+                                    "value": "With the crew dead, you are able to take the fuel out of storage. You also take all the scrap you can manage.",
+                                    "ref": "event_DEAD_CREW_DEFAULT_6_text"
+                                  },
+                                  "effects": [
+                                    {
+                                      "kind": "reward",
+                                      "level": "HIGH",
+                                      "tier": "fuel"
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "share": null,
+                                "child": {
+                                  "text": {
+                                    "value": "With the crew dead, you are able to take the fuel out of storage. You also take all the scrap you can manage.",
+                                    "ref": "event_DEAD_CREW_DEFAULT_6_text"
+                                  },
+                                  "effects": [
+                                    {
+                                      "kind": "reward",
+                                      "level": "HIGH",
+                                      "tier": "fuel"
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "share": null,
+                                "child": {
+                                  "text": {
+                                    "value": "Now that their ship has been emptied of hostiles, you search it. Eventually you find a prisoner who offers to join your crew.",
+                                    "ref": "event_DEAD_CREW_DEFAULT_8_text"
+                                  },
+                                  "effects": [
+                                    {
+                                      "kind": "crew_gain",
+                                      "amount": 1
+                                    },
+                                    {
+                                      "kind": "reward",
+                                      "level": "LOW",
+                                      "tier": "scrap_only"
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "share": null,
+                                "child": {
+                                  "text": {
+                                    "value": "You find a weapon system on their ship. With no crew to stop you, you can install it on your own.",
+                                    "ref": "event_DEAD_CREW_DEFAULT_9_text"
+                                  },
+                                  "effects": [
+                                    {
+                                      "kind": "reward",
+                                      "level": "LOW",
+                                      "tier": "weapon"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              },
+              {
+                "share": null,
+                "child": {
+                  "text": {
+                    "value": "You approach to find a Mantis ship assaulting a small Engi space station. You prepare for a fight!",
+                    "ref": "event_ENGI_STATION_DISTRESS_LIST_2_text"
+                  },
+                  "effects": [],
+                  "node": {
+                    "kind": "combat",
+                    "ship": "MANTIS_ENGI_STATION",
+                    "ship_labels": [
+                      "Mantis Scout",
+                      "Mantis Fighter",
+                      "Mantis Bomber"
+                    ],
+                    "hostile": true,
+                    "auto_blueprint": "SHIPS_MANTIS",
+                    "source": "raw/gamedata/events_ships.xml",
+                    "branches": [
+                      {
+                        "on": "destroyed",
+                        "child": {
+                          "text": {
+                            "value": "The Mantis ship breaks apart.",
+                            "ref": "ship_MANTIS_ENGI_STATION_destroyed_text"
+                          },
+                          "effects": [
+                            {
+                              "kind": "reward",
+                              "level": "MED",
+                              "tier": "standard"
+                            }
+                          ],
+                          "node": {
+                            "kind": "decision",
+                            "options": [
+                              {
+                                "label": "Attempt to contact the Engi.",
+                                "gate": null,
+                                "child": {
+                                  "effects": [],
+                                  "node": {
+                                    "kind": "chance",
+                                    "list": "SAVE_ENGI_STATION",
+                                    "source": "raw/gamedata/events_engi.xml",
+                                    "odds_basis": "unweighted",
+                                    "options": [
+                                      {
+                                        "share": null,
+                                        "child": {
+                                          "text": {
+                                            "value": "The Engi station is stripped bare and there are signs of a fierce battle. The Mantis must have left the distress call active to lure other ships into a trap.",
+                                            "ref": "event_SAVE_ENGI_STATION_1_text"
+                                          },
+                                          "effects": []
+                                        }
+                                      },
+                                      {
+                                        "share": null,
+                                        "child": {
+                                          "text": {
+                                            "value": "The station was in the process of being evacuated. A number of civilian Engi offer their gratitude as they finalize their preparations to leave. They offer some fuel as a reward.",
+                                            "ref": "event_SAVE_ENGI_STATION_2_text"
+                                          },
+                                          "effects": [
+                                            {
+                                              "kind": "reward",
+                                              "level": "MED",
+                                              "tier": "fuel_only"
+                                            }
+                                          ]
+                                        }
+                                      },
+                                      {
+                                        "share": null,
+                                        "child": {
+                                          "text": {
+                                            "value": "The station hails you, \"Gratitude. Expected probability of defeat without assistance... 86.2 percent. Request suitable reward.\"",
+                                            "ref": "event_SAVE_ENGI_STATION_3_text"
+                                          },
+                                          "effects": [],
+                                          "node": {
+                                            "kind": "decision",
+                                            "options": [
+                                              {
+                                                "label": "Request fuel.",
+                                                "gate": null,
+                                                "child": {
+                                                  "text": {
+                                                    "value": "\"Request granted. Fuel transferring.\"",
+                                                    "ref": "event_SAVE_ENGI_STATION_3_c1_text"
+                                                  },
+                                                  "effects": [
+                                                    {
+                                                      "kind": "reward",
+                                                      "level": "HIGH",
+                                                      "tier": "fuel"
+                                                    }
+                                                  ]
+                                                },
+                                                "label_ref": "event_SAVE_ENGI_STATION_3_c1_choice",
+                                                "hidden": true
+                                              },
+                                              {
+                                                "label": "Request weapon.",
+                                                "gate": null,
+                                                "child": {
+                                                  "text": {
+                                                    "value": "\"Request granted. Weapon transferring.\"",
+                                                    "ref": "event_SAVE_ENGI_STATION_3_c2_text"
+                                                  },
+                                                  "effects": [
+                                                    {
+                                                      "kind": "reward",
+                                                      "level": "LOW",
+                                                      "tier": "weapon"
+                                                    }
+                                                  ]
+                                                },
+                                                "label_ref": "event_SAVE_ENGI_STATION_3_c2_choice",
+                                                "hidden": true
+                                              },
+                                              {
+                                                "label": "Request drone.",
+                                                "gate": null,
+                                                "child": {
+                                                  "text": {
+                                                    "value": "\"Request granted. Drone schematic transferring.\"",
+                                                    "ref": "event_SAVE_ENGI_STATION_3_c3_text"
+                                                  },
+                                                  "effects": [
+                                                    {
+                                                      "kind": "reward",
+                                                      "level": "LOW",
+                                                      "tier": "drone"
+                                                    }
+                                                  ]
+                                                },
+                                                "label_ref": "event_SAVE_ENGI_STATION_3_c3_choice",
+                                                "hidden": true
+                                              },
+                                              {
+                                                "label": "(Engi Crew) Threat unresolved. Current mission imperative: Protocol 52.34.",
+                                                "gate": {
+                                                  "req": "engi",
+                                                  "label": "Engi"
+                                                },
+                                                "child": {
+                                                  "text": {
+                                                    "value": "They respond, \"Understood. Re-establishment of Federation highest import. Transmitting hidden base coordinates. Repairing hull and attaching ship to ship ordnance.\"",
+                                                    "ref": "event_SAVE_ENGI_STATION_3_c4_text"
+                                                  },
+                                                  "effects": [
+                                                    {
+                                                      "kind": "reward",
+                                                      "level": "LOW",
+                                                      "tier": "weapon"
+                                                    },
+                                                    {
+                                                      "kind": "quest",
+                                                      "event": "HIDDEN_FEDERATION_BASE_LIST"
+                                                    },
+                                                    {
+                                                      "kind": "hull_repair",
+                                                      "amount": 10
+                                                    }
+                                                  ]
+                                                },
+                                                "label_ref": "event_SAVE_ENGI_STATION_3_c4_choice",
+                                                "hidden": true
+                                              }
+                                            ]
+                                          }
+                                        }
+                                      },
+                                      {
+                                        "share": null,
+                                        "child": {
+                                          "text": {
+                                            "value": "They thank you for the assistance and when you tell them of your mission, one of the Engi asks if he can assist your crew. You welcome him aboard.",
+                                            "ref": "event_SAVE_ENGI_STATION_4_text"
+                                          },
+                                          "effects": [
+                                            {
+                                              "kind": "crew_gain",
+                                              "amount": 1,
+                                              "class": "engi"
+                                            },
+                                            {
+                                              "kind": "reward",
+                                              "level": "LOW",
+                                              "tier": "standard"
+                                            }
+                                          ]
+                                        }
+                                      }
+                                    ]
+                                  }
+                                },
+                                "label_ref": "ship_MANTIS_ENGI_STATION_destroyed_c1_choice",
+                                "hidden": true
+                              }
+                            ]
+                          }
+                        }
+                      },
+                      {
+                        "on": "deadCrew",
+                        "child": {
+                          "text": {
+                            "value": "No more life signs detected on the Mantis ship. You hasten to contact the Engi.",
+                            "ref": "ship_MANTIS_ENGI_STATION_deadCrew_text"
+                          },
+                          "effects": [
+                            {
+                              "kind": "reward",
+                              "level": "HIGH",
+                              "tier": "standard"
+                            }
+                          ],
+                          "node": {
+                            "kind": "decision",
+                            "options": [
+                              {
+                                "label": "Attempt to contact the Engi.",
+                                "gate": null,
+                                "child": {
+                                  "effects": [],
+                                  "node": {
+                                    "kind": "chance",
+                                    "list": "SAVE_ENGI_STATION",
+                                    "source": "raw/gamedata/events_engi.xml",
+                                    "odds_basis": "unweighted",
+                                    "options": [
+                                      {
+                                        "share": null,
+                                        "child": {
+                                          "text": {
+                                            "value": "The Engi station is stripped bare and there are signs of a fierce battle. The Mantis must have left the distress call active to lure other ships into a trap.",
+                                            "ref": "event_SAVE_ENGI_STATION_1_text"
+                                          },
+                                          "effects": []
+                                        }
+                                      },
+                                      {
+                                        "share": null,
+                                        "child": {
+                                          "text": {
+                                            "value": "The station was in the process of being evacuated. A number of civilian Engi offer their gratitude as they finalize their preparations to leave. They offer some fuel as a reward.",
+                                            "ref": "event_SAVE_ENGI_STATION_2_text"
+                                          },
+                                          "effects": [
+                                            {
+                                              "kind": "reward",
+                                              "level": "MED",
+                                              "tier": "fuel_only"
+                                            }
+                                          ]
+                                        }
+                                      },
+                                      {
+                                        "share": null,
+                                        "child": {
+                                          "text": {
+                                            "value": "The station hails you, \"Gratitude. Expected probability of defeat without assistance... 86.2 percent. Request suitable reward.\"",
+                                            "ref": "event_SAVE_ENGI_STATION_3_text"
+                                          },
+                                          "effects": [],
+                                          "node": {
+                                            "kind": "decision",
+                                            "options": [
+                                              {
+                                                "label": "Request fuel.",
+                                                "gate": null,
+                                                "child": {
+                                                  "text": {
+                                                    "value": "\"Request granted. Fuel transferring.\"",
+                                                    "ref": "event_SAVE_ENGI_STATION_3_c1_text"
+                                                  },
+                                                  "effects": [
+                                                    {
+                                                      "kind": "reward",
+                                                      "level": "HIGH",
+                                                      "tier": "fuel"
+                                                    }
+                                                  ]
+                                                },
+                                                "label_ref": "event_SAVE_ENGI_STATION_3_c1_choice",
+                                                "hidden": true
+                                              },
+                                              {
+                                                "label": "Request weapon.",
+                                                "gate": null,
+                                                "child": {
+                                                  "text": {
+                                                    "value": "\"Request granted. Weapon transferring.\"",
+                                                    "ref": "event_SAVE_ENGI_STATION_3_c2_text"
+                                                  },
+                                                  "effects": [
+                                                    {
+                                                      "kind": "reward",
+                                                      "level": "LOW",
+                                                      "tier": "weapon"
+                                                    }
+                                                  ]
+                                                },
+                                                "label_ref": "event_SAVE_ENGI_STATION_3_c2_choice",
+                                                "hidden": true
+                                              },
+                                              {
+                                                "label": "Request drone.",
+                                                "gate": null,
+                                                "child": {
+                                                  "text": {
+                                                    "value": "\"Request granted. Drone schematic transferring.\"",
+                                                    "ref": "event_SAVE_ENGI_STATION_3_c3_text"
+                                                  },
+                                                  "effects": [
+                                                    {
+                                                      "kind": "reward",
+                                                      "level": "LOW",
+                                                      "tier": "drone"
+                                                    }
+                                                  ]
+                                                },
+                                                "label_ref": "event_SAVE_ENGI_STATION_3_c3_choice",
+                                                "hidden": true
+                                              },
+                                              {
+                                                "label": "(Engi Crew) Threat unresolved. Current mission imperative: Protocol 52.34.",
+                                                "gate": {
+                                                  "req": "engi",
+                                                  "label": "Engi"
+                                                },
+                                                "child": {
+                                                  "text": {
+                                                    "value": "They respond, \"Understood. Re-establishment of Federation highest import. Transmitting hidden base coordinates. Repairing hull and attaching ship to ship ordnance.\"",
+                                                    "ref": "event_SAVE_ENGI_STATION_3_c4_text"
+                                                  },
+                                                  "effects": [
+                                                    {
+                                                      "kind": "reward",
+                                                      "level": "LOW",
+                                                      "tier": "weapon"
+                                                    },
+                                                    {
+                                                      "kind": "quest",
+                                                      "event": "HIDDEN_FEDERATION_BASE_LIST"
+                                                    },
+                                                    {
+                                                      "kind": "hull_repair",
+                                                      "amount": 10
+                                                    }
+                                                  ]
+                                                },
+                                                "label_ref": "event_SAVE_ENGI_STATION_3_c4_choice",
+                                                "hidden": true
+                                              }
+                                            ]
+                                          }
+                                        }
+                                      },
+                                      {
+                                        "share": null,
+                                        "child": {
+                                          "text": {
+                                            "value": "They thank you for the assistance and when you tell them of your mission, one of the Engi asks if he can assist your crew. You welcome him aboard.",
+                                            "ref": "event_SAVE_ENGI_STATION_4_text"
+                                          },
+                                          "effects": [
+                                            {
+                                              "kind": "crew_gain",
+                                              "amount": 1,
+                                              "class": "engi"
+                                            },
+                                            {
+                                              "kind": "reward",
+                                              "level": "LOW",
+                                              "tier": "standard"
+                                            }
+                                          ]
+                                        }
+                                      }
+                                    ]
+                                  }
+                                },
+                                "label_ref": "ship_MANTIS_ENGI_STATION_destroyed_c1_choice",
+                                "hidden": true
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            ]
+          }
+        },
+        "label_ref": "event_ENGI_STATION_DISTRESS_c1_choice"
+      },
+      {
+        "label": "Keep your distance.",
+        "gate": null,
+        "child": {
+          "effects": []
+        },
+        "label_ref": "event_ENGI_STATION_DISTRESS_c2_choice"
+      }
+    ]
+  },
+  "chain": [
+    {
+      "id": "HIDDEN_FEDERATION_BASE_LIST",
+      "from": "ENGI_STATION_DISTRESS",
+      "effects": [],
+      "node": {
+        "kind": "chance",
+        "list": "HIDDEN_FEDERATION_BASE_LIST",
+        "source": "raw/gamedata/events.xml",
+        "odds_basis": "unweighted",
+        "options": [
+          {
+            "share": null,
+            "child": {
+              "text": {
+                "value": "You find the planet at the indicated coordinates. Your initial scans show the planet to be barren and devoid of life, but you get a prompt reply when you broadcast on Federation frequencies. \"Hello! So nice to see friends. We'll bring you up some supplies.\"",
+                "ref": "event_HIDDEN_FEDERATION_BASE_LIST_1_text"
+              },
+              "effects": [
+                {
+                  "kind": "reward",
+                  "level": "HIGH",
+                  "tier": "drone"
+                }
+              ]
+            }
+          },
+          {
+            "share": null,
+            "child": {
+              "text": {
+                "value": "By following the directions given to you, you find a well-disguised outpost. You are welcomed by a friendly face who offers to assist you in your quest by joining your crew.",
+                "ref": "event_HIDDEN_FEDERATION_BASE_LIST_2_text"
+              },
+              "effects": [
+                {
+                  "kind": "reward",
+                  "level": "LOW",
+                  "tier": "standard"
+                },
+                {
+                  "kind": "crew_gain",
+                  "amount": 1
+                }
+              ]
+            }
+          },
+          {
+            "share": null,
+            "child": {
+              "text": {
+                "value": "After a quick search you discover the hidden Federation space-dock. They offer you some supplies in addition to fully repairing your ship.",
+                "ref": "event_HIDDEN_FEDERATION_BASE_LIST_3_text"
+              },
+              "effects": [
+                {
+                  "kind": "reward",
+                  "level": "MED",
+                  "tier": "standard"
+                },
+                {
+                  "kind": "hull_repair",
+                  "amount": 35
+                }
+              ]
+            }
+          },
+          {
+            "share": null,
+            "child": {
+              "text": {
+                "value": "You search near the coordinates given to you, but your search yields no results. Perhaps they were mistaken.",
+                "ref": "event_HIDDEN_FEDERATION_BASE_LIST_4_text"
+              },
+              "effects": [],
+              "node": {
+                "kind": "decision",
+                "options": [
+                  {
+                    "label": "Leave.",
+                    "gate": null,
+                    "child": {
+                      "effects": []
+                    },
+                    "label_ref": "event_HIDDEN_FEDERATION_BASE_LIST_4_c1_choice"
+                  },
+                  {
+                    "label": "(Improved Sensors) Run a second scan pass.",
+                    "gate": {
+                      "req": "sensors",
+                      "label": "Sensors",
+                      "lvl": "2",
+                      "max_group": "0"
+                    },
+                    "child": {
+                      "text": {
+                        "value": "Your Advanced Sensors pick faint signatures of what appears to be a storage space hidden under the rock. You find the access point and discover a supply cache whose Federation signal emitter has malfunctioned.",
+                        "ref": "event_HIDDEN_FEDERATION_BASE_LIST_4_c2_text"
+                      },
+                      "effects": [
+                        {
+                          "kind": "reward",
+                          "level": "MED",
+                          "tier": "standard"
+                        }
+                      ]
+                    },
+                    "label_ref": "event_HIDDEN_FEDERATION_BASE_LIST_4_c2_choice",
+                    "hidden": true,
+                    "dlc": true
+                  },
+                  {
+                    "label": "(Advanced Sensors) Run a second scan pass.",
+                    "gate": {
+                      "req": "sensors",
+                      "label": "Sensors",
+                      "lvl": "3",
+                      "max_group": "0"
+                    },
+                    "child": {
+                      "text": {
+                        "value": "Your advanced sensors pick faint signatures of what appears to be a storage space hidden under the rock. You find the access point and discover a weapons cache whose Federation signal emitter has malfunctioned.",
+                        "ref": "event_HIDDEN_FEDERATION_BASE_LIST_4_c3_text"
+                      },
+                      "effects": [
+                        {
+                          "kind": "reward",
+                          "level": "MED",
+                          "tier": "weapon"
+                        }
+                      ]
+                    },
+                    "label_ref": "event_HIDDEN_FEDERATION_BASE_LIST_4_c3_choice",
+                    "hidden": true
+                  },
+                  {
+                    "label": "(Long-Ranged Scanners) Run a second scan pass.",
+                    "gate": {
+                      "req": "ADV_SCANNERS",
+                      "label": "Long-Ranged Scanners"
+                    },
+                    "child": {
+                      "text": {
+                        "value": "Your improved scanners pick faint signatures of what appears to be a storage space hidden under the rock. You find the access point and discover a weapons cache whose Federation signal emitter has malfunctioned.",
+                        "ref": "event_HIDDEN_FEDERATION_BASE_LIST_4_c4_text"
+                      },
+                      "effects": [
+                        {
+                          "kind": "reward",
+                          "level": "MED",
+                          "tier": "weapon"
+                        }
+                      ]
+                    },
+                    "label_ref": "event_HIDDEN_FEDERATION_BASE_LIST_4_c4_choice",
+                    "hidden": true
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "share": null,
+            "child": {
+              "effects": [],
+              "node": {
+                "kind": "chance",
+                "list": "FEDERATION_BASE_ASSIST",
+                "source": "raw/gamedata/events.xml",
+                "odds_basis": "unweighted",
+                "options": [
+                  {
+                    "share": null,
+                    "child": {
+                      "text": {
+                        "value": "You arrive in the sector to see a small outpost being bombarded by an automated drone. This must be the Federation base you were told about!",
+                        "ref": "event_FEDERATION_BASE_ASSIST_1_text"
+                      },
+                      "effects": [],
+                      "node": {
+                        "kind": "combat",
+                        "ship": "AUTO_FEDERATION_BASE",
+                        "ship_labels": [
+                          "Auto-Scout",
+                          "Auto-Assault"
+                        ],
+                        "hostile": true,
+                        "auto_blueprint": "SHIPS_AUTO",
+                        "source": "raw/gamedata/events_ships.xml",
+                        "branches": [
+                          {
+                            "on": "destroyed",
+                            "child": {
+                              "text": {
+                                "value": "You scrap the wreckage.",
+                                "ref": "ship_AUTO_FEDERATION_BASE_destroyed_text"
+                              },
+                              "effects": [
+                                {
+                                  "kind": "reward",
+                                  "level": "LOW",
+                                  "tier": "standard"
+                                }
+                              ],
+                              "node": {
+                                "kind": "decision",
+                                "options": [
+                                  {
+                                    "label": "Continue...",
+                                    "gate": null,
+                                    "child": {
+                                      "text": {
+                                        "value": "With the threat gone, you contact the Federation outpost. They respond, \"Our location has been compromised! Take everything you can and please drop our survivors off at the next station.\" One soldier offers to stay and fight.",
+                                        "ref": "ship_AUTO_FEDERATION_BASE_destroyed_c1_text"
+                                      },
+                                      "effects": [
+                                        {
+                                          "kind": "crew_gain",
+                                          "amount": 1
+                                        },
+                                        {
+                                          "kind": "reward",
+                                          "level": "LOW",
+                                          "tier": "weapon"
+                                        }
+                                      ]
+                                    },
+                                    "label_ref": "continue",
+                                    "hidden": true
+                                  }
+                                ]
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  },
+                  {
+                    "share": null,
+                    "child": {
+                      "text": {
+                        "value": "You arrive in the sector to see a small outpost being bombarded by an automated drone. This must be the Federation base you were told about!",
+                        "ref": "event_FEDERATION_BASE_ASSIST_1_text"
+                      },
+                      "effects": [],
+                      "node": {
+                        "kind": "combat",
+                        "ship": "AUTO_FEDERATION_BASE2",
+                        "ship_labels": [
+                          "Auto-Scout",
+                          "Auto-Assault"
+                        ],
+                        "hostile": true,
+                        "auto_blueprint": "SHIPS_AUTO",
+                        "source": "raw/gamedata/events_ships.xml",
+                        "branches": [
+                          {
+                            "on": "destroyed",
+                            "child": {
+                              "text": {
+                                "value": "You scrap the wreckage.",
+                                "ref": "ship_AUTO_FEDERATION_BASE2_destroyed_text"
+                              },
+                              "effects": [
+                                {
+                                  "kind": "reward",
+                                  "level": "LOW",
+                                  "tier": "standard"
+                                }
+                              ],
+                              "node": {
+                                "kind": "decision",
+                                "options": [
+                                  {
+                                    "label": "Continue...",
+                                    "gate": null,
+                                    "child": {
+                                      "text": {
+                                        "value": "You contact the station once the Rebel ship is destroyed. The lone survivor responds, \"This base is no longer safe. Let me join your crew and I'll have the station's drones patch up your ship.\"",
+                                        "ref": "ship_AUTO_FEDERATION_BASE2_destroyed_c1_text"
+                                      },
+                                      "effects": [
+                                        {
+                                          "kind": "crew_gain",
+                                          "amount": 1
+                                        },
+                                        {
+                                          "kind": "reward",
+                                          "level": "HIGH",
+                                          "tier": "standard"
+                                        },
+                                        {
+                                          "kind": "hull_repair",
+                                          "amount": 7
+                                        }
+                                      ]
+                                    },
+                                    "label_ref": "continue",
+                                    "hidden": true
+                                  }
+                                ]
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

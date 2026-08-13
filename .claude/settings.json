@@ -1,0 +1,34 @@
+{
+  "permissions": {
+    "allow": [
+      "Artifact",
+      "Bash(python tools/extract-event.py:*)",
+      "Bash(python tools/build-card.py:*)",
+      "Bash(node tools/smoke-card.js:*)",
+      "Bash(python -c:*)",
+      "Bash(ls:*)",
+      "Bash(cat:*)",
+      "Bash(head:*)",
+      "Bash(tail:*)",
+      "Bash(grep:*)",
+      "Bash(rg:*)",
+      "Bash(find:*)",
+      "Bash(diff:*)",
+      "Bash(wc:*)",
+      "Bash(sed:*)",
+      "Bash(awk:*)",
+      "Bash(sort:*)",
+      "Bash(uniq:*)",
+      "Bash(python --version)",
+      "Bash(node --version)"
+    ],
+    "deny": [
+      "Write(raw/gamedata/**)",
+      "Edit(raw/gamedata/**)",
+      "Write(raw/wiki/**)",
+      "Edit(raw/wiki/**)",
+      "Write(raw/runs/**)",
+      "Edit(raw/runs/**)"
+    ]
+  }
+}

@@ -1,0 +1,269 @@
+{
+  "schema": "ftl-event-tree/1",
+  "id": "ROCK_MANTIS_FREIGHTER",
+  "slug": "mantis-ships-battle-for-rock-freighter",
+  "title": "Mantis ships battle for Rock freighter",
+  "extracted_from": "raw/gamedata/events_rock.xml",
+  "text": {
+    "value": "A curious sight greets you at this beacon: a disabled Rock freighter drifts in space while two Mantis craft battle it out - presumably over who deserves the spoils.",
+    "ref": "event_ROCK_MANTIS_FREIGHTER_text"
+  },
+  "name": "ROCK_MANTIS_FREIGHTER",
+  "source": "raw/gamedata/events_rock.xml",
+  "effects": [],
+  "flags": {
+    "unique": true
+  },
+  "node": {
+    "kind": "decision",
+    "options": [
+      {
+        "label": "Wait, then attack the surviving Mantis.",
+        "gate": null,
+        "child": {
+          "effects": [],
+          "node": {
+            "kind": "chance",
+            "list": "ROCK_MANTIS_FREIGHTER_LIST",
+            "source": "raw/gamedata/events_rock.xml",
+            "odds_basis": "unweighted",
+            "options": [
+              {
+                "share": null,
+                "child": {
+                  "text": {
+                    "value": "The Mantis craft are both too busy slaughtering one another to notice you. Eventually the smaller ship gets the upper hand, but they must have blown a fuse in the assault and their weapons system is inoperable. Now is the time to attack!",
+                    "ref": "event_ROCK_MANTIS_FREIGHTER_LIST_1_text"
+                  },
+                  "effects": [
+                    {
+                      "kind": "status",
+                      "status": "loss",
+                      "target": "enemy",
+                      "system": "weapons",
+                      "amount": 2
+                    }
+                  ],
+                  "node": {
+                    "kind": "combat",
+                    "ship": "MANTIS_ROCK_MANTIS_FREIGHTER",
+                    "ship_labels": [
+                      "Mantis Scout",
+                      "Mantis Fighter",
+                      "Mantis Bomber"
+                    ],
+                    "hostile": true,
+                    "auto_blueprint": "SHIPS_MANTIS",
+                    "source": "raw/gamedata/events_rock.xml",
+                    "branches": [
+                      {
+                        "on": "destroyed",
+                        "child": {
+                          "text": {
+                            "value": "In the time it took you to eliminate the Mantis ship the Rock must have repaired their FTL drive and jumped away. You pick the bones of both Mantis vessels.",
+                            "ref": "ship_MANTIS_ROCK_MANTIS_FREIGHTER_destroyed_text"
+                          },
+                          "effects": [
+                            {
+                              "kind": "reward",
+                              "level": "MED",
+                              "tier": "standard"
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "on": "deadCrew",
+                        "child": {
+                          "text": {
+                            "value": "In the time it took you to eliminate the Mantis ship the Rock must have repaired their FTL drive and jumped away. You pick the bones of both Mantis vessels.",
+                            "ref": "ship_MANTIS_ROCK_MANTIS_FREIGHTER_destroyed_text"
+                          },
+                          "effects": [
+                            {
+                              "kind": "reward",
+                              "level": "MED",
+                              "tier": "standard"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                }
+              },
+              {
+                "share": null,
+                "child": {
+                  "text": {
+                    "value": "The Mantis craft may have their differences, but when it comes to you they are of one mind. The smaller ship suffers a power failure as it moves to engage, but the larger one lets off a volley of fire and moves in to attack!",
+                    "ref": "event_ROCK_MANTIS_FREIGHTER_LIST_2_text"
+                  },
+                  "effects": [],
+                  "node": {
+                    "kind": "combat",
+                    "ship": "MANTIS_ROCK_MANTIS_FREIGHTER",
+                    "ship_labels": [
+                      "Mantis Scout",
+                      "Mantis Fighter",
+                      "Mantis Bomber"
+                    ],
+                    "hostile": true,
+                    "auto_blueprint": "SHIPS_MANTIS",
+                    "source": "raw/gamedata/events_rock.xml",
+                    "branches": [
+                      {
+                        "on": "destroyed",
+                        "child": {
+                          "text": {
+                            "value": "In the time it took you to eliminate the Mantis ship the Rock must have repaired their FTL drive and jumped away. You pick the bones of both Mantis vessels.",
+                            "ref": "ship_MANTIS_ROCK_MANTIS_FREIGHTER_destroyed_text"
+                          },
+                          "effects": [
+                            {
+                              "kind": "reward",
+                              "level": "MED",
+                              "tier": "standard"
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "on": "deadCrew",
+                        "child": {
+                          "text": {
+                            "value": "In the time it took you to eliminate the Mantis ship the Rock must have repaired their FTL drive and jumped away. You pick the bones of both Mantis vessels.",
+                            "ref": "ship_MANTIS_ROCK_MANTIS_FREIGHTER_destroyed_text"
+                          },
+                          "effects": [
+                            {
+                              "kind": "reward",
+                              "level": "MED",
+                              "tier": "standard"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            ]
+          }
+        },
+        "label_ref": "event_ROCK_MANTIS_FREIGHTER_c1_choice",
+        "hidden": true
+      },
+      {
+        "label": "Ignore them.",
+        "gate": null,
+        "child": {
+          "text": {
+            "value": "There's quite enough action here already - prepare for light speed.",
+            "ref": "event_ROCK_MANTIS_FREIGHTER_c2_text"
+          },
+          "effects": []
+        },
+        "label_ref": "event_ROCK_MANTIS_FREIGHTER_c2_choice",
+        "hidden": true
+      },
+      {
+        "label": "(Repair Drone) Repair the Rock ship.",
+        "gate": {
+          "req": "REPAIR",
+          "label": "System Repair Drone"
+        },
+        "child": {
+          "text": {
+            "value": "While the two Mantis fight you approach the Rock ship and send a repair drone through one of the many breaches. It fixes the ship up enough to make at least a single jump. You're surprised when, instead, they embark on a kamikaze run on the two Mantis, which results in the obliteration of all three!",
+            "ref": "event_ROCK_MANTIS_FREIGHTER_c3_text"
+          },
+          "effects": [
+            {
+              "kind": "reward",
+              "level": "HIGH",
+              "tier": "standard"
+            },
+            {
+              "kind": "resource",
+              "resource": "drones",
+              "min": -1,
+              "max": -1
+            }
+          ]
+        },
+        "label_ref": "event_ROCK_MANTIS_FREIGHTER_c3_choice",
+        "hidden": true
+      },
+      {
+        "label": "(Hull Repair Drone) Repair their hull.",
+        "gate": {
+          "req": "SHIP_REPAIR",
+          "label": "Hull Repair"
+        },
+        "child": {
+          "text": {
+            "value": "While the two Mantis fight you approach the Rock ship and use a drone to fix up the ship. Once the breaches are fixed the life support flickers back on. In a matter of moments they are already in pursuit of one of the Mantis ships. Meanwhile the second Mantis turns toward you.",
+            "ref": "event_ROCK_MANTIS_FREIGHTER_c4_text"
+          },
+          "effects": [
+            {
+              "kind": "resource",
+              "resource": "drones",
+              "min": -1,
+              "max": -1
+            }
+          ],
+          "node": {
+            "kind": "combat",
+            "ship": "MANTIS_ROCK_MANTIS_FREIGHTER",
+            "ship_labels": [
+              "Mantis Scout",
+              "Mantis Fighter",
+              "Mantis Bomber"
+            ],
+            "hostile": true,
+            "auto_blueprint": "SHIPS_MANTIS",
+            "source": "raw/gamedata/events_rock.xml",
+            "branches": [
+              {
+                "on": "destroyed",
+                "child": {
+                  "text": {
+                    "value": "In the time it took you to eliminate the Mantis ship the Rock must have repaired their FTL drive and jumped away. You pick the bones of both Mantis vessels.",
+                    "ref": "ship_MANTIS_ROCK_MANTIS_FREIGHTER_destroyed_text"
+                  },
+                  "effects": [
+                    {
+                      "kind": "reward",
+                      "level": "MED",
+                      "tier": "standard"
+                    }
+                  ]
+                }
+              },
+              {
+                "on": "deadCrew",
+                "child": {
+                  "text": {
+                    "value": "In the time it took you to eliminate the Mantis ship the Rock must have repaired their FTL drive and jumped away. You pick the bones of both Mantis vessels.",
+                    "ref": "ship_MANTIS_ROCK_MANTIS_FREIGHTER_destroyed_text"
+                  },
+                  "effects": [
+                    {
+                      "kind": "reward",
+                      "level": "MED",
+                      "tier": "standard"
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        "label_ref": "event_ROCK_MANTIS_FREIGHTER_c4_choice",
+        "hidden": true
+      }
+    ]
+  }
+}

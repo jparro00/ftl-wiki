@@ -1,0 +1,235 @@
+{
+  "schema": "ftl-event-tree/1",
+  "id": "DISTRESS_SATELLITE_DEFENSE",
+  "slug": "malfunctioning-defense-system",
+  "title": "Malfunctioning defense system",
+  "extracted_from": "raw/gamedata/events.xml",
+  "text": {
+    "value": "The distress signal is coming from a small space station orbiting an uninhabited planet. Their satellite defense system has gone haywire and their repair crew can't approach without being fired on. They're looking for help to fix or disable it.",
+    "ref": "event_DISTRESS_SATELLITE_DEFENSE_text"
+  },
+  "name": "DISTRESS_SATELLITE_DEFENSE",
+  "source": "raw/gamedata/events.xml",
+  "effects": [],
+  "flags": {
+    "unique": true,
+    "beacon": "distress"
+  },
+  "node": {
+    "kind": "decision",
+    "options": [
+      {
+        "label": "Promise to help.",
+        "gate": null,
+        "child": {
+          "text": {
+            "value": "You consider your options.",
+            "ref": "event_DISTRESS_SATELLITE_DEFENSE_c1_text"
+          },
+          "effects": [],
+          "node": {
+            "kind": "decision",
+            "options": [
+              {
+                "label": "Simply fire on the defense system from a distance.",
+                "gate": null,
+                "child": {
+                  "effects": [],
+                  "node": {
+                    "kind": "chance",
+                    "list": "SATELLITE_DEFENSE_BORING",
+                    "source": "raw/gamedata/events.xml",
+                    "odds_basis": "unweighted",
+                    "options": [
+                      {
+                        "share": null,
+                        "child": {
+                          "text": {
+                            "value": "You fire a few volleys from a distance and it is clear the defense system is no match for your weapons. However, the station does not seem happy with your 'solution'. You salvage what you can and jump before there is trouble.",
+                            "ref": "event_SATELLITE_DEFENSE_BORING_1_text"
+                          },
+                          "effects": [
+                            {
+                              "kind": "reward",
+                              "level": "LOW",
+                              "tier": "standard"
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "share": null,
+                        "child": {
+                          "text": {
+                            "value": "You fire a few volleys but aren't able to penetrate the defense system's shields. Its weapons have no trouble piercing yours though, and you take minor damage before escaping. The station will need to find help elsewhere.",
+                            "ref": "event_SATELLITE_DEFENSE_BORING_2_text"
+                          },
+                          "effects": [
+                            {
+                              "kind": "hull_damage",
+                              "amount": 3
+                            },
+                            {
+                              "kind": "system_damage",
+                              "amount": 1,
+                              "system": "random",
+                              "dlc": true
+                            },
+                            {
+                              "kind": "system_damage",
+                              "amount": 1,
+                              "system": "room"
+                            },
+                            {
+                              "kind": "hazard",
+                              "hazard": "breach"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                },
+                "label_ref": "event_DISTRESS_SATELLITE_DEFENSE_c1_c1_choice",
+                "hidden": true
+              },
+              {
+                "label": "(Ion Weapon) Disable the defense system.",
+                "gate": {
+                  "req": "WEAPONS_ION"
+                },
+                "child": {
+                  "text": {
+                    "value": "You use your ion weaponry to disable the gun long enough for their repair crews to fix it. They message you, \"I've never seen a weapon like that before! Thanks for your help. Please accept this reward.\"",
+                    "ref": "event_DISTRESS_SATELLITE_DEFENSE_c1_c2_text"
+                  },
+                  "effects": [
+                    {
+                      "kind": "reward",
+                      "level": "HIGH",
+                      "tier": "standard"
+                    }
+                  ]
+                },
+                "label_ref": "event_DISTRESS_SATELLITE_DEFENSE_c1_c2_choice",
+                "hidden": true
+              },
+              {
+                "label": "(Cloaking) Use your Cloaking to disable the system.",
+                "gate": {
+                  "req": "cloaking",
+                  "label": "Cloaking",
+                  "lvl": "1",
+                  "max_group": "0"
+                },
+                "child": {
+                  "text": {
+                    "value": "You use your ship's Cloaking to try to prevent the defense system from getting a lock. However before you are able to safely disable the system your cloaking gives out and you are forced to destroy the satellite. No one was harmed but they don't seem happy with your solution.",
+                    "ref": "event_DISTRESS_SATELLITE_DEFENSE_c1_c3_text"
+                  },
+                  "effects": [
+                    {
+                      "kind": "reward",
+                      "level": "LOW",
+                      "tier": "standard"
+                    }
+                  ]
+                },
+                "label_ref": "event_DISTRESS_SATELLITE_DEFENSE_c1_c3_choice",
+                "hidden": true
+              },
+              {
+                "label": "(Improved Cloaking) Use your Cloaking to disable the system.",
+                "gate": {
+                  "req": "cloaking",
+                  "label": "Cloaking",
+                  "lvl": "2",
+                  "max_group": "0"
+                },
+                "child": {
+                  "text": {
+                    "value": "You use your ships Cloaking to prevent the defense system from getting a lock. Once closer, you hasten to disable the system without damaging it. It was a sloppy job but they appreciate it and offer a reward.",
+                    "ref": "event_DISTRESS_SATELLITE_DEFENSE_c1_c4_text"
+                  },
+                  "effects": [
+                    {
+                      "kind": "reward",
+                      "level": "MED",
+                      "tier": "standard"
+                    }
+                  ]
+                },
+                "label_ref": "event_DISTRESS_SATELLITE_DEFENSE_c1_c4_choice",
+                "hidden": true,
+                "dlc": true
+              },
+              {
+                "label": "(Advanced Cloaking) Use your Cloaking to disable the system.",
+                "gate": {
+                  "req": "cloaking",
+                  "label": "Cloaking",
+                  "lvl": "3",
+                  "max_group": "0"
+                },
+                "child": {
+                  "text": {
+                    "value": "Your ship's Advanced Cloaking allows you to approach the defense system without an issue. Once closer, you are able to safely disable the system. They thank you for your help and offer a reward.",
+                    "ref": "event_DISTRESS_SATELLITE_DEFENSE_c1_c5_text"
+                  },
+                  "effects": [
+                    {
+                      "kind": "reward",
+                      "level": "HIGH",
+                      "tier": "standard"
+                    }
+                  ]
+                },
+                "label_ref": "event_DISTRESS_SATELLITE_DEFENSE_c1_c5_choice",
+                "hidden": true,
+                "dlc": true
+              },
+              {
+                "label": "(Engi Crew) Remotely repair its targeting system.",
+                "gate": {
+                  "req": "engi",
+                  "label": "Engi"
+                },
+                "child": {
+                  "text": {
+                    "value": "Your crew-member is able to remotely fix the glitch in the defense AI, allowing the repair crew to close in and finish the job. The station gives you its thanks along with a reward.",
+                    "ref": "event_DISTRESS_SATELLITE_DEFENSE_c1_c6_text"
+                  },
+                  "effects": [
+                    {
+                      "kind": "reward",
+                      "level": "HIGH",
+                      "tier": "standard"
+                    }
+                  ]
+                },
+                "label_ref": "event_DISTRESS_SATELLITE_DEFENSE_c1_c6_choice",
+                "hidden": true,
+                "dlc": true
+              }
+            ]
+          }
+        },
+        "label_ref": "event_DISTRESS_SATELLITE_DEFENSE_c1_choice",
+        "hidden": true
+      },
+      {
+        "label": "Leave them alone.",
+        "gate": null,
+        "child": {
+          "text": {
+            "value": "You can't help them so you prepare to move on.",
+            "ref": "event_DISTRESS_SATELLITE_DEFENSE_c2_text"
+          },
+          "effects": []
+        },
+        "label_ref": "event_DISTRESS_SATELLITE_DEFENSE_c2_choice",
+        "hidden": true
+      }
+    ]
+  }
+}

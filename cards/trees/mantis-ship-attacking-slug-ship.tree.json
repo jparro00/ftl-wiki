@@ -1,0 +1,284 @@
+{
+  "schema": "ftl-event-tree/1",
+  "id": "SLUG_DISTRESS_MANTIS",
+  "slug": "mantis-ship-attacking-slug-ship",
+  "title": "Mantis ship attacking Slug ship",
+  "extracted_from": "raw/gamedata/events_slug.xml",
+  "text": {
+    "value": "The distress call appears to be emanating from a Slug ship caught in open space by a Mantis raider. They contact you on emergency frequencies: \"Please, we'll give you all we have if you sssave ussss!\"",
+    "ref": "event_SLUG_DISTRESS_MANTIS_text"
+  },
+  "name": "SLUG_DISTRESS_MANTIS",
+  "source": "raw/gamedata/events_slug.xml",
+  "effects": [],
+  "flags": {
+    "unique": true,
+    "beacon": "distress"
+  },
+  "node": {
+    "kind": "decision",
+    "options": [
+      {
+        "label": "Attack the Mantis ship.",
+        "gate": null,
+        "child": {
+          "text": {
+            "value": "You lock onto the Mantis ship and engage.",
+            "ref": "event_SLUG_DISTRESS_MANTIS_c1_text"
+          },
+          "effects": [],
+          "node": {
+            "kind": "combat",
+            "ship": "SLUG_DISTRESS_MANTIS",
+            "ship_labels": [
+              "Mantis Scout",
+              "Mantis Fighter",
+              "Mantis Bomber"
+            ],
+            "hostile": true,
+            "auto_blueprint": "SHIPS_MANTIS",
+            "source": "raw/gamedata/events_ships.xml",
+            "branches": [
+              {
+                "on": "destroyed",
+                "child": {
+                  "text": {
+                    "value": "The Mantis defeated, you contact the weakened Slug vessel. \"You ssseee,\" they begin, \"we are most grateful, but, that isss, we do not currently have the liquid asssets to reward you at this time.\"",
+                    "ref": "ship_SLUG_DISTRESS_MANTIS_destroyed_text"
+                  },
+                  "effects": [
+                    {
+                      "kind": "reward",
+                      "level": "MED",
+                      "tier": "standard"
+                    }
+                  ],
+                  "node": {
+                    "kind": "decision",
+                    "options": [
+                      {
+                        "label": "Leave them be.",
+                        "gate": null,
+                        "child": {
+                          "text": {
+                            "value": "These wretches aren't worth fighting. Time to spin up and jump off.",
+                            "ref": "ship_SLUG_DISTRESS_MANTIS_destroyed_c1_text"
+                          },
+                          "effects": []
+                        },
+                        "label_ref": "ship_SLUG_DISTRESS_MANTIS_destroyed_c1_choice",
+                        "hidden": true
+                      },
+                      {
+                        "label": "Finish them off.",
+                        "gate": null,
+                        "child": {
+                          "effects": [],
+                          "node": {
+                            "kind": "chance",
+                            "list": "SLUG_DISTRESS_MANTIS_SURRENDER",
+                            "source": "raw/gamedata/events_slug.xml",
+                            "odds_basis": "unweighted",
+                            "options": [
+                              {
+                                "share": null,
+                                "child": {
+                                  "text": {
+                                    "value": "It doesn't look like they can stand much more damage. After a few shots their ship breaks apart and you move in to loot the remains.",
+                                    "ref": "event_SLUG_DISTRESS_MANTIS_SURRENDER_1_text"
+                                  },
+                                  "effects": [
+                                    {
+                                      "kind": "reward",
+                                      "level": "RANDOM",
+                                      "tier": "standard"
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "share": null,
+                                "child": {
+                                  "text": {
+                                    "value": "The Slug captain hails you: \"A misstake! A sssimple misstake. Of course we can pay you! Ssseee? An augmentation has already transported.\" You allow them to leave with their lives.",
+                                    "ref": "event_SLUG_DISTRESS_MANTIS_SURRENDER_2_text"
+                                  },
+                                  "effects": [
+                                    {
+                                      "kind": "reward",
+                                      "level": "LOW",
+                                      "tier": "augment"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          }
+                        },
+                        "label_ref": "ship_SLUG_DISTRESS_MANTIS_destroyed_c2_choice",
+                        "hidden": true
+                      }
+                    ]
+                  }
+                }
+              },
+              {
+                "on": "deadCrew",
+                "child": {
+                  "text": {
+                    "value": "The Mantis defeated, you contact the weakened Slug vessel. \"You sssee,\" they begin, \"we are most grateful, but, that isss, we do not currently have the liquid asssets to reward you at thiss time.\"",
+                    "ref": "ship_SLUG_DISTRESS_MANTIS_deadCrew_text"
+                  },
+                  "effects": [
+                    {
+                      "kind": "reward",
+                      "level": "MED",
+                      "tier": "standard"
+                    }
+                  ],
+                  "node": {
+                    "kind": "decision",
+                    "options": [
+                      {
+                        "label": "Leave them be.",
+                        "gate": null,
+                        "child": {
+                          "text": {
+                            "value": "These wretches aren't worth fighting. Time to spin up and jump off.",
+                            "ref": "ship_SLUG_DISTRESS_MANTIS_destroyed_c1_text"
+                          },
+                          "effects": []
+                        },
+                        "label_ref": "ship_SLUG_DISTRESS_MANTIS_destroyed_c1_choice",
+                        "hidden": true
+                      },
+                      {
+                        "label": "Finish them off.",
+                        "gate": null,
+                        "child": {
+                          "effects": [],
+                          "node": {
+                            "kind": "chance",
+                            "list": "SLUG_DISTRESS_MANTIS_SURRENDER",
+                            "source": "raw/gamedata/events_slug.xml",
+                            "odds_basis": "unweighted",
+                            "options": [
+                              {
+                                "share": null,
+                                "child": {
+                                  "text": {
+                                    "value": "It doesn't look like they can stand much more damage. After a few shots their ship breaks apart and you move in to loot the remains.",
+                                    "ref": "event_SLUG_DISTRESS_MANTIS_SURRENDER_1_text"
+                                  },
+                                  "effects": [
+                                    {
+                                      "kind": "reward",
+                                      "level": "RANDOM",
+                                      "tier": "standard"
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "share": null,
+                                "child": {
+                                  "text": {
+                                    "value": "The Slug captain hails you: \"A misstake! A sssimple misstake. Of course we can pay you! Ssseee? An augmentation has already transported.\" You allow them to leave with their lives.",
+                                    "ref": "event_SLUG_DISTRESS_MANTIS_SURRENDER_2_text"
+                                  },
+                                  "effects": [
+                                    {
+                                      "kind": "reward",
+                                      "level": "LOW",
+                                      "tier": "augment"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          }
+                        },
+                        "label_ref": "ship_SLUG_DISTRESS_MANTIS_destroyed_c2_choice",
+                        "hidden": true
+                      }
+                    ]
+                  }
+                }
+              }
+            ]
+          }
+        },
+        "label_ref": "event_SLUG_DISTRESS_MANTIS_c1_choice",
+        "hidden": true
+      },
+      {
+        "label": "Attack the Slug ship.",
+        "gate": null,
+        "child": {
+          "text": {
+            "value": "You move to finish what the Mantis have started.",
+            "ref": "event_SLUG_DISTRESS_MANTIS_c2_text"
+          },
+          "effects": [],
+          "node": {
+            "kind": "combat",
+            "ship": "SLUG_DISTRESS_MANTIS_SLUG",
+            "ship_labels": [
+              "Slug Interceptor",
+              "Slug Light-Cruiser",
+              "Slug Assault"
+            ],
+            "hostile": true,
+            "auto_blueprint": "SHIPS_JELLY",
+            "source": "raw/gamedata/events_ships.xml",
+            "branches": [
+              {
+                "on": "destroyed",
+                "child": {
+                  "text": {
+                    "value": "At last the Slugs' prized possessions are yours for the taking. After, that is, you split your takings with the Mantis.",
+                    "ref": "ship_SLUG_DISTRESS_MANTIS_SLUG_destroyed_text"
+                  },
+                  "effects": [
+                    {
+                      "kind": "reward",
+                      "level": "HIGH",
+                      "tier": "standard"
+                    }
+                  ]
+                }
+              },
+              {
+                "on": "deadCrew",
+                "child": {
+                  "text": {
+                    "value": "At last the Slugs' prized possessions are yours for the taking. After, that is, you split your takings with the Mantis.",
+                    "ref": "ship_SLUG_DISTRESS_MANTIS_SLUG_destroyed_text"
+                  },
+                  "effects": [
+                    {
+                      "kind": "reward",
+                      "level": "HIGH",
+                      "tier": "standard"
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        "label_ref": "event_SLUG_DISTRESS_MANTIS_c2_choice",
+        "hidden": true
+      },
+      {
+        "label": "Of all the species in the galaxy, these two deserve one another. You power up the jump drive.",
+        "gate": null,
+        "child": {
+          "effects": []
+        },
+        "label_ref": "event_SLUG_DISTRESS_MANTIS_c3_choice",
+        "hidden": true
+      }
+    ]
+  }
+}

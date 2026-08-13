@@ -1,0 +1,72 @@
+{
+  "schema": "ftl-event-tree/1",
+  "id": "START_BEACON_CRYSTAL",
+  "slug": "start-beacon-crystal",
+  "title": "Start beacon (Crystal)",
+  "extracted_from": "raw/gamedata/events_crystal.xml",
+  "text": {
+    "value": "You arrive in a sector not listed in any star charts. Strange crystalline ships dot the horizon. Your companion speaks, \"Here we are, my home sector. It has been a long time since others have set foot here, I wonder how you will be received.\"",
+    "ref": "event_START_BEACON_CRYSTAL_text"
+  },
+  "name": "START_BEACON_CRYSTAL",
+  "source": "raw/gamedata/events_crystal.xml",
+  "effects": [],
+  "node": {
+    "kind": "decision",
+    "options": [
+      {
+        "label": "Continue...",
+        "gate": null,
+        "child": {
+          "text": {
+            "value": "\"You have done as you promised and so shall I. The coordinates of my old ship have been forwarded to your navigation system.\"",
+            "ref": "event_START_BEACON_CRYSTAL_c1_text"
+          },
+          "effects": [
+            {
+              "kind": "quest",
+              "event": "CRYSTAL_UNLOCK"
+            }
+          ]
+        },
+        "label_ref": "continue",
+        "hidden": true
+      }
+    ]
+  },
+  "chain": [
+    {
+      "id": "CRYSTAL_UNLOCK",
+      "from": "START_BEACON_CRYSTAL",
+      "slug": "crystal-unlock",
+      "title": "Crystal unlock",
+      "text": {
+        "value": "You arrive at the coordinates to find a massive Crystalline cruiser docked at a small repair station. You arrange for the ship to be sent back to the Federation base while the station upgrades your hull.",
+        "ref": "event_CRYSTAL_UNLOCK_text"
+      },
+      "name": "CRYSTAL_UNLOCK",
+      "source": "raw/gamedata/events_crystal.xml",
+      "effects": [
+        {
+          "kind": "reward",
+          "level": "MED",
+          "tier": "fuel"
+        },
+        {
+          "kind": "item",
+          "item_kind": "augment",
+          "id": "CRYSTAL_SHARDS",
+          "label": "Crystal Vengeance"
+        },
+        {
+          "kind": "hull_repair",
+          "amount": 10
+        },
+        {
+          "kind": "unlock_ship",
+          "id": "8"
+        }
+      ]
+    }
+  ]
+}

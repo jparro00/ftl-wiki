@@ -1,0 +1,132 @@
+{
+  "schema": "ftl-event-tree/1",
+  "id": "PIRATE_NO_ESCAPE",
+  "slug": "pirate-engine-hacker",
+  "title": "Pirate engine hacker",
+  "extracted_from": "raw/gamedata/events_pirate.xml",
+  "text": {
+    "value": "Once you arrive, your screen lights up with warnings. A nearby pirate seems to have advanced hacking tools and they have tried to shut down your engines. Your crew manages to keep them barely operational and you move into attack.",
+    "ref": "event_PIRATE_NO_ESCAPE_text"
+  },
+  "name": "PIRATE_NO_ESCAPE",
+  "source": "raw/gamedata/events_pirate.xml",
+  "effects": [],
+  "flags": {
+    "unique": true
+  },
+  "node": {
+    "kind": "decision",
+    "options": [
+      {
+        "label": "Continue...",
+        "gate": null,
+        "child": {
+          "effects": [
+            {
+              "kind": "status",
+              "status": "limit",
+              "target": "player",
+              "system": "engines",
+              "amount": 1
+            }
+          ]
+        },
+        "label_ref": "continue",
+        "hidden": true
+      },
+      {
+        "label": "(Hacking System) Counter the remote hacking.",
+        "gate": {
+          "req": "hacking",
+          "label": "Hacking"
+        },
+        "child": {
+          "text": {
+            "value": "Your Hacking System automatically counters the digital assault and you move in to fight the ship.",
+            "ref": "event_PIRATE_NO_ESCAPE_c2_text"
+          },
+          "effects": [
+            {
+              "kind": "status",
+              "status": "limit",
+              "target": "player",
+              "system": "hacking",
+              "amount": 0
+            }
+          ]
+        },
+        "label_ref": "event_PIRATE_NO_ESCAPE_c2_choice",
+        "hidden": true
+      }
+    ],
+    "combat": {
+      "kind": "combat",
+      "ship": "PIRATE_NO_ESCAPE",
+      "hostile": true,
+      "auto_blueprint": "SHIPS_PIRATE",
+      "source": "raw/gamedata/events_ships.xml",
+      "branches": [
+        {
+          "on": "destroyed",
+          "child": {
+            "text": {
+              "value": "With the pirate ship destroyed, your ship's system is restored to full functionality. You salvage what you can from the debris.",
+              "ref": "ship_PIRATE_NO_ESCAPE_destroyed_text"
+            },
+            "effects": [
+              {
+                "kind": "reward",
+                "level": "RANDOM",
+                "tier": "fuel"
+              },
+              {
+                "kind": "status",
+                "status": "clear",
+                "target": "player",
+                "system": "engines",
+                "amount": 100
+              },
+              {
+                "kind": "status",
+                "status": "clear",
+                "target": "player",
+                "system": "hacking",
+                "amount": 100
+              }
+            ]
+          }
+        },
+        {
+          "on": "deadCrew",
+          "child": {
+            "text": {
+              "value": "With the pirate ship disabled, your engines come online again. You salvage what you can from their ship.",
+              "ref": "ship_PIRATE_NO_ESCAPE_deadCrew_text"
+            },
+            "effects": [
+              {
+                "kind": "reward",
+                "level": "MED",
+                "tier": "fuel"
+              },
+              {
+                "kind": "status",
+                "status": "clear",
+                "target": "player",
+                "system": "engines",
+                "amount": 100
+              },
+              {
+                "kind": "status",
+                "status": "clear",
+                "target": "player",
+                "system": "hacking",
+                "amount": 100
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,112 @@
+{
+  "schema": "ftl-event-tree/1",
+  "id": "CRYSTAL_HUNTER",
+  "slug": "crystal-fight-with-surrender-offer-human-crew",
+  "title": "Crystal fight with surrender offer (Human crew)",
+  "extracted_from": "raw/gamedata/events_crystal.xml",
+  "text": {
+    "value": "Crystal shards fly past your ship as soon as you jump. You scan to find the assailant and discover a Crystalline ship carrying a number of humans in its cargo bay. It must be hunting the intruding ships!",
+    "ref": "event_CRYSTAL_HUNTER_text"
+  },
+  "name": "CRYSTAL_HUNTER",
+  "source": "raw/gamedata/events_crystal.xml",
+  "effects": [],
+  "flags": {
+    "unique": true
+  },
+  "node": {
+    "kind": "combat",
+    "ship": "CRYSTAL_HUNTER",
+    "ship_labels": [
+      "Crystal Scout",
+      "Crystal Bomber"
+    ],
+    "hostile": true,
+    "auto_blueprint": "SHIPS_CRYSTAL",
+    "source": "raw/gamedata/events_ships.xml",
+    "branches": [
+      {
+        "on": "destroyed",
+        "child": {
+          "text": {
+            "value": "The Crystalline ship shatters and you pick what you can from the debris. Who knows how many people you've saved by stopping this ship.",
+            "ref": "ship_CRYSTAL_HUNTER_destroyed_text"
+          },
+          "effects": [
+            {
+              "kind": "reward",
+              "level": "MED",
+              "tier": "standard"
+            }
+          ]
+        }
+      },
+      {
+        "on": "deadCrew",
+        "child": {
+          "text": {
+            "value": "The crew of the enemy ship has been eliminated. You scrap what you can. Who knows how many people you've saved by stopping this ship.",
+            "ref": "ship_CRYSTAL_HUNTER_deadCrew_text"
+          },
+          "effects": [
+            {
+              "kind": "reward",
+              "level": "MED",
+              "tier": "standard"
+            }
+          ]
+        }
+      },
+      {
+        "on": "surrender",
+        "child": {
+          "text": {
+            "value": "The hunters message you, \"We surrender. Take one of these squishy meat sacks that we've captured.\" He must be referring to the human captives.",
+            "ref": "ship_CRYSTAL_HUNTER_surrender_text"
+          },
+          "effects": [],
+          "node": {
+            "kind": "decision",
+            "options": [
+              {
+                "label": "Accept their surrender.",
+                "gate": null,
+                "child": {
+                  "text": {
+                    "value": "They send one of their prisoners over to your ship. They're a bit shaken up and you suspect that they were once a Rebel, but they seem very glad to be free.",
+                    "ref": "ship_CRYSTAL_HUNTER_surrender_c1_text"
+                  },
+                  "effects": [
+                    {
+                      "kind": "crew_gain",
+                      "amount": 1,
+                      "class": "human"
+                    }
+                  ]
+                },
+                "label_ref": "ship_CRYSTAL_HUNTER_surrender_c1_choice",
+                "hidden": true
+              },
+              {
+                "label": "Finish them off.",
+                "gate": null,
+                "child": {
+                  "text": {
+                    "value": "Who knows how many humans will be saved if you kill them now.",
+                    "ref": "ship_CRYSTAL_HUNTER_surrender_c2_text"
+                  },
+                  "effects": []
+                },
+                "label_ref": "ship_CRYSTAL_HUNTER_surrender_c2_choice",
+                "hidden": true
+              }
+            ]
+          }
+        },
+        "chance": "0.5",
+        "min": "3",
+        "max": "4"
+      }
+    ]
+  }
+}

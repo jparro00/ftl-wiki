@@ -1,0 +1,15 @@
+{
+  "schema": "ftl-event-tree/1",
+  "id": "START_BEACON_NEBULA",
+  "slug": "start-beacon-nebula",
+  "title": "Start beacon (nebula)",
+  "extracted_from": "raw/gamedata/events_nebula.xml",
+  "text": {
+    "value": "This nebula must have been an important hub at one point; placing all of these jump beacons would be no easy task. However, now it's hardly navigable.",
+    "ref": "START_BEACON_NEBULA",
+    "variants": 6
+  },
+  "name": "START_BEACON_NEBULA",
+  "source": "raw/gamedata/events_nebula.xml",
+  "effects": []
+}

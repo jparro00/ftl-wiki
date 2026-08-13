@@ -1,0 +1,15 @@
+{
+  "schema": "ftl-event-tree/1",
+  "id": "START_BEACON_ZOLTAN",
+  "slug": "start-beacon-zoltan",
+  "title": "Start beacon (Zoltan)",
+  "extracted_from": "raw/gamedata/events_zoltan.xml",
+  "text": {
+    "value": "You've entered Zoltan territory. This species is not renowned for giving anything for nothing, but you can always be assured a fair hearing.",
+    "ref": "START_BEACON_ZOLTAN",
+    "variants": 4
+  },
+  "name": "START_BEACON_ZOLTAN",
+  "source": "raw/gamedata/events_zoltan.xml",
+  "effects": []
+}

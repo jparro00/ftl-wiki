@@ -1,0 +1,173 @@
+{
+  "schema": "ftl-event-tree/1",
+  "id": "ZOLTAN_LIFERAFT",
+  "slug": "zoltan-retake-the-ship",
+  "title": "Zoltan retake the ship",
+  "extracted_from": "raw/gamedata/events_zoltan.xml",
+  "text": {
+    "value": "You pick up a Zoltan life raft floating in space. Its inhabitant asks you to retake his ship from the pirates who recently commandeered it. \"I'm certain it is clear,\" he concludes, \"that you must not destroy my vessel in the process.\"",
+    "ref": "event_ZOLTAN_LIFERAFT_text"
+  },
+  "name": "ZOLTAN_LIFERAFT",
+  "source": "raw/gamedata/events_zoltan.xml",
+  "effects": [],
+  "flags": {
+    "unique": true
+  },
+  "node": {
+    "kind": "decision",
+    "options": [
+      {
+        "label": "Engage the pirates.",
+        "gate": null,
+        "child": {
+          "effects": [
+            {
+              "kind": "ship_hostility",
+              "hostile": true
+            }
+          ]
+        },
+        "label_ref": "event_ZOLTAN_LIFERAFT_c1_choice",
+        "hidden": true
+      },
+      {
+        "label": "Leave.",
+        "gate": null,
+        "child": {
+          "text": {
+            "value": "You refuse to get his ship back, but still offer to drop him off at the next station. The Zoltan is displeased, but directs you to a nearby starbase just the same.",
+            "ref": "event_ZOLTAN_LIFERAFT_c2_text"
+          },
+          "effects": []
+        },
+        "label_ref": "event_ZOLTAN_LIFERAFT_c2_choice"
+      }
+    ],
+    "combat": {
+      "kind": "combat",
+      "ship": "ZOLTAN_LIFERAFT",
+      "ship_labels": [
+        "Pirate Fighter",
+        "Pirate Bomber"
+      ],
+      "hostile": false,
+      "auto_blueprint": "SHIPS_ZOLTAN_PIRATE",
+      "source": "raw/gamedata/events_ships.xml",
+      "branches": [
+        {
+          "on": "destroyed",
+          "child": {
+            "text": {
+              "value": "You salvage what you can from the ship.",
+              "ref": "ship_ZOLTAN_LIFERAFT_destroyed_text"
+            },
+            "effects": [
+              {
+                "kind": "reward",
+                "level": "MED",
+                "tier": "standard"
+              }
+            ],
+            "node": {
+              "kind": "decision",
+              "options": [
+                {
+                  "label": "Continue...",
+                  "gate": null,
+                  "child": {
+                    "text": {
+                      "value": "The Zoltan looks deeply dissatisfied with your aiming and demands to be dropped off at your earliest convenience.",
+                      "ref": "ship_ZOLTAN_LIFERAFT_destroyed_c1_text"
+                    },
+                    "effects": [],
+                    "node": {
+                      "kind": "decision",
+                      "options": [
+                        {
+                          "label": "Let him go.",
+                          "gate": null,
+                          "child": {
+                            "effects": []
+                          },
+                          "label_ref": "ship_ZOLTAN_LIFERAFT_destroyed_c1_c1_choice"
+                        },
+                        {
+                          "label": "Offer to hire him for 40 scrap.",
+                          "gate": null,
+                          "child": {
+                            "effects": [],
+                            "node": {
+                              "kind": "chance",
+                              "list": "ZOLTAN_LIFERAFT_HIRE",
+                              "source": "raw/gamedata/events_zoltan.xml",
+                              "odds_basis": "unweighted",
+                              "options": [
+                                {
+                                  "share": null,
+                                  "child": {
+                                    "text": {
+                                      "value": "He responds haughtily, \"You would presume I would work under your command after such a display of... prowess? No, I must decline.\"",
+                                      "ref": "event_ZOLTAN_LIFERAFT_HIRE_1_text"
+                                    },
+                                    "effects": []
+                                  }
+                                },
+                                {
+                                  "share": null,
+                                  "child": {
+                                    "text": {
+                                      "value": "He responds defeatedly, \"I suppose I have nowhere else to go without a ship. I accept your offer.\"",
+                                      "ref": "event_ZOLTAN_LIFERAFT_HIRE_2_text"
+                                    },
+                                    "effects": [
+                                      {
+                                        "kind": "resource",
+                                        "resource": "scrap",
+                                        "min": -40,
+                                        "max": -40
+                                      },
+                                      {
+                                        "kind": "crew_gain",
+                                        "amount": 1,
+                                        "class": "energy"
+                                      }
+                                    ]
+                                  }
+                                }
+                              ]
+                            }
+                          },
+                          "label_ref": "ship_ZOLTAN_LIFERAFT_destroyed_c1_c2_choice",
+                          "hidden": true
+                        }
+                      ]
+                    }
+                  },
+                  "label_ref": "continue",
+                  "hidden": true
+                }
+              ]
+            }
+          }
+        },
+        {
+          "on": "deadCrew",
+          "child": {
+            "text": {
+              "value": "The last pirate life-signs blink out and the Zoltan returns to his bridge. \"Egalitarianism is a cornerstone of successful cohabitation. Please, enjoy the fruits of your labor.\"",
+              "ref": "ship_ZOLTAN_LIFERAFT_deadCrew_text"
+            },
+            "effects": [
+              {
+                "kind": "reward",
+                "level": "HIGH",
+                "tier": "augment"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

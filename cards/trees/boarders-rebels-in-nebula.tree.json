@@ -1,0 +1,31 @@
+{
+  "schema": "ftl-event-tree/1",
+  "id": "NEBULA_REBEL_BOARDING",
+  "slug": "boarders-rebels-in-nebula",
+  "title": "Boarders: rebels in nebula",
+  "extracted_from": "raw/gamedata/events_rebel.xml",
+  "text": {
+    "value": "There appear to be a number of small stations nearby. Before you have time to scan them, warnings go off. A Rebel teleporter was used in one of the stations. You've been boarded!",
+    "ref": "event_NEBULA_REBEL_BOARDING_text"
+  },
+  "name": "NEBULA_REBEL_BOARDING",
+  "source": "raw/gamedata/events_rebel.xml",
+  "effects": [
+    {
+      "kind": "environment",
+      "environment": "nebula",
+      "target": "player"
+    },
+    {
+      "kind": "boarders",
+      "min": 3,
+      "max": 4,
+      "class": "human"
+    }
+  ],
+  "flags": {
+    "unique": true,
+    "environment": "nebula",
+    "environment_target": "player"
+  }
+}
