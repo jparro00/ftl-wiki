@@ -307,8 +307,9 @@ Page order, all of it derived except where marked:
 2. **Stat tiles** — *labels from copy*, numbers from metrics
 3. **Beacon budget** — one row per entry **in placement order**, numbered, solid blocks for
    `min` and faded for `max − min`; hostile and boarder rows are red; `placed first` and
-   `may be cut` chips from `placement`. Then the legend, the generation notes (§4.1b), the
-   entry beacon, and the *callout (copy)*
+   `may be cut` chips from `placement`. Each row is a `<details>` that **opens onto the events
+   that line can place** (§6.1); an entry resolving to no events stays a plain row. Then the
+   legend, the generation notes (§4.1b), the entry beacon, and the *callout (copy)*
 4. **Beacon markers** (§4.1c) — the distress-marked pool, the two mismatch cases, the
    store-marked pool. Fully derived; no copy hook, because it is a data finding
 5. **Pool sections** — one per entry, in section order, each row a card-derived title, id and
@@ -318,6 +319,29 @@ Page order, all of it derived except where marked:
 8. **Footnotes** — sources, the note that generation rules are community-derived, and one
    clause per condition that applies: the `unique` scope question, the no-weights rule,
    ambiguous entries, inline outcomes with no id, missing trees
+
+### 6.1 Beacon boxes are links to cards
+
+Every beacon box — in a budget row's expansion, in the markers section and in the pool
+sections, all of them `event_html()` — is an `<a>` to `../cards/card-<slug>.html` when the
+event has a card, and an inert `<div>` when it does not. The slug is the one the extractor
+already carries per event (`slug`, `card`), so nothing new is derived here.
+
+**The link is relative, and that is the constraint that decides everything about it.** A
+sector page opened from disk sits in `sectors/`, a card in `cards/`, so one hop up and across
+reaches it. A *published* page cannot: artifact URLs are minted at publish time, so no
+absolute link is knowable at build time, and a relative one does not resolve on the artifact
+host. **Published sector pages therefore have dead beacon boxes** — the expansion still works,
+because `<details>` is HTML with no scripting, but the links only go anywhere off disk. If a
+published page ever needs live links, it needs a registry of published card URLs, not a
+change here.
+
+The expansion duplicates the pool sections' content, deliberately: the budget answers "what
+does this line place?" at the point the question occurs, and the pool sections stay the place
+to read a whole section at once. It costs roughly a third of the page size.
+
+`smoke-sector.py` resolves every `href` against the page's own directory and fails on one
+that does not exist — a box that looks live and lands on a 404 is worse than an inert one.
 
 ---
 
@@ -330,7 +354,8 @@ python tools/smoke-sector.py sectors/sector-<slug>.html   # required before publ
 Parses the built page, prints **everything it can show** — title, facts, tiles, budget rows,
 every pool row with its tags, notes, chain steps, panels and footnotes — and fails on:
 unbalanced tags, an unstamped title, a stat tile that is not a number, an empty event row, a
-missing budget, and any `{{…}}` or `**` that survived into the output.
+missing budget, a beacon box whose card link does not resolve on disk, and any `{{…}}` or `**`
+that survived into the output.
 
 It does not check CSS, layout, colour or theming. It cannot check whether a sentence is true —
 that is what rule 1 in §5 is for.
@@ -375,6 +400,10 @@ Publishing is gated by its own consent prompt that no permission setting suppres
 Republishing the **same file path** keeps the same URL, so keep a page's output filename
 stable. A raw HTML file sent with SendUserFile does not render.
 
+Say what publishing costs: the beacon boxes link to cards by relative path, so on a published
+page they go nowhere (§6.1). The page a player opens from `sectors/` in a browser is the one
+where the links work.
+
 ---
 
 ## 10. Pitfalls
@@ -396,9 +425,9 @@ stable. A raw HTML file sent with SendUserFile does not render.
 
 ## 11. Known limits
 
-- A pool row shows the event's title and tags, not its outcomes. The card is one click away in
-  `cards/card-<slug>.html`, but the pages do not link to each other — artifact URLs are minted
-  at publish time and are not knowable at build time.
+- A pool row shows the event's title and tags, not its outcomes; the card it links to has them.
+  That link works **only off disk** — a published page's beacon boxes are dead, because artifact
+  URLs are minted at publish time and are not knowable at build time (§6.1).
 - `distinct_events` counts every event any entry can produce, including the store and empty-
   beacon events. It is a measure of pool breadth, not of interesting encounters.
 - **Every metric covers the allocated pool only — the `startEvent` is excluded.** That matters

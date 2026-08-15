@@ -624,7 +624,7 @@ _Reached by quest marker, fleet or boss logic, or unreachable — see [[concept-
 - [[concept-quest-beacon-placement]] — Where a quest beacon lands — and when the quest is silently thrown away | unknown | Updated: 2026-08-13
 - [[concept-rebel-fleet-advance]] — The Rebel fleet advance and `modifyPursuit` | both | Updated: 2026-08-09
 - [[concept-scrap-economy]] — The scrap economy | both | Updated: 2026-08-13
-- [[concept-sector-event-allocation]] — How events get allocated to beacons — and what "unreachable" can mean | both | Updated: 2026-08-13
+- [[concept-sector-event-allocation]] — How events get allocated to beacons — and what "unreachable" can mean; `OVERRIDE_X` substitution resolved for sector allocation | both | Updated: 2026-08-15
 - [[concept-ship-unlocks]] — Ship unlocks | both | Updated: 2026-08-13
 - [[concept-solar-flares]] — Solar flares — the `sun` hazard | both | Updated: 2026-08-13
 - [[concept-start-beacons]] — Start beacons — the sector-entry events | both | Updated: 2026-08-13
@@ -633,8 +633,8 @@ _Reached by quest marker, fleet or boss logic, or unreachable — see [[concept-
 
 ## Sources
 
-347 source pages: 33 game-data files (`reliability: high`), 309 Fandom pages
-(308 `reliability: medium`, 1 `low`), 4 research syntheses (`reliability: medium`), and
+348 source pages: 33 game-data files (`reliability: high`), 309 Fandom pages
+(308 `reliability: medium`, 1 `low`), 5 research syntheses (`reliability: medium`), and
 1 piece of first-party vendor documentation filed as `source_kind: wiki` at
 `reliability: high`.
 
@@ -994,6 +994,7 @@ Synthesised external research, written into `raw/` by instruction rather than ca
 page. `source_kind: research` and the `raw/modding/` directory are extensions beyond
 `CLAUDE.md` §1 / §2.7 — see the log entry for 2026-08-13.
 
+- [[source-beacon-name-labels-mod-research]] — raw/modding/2026-08-15-beacon-name-labels-mod.md | **can a mod name every beacon on the map before it is revealed — yes, via Hyperspace Lua only** | both | Ingested: 2026-08-15
 - [[source-modding-research]] — raw/modding/2026-08-12-ftl-modding-research.md | both | Ingested: 2026-08-13
 - [[source-xftl-oxygen-mechanics]] — raw/modding/2026-08-14-xftl-oxygen-mechanics.txt | reverse-engineered engine constants for oxygen | unknown | Ingested: 2026-08-14
 - [[source-xftl-sector-map]] — raw/modding/2026-08-15-xftl-sector-map.txt | **the sector graph, the 6×4 beacon grid, exit placement, `AddQuest`, and the fleet advance in px/jump** | unknown | Ingested: 2026-08-15

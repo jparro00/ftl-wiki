@@ -3,10 +3,10 @@ id: concept-sector-event-allocation
 type: concept
 version: both
 first_seen: 2026-08-09
-last_updated: 2026-08-13
+last_updated: 2026-08-15
 sources: 5
 related_events: []
-tags: [mechanics, methodology, unresolved]
+tags: [mechanics, methodology, unresolved, ae-delta]
 ---
 
 # How events get allocated to beacons — and what "unreachable" can mean
@@ -61,6 +61,42 @@ with no sector allocation may still be live.
 > `sector_data.xml` allocation. That justifies `sectors: []` and an open question — nothing
 > stronger. `unreachable` requires positive evidence: a commented-out sole reference, or no
 > reference anywhere in `raw/gamedata/`.
+
+## RESOLVED 2026-08-15 — `OVERRIDE_X` does replace `X` in sector allocation
+
+Settled by direct in-game observation, not by a data file. FTL Hyperspace logs sector
+generation, and a Civilian Sector generation printed an `ITEMS` allocation:
+
+```
+-- Generating Events --
+Sector: CIVILIAN_SECTOR
+Getting Event: ITEMS   x2
+...
+Creating event: STORE_REBELSIDE
+```
+
+`STORE_REBELSIDE` is **not** a member of `<eventList name="ITEMS">`
+(`raw/gamedata/newEvents.xml:185`). It exists only in `<eventList name="OVERRIDE_ITEMS">`
+(`raw/gamedata/dlcEventsOverwrite.xml:119`). An `ITEMS` allocation produced it, so under
+Advanced Edition the sector allocator resolves the name `ITEMS` to `OVERRIDE_ITEMS`.
+
+What this settles, and what it does not:
+
+- **Settled:** `OVERRIDE_X` substitutes for `X` in `sectorDescription` allocation. The AE
+  deltas `extract-sector.py` records as `override.applies: "unconfirmed"` are live content.
+- **Not settled:** whether the substitution also applies where the engine resolves a list
+  name directly (the exit beacon, the Federation base) rather than through a sector
+  allocation. The same evidence does not reach those call sites.
+
+The nine lists this changes, and their deltas, are tabulated in [[concept-ae-vs-vanilla]].
+Note `OVERRIDE_HOSTILE1` also *removes* `AUTO_BAIT` — the only removal among them, so
+substitution is not purely additive.
+
+> ⚠️ **Evidence not yet in `raw/`.** This rests on `FTL_HS.log` from a live 2026-08-15
+> session, which is an observation the user's game produced rather than a file dropped into
+> the source layer. Reliability is that of a single observed run for the *negative* claim
+> (what the lists do elsewhere) but effectively decisive for the *positive* one: an event
+> appeared that only one list contains.
 
 ## What is NOT established
 
@@ -121,8 +157,8 @@ Every event whose only list membership is `HOSTILE1`, `HOSTILE2`, `NEUTRAL2` or
       observation — no data file answers it.
 - [ ] Do boarding events occur in Federation Space in practice? A single observed
       `BOARDERS_*` event there would prove `eventCounts` live and settle this page.
-- [ ] Does `OVERRIDE_X` replace `X` wherever the name resolves, or only in sector
-      allocation?
+- [x] ~~Does `OVERRIDE_X` replace `X`~~ — resolved above **for sector allocation**.
+      Still open for names the engine resolves directly, outside either allocation table.
 
 ## Sources
 - [[source-sector-data-xml]] (per raw/gamedata/sector_data.xml)

@@ -103,9 +103,26 @@
 
   .budget { display: flex; flex-direction: column; gap: .3rem; }
   .brow {
-    display: grid; grid-template-columns: 1.4rem 17rem 3.4rem 1fr; align-items: center;
+    display: grid; grid-template-columns: 1.4rem 17rem 3.4rem 1fr .9rem; align-items: center;
     gap: .7rem; padding: .34rem .55rem; border-radius: 2px; background: var(--panel);
     border: 1px solid var(--edge);
+  }
+  /* A budget line opens onto the events it can place. <details> does the work, so the
+     page still behaves with scripting off — and inside an artifact's sandbox. */
+  .bwrap { border-radius: 2px; }
+  .brow.expandable { cursor: pointer; list-style: none; }
+  .brow.expandable::-webkit-details-marker { display: none; }
+  .brow.expandable::after {
+    content: "\203A"; justify-self: end; color: var(--faint); font-family: var(--mono);
+    font-size: .9rem; line-height: 1; transition: transform .12s ease, color .12s ease;
+  }
+  .brow.expandable:hover { border-color: var(--rail); background: var(--sunk); }
+  .brow.expandable:hover::after { color: var(--cyan); }
+  .bwrap[open] > .brow { border-bottom-left-radius: 0; border-bottom-right-radius: 0; }
+  .bwrap[open] > .brow::after { transform: rotate(90deg); color: var(--cyan); }
+  .bpool {
+    border: 1px solid var(--edge); border-top: 0; border-radius: 0 0 2px 2px;
+    background: var(--sunk); padding: .5rem .55rem .6rem 2.1rem;
   }
   .brow .rank {
     font-family: var(--mono); font-size: .66rem; color: var(--faint);
@@ -140,6 +157,15 @@
     background: var(--panel); border: 1px solid var(--edge); border-left: 2px solid var(--rail);
     border-radius: 2px; padding: .48rem .6rem; display: flex; flex-direction: column; gap: .22rem;
   }
+  /* A box that is a link goes to that event's card, one directory over. */
+  a.ev.link { color: inherit; text-decoration: none; transition: border-color .12s ease, background .12s ease; }
+  /* Three sides only — the left border is the tag rail and must keep its colour. */
+  a.ev.link:hover {
+    background: var(--sunk);
+    border-top-color: var(--cyan); border-right-color: var(--cyan); border-bottom-color: var(--cyan);
+  }
+  a.ev.link:hover .t { color: var(--cyan); }
+  a.ev.link:focus-visible { outline: 2px solid var(--cyan); outline-offset: 1px; }
   .ev.fight { border-left-color: var(--red); }
   .ev.may { border-left-color: var(--barred); }
   .ev.good { border-left-color: var(--green); }
@@ -219,8 +245,10 @@
   }
   footer p { margin: 0; }
   @media (max-width: 40rem) {
-    .brow { grid-template-columns: 1.4rem 1fr 3.4rem; }
-    .brow .track { grid-column: 1 / -1; }
+    .brow { grid-template-columns: 1.4rem 1fr 3.4rem .9rem; }
+    .brow .track { grid-column: 1 / -1; grid-row: 2; }
+    .brow.expandable::after { grid-column: 4; grid-row: 1; }
+    .bpool { padding-left: .55rem; }
   }
 </style>
 

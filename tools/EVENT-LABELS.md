@@ -171,10 +171,11 @@ from a generated append, run `--verify`, and confirm it fails.
   prose.
 - **English only.** Labelled strings are emitted into `text_events.xml.append`; a localized
   install reading a different string table would not see them.
-- **Not yet patched into the game.** Slipstream 1.9.1 loads the mod and its own **Validate**
-  reports `No Problems`, which confirms the archive layout, the metadata and the append files
-  are well-formed. It does not confirm the labels render — only patching and jumping to a
-  beacon does that.
+- ~~Not yet patched into the game.~~ **Confirmed live 2026-08-15.** A `continue.sav` written by
+  the running game carried the encounter text `"[ Start game ]\r\n\r\nThe data you carry is
+  vital to the remaining Federation fleet. …"` — the label, the `LABEL_GAP` blank line and the
+  vanilla prose, in the format §3 specifies. The labels render. (Read out of the save by
+  `tools/ftlsave.py`, which reads what the game itself is displaying.)
 
 Installed locally at `C:\Users\jparr\Documents\Slipstream` (Slipstream 1.9.1, Java 8),
 pointed at `D:\Steam\steamapps\common\FTL Faster Than Light`. All 14 vanilla files this mod

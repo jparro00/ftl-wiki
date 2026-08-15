@@ -39,23 +39,77 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 CARDS = os.path.join(ROOT, "cards")
 TREES = os.path.join(CARDS, "trees")
 
-SAVE_CANDIDATES = [
-    os.path.expandvars(r"%USERPROFILE%\Documents\My Games\FasterThanLight\continue.sav"),
-    os.path.expandvars(r"%APPDATA%\FasterThanLight\continue.sav"),
+SAVE_DIRS = [
+    os.path.expandvars(r"%USERPROFILE%\Documents\My Games\FasterThanLight"),
+    os.path.expandvars(r"%APPDATA%\FasterThanLight"),
 ]
+
+# Hyperspace redirects the game's file access through its own prefix, so a modded
+# install writes hs_continue.sav and never touches continue.sav. Both are watched, and
+# the most recently written one wins -- which is what makes the watcher follow the
+# player across an install, an uninstall, or a downgrade without being told.
+SAVE_NAMES = ["continue.sav", "hs_continue.sav"]
+
+SAVE_CANDIDATES = [os.path.join(d, n) for d in SAVE_DIRS for n in SAVE_NAMES]
 
 
 def find_save():
-    """Where continue.sav is, or where it will appear.
+    """The live save, or where one will appear.
 
     Falls back to the canonical location rather than None, because there is no save
     between runs -- FTL deletes it when one ends -- and the watcher is most useful
     started *before* the game. A missing file is the `nosave` state, not an error.
     """
-    for path in SAVE_CANDIDATES:
-        if os.path.exists(path):
-            return path
+    existing = [p for p in SAVE_CANDIDATES if os.path.exists(p)]
+    if existing:
+        return max(existing, key=lambda p: os.stat(p).st_mtime_ns)
     return SAVE_CANDIDATES[0]
+
+
+# --------------------------------------------------------------------------
+# Staleness
+# --------------------------------------------------------------------------
+
+# Python reads these files once, at import, and the watcher is meant to be left
+# running for hours. So an edit to the script does not reach a watcher already up --
+# it keeps serving the old code while looking perfectly healthy. That is not
+# hypothetical: on 2026-08-15 a watcher started at 11:46 was still following
+# continue.sav at 16:50, because SAVE_NAMES learned about hs_continue.sav at 15:44
+# and nobody restarted it. The symptom was "the watcher stopped picking up events",
+# which points at the game, the save, or the index -- anywhere but the real cause.
+_SOURCES = [os.path.abspath(__file__), os.path.abspath(ftlsave.__file__)]
+_STARTED = time.time()
+_source_warned = False
+
+
+def _source_mtimes():
+    out = {}
+    for path in _SOURCES:
+        try:
+            out[path] = os.stat(path).st_mtime_ns
+        except OSError:
+            pass  # a source that cannot be stat'd simply is not compared
+    return out
+
+
+_SOURCE_MTIMES = _source_mtimes()
+
+
+def _warn_if_source_changed():
+    """Say so, once, if the code on disk no longer matches the code running."""
+    global _source_warned
+    if _source_warned:
+        return
+    changed = [p for p, m in _source_mtimes().items() if _SOURCE_MTIMES.get(p) != m]
+    if not changed:
+        return
+    _source_warned = True
+    names = ", ".join(os.path.basename(p) for p in changed)
+    # flush: the watcher is normally launched in the background with stdout to a
+    # file, where an unflushed warning sits in the buffer and never gets read.
+    print("[stale] %s changed on disk since this watcher started at %s."
+          % (names, time.strftime("%H:%M", time.localtime(_STARTED))), flush=True)
+    print("[stale] This process is still running the old code -- restart it.", flush=True)
 
 
 # --------------------------------------------------------------------------
@@ -226,11 +280,14 @@ class Resolver:
 # --------------------------------------------------------------------------
 
 class Watcher:
-    def __init__(self, save_path, ftl_dat, resolver, verbose=False):
+    def __init__(self, save_path, ftl_dat, resolver, verbose=False, pinned_save=False):
         self.save_path = save_path
         self.ftl_dat = ftl_dat
         self.resolver = resolver
         self.verbose = verbose
+        # An explicit --save is obeyed; an auto-detected one is re-resolved each poll
+        # so the watcher follows the game between continue.sav and hs_continue.sav.
+        self._pinned_save = pinned_save
         self.lock = threading.Lock()
         self.state = {"status": "waiting", "detail": "no save read yet"}
         self._stamp = None
@@ -241,6 +298,21 @@ class Watcher:
         # capture a shared text in the next one.
         self._displayed = None
         self._anchor = None
+
+    def _scan_encounter(self):
+        """An encounter-shaped dict from a content scan, or None.
+
+        Only `text` is recovered, which is all `Resolver.resolve` reads. The *last*
+        candidate in file order is taken: the encounter block sits after the ship and
+        the star map, so anything else of this shape appears before it.
+        """
+        try:
+            hits = ftlsave.scan_encounter_text(self.save_path)
+        except OSError:
+            return None
+        if not hits:
+            return None
+        return {"text": hits[-1][1]}
 
     def snapshot(self):
         with self.lock:
@@ -275,6 +347,12 @@ class Watcher:
             self.state = state
 
     def poll_once(self, force=False):
+        # Which file is live can change under us: installing Hyperspace moves the run
+        # save to hs_continue.sav, uninstalling moves it back. Re-resolving each poll
+        # costs two stats and means neither transition needs a restart.
+        if not self._pinned_save:
+            self.save_path = find_save()
+
         try:
             st = os.stat(self.save_path)
         except OSError:
@@ -290,17 +368,23 @@ class Watcher:
             return
         self._stamp = stamp
 
+        source = "parse"
         try:
             parsed = ftlsave.parse(self.save_path, self.ftl_dat)
-        except ftlsave.SaveFormatError as exc:
-            # A save caught mid-write parses as garbage; the next poll retries.
-            self._set({"status": "error", "detail": str(exc)})
-            return
+            encounter = parsed["encounter"]
         except Exception as exc:  # noqa: BLE001 - surfaced to the page, not swallowed
-            self._set({"status": "error", "detail": "%s: %s" % (type(exc).__name__, exc)})
-            return
+            # The structured walk needs FTL's exact ship layout. A Hyperspace save is
+            # not that shape, and a save caught mid-write is not either. Both land
+            # here, and the scan tells them apart: a torn read yields nothing.
+            encounter = self._scan_encounter()
+            source = "scan"
+            if encounter is None:
+                detail = str(exc) if isinstance(exc, ftlsave.SaveFormatError) \
+                    else "%s: %s" % (type(exc).__name__, exc)
+                self._set({"status": "error", "detail": detail})
+                return
 
-        resolved = self.resolver.resolve(parsed["encounter"], current_slug=self._anchor)
+        resolved = self.resolver.resolve(encounter, current_slug=self._anchor)
         if resolved is None:
             self._set({"status": "noevent", "detail": "no event text in the save"})
             return
@@ -317,8 +401,13 @@ class Watcher:
 
         state = {
             "status": status,
-            "sector": parsed["sector_number"] + 1,
-            "beacon": parsed["current_beacon_id"],
+            # The scan recovers the event and nothing else -- no sector or beacon
+            # number -- so those are null rather than guessed. `source` says which
+            # path produced this, since the two differ in what they can know.
+            "source": source,
+            "save": os.path.basename(self.save_path),
+            "sector": parsed["sector_number"] + 1 if source == "parse" else None,
+            "beacon": parsed["current_beacon_id"] if source == "parse" else None,
             **resolved,
         }
         self._set(state)
@@ -337,6 +426,7 @@ class Watcher:
     def run(self, interval=0.5):
         while True:
             self.poll_once()
+            _warn_if_source_changed()
             time.sleep(interval)
 
 
@@ -490,7 +580,9 @@ def index_report(resolver):
 def main():
     ap = argparse.ArgumentParser(description=__doc__,
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("--save", default=find_save(), help="path to continue.sav")
+    ap.add_argument("--save", default=None,
+                    help="path to the run save; auto-detects continue.sav / "
+                         "hs_continue.sav (Hyperspace) and follows the newer one")
     ap.add_argument("--ftl-dat", default=ftlsave.default_ftl_dat(), help="path to ftl.dat")
     ap.add_argument("--port", type=int, default=8787)
     ap.add_argument("--open", action="store_true", help="open the page in a browser")
@@ -509,7 +601,8 @@ def main():
         index_report(resolver)
         return 0
 
-    watcher = Watcher(args.save, args.ftl_dat, resolver, verbose=not args.quiet)
+    watcher = Watcher(args.save or find_save(), args.ftl_dat, resolver,
+                      verbose=not args.quiet, pinned_save=bool(args.save))
 
     if args.once:
         watcher.poll_once(force=True)
@@ -521,8 +614,14 @@ def main():
     url = "http://127.0.0.1:%d/" % args.port
     with Server(("127.0.0.1", args.port), make_handler(watcher)) as httpd:
         if not args.quiet:
-            print("watching %s" % args.save)
-            print("serving  %s   (ctrl-c to stop)" % url)
+            # args.save is None unless pinned, which printed "watching None" for the
+            # ordinary case. Name the file that was actually resolved -- under
+            # Hyperspace that is hs_continue.sav, and seeing which one it picked is
+            # the first thing worth knowing when it reports nothing.
+            print("watching %s%s" % (watcher.save_path,
+                                     "" if args.save else "   (auto, re-resolved each poll)"),
+                  flush=True)
+            print("serving  %s   (ctrl-c to stop)" % url, flush=True)
         if args.open:
             webbrowser.open(url)
         try:

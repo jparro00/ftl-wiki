@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata>
+	<title><![CDATA[ Beacon Reveal ]]></title>
+	<threadUrl><![CDATA[ https://subsetgames.com/ftl_mods.html ]]></threadUrl>
+	<author><![CDATA[ generated from an FTL event wiki ]]></author>
+	<version><![CDATA[ 1.0 ]]></version>
+	<description>
+<![CDATA[
+Prints the name of every event on the sector map, above its beacon, whether or not
+the beacon has been explored. A map spoiler, on purpose.
+
+Requires FTL Hyperspace. Draws only - no event, choice, reward, ship or probability
+is changed, and nothing is written to the save.
+
+386 events are named, from the same card titles the Event Labels mod uses. An event
+with no card shows its raw id rather than an invented name.
+]]>
+	</description>
+</metadata>

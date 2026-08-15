@@ -55,5 +55,6 @@ Loaded by Slipstream 1.9.1, whose own **Validate** reports `No Problems`. The va
 it appends to were confirmed byte-identical to this machine's installed `ftl.dat`, so the
 copied event definitions match the game exactly.
 
-**Not yet patched in.** Everything checkable without touching the game checks out; whether
-the labels actually render is settled by clicking Patch and jumping to one beacon.
+**Patched in and working**, confirmed 2026-08-15: a live save held the encounter text
+`[ Start game ]` followed by the vanilla opening prose — the label rendering exactly as
+designed, read back out of the game's own save file.

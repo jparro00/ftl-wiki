@@ -1949,3 +1949,613 @@ that do not yet point back. `wiki/concepts/quest-beacon-placement.md` needs revi
 `StarMap::AddQuest` (its exclusion list is incomplete and its open question is now answered),
 and `wiki/concepts/sector-event-allocation.md` should record that the `OVERRIDE_` substitution
 question now has weak community evidence on both sides.
+
+## [2026-08-15] ingest | Beacon-name map cheat — what it would take, and what it would cost
+
+**Question:** a mod that prints each event's name above its beacon on the sector map, including
+beacons that have not been revealed — "just tell me where everything is".
+
+**Answer: possible, but only through FTL Hyperspace.** Filed as
+`raw/modding/2026-08-15-beacon-name-labels-mod.md` (`source_kind: research`), summarised at
+[[source-beacon-name-labels-mod-research]].
+
+**New pages:** `wiki/sources/beacon-name-labels-mod-research.md`.
+**Updated:** `wiki/index.md` (Research section, source count 347 → 348).
+
+### What the research established
+
+- **The engine already knows.** Every beacon's event is generated with the sector, not on
+  arrival — `StarMap::AddQuest` filters *unvisited* beacons on their store/distress flags
+  ([[source-xftl-sector-map]]), and the save regenerates events from `sectorLayoutSeed`. The
+  mod is a reveal, not a computation.
+- **Vanilla modding cannot reach it.** Slipstream patches data and images; the map is drawn by
+  compiled code. Advanced XML does not help.
+- **Hyperspace's Lua API exposes the whole thing:** `StarMap.locations`, `FocusWindow.bOpen`,
+  `Location.loc/.known/.visited/.event`, and `LocationEvent.eventName` / `.text` / `.store` /
+  `.distressBeacon`. `Location.event` reads fine on an unvisited beacon. Drawing is
+  `Graphics.freetype.easy_printCenter` inside an `on_render_event(MOUSE_CONTROL, …)` hook —
+  there is no star-map render layer, which is the one wrinkle.
+- **Label source is already in this repo.** `cards/trees/*.tree.json` maps event id → card
+  title for 386 of 449 events, the same table `event-labels` uses. Same names in the card, in
+  the event text, and on the map, from one source.
+- **`<beaconType>` (Hyperspace's per-event map label) exists** with `req` equipment gating,
+  colour, and undiscovered / unvisited / visited tooltips — but its label comes from the
+  **first** declaration of an event, not the last.
+
+### Contradiction recorded
+
+> ⚠️ Slipstream: "only the last one counts". FTL-Hyperspace issue #216: beacon labels take the
+> first instance. Both are true at different scopes — definitions resolve last-wins, the beacon
+> label is kept from the first parse. Consequence: a `<beaconType>` cannot be bolted on with
+> the `.append` redefinition trick that `tools/EVENT-LABELS.md` §4 is built on; it needs
+> Advanced XML. Noted against [[concept-modding-and-the-append-convention]].
+
+### The cost, which is the real finding
+
+Hyperspace **downgrades Steam FTL 1.6.14 to 1.6.9**, demands every other mod be uninstalled
+first, and extends the save format. That collides with three things this repo already relies
+on: `raw/gamedata/` was extracted from 1.6.14, `tools/save-watch.py` reads layouts live from
+the installed `ftl.dat` and parses vanilla saves only (`SAVE-WATCH.md` §6), and `event-labels`
+would need re-patching. The mod is a day's work; the platform change is the decision.
+
+### Cheaper partial route, measured first
+
+`readBeacon` in the save format stores `seen`, `enemyPresent` + `shipEventId`, `fleetPresence`,
+`underAttack` and a store's full inventory — but never the beacon's event. `tools/ftlsave.py`
+already walks those bytes and discards them. Surfacing them would give a ship/store/fleet
+spoiler map with **no game modification at all**, and it is not yet known how much of it is
+populated before a beacon is visited. That measurement should come before any Hyperspace work.
+
+### Deferred
+- Whether a `<beaconType>` label draws for *undiscovered* beacons is inferred from the struct's
+  `undiscoveredTooltip` and from vanilla quest markers, not read from the render code —
+  `CustomEvents.cpp` is 270 KB and could not be fetched whole.
+- Whether `LocationEvent.eventName` is populated for engine-generated base events.
+- The map-origin constant for drawing in `MOUSE_CONTROL`'s coordinate space; xftl gives 45,40
+  as the beacon-coordinate origin, to be confirmed against Hyperspace's `CustomMap.cpp`.
+
+## [2026-08-15] tooling | The save's beacon list, kept instead of discarded
+
+Follow-on from the beacon-name research above: before touching Hyperspace, measure what the
+save already gives away.
+
+`tools/ftlsave.py` walked the sector's beacon list and threw every field away. It now returns
+them, and `--beacons` reports them: per beacon `visit_count`, `seen`, `enemy_present` +
+`ship_event_id` + `auto_blueprint_id`, `fleet`, `under_attack`, and a store's full stock, plus
+`quest_events` (quest marker event name → beacon id) and the deferred quest list. Byte order is
+untouched, so the encounter parse — and the watcher — are unaffected: `--index-report` still
+reports 386 cards / 4516 keys / 1741 of 1782 root texts pinning one card.
+
+Verified by a byte-exact round-trip test over three synthetic beacons (unvisited-with-ship,
+unvisited store with stock, visited-and-under-attack); two bugs were found and fixed that way
+— reversed unpacking of `quest_events`, and a `·` separator the Windows console cannot encode.
+
+**Not yet measured live: no run is in progress, so there is no `continue.sav`.** The question
+it exists to answer — how many *unvisited* beacons already name a ship or a store — needs the
+command run mid-run:
+
+```
+python tools/ftlsave.py "%USERPROFILE%\Documents\My Games\FasterThanLight\continue.sav" --beacons
+```
+
+`tools/SAVE-WATCH.md` §3 now records what the beacon list holds, and states plainly that the
+save never holds a beacon's event — that one needs the running engine.
+
+## [2026-08-15] tooling | Measured: the save says nothing about a beacon you have not visited
+
+Ran `tools/ftlsave.py --beacons` against a live save (Crystal Cruiser B, sector 1, 21 beacons,
+player at beacon 3):
+
+```
+beacons       21 total, 20 unvisited
+  unvisited  ships 0 (named 0) | stores 0 | seen-flag 3
+  all        ships 0 (named 0) | stores 0 | seen-flag 4
+```
+
+**Zero of the 20 unvisited beacons carried a ship event, a ship blueprint or a store.** A
+sector-1 map certainly contains both, so `enemyPresent` and the store block are runtime state
+written on arrival, not generation-time state serialised for the sector. `seen` was set on the
+current beacon plus its three neighbours — the one-jump marker rule from `raw/wiki/beacons.md` —
+and even those carried nothing.
+
+The parse is sound: the only beacon with `visit_count > 0` is beacon 3, which equals the save's
+own `current_beacon_id`, and the encounter block immediately after decodes to coherent start
+text. A misaligned read would not land on both.
+
+**Consequence: the no-mod route is dead.** Not merely "cannot name events" — it cannot pre-empt
+ships or stores either. Everything about an unvisited beacon lives only in the running engine's
+`Location.event`. Naming beacons on the map requires Hyperspace, which is the trade recorded at
+[[source-beacon-name-labels-mod-research]] §7. Recorded in that file's §4.1 and in
+`tools/SAVE-WATCH.md` §3; the `--beacons` report stays, since it still reports stores, quest
+markers and fleet state for where you have been.
+
+### Bonus finding — `event-labels` is confirmed rendering
+
+The same save's encounter text was `"[ Start game ]\r\n\r\nThe data you carry is vital to the
+remaining Federation fleet. …"` — label, `LABEL_GAP`, vanilla prose, exactly as
+`tools/EVENT-LABELS.md` §3 specifies. Both that spec's §7 and `mods/event-labels/README.md`
+claimed "not yet patched into the game"; both now record the confirmation instead. The mod has
+been live and working, read back out of the game's own save.
+
+## [2026-08-15] tooling | How Hyperspace extends the save — scoping the watcher rework
+
+Follow-up question before committing to Hyperspace: is adapting the save watcher a rework or a
+rebuild? Read out of Hyperspace's source rather than guessed.
+
+- **Profile: redirected, not extended.** `SaveFile.cpp` hooks `FileHelper::readBinaryFile` /
+  `fileExists` / `createBinaryFile` so the game's `ae_prof.sav` lands on `hs_prof.sav`
+  (prefix `hs`, plus `hs_prof_backup.sav` and `hs_version.sav`). The watcher never reads the
+  profile, so this costs nothing.
+- **Run save: extended inside `ShipManager::ExportShip`, after `super(file)`.** Hyperspace
+  appends its blocks at the end of the ship block — which sits *before* the beacon list and the
+  encounter, i.e. inside the prefix `ftlsave.py` walks. A Hyperspace save would desync at the
+  ship/cargo boundary, not at the encounter.
+- **The extension is conditional.** `CustomSystems.cpp`'s hook loops
+  `SYS_CUSTOM_FIRST .. GetLastSystemId()` and writes nothing when no custom systems exist;
+  `CustomCrew.cpp` and `CrewMember_Extend.cpp` serialize nothing. Hyperspace with no content
+  mod may leave the save byte-identical to vanilla. Not verified, and not every `ExportShip`
+  hook was enumerated — GitHub code search was rate-limited.
+- **Answer: a rework, and a bounded one.** The architecture is untouched — cards come from
+  vanilla XML, so the text→card index, resolver, stickiness and page all stand. What changes is
+  skipping appended blocks in one place.
+- **No Lua shortcut.** Hyperspace's Lua sandbox has `io`/`os`/`package`/`debug` removed
+  (`SAVE-WATCH.md` §2), so no in-game script can hand the watcher the current event; save
+  parsing remains the mechanism.
+
+Recorded in `tools/SAVE-WATCH.md` §6. The decisive test is one command after install:
+`python tools/ftlsave.py <continue.sav>` — landing on five real ship-event ids at once is the
+existing self-check, and tells us whether any work is needed at all.
+
+## [2026-08-15] tooling | Hyperspace installed, and `beacon-reveal` — every beacon named on the map
+
+The mod the day's research was scoping. Built, patched in, and confirmed loading; the one thing
+not yet done is looking at the map with human eyes.
+
+### Install, in order
+
+1. **Backed up** `Documents\My Games\FasterThanLight\` to
+   `FTL-backup-2026-08-15-pre-hyperspace\` (profiles + the in-progress save), plus the 1.6.14
+   `FTLGame.exe` and `settings.ini`. Slipstream's own `backup\ftl.dat.bak` is the pristine
+   vanilla data and was left alone.
+2. **Confirmed 1.6.14** from `FTL.log` (`Version: 1.6.14`) — the downgrader's precondition.
+3. **Reverted to vanilla data** by copying `ftl.dat.bak` over `ftl.dat`. Note: Slipstream's
+   `--patch` with *no* mods throws a NullPointerException, so it cannot be used to unpatch.
+4. **Downgraded** with Hyperspace 1.22.2's `downgrade.bat`: it copies `FTLGame.exe` to
+   `FTLGame_orig.exe`, then applies BPS patches with `flips.exe`. The 1.6.22 patch is rejected
+   ("not intended for this ROM") and the 1.6.14 one applies — both expected. Result: 125 MB exe,
+   original preserved.
+5. **Patched** `Hyperspace.ftl`, `event-labels.ftl`, `beacon-reveal.ftl` in that order via
+   Slipstream's CLI (`java -jar modman.jar --patch …`) — no GUI needed, which is worth knowing.
+
+### Verified against research
+
+- **`hs_prof.sav`, `hs_prof_backup.sav`, `hs_version.sav` appeared; `ae_prof.sav` untouched** —
+  exactly the profile redirect read out of `SaveFile.cpp` this morning.
+- **`ftl.dat` was not touched by the downgrade**, so `raw/gamedata/` provenance still holds.
+- **The watcher still resolves cards** on the pre-existing save (`event_AUTO_CIVILIAN_c2_text`
+  → `auto-ship-attacking-civilian`).
+
+### The mod
+
+`tools/build-beacon-mod.py` + `tools/beacon-reveal.lua.tmpl` → `mods/beacon-reveal/`, spec at
+`tools/BEACON-REVEAL.md`. 386 labels, same card titles as `event-labels`, nothing hand-written
+per event, byte-identical rebuilds.
+
+- Reads `starMap.locations` and each `Location.event.eventName` — which is populated on
+  unvisited beacons, the whole basis of the cheat.
+- Draws on the `MOUSE_CONTROL` render layer gated by `starMap.bOpen`, because
+  `Defines.RenderEvents` has no star-map layer.
+- Position is **`starMap.position + loc.loc`**, taken from Hyperspace's own
+  `StarMap::OnRender` reimplementation in `CustomMap.cpp` rather than guessed, with the xftl
+  `45,40` origin as a logged fallback.
+- Registration uses **Advanced XML** (`mod:findLike` + `mod-append:script`) because
+  `hyperspace.xml` allows only one `<scripts>` element — a plain append would declare a second.
+  First use of Advanced XML in this repo.
+
+**Confirmed loading:** `FTL_HS.log` shows `Loading Lua file: data/beacon-reveal.lua` then
+`beacon-reveal: loaded, 386 names`.
+
+### Open
+
+- **Nobody has seen the labels.** Desktop screen capture returns solid-colour frames for every
+  monitor on this machine (windowed mode too), so the visual check needs the user. The mod logs
+  one line per sector — how many beacons it named and how many were unvisited — so the
+  *functional* question is answerable from `FTL_HS.log` even without a screenshot.
+- **The watcher is unfixed because it is not yet broken.** Adapting it needs a save written *by*
+  the Hyperspace build; the current `continue.sav` predates the install. The prediction from
+  source (`SAVE-WATCH.md` §6) is a desync at the ship/cargo boundary from `ShipManager::
+  ExportShip` appending after `super()` — and possibly no desync at all, since the one hook read
+  in full writes nothing when no custom systems are defined.
+
+## [2026-08-15] tooling | beacon-reveal works — two bugs found by log and screen, origin measured
+
+The mod draws. First run on screen showed all 21 events named, unvisited ones included
+("Giant alien spiders", "Pirate briber", "Long-range beacon (sector exit)"), so the premise
+holds: `Location.event` is readable on a beacon the player has never been to.
+
+Two defects, both caught by evidence rather than inspection:
+
+1. **`SWIG_IndexError: in vector::__getitem__()`.** SWIG's `std::vector` binding *raises* on an
+   out-of-range index instead of returning nil, so the deliberately-tolerant loop over
+   `0 .. size()` threw on its last iteration and, under `pcall`, silently killed all drawing for
+   the frame. The tolerance was the bug. `detect_base` now probes `locations[0]` once, logs the
+   answer, and the loops run `base .. base + size() - 1`.
+2. **The documented map origin is wrong.** `starMap.position` is not exposed to Lua, so the mod
+   fell back to the `45,40` origin in `raw/modding/2026-08-15-xftl-sector-map.txt` — which put
+   every label 337 px left and 90 px above its beacon.
+
+**ORIGIN measured as (382, 116)** by pairing three widely separated beacons against their own
+drawn labels, in FTL's 1280x720 virtual space:
+
+| pair | beacon | label centre | delta |
+|---|---|---|---|
+| exit beacon | 999, 483 | 661, 393 | 338, 90 |
+| abandoned station | 397, 506 | 61, 415 | 336, 91 |
+| giant alien spiders | 574, 258 | 237, 168 | 337, 90 |
+
+Agreement to 1 px across the map is what proves it is a **pure translation with no scaling** —
+a scale error would have diverged between the near and far pairs. A hover probe was added that
+logs the map coordinates of the beacon under the cursor, so the constant can be re-measured
+later without a rebuild.
+
+> ⚠️ **CONTRADICTION:** xftl states beacon coordinate 0,0 "is drawn at 45,40 relative to the
+> outer edge of the window". Measured against the running game, the offset is 382,116. Both are
+> recorded; the measurement wins for this build (FTL 1.6.9 under Hyperspace 1.22.2 at 4K), and
+> the discrepancy may be a version difference, a different reference edge, or the map panel's
+> own offset. Not resolved — noted against [[source-xftl-sector-map]].
+
+Also observed: Hyperspace writes `hs_crash.flag` at launch, and FTL does **not** write
+`continue.sav` until the first jump — the current run had no save on disk at all, which is why
+the watcher question is still open.
+
+## [2026-08-15] tooling | beacon-reveal confirmed on screen — and a self-inflicted debugging round
+
+The measured origin (382,116) is correct: every beacon in a Civilian Sector map is named, each
+label sitting above its own beacon. Confirmed against a beacon whose vanilla tooltip still read
+*"An unvisited location."* while the mod named it "Pirate fight" — the reveal, demonstrated in
+one frame.
+
+**The fix appeared not to work, and the reason was mine.** The constant was corrected and the
+mod rebuilt and copied to Slipstream's `mods/`, but the Slipstream patch was never re-run, so
+`ftl.dat` still held the previous build. The game reads Lua from `ftl.dat` at startup, so it
+kept loading the old file. The evidence was sitting in plain sight and was not read carefully
+enough the first time:
+
+```
+[Lua]: beacon-reveal: starMap.position unavailable, using fallback origin 45,40
+```
+
+`45,40` was already dead in the source. Comparing mtimes settled it in one command:
+`beacon-reveal.ftl` 14:58, `ftl.dat` 14:52.
+
+**Fixed structurally, not by remembering harder.** `build-beacon-mod.py --install` now packs,
+copies to Slipstream and patches in one step, with the correct mod order baked in as
+`PATCH_ORDER`. Documented at the top of `tools/BEACON-REVEAL.md` §1 and in the mod README,
+both stating the trap explicitly: an unpatched rebuild is invisible.
+
+Also confirmed working this round: `detect_base` reports `vector index base = 0`, and the
+per-sector line reads `sector 1: named 21 beacons, 20 of them unvisited`.
+
+### Still open
+- **Cosmetic collisions.** Long names overlap each other and the vanilla `STORE`/`EXIT` tags on
+  a crowded map. `easy_measureWidth` is the tool for eliding; nothing does it yet.
+- **The watcher remains untested against Hyperspace**, because FTL still has not written a
+  `continue.sav` — the current run has not jumped, so the only save on disk is the 12:48 vanilla
+  one, which still parses fine (`event_AUTO_CIVILIAN_c2_text`, 3851 of 3927 bytes consumed).
+
+## [2026-08-15] tooling | beacon-reveal v2 — category boxes on the map, event name on hover
+
+Reworked at the user's request: the map now shows the beacon's **category** in a box styled like
+the game's own STORE/EXIT labels, and hovering a beacon shows the **concrete event** below it.
+Confirmed on screen in an Engi Controlled Sector: `DISTRESS_BEACON_ENGI` boxed in orange on the
+beacon, `Engi distress - Rebel fight` in a box underneath while hovered.
+
+### Where a category comes from
+
+The runtime only offers an event id. The category is the sector **event pool** — the
+`<eventList>` named in `sector_data.xml` (`<event name="DISTRESS_BEACON_ENGI" min="1" max="3"/>`)
+— so the build projects it out of `sectors/data/*.sector.json`, which
+[[source-sector-data]]'s pipeline already expands from pool to concrete events. No second parse
+of the game files; re-extract the sectors and the categories follow.
+
+**Scoped per sector, and the measurement is why.** Globally, 86 of 274 carded events sit in more
+than one pool (`ASTEROID_EXPLORE` is in six `NEUTRAL_*` pools). Scoped to a single sector's pool
+list, ambiguity falls to **58 of 997 sector/event pairs — 5.8%**. Those remaining collisions
+(`FRIENDLY_BEACON` in both `NEUTRAL_CIVILIAN` and `DISTRESS_BEACON` in Civilian Sector) resolve
+first-in-sector-order, deterministically, and the build prints the count so it cannot drift.
+
+Fallback chain: current sector's table → `ANY_SECTOR` (187 events whose pool never varies) →
+the raw event id, drawn with a dim outline so "unknown" looks unknown.
+
+### Rendering
+
+`GL_DrawRect` + `GL_DrawRectOutline` + `easy_measureWidth` size a box to the text; the outline is
+coloured by the pool's `section` (store green, distress orange, hostile red, nebula purple,
+quest blue). `easy_printCenter`'s y is the glyphs' vertical centre — measured, and now recorded
+in the spec, since the box geometry depends on it.
+
+Hover is matched on `hoverLoc.loc` **coordinates**, not object identity: SWIG does not promise
+the same wrapper object for the same pointer.
+
+**`GET_BEACON_HAZARD` was deliberately not used.** It is Hyperspace's native beacon-tooltip hook
+(`Location loc -> string hazardText`), but returning a value marks the beacon as a *hazard*,
+putting a danger icon on every beacon. Drawing our own box keeps the map honest.
+
+### Caught by the verifier
+
+The new checks earned themselves immediately: the build failed on a non-ASCII byte — a `§` in a
+comment in the Lua *template*, which would have shipped a glyph FTL cannot render. Also added:
+every sector must appear in `BY_SECTOR`, no pool name may collide with a card title (the two are
+easy to cross-wire and it would only show on the map), and the three drawing primitives must be
+present.
+
+### Incidental findings
+- **A vanilla 1.6.14 save loads fine under Hyperspace 1.22.2** — the pre-downgrade run continued
+  without complaint.
+- **Force-killing FTL makes Hyperspace report a crash** on next launch ("A Hyperspace mod crash
+  was detected"), because `hs_crash.flag` is only cleared on a clean exit. Close the window
+  rather than `Stop-Process`.
+- **FTL still had not written `continue.sav`** — the in-memory run was in sector 2 while the save
+  on disk was a sector-1 save from before the install. The watcher work remains blocked on one
+  jump.
+
+## [2026-08-15] tooling | The watcher, fixed for Hyperspace — and it was looking at the wrong file
+
+Two problems, not one, and the first had been quietly wasting the afternoon.
+
+### 1. Hyperspace moves the run save
+
+`SaveFile.cpp` redirects the game's file access through the `hs` prefix. That covers **the run
+save too**, not just the profile as this morning's research concluded: a modded install writes
+**`hs_continue.sav`** and leaves `continue.sav` untouched. That is why "FTL still hasn't written
+a save" kept being true — it had been saving next door the whole time.
+
+`find_save` now watches `continue.sav` and `hs_continue.sav` in both save directories and takes
+the most recently written, re-resolved every poll. Installing or uninstalling Hyperspace needs
+no restart, no flag, no edit.
+
+### 2. A Hyperspace save is not FTL's shape
+
+Enumerated from the cloned source rather than guessed at — twelve insertion points:
+`ShipManager::ExportShip` hooked by six files (one writing *before* `super`, five after,
+`CustomShips` writing per **room**), `CrewMember::SaveState` hooked per **crew member**, and
+`StarMap::SaveGame` hooked by six more. Several are variable-length and nested
+(`StatBoost::Save`, `Animation::SaveState`, `ShipSystem::CompleteSave`).
+
+Porting that to Python would be a reimplementation of Hyperspace's serialisation that breaks on
+its next release. **So the Hyperspace path does not walk the file — it looks at it.**
+`ftlsave.scan_encounter_text` scans for length-prefixed strings shaped like a string-table id
+(`^(event|text)_[A-Za-z0-9_]+$`). On the real 5524-byte save the entire file yields **exactly
+one** candidate, `text_START_BEACON_ENGI_1` — the event that was on screen.
+
+Verified both ways: `hs_continue.sav` → `source: "scan"` → card `start-beacon-engi`;
+`continue.sav` → `source: "parse"` → card `auto-ship-attacking-civilian` with sector and beacon
+intact. `--index-report` unchanged at 386 cards / 4516 keys / 1741 of 1782.
+
+**What the scan gives up**, recorded in the spec rather than glossed: no sector or beacon number
+(both `null`), no five-valid-ids self-check, and no support for prose-valued encounter text. Its
+correctness argument is the index lookup downstream, not the parse. The structured parser still
+runs first and still owns the vanilla case.
+
+Earlier notes in `SAVE-WATCH.md` §6 predicted a desync "at the ship/cargo boundary" and hoped it
+might cost nothing. Both were wrong: the first insertion is *before* the ship blueprint string,
+and there are twelve of them. The section now records what was measured instead.
+
+## [2026-08-15] tooling | beacon-reveal v3 — text inside the box, and the game's own tooltip repurposed
+
+Three changes, all confirmed on screen.
+
+### The text sat low because a measurement was recorded backwards
+
+**`easy_printCenter`'s `y` is the top of the line box, not its centre.** The spec said centre.
+That error hid for hours because it was *absorbed into `ORIGIN_Y` during calibration* — the
+origin was solved from where labels landed, so a constant half-line offset just moved the fitted
+origin by the same amount. Changing the font from id 10 to 6 changed the line height and broke
+the coincidence, and the text dropped out of its box.
+
+Text is now drawn at `y - floor(h/2)`, i.e. `-7` at the measured line height of 15 — which is
+exactly the correction the user asked for by eye. Box height is `15 + 2*3 = 21` virtual px
+(63 physical at 4K, where FTL scales 1280x720 by 3).
+
+### The hover box is gone; the game's tooltip now carries the event name
+
+Instead of drawing a second box, the mod writes into the tooltip the game already shows —
+the one that reads "An unvisited location.". Hyperspace's `StarMap::MouseMove` sets it with
+`GetMouseControl()->SetTooltip(GetLocationText(hoverLoc))` during the loop; the `MOUSE_CONTROL`
+before-callback runs after the loop and before `MouseControl::OnRender`, so writing there is the
+last word for that frame and the game renders our string with its own styling, placement and
+edge-flipping. `Hyperspace.Mouse` exposes `SetTooltip`, `InstantTooltip` and a readable
+`tooltip` (`lua/modules/hyperspace.i`); the write is guarded on change because `SetTooltip`
+restarts the tooltip timer.
+
+Confirmed: hovering the distress beacon in the Engi sector now reads **"Pirate ship distress
+trap"** in the vanilla tooltip box, with no second box drawn.
+
+### Method note
+
+The Hyperspace source was **cloned** (`--depth 1 --filter=blob:none --sparse`) rather than
+fetched page by page. Two things this afternoon were only answerable from the whole tree:
+enumerating all twelve save-hook insertion points, and finding `MouseControl::SetTooltip` in
+`lua/modules/hyperspace.i`. Earlier WebFetch answers on the same files were **wrong by
+truncation** — `CustomCrew.cpp` was reported to contain no serialization hooks when it hooks
+`CrewMember::SaveState` at line 2930. Clone before concluding a big file lacks something.
+
+## [2026-08-15] tooling | Fullscreen minimize came back — the launch path, not Hyperspace
+
+The user reported the two-monitor fix (`mods/fullscreen-no-minimize/`) had stopped working
+since installing Hyperspace. Reproduced it directly: focused a window on the left monitor,
+screenshotted the center one, FTL was minimized to the taskbar.
+
+### The cause is delivery, not the engine
+
+`SDL_VIDEO_MINIMIZE_ON_FOCUS_LOSS` is read from the **process environment**, which is fixed
+at process creation. Read the running game's environment block out of its PEB
+(`ReadProcessMemory`, 32-bit WOW64 target) and the answer was immediate:
+
+| Process | Has the variable |
+|---|---|
+| `steam.exe` (pid 73884) | yes, `=0` |
+| `FTLGame.exe` (pid 90604) | **no** |
+
+The game's environment instead held `CLAUDECODE=1`, `AI_AGENT=claude-code_2-1-221_agent`,
+`MSYSTEM=MINGW64` and a Git-Bash `PATH`. **A previous agent session launched the game from a
+Bash tool call**, so it inherited this agent's environment — and this agent process started
+before the variable was installed at user scope. The user-scope setting was correct the whole
+time and Steam had it; the game was simply two processes away from a stale one.
+
+### Hyperspace is not implicated, and that is checkable
+
+- It swaps `FTLGame.exe` (retail 1.6.22, 5.5 MB → patched 1.6.14, 125 MB; original kept as
+  `FTLGame_orig.exe`) and injects via `xinput1_4.dll`. Different binary, so worth re-checking:
+  both `SDL_VIDEO_MINIMIZE_ON_FOCUS_LOSS` and `fullscreen_minimize_on_focus_loss` are still in
+  its string table.
+- `Hyperspace.dll` contains neither string. Of the 1118 hooks in `zhl.log`, none is on focus or
+  fullscreen handling — `CApp::OnInputFocus`, `CApp::UpdateFullScreen` and
+  `CApp::UpdateWindowSettings` are resolved but never hooked.
+
+### Shipped
+
+- `mods/fullscreen-no-minimize/verify-env.py` — reads the running `FTLGame.exe`'s environment
+  from its PEB (read-only) and reports PASS/FAIL, naming the launcher on FAIL. This is the
+  check that was missing: "is the variable set?" and "did it reach the game?" are different
+  questions and they came apart silently.
+- `launch-ftl.cmd` — hardened; sets the variable in the command rather than inheriting it, so
+  it is immune to every stale-parent case. Warns if Steam is absent.
+- `README.md` — new Hyperspace section, files table, smoke test now leads with `verify-env.py`.
+- `CLAUDE.md` §5.2d — never launch `FTLGame.exe` bare from a tool call; use the launcher.
+
+### Two findings worth keeping
+
+**The running game had no save on disk.** Under Hyperspace the run save is `hs_continue.sav`,
+and no such file existed anywhere while a Sector 2 run was live — `continue.sav` was stale from
+12:48, pre-patch. Killing the process would have destroyed the run, so it was left alone. Worth
+watching whether Hyperspace writes that file at all on this install.
+
+**Still unverified:** whether FTL pins `fullscreen_minimize_on_focus_loss` itself, which would
+make the variable inert regardless of delivery. Every failure so far has been a `verify-env.py`
+FAIL. The proof would be a PASS launch that still minimizes.
+
+## [2026-08-15] tooling | Watcher picked up nothing — the process was older than the code
+
+Second report of "broke after Hyperspace", same shape as the fullscreen one an hour earlier:
+a long-running process holding a stale snapshot of the world.
+
+### What was wrong
+
+`--once` resolved the current event perfectly (`hs_continue.sav` → `event_PIRATE_STATION_CROPS_c2_text`
+→ `remote-settlement`) while the server on 8787 reported nothing. That gap is the whole
+diagnosis: `--once` runs the code **on disk**, the server runs the code it **imported at
+startup**. The listening process had been up since **11:46**, and `SAVE_NAMES` only learned
+about `hs_continue.sav` at **15:44**. So it was watching `continue.sav`, which Hyperspace
+stopped writing at 12:48. Nothing about it looked unhealthy — it served pages, it just never
+saw a save change.
+
+Restarting it fixed it; it now follows the run live.
+
+### Also settled
+
+`hs_continue.sav` **does** get written — 8141 bytes at 16:50. The earlier note that no run save
+existed was true of the killed run only, and that run's `CONTINUE` being greyed out at the
+menu confirmed it independently. Hyperspace saving is not broken; the earlier session was.
+
+### Shipped
+
+- `tools/save-watch.py` — a staleness guard. Records the mtimes of `save-watch.py` and
+  `ftlsave.py` at import; the first poll that sees either change prints, once,
+  `[stale] … still running the old code -- restart it`. Flushed, because the watcher is
+  normally launched into a background log where an unflushed line is never read.
+- `tools/save-watch.py` — the startup banner printed `watching None` for every unpinned run
+  (it echoed `args.save`, which is `None` unless `--save` was passed). It now names the file
+  actually resolved, which is what tells you at a glance whether it found `hs_continue.sav`.
+- `tools/SAVE-WATCH.md` §5 — "nothing is picked up at all, and `--once` works fine" now leads
+  the misbehaviour list, since it is both the most likely cause and the least visible.
+
+### The general lesson, twice in one afternoon
+
+A process is a snapshot of its inputs at creation: its environment, and its imported source.
+Changing either on disk does not reach anything already running, and both failures present as
+"the thing that used to work stopped working" with no error anywhere. Both are now checkable —
+`verify-env.py` for the game's environment, the `[stale]` line for the watcher's code.
+
+## [2026-08-15] tooling | Beacon-reveal category table: three labelling gaps closed
+
+Started from an observation on a live map: the Civilian Sector page promises `ITEMS 2–3`,
+but only one `ITEMS` box was drawn. `FTL_HS.log` — which prints sector generation verbatim —
+showed the sector had in fact allocated `ITEMS x2`. The page was right; the mod was
+mislabelling. Three distinct causes, all in `load_categories()`.
+
+### 1. A nested list made an entire allocation line unreachable
+
+`NEUTRAL_CIVILIAN` contains `<event load="DISTRESS_BEACON"/>` (`newEvents.xml:158`), so
+flattening makes all 14 distress events members of both pools. Ranking by sector order alone
+handed every one of them to `NEUTRAL_CIVILIAN` (line 3) over `DISTRESS_BEACON` (line 5):
+**`DISTRESS_BEACON` could never be drawn in Civilian Sector or Federation Space**, though it
+rolls 1–2 beacons every game. `extract-sector.py` already recorded the inner list as `via`;
+it now wins whenever it is also one of that sector's own allocation lines. 28 pairs resolve
+this way, and `verify()` now fails on any unreachable line — tested against the old rule,
+which it correctly rejects.
+
+### 2. Advanced Edition additions were never merged
+
+`entry["override"]["added"]` was computed and then ignored by the mod build. 31 pairs across
+16 sectors, `STORE_REBELSIDE` in `ITEMS` among them — which is exactly the beacon that
+started this. Now merged.
+
+### 3. The fallback list was not in the table at all
+
+`NEUTRAL` / `OVERRIDE_NEUTRAL` fills any beacon left over once a sector's table is exhausted,
+but almost no sector names it in `sector_data.xml`. Those beacons either drew a raw id or —
+worse — were mis-attributed to a real pool by the reverse lookup (`PIRATE_CIVILIAN` →
+`NEUTRAL_CIVILIAN`, `AUTO_REFUEL_STATION` → `HOSTILE_CIVILIAN`), inflating that pool's
+apparent count. `extract-sector.py` now emits `generation.fallback_events` (AE ∪ vanilla) and
+the build appends it last, after every real line.
+
+### Shipped
+
+- `tools/extract-sector.py` — new `fallback_events()`, emitted under `generation`. All 19
+  profiles re-extracted.
+- `tools/build-beacon-mod.py` — three-rule `load_categories()`; new unreachable-line check in
+  `verify()`; build now reports nested and AE-merged counts.
+- `tools/BEACON-REVEAL.md` §1b rewritten, §5 gains the new check.
+- Civilian Sector table 77 → 93 events; 190 events now have an unambiguous global pool.
+
+Built, verified and packed. **Not installed** — FTL was mid-run, and Slipstream cannot
+rewrite `ftl.dat` under a running game.
+
+### Contradiction resolved
+
+[[concept-sector-event-allocation]] asked whether `OVERRIDE_X` replaces `X`. The same log
+settles it for sector allocation: an `ITEMS` allocation produced `STORE_REBELSIDE`, which
+exists only in `OVERRIDE_ITEMS`. Recorded there with its limits — it does not reach the
+call sites where the engine resolves a list name directly. The evidence is a live session's
+`FTL_HS.log` and is **not yet captured in `raw/`**.
+
+## [2026-08-15] tooling | Sector pages: budget lines open onto their events, beacon boxes link to cards
+
+The beacon budget said how many beacons a line places without ever saying *which* events it
+could place — that answer sat further down the page in the pool sections, out of reach of the
+question. Each budget row is now a `<details>`: click the line, it opens onto exactly the
+events that line can place. Every beacon box on the page — budget expansion, markers section,
+pool sections — is now a link to `../cards/card-<slug>.html`.
+
+### Shipped
+
+- `tools/build-sector.py` — `event_html()` emits `<a class="ev link">` when the event has a
+  card (`slug`/`card` were already in the extracted data, so nothing new is derived);
+  `budget_html()` wraps each row with events in `<details>/<summary>`.
+- `tools/sector-page-render.html` — summary styling, rotating chevron, hover states, nested
+  pool panel; hover recolours three borders only, so the left tag rail keeps its colour.
+- `tools/sector-vocab.json` — one new string, `budget.expand`.
+- `tools/smoke-sector.py` — resolves every beacon-box `href` against the page's directory and
+  fails on a missing card; the OK line now reports linked boxes and expandable rows.
+- `tools/SECTOR-PAGE.md` — new §6.1; §7, §9 and §11 updated.
+- All 19 pages rebuilt and smoke-tested: **2,358 beacon boxes, all linked, all resolving**.
+  Rebuild is byte-identical across runs.
+
+### The constraint worth remembering
+
+The links are **relative**, so they work on a page opened from `sectors/` on disk and go
+nowhere on a published artifact — artifact URLs are minted at publish time, so no absolute
+link is knowable when the page is built. The expansion itself is pure HTML and works either
+way. Live links on a published page would need a registry of published card URLs, which does
+not exist: 0 of 387 cards are published.

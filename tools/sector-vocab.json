@@ -130,7 +130,8 @@
     "risk_mark": "may be cut",
     "entry": "entry beacon is always {event}.",
     "zero": "allocated 0–0 — the sector reserves the list but places none.",
-    "short_mark": "always short"
+    "short_mark": "always short",
+    "expand": "Open a line to see every event it can place; open an event to see its card."
   },
   "footnotes": {
     "sources": "Built from {files}.",

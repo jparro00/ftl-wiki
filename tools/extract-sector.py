@@ -323,6 +323,21 @@ class SectorExtractor:
                 out.append({"id": target})
         return out
 
+    def fallback_events(self):
+        """Events the shared fallback list can produce, AE union vanilla.
+
+        `NEUTRAL` fills any beacon left over once a sector's table is exhausted, and
+        `OVERRIDE_NEUTRAL` replaces it under Advanced Edition. Both are unioned rather
+        than one being chosen: the union is what a beacon on a running game can be,
+        and picking a side would mean answering the OVERRIDE_X question per-install.
+        """
+        ids = []
+        for name in ("NEUTRAL", "OVERRIDE_NEUTRAL"):
+            for member in self.members(name):
+                if member.get("id"):
+                    ids.append(member["id"])
+        return [self.event_record(i) for i in dict.fromkeys(ids)]
+
     def event_record(self, event_id):
         slug, title = self.event_pages.get(event_id, (None, None))
         profile = self.trees.profile(event_id)
@@ -634,6 +649,12 @@ class SectorExtractor:
                 "nebula_first": [e["name"] for e in entries if e["placement"]["nebula_first"]],
                 "fallback_list": "NEUTRAL",
                 "fallback_list_ae": "OVERRIDE_NEUTRAL",
+                # The events the fallback can actually produce. Every sector reaches
+                # this list -- a beacon left over after the table is exhausted draws
+                # from it -- but most sectors never name it in sector_data.xml, so
+                # without this it is the one pool a consumer cannot see. Emitted as
+                # event records so downstream can treat it like any other pool.
+                "fallback_events": self.fallback_events(),
                 "exit_list": "EXIT_LIST",
                 "source": "raw/wiki/sectors.md",
             },

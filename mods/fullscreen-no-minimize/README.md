@@ -55,6 +55,14 @@ on Windows — the string `SDL_VIDEO_MINIMIZE_ON_FOCUS_LOSS` is present verbatim
 
 **The switch:** `SDL_VIDEO_MINIMIZE_ON_FOCUS_LOSS=0` in the game's environment.
 
+**In the game's environment** is the whole difficulty. A process environment is fixed when
+the process is created and inherited from whoever created it. Setting the variable at user
+scope does not reach a process that is already running — including whatever will later
+launch the game. So the question is never "is the variable set?" but "did it reach
+`FTLGame.exe`?", and those two answers come apart silently: the game runs perfectly and
+just minimizes again. `verify-env.py` answers the second question directly, by reading the
+running game's own environment block.
+
 `minimize_fullscreen` starts at `-1` ("client hasn't specified"), which is why the
 environment variable gets a say at all. If FTL itself ever called
 `graphics_set_display_attr("fullscreen_minimize_on_focus_loss", …)` the variable would be
@@ -71,6 +79,16 @@ expect from borderless fullscreen, without running the game windowed.
 
 ---
 
+## Files
+
+| File | What it does |
+|------|--------------|
+| `install.ps1` | Sets the variable at user scope, permanently (`-Uninstall` removes it) |
+| `launch-ftl.cmd` | Launches FTL with the variable set in the command — the reliable path |
+| `verify-env.py` | Reads the **running** game's environment and says PASS/FAIL |
+
+---
+
 ## Install
 
 ```powershell
@@ -80,6 +98,10 @@ powershell -ExecutionPolicy Bypass -File mods\fullscreen-no-minimize\install.ps1
 Sets the variable at **user** scope, permanently. Then **restart Steam** — Steam hands its
 own environment to the games it launches, so a Steam that was already running when you
 installed will still start FTL with the old environment. After that, launch FTL normally.
+
+Or skip the ambient environment entirely and launch through
+`mods\fullscreen-no-minimize\launch-ftl.cmd`, which needs no install and no Steam restart.
+Either way, `verify-env.py` is what tells you it took.
 
 To undo:
 
@@ -132,21 +154,67 @@ change the resolution. Does not check if values are valid."*)
 
 ---
 
+## Hyperspace
+
+Hyperspace does not break this fix and cannot: it never touches the code path.
+
+- It replaces `FTLGame.exe` (retail 1.6.22, 5.5 MB) with the downgraded-and-patched 1.6.14
+  build it needs (125 MB), keeping the original as `FTLGame_orig.exe`, and injects itself
+  through `xinput1_4.dll` in the game folder. So `FTLGame.exe` is a **different binary**
+  than the one this mod was written against — worth re-checking, and it checks out:
+  `SDL_VIDEO_MINIMIZE_ON_FOCUS_LOSS` and `fullscreen_minimize_on_focus_loss` are both still
+  in its string table, i.e. the same SIL backend with the same switch.
+- `Hyperspace.dll` contains neither string. Its hook log (`zhl.log`) resolves
+  `CApp::OnInputFocus`, `CApp::UpdateFullScreen` and `CApp::UpdateWindowSettings` but
+  installs hooks on none of them — of 1118 hooks, not one is on focus or fullscreen
+  handling.
+
+What Hyperspace does change is **how the game gets launched**, and that is the whole story
+of why the fix appears to stop working. Any launch path other than "a process that already
+had the variable" produces a game that minimizes. Confirmed failing paths:
+
+- Launched from a shell that started before the variable was installed — including a
+  Claude Code Bash/PowerShell tool call, which inherits the agent's own stale environment.
+  This is how it broke on 2026-08-15: the running game's environment held `CLAUDECODE=1`
+  and no SDL variable, while Steam's environment two processes away held the variable fine.
+- Launched by a Steam that has been running since before the install.
+
+`launch-ftl.cmd` is immune to all of them, because it sets the variable in the command
+rather than inheriting it. **Use it for every launch, including agent-driven ones.**
+
+---
+
 ## Smoke test
+
+**Check the process, not the setting.** With FTL running:
+
+```powershell
+python mods\fullscreen-no-minimize\verify-env.py
+```
+
+It reads the running `FTLGame.exe`'s environment block out of its PEB (read-only; it never
+writes to the game) and prints PASS or FAIL, and on FAIL it names the launcher that is
+responsible. Exit code 0 = the game will not minimize.
+
+Then confirm by hand:
 
 1. Launch FTL, confirm fullscreen.
 2. Click a window on the other monitor.
 3. FTL should stay drawn full-screen on its monitor; the taskbar should not show it as
    minimized.
 
-If it still minimizes, the variable didn't reach the process. Confirm it's set:
+If `verify-env.py` says PASS and it still minimizes, that is the one remaining unknown
+below — the engine, not the launch path.
 
-```powershell
-[Environment]::GetEnvironmentVariable('SDL_VIDEO_MINIMIZE_ON_FOCUS_LOSS','User')
-```
+---
 
-and confirm Steam was restarted after install — that's the usual culprit, since FTL
-inherits Steam's environment, not the one you edited afterwards.
+## Still unverified
+
+Whether FTL itself ever calls `graphics_set_display_attr("fullscreen_minimize_on_focus_loss", …)`.
+If it does, `minimize_fullscreen` is pinned `>= 0` and the environment variable is inert no
+matter how cleanly it is delivered. Nothing in either binary settles it. The proof is a
+launch that `verify-env.py` reports as PASS which still minimizes on focus loss — every
+failure observed so far has been a FAIL, i.e. the delivery, not the engine.
 
 ---
 

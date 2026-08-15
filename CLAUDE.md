@@ -50,8 +50,9 @@ bookkeeping — summarizing, filing, cross-linking, and keeping everything consi
 │   └── <mod-name>/        ← `src/` is the tree that ships; `<mod-name>.ftl` is it zipped
 ├── tools/                 ← scripts + their contracts (`EVENT-CARD.md` is the card pipeline,
 │                            `SECTOR-PAGE.md` the sector-profile pipeline, `EVENT-LABELS.md`
-│                            the event-labels mod, `SAVE-WATCH.md` the save watcher that
-│                            opens cards by itself); `sector-copy/` is hand-written page copy
+│                            the event-labels mod, `BEACON-REVEAL.md` the Hyperspace mod that
+│                            names every beacon on the map, `SAVE-WATCH.md` the save watcher
+│                            that opens cards by itself); `sector-copy/` is hand-written copy
 └── wiki/                  ← YOUR layer, everything below is maintained by you
     ├── events/            ← one page per event (markdown only; trees live in `cards/trees/`)
     ├── chains/            ← one page per multi-jump event chain / quest
@@ -477,6 +478,25 @@ Three things that are easy to get wrong and cost a wasted turn:
 
 `status: nosave` means no run is in progress; `ambiguous` and `nocard` are normal, defined
 outcomes, not faults. Only a persistent `error` is worth investigating.
+
+### 5.2d Launching the game — always through `launch-ftl.cmd`
+
+Never start `FTLGame.exe` directly from a tool call. The user's two-monitor setup depends on
+`SDL_VIDEO_MINIMIZE_ON_FOCUS_LOSS=0` reaching the game's **process environment**, and a Bash
+or PowerShell tool call inherits this agent's environment, which predates the user-scope
+install and does not have it. The game then minimizes every time the user clicks the other
+monitor — and nothing about the launch looks wrong. Launch with:
+
+```
+mods\fullscreen-no-minimize\launch-ftl.cmd
+```
+
+and check with `python mods\fullscreen-no-minimize\verify-env.py`, which reads the running
+process's environment and reports PASS/FAIL. See `mods/fullscreen-no-minimize/README.md`.
+
+Also: the game may be holding an **unsaved run**. Under Hyperspace the run save is
+`hs_continue.sav` (§ `tools/SAVE-WATCH.md`); if that file does not exist, killing
+`FTLGame.exe` destroys the run. Check before restarting the game, and ask.
 
 ### 5.3 Lint — "lint the wiki" (run periodically, e.g. every 5–10 ingests)
 

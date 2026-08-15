@@ -356,43 +356,66 @@ def read_ship(r, fmt, ftl_dat):
     }
 
 
+STORE_SHELF_TYPES = ["weapon", "drone", "augment", "crew", "system"]
+
+
 def read_store_shelf(r, fmt):
     item_type = r.int()
     if item_type not in (0, 1, 2, 3, 4):
         raise SaveFormatError("unknown store item type: %d" % item_type)
+    items = []
     for _ in range(3):
         available = r.int()
         if available < 0:
             continue                # -1 means the slot holds no item
-        r.string()                  # itemId
+        items.append(r.string())    # itemId
         if fmt in (8, 9, 11):
             r.int()                 # extraData
+    return {"type": STORE_SHELF_TYPES[item_type], "items": items}
 
 
 def read_beacon(r, fmt):
-    if r.int() > 0:                 # visitCount
+    """Read one BeaconState. Returns what the save knows about that beacon.
+
+    None of these fields name the beacon's event — the save does not hold it, it is
+    regenerated from sectorLayoutSeed. What is here is a ship/store/fleet spoiler only;
+    see raw/modding/2026-08-15-beacon-name-labels-mod.md §4.
+    """
+    beacon = {}
+    beacon["visit_count"] = r.int()
+    if beacon["visit_count"] > 0:
         r.string()                  # bgStarscapeImageInnerPath
         r.string()                  # bgSpriteImageInnerPath
         r.skip_ints(3)              # spritePosX, spritePosY, spriteRotation
 
-    r.bool()                        # seen
+    beacon["seen"] = r.bool()
 
-    if r.bool():                    # enemyPresent
-        r.string()                  # shipEventId
-        r.string()                  # autoBlueprintId
+    beacon["enemy_present"] = r.bool()
+    if beacon["enemy_present"]:
+        beacon["ship_event_id"] = r.string()
+        beacon["auto_blueprint_id"] = r.string()
         r.int()                     # shipEventSeed
 
     fleet = r.int()
     if fleet not in (0, 1, 2, 3):
         raise SaveFormatError("unknown fleet presence: %d" % fleet)
+    beacon["fleet"] = fleet
 
-    r.bool()                        # underAttack
+    beacon["under_attack"] = r.bool()
 
+    beacon["store"] = None
     if r.bool():                    # storePresent
         shelf_count = r.int() if fmt in ADVANCED_FORMATS else 2
-        for _ in range(shelf_count):
-            read_store_shelf(r, fmt)
-        r.skip_ints(3)              # fuel, missiles, droneParts
+        shelves = [read_store_shelf(r, fmt) for _ in range(shelf_count)]
+        fuel, missiles, drone_parts = r.int(), r.int(), r.int()
+        beacon["store"] = {
+            "shelves": shelves,
+            "fuel": fuel,
+            "missiles": missiles,
+            "drone_parts": drone_parts,
+        }
+
+    return beacon
 
 
 def read_encounter(r, fmt):
@@ -477,14 +500,14 @@ def parse(path, ftl_dat):
     sector_number = r.int()
     r.bool()                        # sectorIsHiddenCrystalWorlds
 
-    for _ in range(r.int()):
-        read_beacon(r, fmt)
+    beacons = [read_beacon(r, fmt) for _ in range(r.int())]
 
-    quest_events = []
+    quest_events = []               # eventName -> beaconId, for quest markers already placed
     for _ in range(r.int()):
         quest_events.append((r.string(), r.int()))
+    distant_quest_events = []
     for _ in range(r.int()):
-        r.string()                  # distant quest events
+        distant_quest_events.append(r.string())
 
     r.int()                         # unknownMu
     encounter = read_encounter(r, fmt)
@@ -496,11 +519,56 @@ def parse(path, ftl_dat):
         "sector_number": sector_number,      # zero-based
         "current_beacon_id": current_beacon_id,
         "waiting": waiting,
+        "beacons": beacons,
+        "quest_events": quest_events,
+        "distant_quest_events": distant_quest_events,
         "ship": ship,
         "encounter": encounter,
         "bytes_consumed": r.pos,
         "file_size": len(data),
     }
+
+
+TEXT_ID_RE = re.compile(r"^(?:event|text)_[A-Za-z0-9_]{1,90}$")
+
+
+def scan_encounter_text(path):
+    """Find the encounter's text id without walking the save's structure.
+
+    `parse` reaches the encounter by walking every preceding byte, which requires
+    knowing the exact layout of the ship. Under Hyperspace that layout is not FTL's:
+    six mods hook `ShipManager::ExportShip`, one hooks `CrewMember::SaveState`, and
+    another six hook `StarMap::SaveGame`, each splicing variable-length data into the
+    stream (`tools/SAVE-WATCH.md` section 6). Tracking all of it in Python would be a
+    reimplementation of Hyperspace's serialisation, and would break whenever it gains
+    a field.
+
+    So for those saves we do not walk -- we look. Every FTL string is a length-prefixed
+    UTF-8 blob, and `EncounterState.text` in 1.6.1+ holds a string-table id
+    (`event_AUTO_CIVILIAN_c2_text`, `text_START_BEACON_ENGI_1`). Scanning for
+    length-prefixed strings of exactly that shape finds it and nothing else: measured
+    on a real Hyperspace save, the whole 5524-byte file yields exactly one candidate.
+
+    This is deliberately narrow. It cannot see prose-valued encounter text, and it
+    recovers no sector or beacon number -- it answers only the question the watcher
+    actually asks. Returns a list of (offset, string), in file order.
+    """
+    with open(path, "rb") as fh:
+        data = fh.read()
+
+    found, pos, end = [], 0, len(data) - 4
+    while pos <= end:
+        (length,) = struct.unpack_from("<i", data, pos)
+        if 3 <= length <= 200 and pos + 4 + length <= len(data):
+            try:
+                text = data[pos + 4:pos + 4 + length].decode("utf-8")
+            except UnicodeDecodeError:
+                pos += 1
+                continue
+            if TEXT_ID_RE.match(text):
+                found.append((pos, text))
+        pos += 1
+    return found
 
 
 def default_ftl_dat():
@@ -519,6 +587,8 @@ def main():
     ap.add_argument("save", help="path to continue.sav")
     ap.add_argument("--ftl-dat", default=default_ftl_dat(), help="path to ftl.dat")
     ap.add_argument("--json", action="store_true", help="emit JSON")
+    ap.add_argument("--beacons", action="store_true",
+                    help="report what the save gives away about each beacon in the sector")
     args = ap.parse_args()
 
     if not args.ftl_dat:
@@ -543,7 +613,59 @@ def main():
                 "dead_crew_event", "got_away_event"):
         if enc[key]:
             print("%-13s %r" % (key, enc[key]))
+
+    if args.beacons:
+        print()
+        print_beacon_report(state)
     return 0
+
+
+FLEET_NAMES = {0: "-", 1: "rebel", 2: "federation", 3: "?"}
+
+
+def print_beacon_report(state):
+    """How much of the sector the save gives away, split by whether we have been there.
+
+    The measurement this exists for: of the beacons the player has NOT visited, how many
+    already name a ship event or a store? Anything true here is a map spoiler available
+    with no game modification at all.
+    """
+    beacons = state["beacons"]
+    quest_at = {beacon_id: name for name, beacon_id in state["quest_events"]}
+    unvisited = [b for b in beacons if not b["visit_count"]]
+
+    print("beacons       %d total, %d unvisited" % (len(beacons), len(unvisited)))
+    for label, pool in (("unvisited", unvisited), ("all", beacons)):
+        ships = sum(1 for b in pool if b["enemy_present"])
+        named = sum(1 for b in pool if b.get("ship_event_id"))
+        stores = sum(1 for b in pool if b["store"])
+        seen = sum(1 for b in pool if b["seen"])
+        print("  %-10s ships %d (named %d) | stores %d | seen-flag %d"
+              % (label, ships, named, stores, seen))
+    if quest_at:
+        print("quest markers %s" % ", ".join(
+            "%s@%d" % (name, bid) for bid, name in sorted(quest_at.items())))
+    if state["distant_quest_events"]:
+        print("deferred      %s" % ", ".join(state["distant_quest_events"]))
+
+    print()
+    print("  id  vis seen fleet  ship event / store")
+    for i, b in enumerate(beacons):
+        bits = []
+        if b.get("ship_event_id"):
+            bits.append("%s (%s)" % (b["ship_event_id"], b["auto_blueprint_id"]))
+        elif b["enemy_present"]:
+            bits.append("enemy, unnamed")
+        if b["store"]:
+            stock = [item for shelf in b["store"]["shelves"] for item in shelf["items"]]
+            bits.append("STORE: %s" % (", ".join(stock) if stock else "empty"))
+        if i in quest_at:
+            bits.append("quest %s" % quest_at[i])
+        if b["under_attack"]:
+            bits.append("under attack")
+        print("  %3d %3d %4s %-6s %s"
+              % (i, b["visit_count"], "y" if b["seen"] else "-",
+                 FLEET_NAMES[b["fleet"]], " | ".join(bits)))
 
 
 if __name__ == "__main__":

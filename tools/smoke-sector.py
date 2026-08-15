@@ -41,12 +41,13 @@ class Page(html.parser.HTMLParser):
         self._in_title = False
 
     def handle_starttag(self, tag, attrs):
-        classes = dict(attrs).get("class", "").split()
+        attrs = dict(attrs)
+        classes = (attrs.get("class") or "").split()
         if tag == "title":
             self._in_title = True
         if tag not in VOID:
             self.stack.append((tag, classes, len(self.nodes)))
-        self.nodes.append({"tag": tag, "classes": classes, "text": []})
+        self.nodes.append({"tag": tag, "classes": classes, "attrs": attrs, "text": []})
 
     def handle_endtag(self, tag):
         if tag == "title":
@@ -118,6 +119,23 @@ def main():
     if not rows:
         problems.append("no beacon-budget rows")
 
+    # A beacon box that links to a card no one built is worse than an inert box: it
+    # looks live and lands on a 404. The link is relative, so resolve it the way the
+    # browser will — against the directory the page sits in.
+    links = [n for n in events if n["tag"] == "a"]
+    dead = set()
+    for node in links:
+        href = node["attrs"].get("href", "")
+        if not href:
+            problems.append("event link with no href")
+            continue
+        target = (args.page.parent / href).resolve()
+        if not target.exists():
+            dead.add(href)
+    for href in sorted(dead):
+        problems.append(f"event link points at a missing card: {href}")
+    expanders = [n for n in page.nodes if n["tag"] == "details" and "bwrap" in n["classes"]]
+
     out = []
     out.append(f"TITLE     {page.title}")
     out.append(f"HEADING   {' / '.join(texts(page, 'eyebrow') + [t for n in page.nodes if n['tag'] == 'h1' for t in [' '.join(n['text'])]])}")
@@ -160,7 +178,8 @@ def main():
         for problem in problems:
             print(f"  - {problem}")
         sys.exit(1)
-    print(f"OK — {len(events)} event rows, {len(rows)} budget rows, {len(stats)} stat tiles")
+    print(f"OK — {len(events)} event rows ({len(links)} linked to cards), "
+          f"{len(rows)} budget rows ({len(expanders)} expandable), {len(stats)} stat tiles")
 
 
 if __name__ == "__main__":

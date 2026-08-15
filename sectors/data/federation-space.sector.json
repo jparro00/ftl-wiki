@@ -3153,6 +3153,497 @@
     ],
     "fallback_list": "NEUTRAL",
     "fallback_list_ae": "OVERRIDE_NEUTRAL",
+    "fallback_events": [
+      {
+        "id": "PIRATE_CIVILIAN",
+        "slug": "pirate-ship-attacking-civilian",
+        "title": "Pirate ship attacking civilian",
+        "card": true,
+        "tags": [
+          "may-fight",
+          "crew"
+        ],
+        "gates": [],
+        "items": [],
+        "crew_classes": [],
+        "quests": [],
+        "boarders": [],
+        "unlock_ship": [],
+        "fleet_delay": []
+      },
+      {
+        "id": "REBEL_TRANSPORT",
+        "slug": "rebel-transport-ship",
+        "title": "Rebel transport ship",
+        "card": true,
+        "tags": [
+          "may-fight",
+          "crew",
+          "unique"
+        ],
+        "gates": [],
+        "items": [],
+        "crew_classes": [],
+        "quests": [],
+        "boarders": [],
+        "unlock_ship": [],
+        "fleet_delay": []
+      },
+      {
+        "id": "AUTO_REFUEL_STATION",
+        "slug": "auto-ship-attacking-outpost",
+        "title": "Auto-ship attacking outpost",
+        "card": true,
+        "tags": [
+          "may-fight",
+          "unique"
+        ],
+        "gates": [],
+        "items": [],
+        "crew_classes": [],
+        "quests": [],
+        "boarders": [],
+        "unlock_ship": [],
+        "fleet_delay": []
+      },
+      {
+        "id": "ASTEROID_EXPLORE",
+        "slug": "large-asteroid-field",
+        "title": "Large asteroid field",
+        "card": true,
+        "tags": [
+          "may-fight",
+          "crew",
+          "unique"
+        ],
+        "gates": [
+          {
+            "req": "SCRAP_COLLECTOR",
+            "label": "Scrap Recovery Arm"
+          }
+        ],
+        "items": [],
+        "crew_classes": [],
+        "quests": [],
+        "boarders": [],
+        "unlock_ship": [],
+        "fleet_delay": []
+      },
+      {
+        "id": "BROKEN_REBEL_DRONE",
+        "slug": "deactivated-auto-ship",
+        "title": "Deactivated Auto-ship",
+        "card": true,
+        "tags": [
+          "may-fight",
+          "crew",
+          "unique"
+        ],
+        "gates": [
+          {
+            "req": "sensors",
+            "label": "Sensors",
+            "lvl": "3"
+          }
+        ],
+        "items": [],
+        "crew_classes": [],
+        "quests": [],
+        "boarders": [],
+        "unlock_ship": [],
+        "fleet_delay": []
+      },
+      {
+        "id": "MERCENARY",
+        "slug": "the-mercenary",
+        "title": "The mercenary",
+        "card": true,
+        "tags": [
+          "may-fight",
+          "crew",
+          "cost"
+        ],
+        "gates": [],
+        "items": [],
+        "crew_classes": [],
+        "quests": [],
+        "boarders": [],
+        "unlock_ship": [],
+        "fleet_delay": [
+          -2
+        ]
+      },
+      {
+        "id": "FRIENDLY_SLAVER",
+        "slug": "slaver-friendly",
+        "title": "Slaver (friendly)",
+        "card": true,
+        "tags": [
+          "may-fight",
+          "crew",
+          "cost",
+          "unique"
+        ],
+        "gates": [
+          {
+            "req": "teleporter",
+            "label": "Crew Teleporter",
+            "lvl": "2"
+          }
+        ],
+        "items": [],
+        "crew_classes": [
+          "mantis",
+          "rock",
+          "engi"
+        ],
+        "quests": [],
+        "boarders": [],
+        "unlock_ship": [],
+        "fleet_delay": []
+      },
+      {
+        "id": "PIRATE_BRIBER",
+        "slug": "pirate-briber",
+        "title": "Pirate briber",
+        "card": true,
+        "tags": [
+          "may-fight",
+          "store",
+          "unique"
+        ],
+        "marker": {
+          "store": true
+        },
+        "gates": [],
+        "items": [],
+        "crew_classes": [],
+        "quests": [],
+        "boarders": [],
+        "unlock_ship": [],
+        "fleet_delay": [
+          -1
+        ]
+      },
+      {
+        "id": "AUTO_DEFENSE_ITEM",
+        "slug": "auto-ship-near-storage-station",
+        "title": "Auto-ship near storage station",
+        "card": true,
+        "tags": [
+          "may-fight",
+          "unique"
+        ],
+        "gates": [
+          {
+            "req": "cloaking",
+            "label": "Cloaking"
+          }
+        ],
+        "items": [],
+        "crew_classes": [],
+        "quests": [],
+        "boarders": [],
+        "unlock_ship": [],
+        "fleet_delay": []
+      },
+      {
+        "id": "DONOR_PONY",
+        "slug": "intelligent-ponies",
+        "title": "Intelligent ponies",
+        "card": true,
+        "tags": [
+          "crew-loss",
+          "crew",
+          "reward",
+          "unique"
+        ],
+        "gates": [
+          {
+            "req": "slug",
+            "label": "Slug"
+          }
+        ],
+        "items": [],
+        "crew_classes": [
+          "engi"
+        ],
+        "quests": [],
+        "boarders": [],
+        "unlock_ship": [],
+        "fleet_delay": []
+      },
+      {
+        "id": "DONOR_PLAGUE",
+        "slug": "plagued-station",
+        "title": "Plagued station",
+        "card": true,
+        "tags": [
+          "crew-loss",
+          "crew",
+          "reward",
+          "unique"
+        ],
+        "gates": [
+          {
+            "req": "medbay",
+            "label": "Medbay",
+            "lvl": "2"
+          }
+        ],
+        "items": [],
+        "crew_classes": [
+          "human"
+        ],
+        "quests": [],
+        "boarders": [],
+        "unlock_ship": [],
+        "fleet_delay": []
+      },
+      {
+        "id": "REFUGEE_NO_DISTRESS",
+        "slug": "refugee",
+        "title": "Refugee",
+        "card": true,
+        "tags": [
+          "may-fight",
+          "crew",
+          "cost"
+        ],
+        "gates": [],
+        "items": [],
+        "crew_classes": [],
+        "quests": [],
+        "boarders": [],
+        "unlock_ship": [],
+        "fleet_delay": []
+      },
+      {
+        "id": "WRECKAGE_EVENT",
+        "slug": "battlefield-wreckage",
+        "title": "Battlefield wreckage",
+        "card": true,
+        "tags": [
+          "may-fight",
+          "crew"
+        ],
+        "gates": [
+          {
+            "req": "sensors",
+            "label": "Sensors",
+            "lvl": "2"
+          },
+          {
+            "req": "sensors",
+            "label": "Sensors",
+            "lvl": "3"
+          }
+        ],
+        "items": [],
+        "crew_classes": [],
+        "quests": [],
+        "boarders": [],
+        "unlock_ship": [],
+        "fleet_delay": []
+      },
+      {
+        "id": "FUELING_STATION",
+        "slug": "refueling-platform",
+        "title": "Refueling platform",
+        "card": true,
+        "tags": [
+          "may-fight",
+          "boarders",
+          "crew",
+          "cost",
+          "unique"
+        ],
+        "gates": [
+          {
+            "req": "doors",
+            "label": "Door System",
+            "lvl": "2"
+          }
+        ],
+        "items": [],
+        "crew_classes": [],
+        "quests": [],
+        "boarders": [
+          {
+            "class": "random",
+            "min": 2,
+            "max": 4
+          }
+        ],
+        "unlock_ship": [],
+        "fleet_delay": []
+      },
+      {
+        "id": "PIRATE_SALESMAN",
+        "slug": "pirate-ship-selling-drones",
+        "title": "Pirate ship selling drones",
+        "card": true,
+        "tags": [
+          "may-fight",
+          "crew",
+          "cost",
+          "unique"
+        ],
+        "gates": [
+          {
+            "req": "drones",
+            "label": "Drone Part"
+          },
+          {
+            "req": "slug",
+            "label": "Slug"
+          },
+          {
+            "req": "hacking",
+            "label": "Hacking"
+          }
+        ],
+        "items": [],
+        "crew_classes": [],
+        "quests": [],
+        "boarders": [],
+        "unlock_ship": [],
+        "fleet_delay": []
+      },
+      {
+        "id": "TERRAFORMING_SCAN",
+        "slug": "terraforming-scan",
+        "title": "Terraforming scan",
+        "card": true,
+        "tags": [
+          "may-fight",
+          "crew",
+          "cost",
+          "unique"
+        ],
+        "gates": [
+          {
+            "req": "sensors",
+            "label": "Sensors",
+            "lvl": "2"
+          },
+          {
+            "req": "energy",
+            "label": "Zoltan"
+          }
+        ],
+        "items": [],
+        "crew_classes": [],
+        "quests": [],
+        "boarders": [],
+        "unlock_ship": [],
+        "fleet_delay": []
+      },
+      {
+        "id": "REBEL_CHECKPOINT",
+        "slug": "rebel-checkpoint",
+        "title": "Rebel checkpoint",
+        "card": true,
+        "tags": [
+          "may-fight",
+          "crew",
+          "cost"
+        ],
+        "gates": [],
+        "items": [],
+        "crew_classes": [],
+        "quests": [],
+        "boarders": [],
+        "unlock_ship": [],
+        "fleet_delay": []
+      },
+      {
+        "id": "REBEL_HELPERS",
+        "slug": "rebel-ship-supplying-civilians",
+        "title": "Rebel ship supplying civilians",
+        "card": true,
+        "tags": [
+          "may-fight"
+        ],
+        "gates": [],
+        "items": [],
+        "crew_classes": [],
+        "quests": [],
+        "boarders": [],
+        "unlock_ship": [],
+        "fleet_delay": []
+      },
+      {
+        "id": "ROGUE_REBEL",
+        "slug": "rebel-fight-chance",
+        "title": "Rebel fight chance",
+        "card": true,
+        "tags": [
+          "may-fight",
+          "crew"
+        ],
+        "gates": [
+          {
+            "req": "sensors",
+            "label": "Sensors",
+            "lvl": "2"
+          },
+          {
+            "req": "sensors",
+            "label": "Sensors",
+            "lvl": "3"
+          }
+        ],
+        "items": [],
+        "crew_classes": [],
+        "quests": [],
+        "boarders": [],
+        "unlock_ship": [],
+        "fleet_delay": [
+          1
+        ]
+      },
+      {
+        "id": "EMPTY_STATION2",
+        "slug": "abandoned-station",
+        "title": "Abandoned station",
+        "card": true,
+        "tags": [
+          "may-fight",
+          "boarders",
+          "crew",
+          "unique"
+        ],
+        "gates": [
+          {
+            "req": "clonebay",
+            "label": "Clone Bay"
+          }
+        ],
+        "items": [],
+        "crew_classes": [],
+        "quests": [],
+        "boarders": [
+          {
+            "class": null,
+            "min": 1,
+            "max": 1
+          },
+          {
+            "class": null,
+            "min": 2,
+            "max": 2
+          },
+          {
+            "class": null,
+            "min": 2,
+            "max": 4
+          }
+        ],
+        "unlock_ship": [],
+        "fleet_delay": []
+      }
+    ],
     "exit_list": "EXIT_LIST",
     "source": "raw/wiki/sectors.md"
   },

@@ -7,9 +7,12 @@ The watcher shows the card for the event you are looking at, without you doing a
 It reads the game's save file; it does not modify the game.
 
 ```
-continue.sav ──► ftlsave.parse ──► EncounterState.text ──► card slug ──► browser
-                 (format spec)      (string-table id)      (cards/trees)   (localhost)
+continue.sav    ──► ftlsave.parse ──► EncounterState.text ──► card slug ──► browser
+hs_continue.sav ──► ftlsave.scan  ──►      (string id)        (cards/trees)  (localhost)
+                    (Hyperspace)
 ```
+
+Two ways in, because there are two save layouts. Section 3b says which runs when.
 
 ---
 
@@ -20,6 +23,7 @@ python tools/save-watch.py --open          # watch + serve + open the page
 python tools/save-watch.py --once          # resolve the current save once, print JSON
 python tools/save-watch.py --index-report  # measure how well texts pin to cards
 python tools/ftlsave.py <continue.sav>     # dump the parsed encounter
+python tools/ftlsave.py <continue.sav> --beacons   # what the save gives away about the sector
 ```
 
 Park the page on the second monitor and leave it. It repaints on every save write.
@@ -78,7 +82,7 @@ Both are auto-detected, and both defaults are correct on this machine:
 
 | What | Path |
 |---|---|
-| save | `%USERPROFILE%\Documents\My Games\FasterThanLight\continue.sav` |
+| save | `%USERPROFILE%\Documents\My Games\FasterThanLight\{continue,hs_continue}.sav` |
 | archive | `D:\Steam\steamapps\common\FTL Faster Than Light\ftl.dat` |
 
 Override with `--save` and `--ftl-dat`. The save lives under **Documents\My Games**, not
@@ -130,6 +134,81 @@ consumed 4082 of 6212 bytes and landed on a coherent `EncounterState` whose five
 ids were all real event names (`PIRATE_SURRENDER`, `PIRATE_ESCAPE`, `DESTROYED_DEFAULT`,
 `DEAD_CREW_DEFAULT`). Landing on five valid ids simultaneously is the check that the whole
 preceding parse was byte-correct.
+
+### What the beacon list holds — and what it does not
+
+The beacon list sits *before* the encounter block, so the parser already walked it; as of
+2026-08-15 it keeps the fields instead of discarding them. `--beacons` reports them.
+
+Per beacon: `visitCount`, `seen`, `enemyPresent` + `shipEventId` + `autoBlueprintId`,
+`fleetPresence`, `underAttack`, and a store's entire stock. Alongside them the save holds
+`questEventMap` — quest marker event names against their beacon ids — which `--beacons`
+prints too.
+
+**No beacon stores its event.** That is not a gap in this parser: the save does not contain
+it. Beacon events are regenerated from `sectorLayoutSeed`, so naming every beacon on the map
+cannot be done from the save at all — it needs the running engine, which means Hyperspace.
+See `raw/modding/2026-08-15-beacon-name-labels-mod.md`.
+
+**Measured 2026-08-15: for an unvisited beacon, none of it.** A live sector-1 save with 21
+beacons reported `unvisited ships 0 (named 0) | stores 0` across all 20 of them — a sector-1
+map certainly holds both, so `enemyPresent` and the store block are written on arrival, not at
+sector generation. `seen` was set on the current beacon and its three neighbours, matching the
+one-jump marker rule, and even those held no ship or store data.
+
+So the beacon list describes where you have **been**, not where you are going. It cannot feed a
+spoiler map. That is a property of the save format, not of this parser.
+
+## 3b. Two save layouts — parse, or scan
+
+Installing Hyperspace changes both **where** the run save is and **what shape** it is.
+
+### Where: `hs_continue.sav`
+
+Hyperspace hooks `FileHelper::readBinaryFile` / `fileExists` / `createBinaryFile` and rewrites
+the game's save paths through its own prefix (`SaveFile.cpp`, prefix `hs`). A modded install
+therefore writes **`hs_continue.sav`** and never touches `continue.sav`, which sits there stale
+— for an hour on 2026-08-15 that looked like "FTL isn't saving", when in fact it was saving next
+door. `find_save` watches both names in both directories and takes the **most recently written**,
+re-resolved on every poll, so installing or removing Hyperspace needs no restart and no flag.
+
+### What shape: not FTL's
+
+`parse` reaches the encounter by walking every preceding byte, which requires the ship block to
+be exactly FTL's. Under Hyperspace it is not. Enumerated from the source (v1.22.2), the hooks
+that splice data into the run save are:
+
+| Hook | Where it writes | Files |
+|---|---|---|
+| `ShipManager::ExportShip` | **before** `super` | `CustomSystems.cpp` (removed starting systems) |
+| `ShipManager::ExportShip` | after `super` | `CustomAugments`, `CustomShips` (per **room**: stat boosts, erosion, animation), `CustomSystems`, `OxygenWithoutSystem`, `TemporalSystem` |
+| `CrewMember::SaveState` | per **crew member** | `CustomCrew.cpp` |
+| `StarMap::SaveGame` | in the map block | `CustomEvents` (×2), `CustomSectors`, `Infinite`, `Seeds` (×2), `TriggeredEvents` |
+
+Twelve insertion points, several of them variable-length and nested (`StatBoost::Save`,
+`Animation::SaveState`, `ShipSystem::CompleteSave`). Tracking them in Python would be a
+reimplementation of Hyperspace's serialisation that breaks whenever it gains a field.
+
+### So the Hyperspace path does not walk — it looks
+
+`ftlsave.scan_encounter_text` scans the file for length-prefixed UTF-8 strings matching
+`^(event|text)_[A-Za-z0-9_]+$` and returns them in file order; the watcher takes the last.
+Measured on a real 5524-byte Hyperspace save, the whole file yields **exactly one** candidate —
+`text_START_BEACON_ENGI_1`, the event that was on screen. The encounter block sits after the
+ship and the map, so anything else of that shape would precede it.
+
+The scan runs **only as a fallback**, after `parse` raises. A vanilla save therefore keeps the
+structured read and everything it knows; the reported `source` field says which ran (`parse` or
+`scan`), and `save` names the file.
+
+**What the scan gives up**, stated plainly because it is a real loss: no sector number, no beacon
+number (both `null`), and no five-valid-event-ids self-check — its correctness argument is the
+index lookup that follows, not the parse itself. It also cannot see an encounter whose text is
+stored as prose rather than an id. It answers only the question the watcher asks: *which event is
+on screen*.
+
+A save caught mid-write also lands in the fallback, and is distinguished by yielding nothing:
+a torn read produces no candidate, so it reports `error` and the next poll retries.
 
 ### The save is written mid-encounter
 
@@ -268,7 +347,7 @@ outcome of a new run silently continue the old run's card.
 
 | status | Means | Is it a fault? |
 |---|---|---|
-| `ok` | A card was resolved; `slug` names it | no |
+| `ok` | A card was resolved; `slug` names it. `source` says whether it came from the structured parse or the Hyperspace scan (§3b) | no |
 | `ambiguous` | Shared outcome text, nothing to continue from | no — resolves at the next beacon |
 | `nocard` | Event identified, but no card exists for it | no — 386 of 449 events have one |
 
@@ -284,6 +363,30 @@ Only `error` warrants investigation, and only if it persists across several poll
 single one is almost always a save caught mid-write.
 
 ### When it misbehaves
+
+- **Nothing is picked up at all, and `--once` works fine.** The running watcher is older
+  than the code. Python reads `save-watch.py` and `ftlsave.py` once, at import, so an edit
+  never reaches a watcher that is already up — and the watcher is designed to be left
+  running for hours, which makes this the most likely explanation for a sudden total
+  stop. Observed 2026-08-15: a watcher started at 11:46 was still following
+  `continue.sav` at 16:50, because `SAVE_NAMES` learned `hs_continue.sav` at 15:44.
+  `--once` passed the whole time, because it runs the code on disk.
+
+  The watcher now says so itself, once, on the first poll after either source changes:
+
+  ```
+  [stale] ftlsave.py changed on disk since this watcher started at 11:46.
+  [stale] This process is still running the old code -- restart it.
+  ```
+
+  **Restart it after any edit to `tools/`.** Nothing hot-reloads.
+
+  The startup line names the save it resolved, which is the other half of this check —
+  under Hyperspace it must read `hs_continue.sav`:
+
+  ```
+  watching C:\Users\...\FasterThanLight\hs_continue.sav   (auto, re-resolved each poll)
+  ```
 
 - **Card never changes.** The save's mtime drives everything; confirm the game is writing
   by re-running `--once` after a jump.
@@ -302,7 +405,8 @@ single one is almost always a save caught mid-write.
 - **Save formats other than 11.** `ftlsave.py` refuses anything else rather than
   mis-parsing it. FTL 1.03.3 and 1.5.x saves would need the older branches, which the
   reference parser has and this port omits.
-- **Hyperspace / Multiverse saves.** Hyperspace extends the save; this parser targets
-  vanilla AE.
+- **Multiverse saves.** Untested. Multiverse adds content on top of Hyperspace; the scan
+  below should still find the encounter text, but nothing has verified it.
+
 - **Events with no card.** 386 of 449 top-level events have one; the rest report the raw
   text id, matching `event-labels`, which also never invents a name.

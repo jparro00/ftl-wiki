@@ -35,6 +35,11 @@ SCHEMA = "ftl-sector-profile/1"
 MARKER = "<!--SECTOR-CONTENT-->"
 TITLE = re.compile(r"^<title>[^\n]*?</title>$", re.MULTILINE)
 
+# Cards are built to cards/card-<slug>.html and sector pages to sectors/sector-<slug>.html,
+# so one hop up and across reaches a card from a page opened off disk. Relative on purpose:
+# a published artifact mints its URL at publish time, so no absolute link is knowable here.
+CARD_HREF = "../cards/card-{slug}.html"
+
 COPY_KEYS = {"slug", "lede", "stats", "callout", "section_notes", "panels", "chain"}
 REQUIRED = {"slug", "lede", "stats", "panels"}
 
@@ -157,13 +162,17 @@ def rail_of(record):
 
 
 def event_html(record):
-    return (
-        f'<div class="ev{rail_of(record)}">'
+    """One beacon box. A box whose event has a card is a link to it; one without
+    stays inert rather than pointing at a file that is not there."""
+    body = (
         f'<div class="t">{html.escape(record["title"])}</div>'
         f'<div class="id">{html.escape(record["id"])}</div>'
         f"{tags_html(record)}"
-        "</div>"
     )
+    if record.get("card") and record.get("slug"):
+        href = CARD_HREF.format(slug=record["slug"])
+        return f'<a class="ev link{rail_of(record)}" href="{html.escape(href, quote=True)}">{body}</a>'
+    return f'<div class="ev{rail_of(record)}">{body}</div>'
 
 
 def blocks(low, high, extra_class=""):
@@ -199,14 +208,23 @@ def budget_html(data):
             marks += f'<span class="mark risk">{html.escape(VOC["budget"]["risk_mark"])}</span>'
         if place.get("always_short"):
             marks += f'<span class="mark short">{html.escape(VOC["budget"]["short_mark"])}</span>'
-        rows.append(
-            f'<div class="brow{classes}">'
+        head = (
             f'<div class="rank">{place["position"] + 1}</div>'
             f'<div class="name">{html.escape(entry["name"])}{marks}</div>'
             f'<div class="cnt">{count}</div>'
             f'<div class="track">{blocks(entry["min"], entry["max"])}</div>'
-            "</div>"
         )
+        # A line is a list, and the list is the interesting part: the row opens to the
+        # events it can place, each one a link to that event's card. An entry that
+        # resolves to nothing stays a plain row — there is nothing to open.
+        if entry["events"]:
+            pool = "".join(event_html(record) for record in entry["events"])
+            rows.append(
+                f'<details class="bwrap"><summary class="brow expandable{classes}">{head}</summary>'
+                f'<div class="bpool"><div class="pool">{pool}</div></div></details>'
+            )
+        else:
+            rows.append(f'<div class="brow{classes}">{head}</div>')
     return f'<div class="budget">{"".join(rows)}</div>'
 
 
@@ -476,7 +494,8 @@ def render(data, copy):
         f'<h2>{html.escape(VOC["headings"]["budget"])}'
         f'<span class="meta">{html.escape(VOC["headings"]["budget_meta"])}</span></h2>',
         budget_html(data),
-        f'<p class="note">{html.escape(VOC["budget"]["legend"])}</p>',
+        f'<p class="note">{html.escape(VOC["budget"]["legend"])} '
+        f'{html.escape(VOC["budget"]["expand"])}</p>',
         generation_html(data),
     ]
     if data.get("start_event"):
