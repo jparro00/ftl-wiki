@@ -18,12 +18,11 @@ from the game's string table and no odds appear unless the files publish them. W
 guarantees is [[concept-event-cards]]; the grammar it rests on is
 [[concept-event-tree-grammar]]; the pipeline is `tools/EVENT-CARD.md`.
 
-9 cards built so far — [[event-auto-ship-attacking-civilian]],
-[[event-single-life-form-on-moon]], [[event-crushed-pirate]], [[event-escape-pod]],
-[[event-unarmed-zoltan-transport]] (with its quest chain), [[event-deactivated-auto-ship]],
-[[event-auto-ship-near-storage-station]], [[event-rock-unlock1]] (three-stage chain),
-[[event-large-asteroid-field]] — out of 395 paged events. Any event id can be carded on
-demand; nothing is pre-built.
+**385 trees and 385 cards** are built, out of 395 paged events — `cards/trees/*.tree.json`
+and `cards/card-*.html` are the inventory, and neither is catalogued here because both are
+regenerable machine output. Any remaining event id can be carded on demand with the event id
+as the only input. Built ≠ published: publishing mints a hosted URL and is done on request,
+per `tools/EVENT-CARD.md` §9.
 
 ## Coverage at a Glance
 | Type | Pages | Notes |
@@ -31,11 +30,11 @@ demand; nothing is pre-built.
 | Events | 395 | **complete** — every event id in the game data is paged or declined with a reason |
 | Items | 64 | every `[[item-...]]` link in the wiki resolves |
 | Sectors | 20 | **complete** — all 21 in-game sector ids |
-| Entities | 11 | factions, species and the Flagship |
-| Concepts | 10 | mechanics and methodology |
-| Chains | 7 | every quest line the data substantiates |
-| Sources | 323 | 35 game-data files + 288 Fandom pages |
-| **Total** | **832** | |
+| Entities | 16 | factions, species, the Flagship, and the 5 unlockable player cruisers |
+| Concepts | 29 | mechanics and methodology |
+| Chains | 21 | **complete** — every quest line the `<quest>` graph substantiates |
+| Sources | 325 | 33 game-data files + 291 Fandom pages + 1 research synthesis |
+| **Total** | **870** | |
 
 **Event coverage is closed.** Of 460 event ids in the data: 395 have pages; ~33 are
 dev/test stubs or UI system messages; 10 are event-list allocation buckets; 22 are pure
@@ -56,7 +55,13 @@ outcome branches documented inside their parent pages. Every id is accounted for
   with blue-option gates and their requirements.
 - **"Which events does having a Teleporter/Slug crew/Hacking open up?"** — each item page
   indexes the blue options it gates.
-- **"How do I unlock ship Y?"** — 7 chain pages with every step, requirement and failure mode.
+- **"How do I unlock ship Y?"** — 6 unlock chains with every step, requirement and failure
+  mode, plus a page per unlockable cruiser ([[entity-rock-cruiser]],
+  [[entity-stealth-cruiser]], [[entity-mantis-cruiser]], [[entity-zoltan-cruiser]],
+  [[entity-federation-cruiser]]) giving hull, crew, starting systems and augments.
+- **"What does this quest actually lead to?"** — 21 chain pages, covering every quest line the
+  43 `<quest>` tags substantiate, not just the ship unlocks. Each gives the trigger beacons,
+  the ordered steps, the destination table with odds where derivable, and the failure modes.
 - **"How likely is that?"** — where derivable. See the honest limits below.
 
 ## Resolved Mechanics Questions
@@ -83,10 +88,21 @@ settled by evidence rather than by picking a side:
   not in the game data at all.
 - **No `runs/` sources.** Several open questions need a single in-game observation to
   close; nothing has been observed yet.
-- ~40 `[[concept-...]]` to-do links point at unwritten pages (solar flares, hazards,
-  scrap economy, asteroid fields, quest beacons). Valid signals, not errors.
+- **The link graph is closed.** As of the 2026-08-13 lint every wikilink in the wiki resolves
+  to a real page, every page has an inbound link, and every page is catalogued in `index.md`.
+  Exactly **two** unresolved `[[…]]` strings remain, both inside `log.md`: a schema
+  placeholder and a slug that was renamed after the entry quoting it was written. `log.md` is
+  append-only, so historical entries are left as written.
+- **The biggest remaining unknowns are quantities, not coverage.** What `LOW`/`MED`/`HIGH`
+  are worth in scrap ([[concept-autoreward-tiers]]), the damage rate of any of the six
+  hazards ([[concept-hazards]]), and store prices. None of these is in `raw/gamedata/`.
 
 ## Watch List — open questions that matter
+- **What does `unique="true"` scope to — a sector, or a run?** It sits on **194** events, and
+  the answer changes the effective size of every sector's event pool. The per-sector reading
+  is the better bet ([[concept-event-uniqueness]]), but the files never say, and settling it
+  needs one observed run — which would be the first time `raw/runs/` outranked the game data
+  on a question.
 - **Does the engine read `<eventCounts>`?** Two allocation systems exist and disagree. If
   the depth-indexed one is live, several events tagged `unreachable` are not. One observed
   boarding event in Federation Space would settle it. See

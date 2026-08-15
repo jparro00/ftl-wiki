@@ -9,7 +9,7 @@ blue_options: []
 chain: []
 version: both
 first_seen: 2026-08-09
-last_updated: 2026-08-09
+last_updated: 2026-08-13
 sources: 4
 tags: [unique, combat, surrender, hull-repair, no-choices]
 ---
@@ -84,11 +84,17 @@ with resources — with flavour noting the rest of the convoy escaped in the mea
 >   `surrenderofferchance100`, i.e. the offer is claimed to be **guaranteed**
 >   ([[source-fandom-crystal-fight-with-surrender-offer-hull-repairs]]) — and the page
 >   title itself is "…with surrender offer".
-> Read literally the file says the offer never fires, which cannot be right given the page
+> ~~Read literally the file says the offer never fires, which cannot be right given the page
 > exists and is named for the offer; the likeliest explanation is that the engine treats
 > `chance="0"` on a surrender block as "always" rather than "never", but **no ingested
-> source states that**. Recording both; the behavioural claim (Fandom) is the one to plan
-> around, the raw attribute is the one to re-check.
+> source states that**.~~
+>
+> **RESOLVED (lint, 2026-08-13).** The guess above was right, and it now has evidence:
+> [[concept-surrender-offers]] shows `chance` is the probability the ship **keeps fighting**,
+> so `chance="0"` means the offer is **guaranteed** — Fandom's `surrenderofferchance100`. The
+> clinching argument is that ships which genuinely never surrender *omit the element*
+> (`CRYSTAL_SHIP_NO_SURRENDER` has no `<surrender>` at all), so `chance="0"` cannot mean
+> "never". No contradiction remains: **100%**, both sources agreeing.
 
 ## Related
 - [[sector-hidden-crystal-worlds]]

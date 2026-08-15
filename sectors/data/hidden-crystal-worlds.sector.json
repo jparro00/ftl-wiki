@@ -1,0 +1,1069 @@
+{
+  "schema": "ftl-sector-profile/1",
+  "id": "CRYSTAL_HOME",
+  "slug": "hidden-crystal-worlds",
+  "title": "Hidden Crystal Worlds",
+  "display_name": "Hidden Crystal Worlds",
+  "short_name": "Hidden Crystal Worlds",
+  "extracted_from": "raw/gamedata/sector_data.xml",
+  "min_sector": 0,
+  "unique": true,
+  "tracks": [
+    "debris",
+    "wasteland",
+    "deepspace"
+  ],
+  "crew_rarity": [
+    {
+      "id": "engi",
+      "label": "Engi",
+      "rarity": 0
+    },
+    {
+      "id": "mantis",
+      "label": "Mantis",
+      "rarity": 0
+    },
+    {
+      "id": "energy",
+      "label": "Zoltan",
+      "rarity": 0
+    },
+    {
+      "id": "slug",
+      "label": "Slug",
+      "rarity": 0
+    },
+    {
+      "id": "rock",
+      "label": "Rockman",
+      "rarity": 0
+    },
+    {
+      "id": "human",
+      "label": "Human",
+      "rarity": 0
+    },
+    {
+      "id": "crystal",
+      "label": "Crystal",
+      "rarity": 1
+    },
+    {
+      "id": "LASER_BURST_1",
+      "label": "Defense Laser Mark I",
+      "rarity": 0
+    },
+    {
+      "id": "LASER_BURST_2",
+      "label": "Dual Shot Laser",
+      "rarity": 0
+    },
+    {
+      "id": "LASER_BURST_2_A",
+      "label": "Burst Laser Mark I",
+      "rarity": 0
+    },
+    {
+      "id": "LASER_BURST_3",
+      "label": "Burst Laser Mark II",
+      "rarity": 0
+    },
+    {
+      "id": "LASER_BURST_5",
+      "label": "Burst Laser Mark III",
+      "rarity": 0
+    },
+    {
+      "id": "LASER_HEAVY_1",
+      "label": "Heavy Laser Mark I",
+      "rarity": 0
+    },
+    {
+      "id": "LASER_HEAVY_2",
+      "label": "Heavy Laser Mark II",
+      "rarity": 0
+    },
+    {
+      "id": "MISSILES_1",
+      "label": "Leto Missiles",
+      "rarity": 0
+    },
+    {
+      "id": "MISSILES_2",
+      "label": "Artemis Missiles",
+      "rarity": 0
+    },
+    {
+      "id": "MISSILES_2_PLAYER",
+      "label": "Artemis Missiles",
+      "rarity": 0
+    },
+    {
+      "id": "MISSILES_3",
+      "label": "Hermes Missile",
+      "rarity": 0
+    },
+    {
+      "id": "MISSILES_BURST",
+      "label": "Pegasus Missile",
+      "rarity": 0
+    },
+    {
+      "id": "MISSILES_BREACH",
+      "label": "Breach Missiles",
+      "rarity": 0
+    },
+    {
+      "id": "BEAM_1",
+      "label": "Mini Beam",
+      "rarity": 0
+    },
+    {
+      "id": "BEAM_2",
+      "label": "Halberd Beam",
+      "rarity": 0
+    },
+    {
+      "id": "BEAM_3",
+      "label": "Glaive Beam",
+      "rarity": 0
+    },
+    {
+      "id": "BEAM_LONG",
+      "label": "Pike Beam",
+      "rarity": 0
+    },
+    {
+      "id": "BEAM_FIRE",
+      "label": "Fire Beam",
+      "rarity": 0
+    },
+    {
+      "id": "BOMB_BREACH_1",
+      "label": "Breach Bomb Mark I",
+      "rarity": 0
+    },
+    {
+      "id": "BOMB_BREACH_2",
+      "label": "Breach Bomb Mark II",
+      "rarity": 0
+    },
+    {
+      "id": "ION_1",
+      "label": "Ion Blast",
+      "rarity": 0
+    },
+    {
+      "id": "ION_2",
+      "label": "Heavy Ion",
+      "rarity": 0
+    },
+    {
+      "id": "ION_4",
+      "label": "Ion Blast Mark II",
+      "rarity": 0
+    },
+    {
+      "id": "BOMB_1",
+      "label": "Small Bomb",
+      "rarity": 0
+    },
+    {
+      "id": "BOMB_FIRE",
+      "label": "Fire Bomb",
+      "rarity": 0
+    },
+    {
+      "id": "BOMB_ION",
+      "label": "Ion Bomb",
+      "rarity": 0
+    },
+    {
+      "id": "BOMB_HEAL",
+      "label": "Healing Burst",
+      "rarity": 0
+    },
+    {
+      "id": "LASER_HULL_1",
+      "label": "Hull Smasher Laser",
+      "rarity": 0
+    },
+    {
+      "id": "LASER_HULL_2",
+      "label": "Hull Smasher Laser Mark II",
+      "rarity": 0
+    },
+    {
+      "id": "BEAM_HULL",
+      "label": "Hull Beam",
+      "rarity": 0
+    },
+    {
+      "id": "MISSILES_HULL",
+      "label": "Hull Missile",
+      "rarity": 0
+    },
+    {
+      "id": "BOMB_LOCK",
+      "label": "Crystal Lockdown Bomb",
+      "rarity": 3
+    },
+    {
+      "id": "CRYSTAL_BURST_1",
+      "label": "Crystal Burst Mark I",
+      "rarity": 1
+    },
+    {
+      "id": "CRYSTAL_BURST_2",
+      "label": "Crystal Burst Mark II",
+      "rarity": 4
+    },
+    {
+      "id": "CRYSTAL_HEAVY_1",
+      "label": "Heavy Crystal Mark I",
+      "rarity": 2
+    },
+    {
+      "id": "CRYSTAL_HEAVY_2",
+      "label": "Heavy Crystal Mark II",
+      "rarity": 5
+    }
+  ],
+  "start_event": {
+    "id": "START_BEACON_CRYSTAL",
+    "slug": "start-beacon-crystal",
+    "title": "Start beacon (Crystal)",
+    "card": true,
+    "tags": [
+      "quest",
+      "reward"
+    ],
+    "gates": [],
+    "items": [
+      {
+        "id": "CRYSTAL_SHARDS",
+        "kind": "augment",
+        "label": "Crystal Vengeance"
+      }
+    ],
+    "crew_classes": [],
+    "quests": [
+      "CRYSTAL_UNLOCK"
+    ],
+    "boarders": [],
+    "unlock_ship": [
+      "8"
+    ],
+    "fleet_delay": []
+  },
+  "entries": [
+    {
+      "name": "HOSTILE_CRYSTAL",
+      "min": 6,
+      "max": 10,
+      "kind": "list",
+      "section": "hostile",
+      "events": [
+        {
+          "id": "CRYSTAL_FIGHT",
+          "slug": "crystal-fight",
+          "title": "Crystal fight",
+          "card": true,
+          "tags": [
+            "fight",
+            "crew"
+          ],
+          "gates": [],
+          "items": [],
+          "crew_classes": [
+            "crystal"
+          ],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": [],
+          "weight": 3
+        },
+        {
+          "id": "CRYSTAL_CONVOY",
+          "slug": "crystal-fight-with-surrender-offer-hull-repairs",
+          "title": "Crystal fight with surrender offer (hull repairs)",
+          "card": true,
+          "tags": [
+            "fight",
+            "unique"
+          ],
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "CRYSTAL_REBEL",
+          "slug": "rebel-fight-crystal",
+          "title": "Rebel fight (Crystal)",
+          "card": true,
+          "tags": [
+            "fight",
+            "crew"
+          ],
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "CRYSTAL_HUNTER",
+          "slug": "crystal-fight-with-surrender-offer-human-crew",
+          "title": "Crystal fight with surrender offer (Human crew)",
+          "card": true,
+          "tags": [
+            "fight",
+            "crew",
+            "unique"
+          ],
+          "gates": [],
+          "items": [],
+          "crew_classes": [
+            "human"
+          ],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "CRYSTAL_AUTO",
+          "slug": "auto-ship-fight-crystal",
+          "title": "Auto-ship fight (Crystal)",
+          "card": true,
+          "tags": [
+            "fight",
+            "crew",
+            "unique"
+          ],
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        }
+      ]
+    },
+    {
+      "name": "BOARDERS_CRYSTAL",
+      "min": 1,
+      "max": 2,
+      "kind": "event",
+      "section": "boarders",
+      "events": [
+        {
+          "id": "BOARDERS_CRYSTAL",
+          "slug": "boarders-crystal",
+          "title": "Boarders: Crystal",
+          "card": true,
+          "tags": [
+            "boarders"
+          ],
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [
+            {
+              "class": "crystal",
+              "min": 2,
+              "max": 3
+            }
+          ],
+          "unlock_ship": [],
+          "fleet_delay": []
+        }
+      ]
+    },
+    {
+      "name": "NEUTRAL_CRYSTAL",
+      "min": 12,
+      "max": 12,
+      "kind": "list",
+      "section": "neutral",
+      "events": [
+        {
+          "id": "CRYSTAL_REBEL_CRYSTAL",
+          "slug": "rebel-ship-attacking-crystal-ship",
+          "title": "Rebel ship attacking Crystal ship",
+          "card": true,
+          "tags": [
+            "may-fight",
+            "crew"
+          ],
+          "gates": [],
+          "items": [
+            {
+              "id": "WEAPONS_CRYSTAL",
+              "kind": "weapon",
+              "label": "WEAPONS_CRYSTAL"
+            }
+          ],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": [
+            1
+          ]
+        },
+        {
+          "id": "CRYSTAL_REBEL_CRYSTAL2",
+          "slug": "crystal-fight-choice",
+          "title": "Crystal fight choice",
+          "card": true,
+          "tags": [
+            "may-fight",
+            "crew",
+            "unique"
+          ],
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "CRYSTAL_MANTIS_CRYSTAL",
+          "slug": "mantis-ship-attacking-crystal",
+          "title": "Mantis ship attacking Crystal",
+          "card": true,
+          "tags": [
+            "may-fight"
+          ],
+          "gates": [],
+          "items": [
+            {
+              "id": "WEAPONS_CRYSTAL",
+              "kind": "weapon",
+              "label": "WEAPONS_CRYSTAL"
+            }
+          ],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "CRYSTAL_PIRATE_CRYSTAL",
+          "slug": "pirate-ship-attacking-crystal",
+          "title": "Pirate ship attacking Crystal",
+          "card": true,
+          "tags": [
+            "may-fight"
+          ],
+          "gates": [],
+          "items": [
+            {
+              "id": "WEAPONS_CRYSTAL",
+              "kind": "weapon",
+              "label": "WEAPONS_CRYSTAL"
+            }
+          ],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "CRYSTAL_FED",
+          "slug": "crystal-ship-attacking-federation-loyalists",
+          "title": "Crystal ship attacking Federation loyalists",
+          "card": true,
+          "tags": [
+            "may-fight",
+            "crew"
+          ],
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "CRYSTAL_FED_DESERTER",
+          "slug": "federation-deserters",
+          "title": "Federation deserters",
+          "card": true,
+          "tags": [
+            "may-fight",
+            "crew",
+            "cost",
+            "unique"
+          ],
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "CRYSTAL_HUMAN_TESTS",
+          "slug": "crystalline-research-facility",
+          "title": "Crystalline research facility",
+          "card": true,
+          "tags": [
+            "may-fight",
+            "crew-loss",
+            "crew",
+            "unique"
+          ],
+          "gates": [
+            {
+              "req": "rock",
+              "label": "Rockman"
+            },
+            {
+              "req": "BACKUP_DNA",
+              "label": "Backup DNA Bank"
+            }
+          ],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "CRYSTAL_CHATTY",
+          "slug": "crystal-chat",
+          "title": "Crystal chat",
+          "card": true,
+          "tags": [
+            "may-fight",
+            "crew",
+            "unique"
+          ],
+          "gates": [
+            {
+              "req": "crystal",
+              "label": "Crystal"
+            }
+          ],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "CRYSTAL_REQUEST",
+          "slug": "crystalline-ship-messaging-about-rebels",
+          "title": "Crystalline ship messaging about Rebels",
+          "card": true,
+          "tags": [
+            "may-fight",
+            "boarders",
+            "crew",
+            "unique"
+          ],
+          "gates": [
+            {
+              "req": "FLEET_DISTRACTION",
+              "label": "Distraction Buoys"
+            }
+          ],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [
+            {
+              "class": "crystal",
+              "min": 1,
+              "max": 2
+            }
+          ],
+          "unlock_ship": [],
+          "fleet_delay": [
+            1,
+            -1
+          ]
+        },
+        {
+          "id": "CRYSTAL_HELP_DIG",
+          "slug": "crystalline-men-buried",
+          "title": "Crystalline men buried",
+          "card": true,
+          "tags": [
+            "may-fight",
+            "crew-loss",
+            "crew",
+            "unique"
+          ],
+          "gates": [],
+          "items": [
+            {
+              "id": "CRYSTAL_HEAVY_2",
+              "kind": "weapon",
+              "label": "Heavy Crystal Mark II"
+            }
+          ],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": [
+            1
+          ]
+        }
+      ]
+    },
+    {
+      "name": "ITEMS_CRYSTAL",
+      "min": 2,
+      "max": 2,
+      "kind": "list",
+      "section": "items",
+      "events": [
+        {
+          "id": "CRYSTAL_CACHE",
+          "slug": "crystalline-cache",
+          "title": "Crystalline cache",
+          "card": true,
+          "tags": [
+            "boarders",
+            "crew-loss",
+            "reward",
+            "cost",
+            "unique"
+          ],
+          "gates": [
+            {
+              "req": "teleporter",
+              "label": "Crew Teleporter",
+              "lvl": "2"
+            },
+            {
+              "req": "engines",
+              "label": "Engines",
+              "lvl": "7"
+            },
+            {
+              "req": "MISSILES_BREACH",
+              "label": "Breach Missiles"
+            },
+            {
+              "req": "crystal",
+              "label": "Crystal"
+            }
+          ],
+          "items": [
+            {
+              "id": "WEAPONS_CRYSTAL",
+              "kind": "weapon",
+              "label": "WEAPONS_CRYSTAL"
+            }
+          ],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [
+            {
+              "class": "crystal",
+              "min": 2,
+              "max": 3
+            }
+          ],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "CRYSTAL_SCRAP_EXCITED",
+          "slug": "crystal-scrap-collector",
+          "title": "Crystal scrap collector",
+          "card": true,
+          "tags": [
+            "crew",
+            "cost",
+            "unique"
+          ],
+          "gates": [],
+          "items": [
+            {
+              "id": "BOMB_LOCK",
+              "kind": "weapon",
+              "label": "Crystal Lockdown Bomb"
+            },
+            {
+              "id": "CRYSTAL_BURST_2",
+              "kind": "weapon",
+              "label": "Crystal Burst Mark II"
+            }
+          ],
+          "crew_classes": [
+            "crystal"
+          ],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "FIND_DRONE",
+          "slug": "free-drone-schematic",
+          "title": "Free drone schematic",
+          "card": true,
+          "tags": [
+            "reward"
+          ],
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "FIND_WEAPON",
+          "slug": "free-weapon",
+          "title": "Free weapon",
+          "card": true,
+          "tags": [
+            "reward"
+          ],
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "REFUEL_STATION",
+          "slug": "refueling-station",
+          "title": "Refueling station",
+          "card": true,
+          "tags": [
+            "reward",
+            "cost",
+            "unique"
+          ],
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "REPAIR_STATION",
+          "slug": "repair-station",
+          "title": "Repair station",
+          "card": true,
+          "tags": [
+            "cost",
+            "unique"
+          ],
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        }
+      ]
+    },
+    {
+      "name": "STORE_CRYSTAL",
+      "min": 2,
+      "max": 3,
+      "kind": "event",
+      "section": "store",
+      "events": [
+        {
+          "id": "STORE_CRYSTAL",
+          "slug": "store-crystal",
+          "title": "Store (Crystal)",
+          "card": true,
+          "tags": [
+            "store"
+          ],
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        }
+      ]
+    },
+    {
+      "name": "NOTHING_CRYSTAL",
+      "min": 2,
+      "max": 2,
+      "kind": "event",
+      "section": "empty",
+      "events": [
+        {
+          "id": "NOTHING_CRYSTAL",
+          "slug": "empty-beacon-crystal",
+          "title": "Empty beacon (Crystal)",
+          "card": true,
+          "tags": [],
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        }
+      ]
+    }
+  ],
+  "rollup": {
+    "distinct_events": 24,
+    "no_card": [],
+    "always_fight": [
+      "CRYSTAL_AUTO",
+      "CRYSTAL_CONVOY",
+      "CRYSTAL_FIGHT",
+      "CRYSTAL_HUNTER",
+      "CRYSTAL_REBEL"
+    ],
+    "may_fight": [
+      "CRYSTAL_CHATTY",
+      "CRYSTAL_FED",
+      "CRYSTAL_FED_DESERTER",
+      "CRYSTAL_HELP_DIG",
+      "CRYSTAL_HUMAN_TESTS",
+      "CRYSTAL_MANTIS_CRYSTAL",
+      "CRYSTAL_PIRATE_CRYSTAL",
+      "CRYSTAL_REBEL_CRYSTAL",
+      "CRYSTAL_REBEL_CRYSTAL2",
+      "CRYSTAL_REQUEST"
+    ],
+    "crew_loss": [
+      "CRYSTAL_CACHE",
+      "CRYSTAL_HELP_DIG",
+      "CRYSTAL_HUMAN_TESTS"
+    ],
+    "crew_gain": [
+      "CRYSTAL_AUTO",
+      "CRYSTAL_CHATTY",
+      "CRYSTAL_FED",
+      "CRYSTAL_FED_DESERTER",
+      "CRYSTAL_FIGHT",
+      "CRYSTAL_HELP_DIG",
+      "CRYSTAL_HUMAN_TESTS",
+      "CRYSTAL_HUNTER",
+      "CRYSTAL_REBEL",
+      "CRYSTAL_REBEL_CRYSTAL",
+      "CRYSTAL_REBEL_CRYSTAL2",
+      "CRYSTAL_REQUEST",
+      "CRYSTAL_SCRAP_EXCITED"
+    ],
+    "boarders": [
+      "BOARDERS_CRYSTAL",
+      "CRYSTAL_CACHE",
+      "CRYSTAL_REQUEST"
+    ],
+    "unique": [
+      "CRYSTAL_AUTO",
+      "CRYSTAL_CACHE",
+      "CRYSTAL_CHATTY",
+      "CRYSTAL_CONVOY",
+      "CRYSTAL_FED_DESERTER",
+      "CRYSTAL_HELP_DIG",
+      "CRYSTAL_HUMAN_TESTS",
+      "CRYSTAL_HUNTER",
+      "CRYSTAL_REBEL_CRYSTAL2",
+      "CRYSTAL_REQUEST",
+      "CRYSTAL_SCRAP_EXCITED",
+      "REFUEL_STATION",
+      "REPAIR_STATION"
+    ],
+    "quest_starts": [],
+    "gates": [
+      {
+        "req": "crystal",
+        "label": "Crystal",
+        "levels": [],
+        "events": [
+          "CRYSTAL_CHATTY",
+          "CRYSTAL_CACHE"
+        ]
+      },
+      {
+        "req": "BACKUP_DNA",
+        "label": "Backup DNA Bank",
+        "levels": [],
+        "events": [
+          "CRYSTAL_HUMAN_TESTS"
+        ]
+      },
+      {
+        "req": "FLEET_DISTRACTION",
+        "label": "Distraction Buoys",
+        "levels": [],
+        "events": [
+          "CRYSTAL_REQUEST"
+        ]
+      },
+      {
+        "req": "MISSILES_BREACH",
+        "label": "Breach Missiles",
+        "levels": [],
+        "events": [
+          "CRYSTAL_CACHE"
+        ]
+      },
+      {
+        "req": "engines",
+        "label": "Engines",
+        "levels": [
+          "7"
+        ],
+        "events": [
+          "CRYSTAL_CACHE"
+        ]
+      },
+      {
+        "req": "rock",
+        "label": "Rockman",
+        "levels": [],
+        "events": [
+          "CRYSTAL_HUMAN_TESTS"
+        ]
+      },
+      {
+        "req": "teleporter",
+        "label": "Crew Teleporter",
+        "levels": [
+          "2"
+        ],
+        "events": [
+          "CRYSTAL_CACHE"
+        ]
+      }
+    ],
+    "named_items": [
+      {
+        "value": {
+          "id": "WEAPONS_CRYSTAL",
+          "kind": "weapon",
+          "label": "WEAPONS_CRYSTAL"
+        },
+        "events": [
+          "CRYSTAL_REBEL_CRYSTAL",
+          "CRYSTAL_MANTIS_CRYSTAL",
+          "CRYSTAL_PIRATE_CRYSTAL",
+          "CRYSTAL_CACHE"
+        ]
+      },
+      {
+        "value": {
+          "id": "BOMB_LOCK",
+          "kind": "weapon",
+          "label": "Crystal Lockdown Bomb"
+        },
+        "events": [
+          "CRYSTAL_SCRAP_EXCITED"
+        ]
+      },
+      {
+        "value": {
+          "id": "CRYSTAL_BURST_2",
+          "kind": "weapon",
+          "label": "Crystal Burst Mark II"
+        },
+        "events": [
+          "CRYSTAL_SCRAP_EXCITED"
+        ]
+      },
+      {
+        "value": {
+          "id": "CRYSTAL_HEAVY_2",
+          "kind": "weapon",
+          "label": "Heavy Crystal Mark II"
+        },
+        "events": [
+          "CRYSTAL_HELP_DIG"
+        ]
+      }
+    ],
+    "crew_classes": [
+      {
+        "value": "crystal",
+        "events": [
+          "CRYSTAL_FIGHT",
+          "CRYSTAL_SCRAP_EXCITED"
+        ]
+      },
+      {
+        "value": "human",
+        "events": [
+          "CRYSTAL_HUNTER"
+        ]
+      }
+    ],
+    "unlock_ships": [],
+    "quest_targets": []
+  },
+  "metrics": {
+    "beacons_min": 25,
+    "beacons_max": 31,
+    "distinct_events": 24,
+    "always_fight_events": 5,
+    "may_fight_events": 10,
+    "crew_loss_events": 3,
+    "crew_gain_events": 13,
+    "boarder_events": 3,
+    "unique_events": 13,
+    "gated_events": 4,
+    "quest_start_events": 0,
+    "section:hostile:min": 6,
+    "section:hostile:max": 10,
+    "section:boarders:min": 1,
+    "section:boarders:max": 2,
+    "section:neutral:min": 12,
+    "section:neutral:max": 12,
+    "section:items:min": 2,
+    "section:items:max": 2,
+    "section:store:min": 2,
+    "section:store:max": 3,
+    "section:empty:min": 2,
+    "section:empty:max": 2,
+    "entry:HOSTILE_CRYSTAL:min": 6,
+    "entry:HOSTILE_CRYSTAL:max": 10,
+    "entry:BOARDERS_CRYSTAL:min": 1,
+    "entry:BOARDERS_CRYSTAL:max": 2,
+    "entry:NEUTRAL_CRYSTAL:min": 12,
+    "entry:NEUTRAL_CRYSTAL:max": 12,
+    "entry:ITEMS_CRYSTAL:min": 2,
+    "entry:ITEMS_CRYSTAL:max": 2,
+    "entry:STORE_CRYSTAL:min": 2,
+    "entry:STORE_CRYSTAL:max": 3,
+    "entry:NOTHING_CRYSTAL:min": 2,
+    "entry:NOTHING_CRYSTAL:max": 2
+  }
+}

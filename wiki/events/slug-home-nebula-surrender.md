@@ -9,7 +9,7 @@ blue_options: [slug crew, sensors lvl 2, cloaking]
 chain: [[[chain-slug-cruiser-unlock]]]
 version: both
 first_seen: 2026-08-09
-last_updated: 2026-08-09
+last_updated: 2026-08-13
 sources: 4
 tags: [unique, guaranteed, ship-unlock, combat, quest-marker, blue-option]
 ---
@@ -63,9 +63,15 @@ told apart on arrival. ([[source-events-slug]])
 > Fandom applies the same reading to `QUEST_SLUG_PIRATE_TRAP1`, which is also `chance="0"`
 > and which it describes as simply "surrenders at 30–40% hull". So `chance="0"` appears to
 > mean *this ship always takes the scripted surrender branch* rather than *never
-> surrenders*. Recorded, not resolved: no source here documents the attribute's semantics.
-> Play-wise, trust Fandom — an unlock event that never offered its surrender would be
-> unreachable.
+> surrenders*. ~~Recorded, not resolved: no source here documents the attribute's
+> semantics.~~
+>
+> **RESOLVED (lint, 2026-08-13).** The reading above is correct and now sourced:
+> [[concept-surrender-offers]] establishes `chance` as the probability the ship **keeps
+> fighting**, making `chance="0"` a guaranteed offer — Fandom's 100%. This event and
+> `QUEST_SLUG_PIRATE_TRAP1` are two of the four `chance="0"` ships, and all four are built
+> around an offer that must fire, which is itself part of the evidence. No contradiction
+> remains: **100%**, both sources agreeing.
 
 ### `SLUG_UNLOCK_SURRENDER` — the tell
 
@@ -138,7 +144,8 @@ to be easier" — those blue options are **not live** in this build ([[source-ev
 - [[event-pirate-escape]] — the shared `PIRATE_ESCAPE` aftermath this hull loads
 
 ## Open Questions
-- [ ] What `chance="0"` actually means in a `<surrender>` block.
+- [x] ~~What `chance="0"` actually means in a `<surrender>` block.~~ A **guaranteed** offer —
+      `chance` is the probability the ship keeps fighting ([[concept-surrender-offers]]).
 - [ ] Whether the augment-overwrite bug Fandom describes is present in this 1.6.x build.
 
 ## Sources

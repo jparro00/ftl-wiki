@@ -109,6 +109,21 @@ Two more continuations, both of which silently dropped whole subtrees until fixe
 `load=` is a subroutine call and may cross files. A revisited name becomes `{"kind":"ref"}`
 (recursion guard, plus a depth backstop).
 
+### 4.2b Dispatch pools are pointed at, not inlined
+
+An `eventList` collapses to one pointer row per entry — `{"kind":"ref", "target", "card"}`,
+labelled with the target's title, and the list marked `"dispatch": true` — when **every**
+entry is a bare `<event load="X"/>` whose target is a top-level event with a `wiki/events/`
+page. Such a list does nothing but pick one complete event to run, and the watcher shows that
+event's own card a moment later (FTL rewrites the save when a `hidden` choice chains), so the
+pool card only has to say what *can* follow. Inlining them instead put 30 whole events on
+`FINISH_BEACON`: 529 text nodes, 2.7× the next largest card.
+
+**All or nothing.** A list mixing `load=` entries with anonymous `<event>` bodies is an outcome
+table, not a dispatcher — its loads are outcomes of *this* event. Collapsing per-entry gutted
+the eight refugee cards, whose list is four `REFUGEE_TRADER` loads plus four inline ambushes.
+Single-entry lists are excluded; R10 already collapses those into the row above.
+
 ### 4.3 Effects
 
 A closed set. Source tag → emitted `kind`:
@@ -191,10 +206,10 @@ root only — `chain[]`.
 | Node `kind` | Fields |
 |---|---|
 | `decision` | `options[]`; optional `combat` (a ship also at the beacon) |
-| `chance` | `list`, `odds_basis` (`unweighted` \| `file-weight`), `options[]` |
+| `chance` | `list`, `odds_basis` (`unweighted` \| `file-weight`), `options[]`; `dispatch` when §4.2b applies |
 | `combat` | `ship`, `hostile`, `auto_blueprint`, `ship_label`/`ship_labels`, `branches[]` |
 | `sequence` | `options[]` — exactly one, unlabelled: a bare `<event>` continuation ("then this") |
-| `ref` | `target` — a definition deliberately not re-expanded |
+| `ref` | `target` — a definition deliberately not re-expanded; `card` when it is a dispatch (§4.2b) rather than the recursion guard |
 | *absent* | terminal |
 
 An **option**: `label`, `label_ref`, `gate` (`req`, `label`, `lvl`, `max_lvl`, `max_group`,
@@ -226,6 +241,7 @@ The renderer holds no wording. Every key is a lookup it performs.
 | `resource_labels` | singular/plural pairs for `item_modify` resources |
 | `spend_prefix` | sign on a negative resource |
 | `nothing`, `dlc_mark`, `merge_chip` | "nothing happens", the AE marker, the `×n` chip |
+| `leads.ref` vs `leads.card_ref` | two different refusals to expand — the recursion guard ("the same table again") and a dispatch to a whole event of its own (§4.2b). The renderer picks by whether the `ref` carries a `card` |
 | `leads` | what a row says when it has no effects of its own (`combat`, `chance`, `decision`, `ref`) |
 | `block_labels` | headings above a nested block |
 | `branches` | `destroyed` → "You destroy it", etc. |
@@ -389,10 +405,16 @@ Each of these has bitten. They are guarded now; do not reintroduce them.
 ## 11. Known limits
 
 - Chance-entry rows use the full outcome narration as their label, because that is the only
-  string the files contain. List-heavy cards run tall.
+  string the files contain. List-heavy cards run tall — except dispatch pools (§4.2b), whose
+  rows are titles.
+- A dispatch entry that loads another *list* has no title to borrow, so it renders as the
+  unlabelled row: `FINISH_BEACON`'s two `EXIT_LIST` members show as "Outcome → 1 of 17" and
+  "1 of 13". The files name those lists only internally, and I3 keeps internal ids off cards.
 - An identical subtree repeats wherever the data reaches it; merging collapses siblings only.
 - `hidden="true"` on a `<choice>` (797 uses) has no established meaning in any source here;
-  it is carried through and ignored.
+  it is carried through and ignored. One thing it is *not*, observed on `FINISH_BEACON`
+  (see [[event-finish-beacon]]): an automatic chain. The player still dismisses the window
+  before the choice's event loads.
 - The 2–3 class threshold for naming a `blueprintList` is a judgement, not something the data
   states.
 - The gated-label cleanup assumes requirements are written as a *leading* parenthetical.

@@ -7,7 +7,7 @@ unlocks_blue: [[[event-rebel-ship-attacking-federation-loyalists]]]
 version: both
 first_seen: 2026-08-09
 last_updated: 2026-08-09
-sources: 5
+sources: 6
 tags: [weapon, bomb, crew]
 ---
 

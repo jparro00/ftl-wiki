@@ -25,7 +25,7 @@ check — and resolves several `autoReward` tags into concrete effects.
   Rock Controlled, Rock Homeworlds, Uncharted Nebula, Zoltan Controlled, Zoltan
   Homeworlds) — Federation Space is missing; see Contradictions.
 - Notes that the *"Take him home to his family"* sub-event (`FAMILY_RETURN`) is shared with
-  [[event-small-asteroid-belt-distress-beacon]]'s Teleporter blue option — a cross-event
+  [[event-asteroid-belt-distress]]'s Teleporter blue option — a cross-event
   link the XML shows only as a shared `load=` target.
 - Records the Clone Bay interaction on `MADMAN` outcome 1 as a nested blue-ish outcome
   rather than an automatic effect; the XML expresses it as `<removeCrew><clone>true</clone>`.
@@ -38,7 +38,7 @@ check — and resolves several `autoReward` tags into concrete effects.
 - [[event-single-life-form-on-moon]]
 
 ## Other Pages Touched
-- [[event-small-asteroid-belt-distress-beacon]], [[entity-slugs]]
+- [[event-asteroid-belt-distress]], [[entity-slugs]]
 
 ## Reliability Notes
 `medium`. No game version stated, so `game_version` is `unknown` — although the page

@@ -1,0 +1,213 @@
+<!--
+  FTL sector profile — shared shell.
+
+  Layout, colour and type for every sector page. Holds no sector-specific content:
+  build-sector.py replaces the <title> line and the SECTOR-CONTENT marker below.
+  Editing this file changes all 19 pages, which is the point — see tools/SECTOR-PAGE.md §8.
+-->
+<title>Engi Controlled Sector — sector profile</title>
+<style>
+  :root {
+    --void:   #070B10;
+    --panel:  #101822;
+    --sunk:   #0B1219;
+    --edge:   #1F2E3C;
+    --ink:    #D6E2EC;
+    --dim:    #7C8FA3;
+    --faint:  #55697C;
+    --cyan:   #5FD3E8;
+    --green:  #78C46B;
+    --amber:  #E8B84B;
+    --red:    #E0685C;
+    --rail:   #22384A;
+    --hex:    rgba(95,211,232,.035);
+    --barlo:  rgba(95,211,232,.22);
+    --barred: rgba(224,104,92,.28);
+
+    --sans: ui-sans-serif, system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+  }
+  @media (prefers-color-scheme: light) {
+    :root {
+      --void: #EEF1F4; --panel: #FFFFFF; --sunk: #F5F7F9; --edge: #D3DBE2;
+      --ink: #14202B; --dim: #5B6C7B; --faint: #7A8895; --cyan: #12708A;
+      --green: #3B7A31; --amber: #8A6606; --red: #AF3B2E; --rail: #C2CDD6;
+      --hex: rgba(18,112,138,.045); --barlo: rgba(18,112,138,.18);
+      --barred: rgba(175,59,46,.22);
+    }
+  }
+  :root[data-theme="dark"] {
+    --void: #070B10; --panel: #101822; --sunk: #0B1219; --edge: #1F2E3C;
+    --ink: #D6E2EC; --dim: #7C8FA3; --faint: #55697C; --cyan: #5FD3E8;
+    --green: #78C46B; --amber: #E8B84B; --red: #E0685C; --rail: #22384A;
+    --hex: rgba(95,211,232,.035); --barlo: rgba(95,211,232,.22);
+    --barred: rgba(224,104,92,.28);
+  }
+  :root[data-theme="light"] {
+    --void: #EEF1F4; --panel: #FFFFFF; --sunk: #F5F7F9; --edge: #D3DBE2;
+    --ink: #14202B; --dim: #5B6C7B; --faint: #7A8895; --cyan: #12708A;
+    --green: #3B7A31; --amber: #8A6606; --red: #AF3B2E; --rail: #C2CDD6;
+    --hex: rgba(18,112,138,.045); --barlo: rgba(18,112,138,.18);
+    --barred: rgba(175,59,46,.22);
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; padding: 2.6rem 1.15rem 4.5rem;
+    background: var(--void);
+    background-image: radial-gradient(var(--hex) 1px, transparent 1.6px);
+    background-size: 22px 22px;
+    color: var(--ink); font-family: var(--sans); line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 58rem; margin: 0 auto; display: flex; flex-direction: column; gap: 2.1rem; }
+
+  .eyebrow {
+    font-family: var(--mono); font-size: .66rem; letter-spacing: .19em;
+    text-transform: uppercase; color: var(--cyan); margin: 0 0 .55rem;
+  }
+  h1 { font-size: 2.05rem; font-weight: 600; letter-spacing: -.02em; margin: 0 0 .7rem; text-wrap: balance; }
+  .lede { margin: 0 0 1rem; max-width: 42rem; color: var(--dim); font-size: .95rem; }
+  .lede strong { color: var(--ink); font-weight: 600; }
+  .facts { display: flex; flex-wrap: wrap; gap: .4rem; }
+  .fact {
+    font-family: var(--mono); font-size: .68rem; letter-spacing: .06em;
+    color: var(--dim); border: 1px solid var(--edge); border-radius: 2px;
+    padding: .22rem .5rem; background: var(--panel);
+  }
+  .fact b { color: var(--ink); font-weight: 600; }
+
+  .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(9.2rem, 1fr)); gap: .55rem; }
+  .stat {
+    background: var(--panel); border: 1px solid var(--edge); border-radius: 3px;
+    padding: .75rem .8rem; display: flex; flex-direction: column; gap: .15rem;
+  }
+  .stat .n {
+    font-family: var(--mono); font-size: 1.5rem; font-weight: 600;
+    font-variant-numeric: tabular-nums; letter-spacing: -.02em; line-height: 1.1; color: var(--cyan);
+  }
+  .stat .k {
+    font-family: var(--mono); font-size: .62rem; letter-spacing: .14em;
+    text-transform: uppercase; color: var(--faint);
+  }
+
+  section { display: flex; flex-direction: column; gap: .8rem; }
+  h2 {
+    font-size: .74rem; font-family: var(--mono); font-weight: 600;
+    letter-spacing: .17em; text-transform: uppercase; color: var(--cyan);
+    margin: 0; padding-bottom: .45rem; border-bottom: 1px solid var(--edge);
+    display: flex; justify-content: space-between; align-items: baseline; gap: 1rem;
+  }
+  h2 .meta { color: var(--faint); font-weight: 400; letter-spacing: .08em; text-transform: none; flex: none; }
+  .note { margin: 0; font-size: .84rem; color: var(--dim); max-width: 44rem; }
+
+  .budget { display: flex; flex-direction: column; gap: .3rem; }
+  .brow {
+    display: grid; grid-template-columns: 14rem 3.4rem 1fr; align-items: center;
+    gap: .7rem; padding: .34rem .55rem; border-radius: 2px; background: var(--panel);
+    border: 1px solid var(--edge);
+  }
+  .brow .name { font-family: var(--mono); font-size: .74rem; color: var(--ink); overflow-wrap: anywhere; }
+  .brow .cnt {
+    font-family: var(--mono); font-size: .74rem; color: var(--dim);
+    font-variant-numeric: tabular-nums; text-align: right;
+  }
+  .track { display: flex; align-items: center; gap: 2px; height: .62rem; flex-wrap: wrap; }
+  .blk { width: .62rem; height: .62rem; background: var(--cyan); border-radius: 1px; flex: none; }
+  .blk.maybe { background: var(--barlo); }
+  .brow.hostile .blk { background: var(--red); }
+  .brow.hostile .blk.maybe { background: var(--barred); }
+  .brow.zero .cnt { color: var(--faint); }
+
+  .pool { display: grid; grid-template-columns: repeat(auto-fill, minmax(16.5rem, 1fr)); gap: .4rem; }
+  .ev {
+    background: var(--panel); border: 1px solid var(--edge); border-left: 2px solid var(--rail);
+    border-radius: 2px; padding: .48rem .6rem; display: flex; flex-direction: column; gap: .22rem;
+  }
+  .ev.fight { border-left-color: var(--red); }
+  .ev.may { border-left-color: var(--barred); }
+  .ev.good { border-left-color: var(--green); }
+  .ev.risk { border-left-color: var(--amber); }
+  .ev .t { font-size: .84rem; font-weight: 500; line-height: 1.25; }
+  .ev .id { font-family: var(--mono); font-size: .63rem; color: var(--faint); letter-spacing: .03em; overflow-wrap: anywhere; }
+  .tags { display: flex; flex-wrap: wrap; gap: .25rem; margin-top: .1rem; }
+  .tg {
+    font-family: var(--mono); font-size: .57rem; letter-spacing: .1em; text-transform: uppercase;
+    padding: .08rem .3rem; border-radius: 2px; border: 1px solid currentColor; color: var(--faint);
+  }
+  .tg.fight, .tg.may-fight { color: var(--red); }
+  .tg.crew, .tg.reward { color: var(--green); }
+  .tg.crew-loss, .tg.boarders, .tg.cost { color: var(--amber); }
+  .tg.quest, .tg.store { color: var(--cyan); }
+
+  .delta {
+    border: 1px dashed var(--edge); border-radius: 2px; background: var(--sunk);
+    padding: .6rem .75rem; display: flex; flex-direction: column; gap: .5rem;
+  }
+  .delta .head {
+    font-family: var(--mono); font-size: .62rem; letter-spacing: .12em;
+    text-transform: uppercase; color: var(--amber);
+  }
+
+  .cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr)); gap: .9rem; align-items: start; }
+  .panel {
+    background: var(--panel); border: 1px solid var(--edge); border-radius: 3px;
+    padding: .9rem 1rem 1rem; display: flex; flex-direction: column; gap: .55rem;
+  }
+  .panel h3 {
+    margin: 0; font-family: var(--mono); font-size: .66rem; letter-spacing: .15em;
+    text-transform: uppercase; color: var(--dim); font-weight: 600;
+  }
+  .panel ul { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: .45rem; }
+  .panel li { font-size: .82rem; line-height: 1.42; display: flex; gap: .5rem; align-items: baseline; }
+  .lead {
+    font-family: var(--mono); font-size: .72rem; color: var(--cyan); flex: none;
+    min-width: 4.6rem; font-variant-numeric: tabular-nums;
+  }
+
+  .rar { display: flex; flex-direction: column; gap: .3rem; }
+  .rrow { display: grid; grid-template-columns: 5.2rem 1fr 3rem; gap: .55rem; align-items: center; font-size: .8rem; }
+  .pips { display: flex; gap: 2px; }
+  .pip { width: .52rem; height: .52rem; border-radius: 50%; background: var(--cyan); flex: none; }
+  .pip.off { background: var(--rail); }
+  .rrow .v { font-family: var(--mono); font-size: .68rem; color: var(--dim); text-align: right; }
+  .rrow.zero .v { color: var(--red); }
+
+  .chain { display: flex; flex-direction: column; gap: 0; }
+  .step { display: grid; grid-template-columns: 1.6rem 1fr; gap: .7rem; }
+  .marker { display: flex; flex-direction: column; align-items: center; }
+  .dot {
+    width: 1.35rem; height: 1.35rem; border-radius: 50%; flex: none;
+    border: 1px solid var(--cyan); color: var(--cyan); background: var(--panel);
+    font-family: var(--mono); font-size: .68rem; display: flex; align-items: center; justify-content: center;
+    font-variant-numeric: tabular-nums;
+  }
+  .step .line { width: 1px; flex: 1; background: var(--rail); min-height: .6rem; }
+  .step .body { padding-bottom: .95rem; }
+  .step .body .t { font-size: .88rem; font-weight: 500; }
+  .step .body .d { font-size: .81rem; color: var(--dim); margin-top: .15rem; }
+  .step .body .id { font-family: var(--mono); font-size: .63rem; color: var(--faint); margin-top: .12rem; }
+  .step.end .dot { border-color: var(--green); color: var(--green); }
+
+  .callout {
+    border: 1px solid var(--edge); border-left: 2px solid var(--amber);
+    background: var(--sunk); border-radius: 2px; padding: .7rem .9rem;
+    font-size: .84rem; color: var(--dim);
+  }
+  .callout b { color: var(--ink); font-weight: 600; }
+  .ref { color: var(--ink); font-weight: 500; }
+  code { font-family: var(--mono); font-size: .92em; color: var(--ink); }
+  footer {
+    border-top: 1px solid var(--edge); padding-top: .8rem;
+    font-family: var(--mono); font-size: .66rem; color: var(--faint); line-height: 1.8;
+  }
+  footer p { margin: 0; }
+  @media (max-width: 34rem) {
+    .brow { grid-template-columns: 1fr 3.4rem; }
+    .brow .track { grid-column: 1 / -1; }
+  }
+</style>
+
+<div class="wrap">
+<header><p class="eyebrow">Sector profile · ENGI_SECTOR</p><h1>Engi Controlled Sector</h1><p class="lede">The Engi sector you actually meet — no depth requirement, no once-per-run limit, so a run can fly through two of them. The pools are generous: three beacons of Engi hand-outs, two to three stores, and a hostile list with no Engi ship anywhere in it. What it does not have is a <strong>named beacon</strong> — nothing here is placed by id, so there is no ship unlock and no guaranteed quest start.</p><div class="facts"><span class="fact">minSector <b>0</b></span><span class="fact"><b>can repeat in a run</b></span><span class="fact">entry beacon <b>START_BEACON_ENGI</b></span><span class="fact">tracks <b>engi · cosmos · hacking</b></span><span class="fact"><b>Advanced Edition data</b></span></div></header><div class="stats"><div class="stat"><div class="n">19–27</div><div class="k">Beacon spread</div></div><div class="stat"><div class="n">5–7</div><div class="k">Guaranteed fights</div></div><div class="stat"><div class="n">2–3</div><div class="k">Stores</div></div><div class="stat"><div class="n">5</div><div class="k">Item beacons</div></div><div class="stat"><div class="n">33</div><div class="k">Once-only events</div></div></div><section><h2>Beacon budget<span class="meta">what the sector is required to place</span></h2><div class="budget"><div class="brow hostile"><div class="name">HOSTILE_ENGI</div><div class="cnt">5–7</div><div class="track"><i class="blk"></i><i class="blk"></i><i class="blk"></i><i class="blk"></i><i class="blk"></i><i class="blk maybe"></i><i class="blk maybe"></i></div></div><div class="brow"><div class="name">NEUTRAL_ENGI</div><div class="cnt">4–6</div><div class="track"><i class="blk"></i><i class="blk"></i><i class="blk"></i><i class="blk"></i><i class="blk maybe"></i><i class="blk maybe"></i></div></div><div class="brow"><div class="name">DISTRESS_BEACON_ENGI</div><div class="cnt">1–3</div><div class="track"><i class="blk"></i><i class="blk maybe"></i><i class="blk maybe"></i></div></div><div class="brow"><div class="name">ITEMS</div><div class="cnt">2</div><div class="track"><i class="blk"></i><i class="blk"></i></div></div><div class="brow"><div class="name">ITEMS_ENGI</div><div class="cnt">3</div><div class="track"><i class="blk"></i><i class="blk"></i><i class="blk"></i></div></div><div class="brow"><div class="name">STORE_ENGI</div><div class="cnt">2–3</div><div class="track"><i class="blk"></i><i class="blk"></i><i class="blk maybe"></i></div></div><div class="brow"><div class="name">QUESTS_ENGI</div><div class="cnt">1</div><div class="track"><i class="blk"></i></div></div><div class="brow"><div class="name">NOTHING_ENGI</div><div class="cnt">1–2</div><div class="track"><i class="blk"></i><i class="blk maybe"></i></div></div></div><p class="note">Solid blocks are the minimum the sector must place; faded blocks are the optional extra.</p><p class="note">Entry beacon is always START_BEACON_ENGI.</p><div class="callout"><strong>Versus Engi Homeworlds:</strong> the same eight lists, two differences — Homeworlds bolts a named <code>ENGI_UNLOCK_1</code> beacon on the front, and gives <code>NEUTRAL_ENGI</code> 5–7 beacons instead of 4–6. Strip those and you have this sector. Every beacon here is drawn from a pool, and with the sector repeatable, the once-only tag on more than half the pool is worth reading twice.</div></section><section><h2>Hostile<span class="meta">HOSTILE_ENGI · 5–7 beacons · combat unless the row says otherwise</span></h2><div class="pool"><div class="ev fight"><div class="t">Mantis fight (Engi)</div><div class="id">ENGI_MANTIS_FIGHT</div><div class="tags"><span class="tg fight">Fight</span><span class="tg crew">Crew</span></div></div><div class="ev fight"><div class="t">Rebel fight (Engi)</div><div class="id">ENGI_REBEL_FIGHT</div><div class="tags"><span class="tg fight">Fight</span><span class="tg crew">Crew</span></div></div><div class="ev fight"><div class="t">Pirate fight (Engi)</div><div class="id">ENGI_PIRATE_FIGHT</div><div class="tags"><span class="tg fight">Fight</span><span class="tg crew">Crew</span></div></div><div class="ev fight"><div class="t">Pirate fight</div><div class="id">PIRATE</div><div class="tags"><span class="tg fight">Fight</span><span class="tg crew">Crew</span></div></div><div class="ev may"><div class="t">Pirate toll</div><div class="id">PIRATE_CHOICE</div><div class="tags"><span class="tg may-fight">May fight</span><span class="tg crew">Crew</span><span class="tg cost">Cost</span></div></div><div class="ev fight"><div class="t">Rebel fight</div><div class="id">REBEL</div><div class="tags"><span class="tg fight">Fight</span><span class="tg crew">Crew</span></div></div><div class="ev fight"><div class="t">Rebel ship warning</div><div class="id">SQUAT_WARNING</div><div class="tags"><span class="tg fight">Fight</span><span class="tg unique">Unique</span></div></div><div class="ev may"><div class="t">Pirate fight in asteroid field</div><div class="id">PIRATE_ASTEROID</div><div class="tags"><span class="tg may-fight">May fight</span><span class="tg crew">Crew</span></div></div><div class="ev fight"><div class="t">Pirate fight near sun</div><div class="id">PIRATE_SUN</div><div class="tags"><span class="tg fight">Fight</span><span class="tg crew">Crew</span><span class="tg unique">Unique</span></div></div><div class="ev may"><div class="t">Pirate engine hacker</div><div class="id">PIRATE_NO_ESCAPE</div><div class="tags"><span class="tg may-fight">May fight</span><span class="tg unique">Unique</span></div></div></div><p class="note">Ten events for five to seven beacons, and not one of them is an Engi ship — Mantis, Rebel and pirate hulls only. <span class="ref">Pirate engine hacker</span> pins your engines at a single bar so running is off the table, and if the scout in <span class="ref">Rebel ship warning</span> gets its FTL up, the Rebel fleet gains a jump on you.</p><div class="delta"><div class="head">Advanced Edition also defines OVERRIDE_HOSTILE_ENGI</div><p class="note">It adds:</p><div class="pool"><div class="ev fight"><div class="t">Pirate fight near pulsar</div><div class="id">PIRATE_PULSAR</div><div class="tags"><span class="tg fight">Fight</span><span class="tg crew">Crew</span><span class="tg unique">Unique</span></div></div></div><p class="note">Whether the engine substitutes this list for HOSTILE_ENGI is not stated by any file here.</p></div></section><section><h2>Neutral<span class="meta">NEUTRAL_ENGI · 4–6 beacons · a choice, sometimes a fight</span></h2><div class="pool"><div class="ev may"><div class="t">Engi ship attacked by Mantis ship</div><div class="id">ENGI_STATION_DISTRESS</div><div class="tags"><span class="tg may-fight">May fight</span><span class="tg boarders">Boarders</span><span class="tg crew">Crew</span></div></div><div class="ev may"><div class="t">Mantis fight choice</div><div class="id">MANTIS_FIGHT_CHOICE</div><div class="tags"><span class="tg may-fight">May fight</span><span class="tg crew">Crew</span></div></div><div class="ev may"><div class="t">Mantis ship attacking civilian</div><div class="id">MANTIS_CIVILIAN</div><div class="tags"><span class="tg may-fight">May fight</span><span class="tg crew">Crew</span></div></div><div class="ev may"><div class="t">Pirate briber</div><div class="id">PIRATE_BRIBER</div><div class="tags"><span class="tg may-fight">May fight</span><span class="tg store">Store</span><span class="tg unique">Unique</span></div></div><div class="ev may"><div class="t">Large asteroid field</div><div class="id">ASTEROID_EXPLORE</div><div class="tags"><span class="tg may-fight">May fight</span><span class="tg crew">Crew</span><span class="tg unique">Unique</span></div></div><div class="ev may"><div class="t">Deactivated Auto-ship</div><div class="id">BROKEN_REBEL_DRONE</div><div class="tags"><span class="tg may-fight">May fight</span><span class="tg crew">Crew</span><span class="tg unique">Unique</span></div></div><div class="ev may"><div class="t">Auto-ship near storage station</div><div class="id">AUTO_DEFENSE_ITEM</div><div class="tags"><span class="tg may-fight">May fight</span><span class="tg unique">Unique</span></div></div><div class="ev may"><div class="t">Mantis fugitive</div><div class="id">ALISON_MANTIS_CREW</div><div class="tags"><span class="tg may-fight">May fight</span><span class="tg boarders">Boarders</span><span class="tg crew">Crew</span></div></div><div class="ev may"><div class="t">Zoltan research facility</div><div class="id">ZOLTAN_CREW_STUDY</div><div class="tags"><span class="tg may-fight">May fight</span><span class="tg boarders">Boarders</span><span class="tg crew">Crew</span></div></div><div class="ev good"><div class="t">Dense asteroid field distress</div><div class="id">ASTEROID_DERELICT_SHIP</div><div class="tags"><span class="tg reward">Reward</span><span class="tg unique">Unique</span></div></div><div class="ev may"><div class="t">Refugee</div><div class="id">REFUGEE_NO_DISTRESS</div><div class="tags"><span class="tg may-fight">May fight</span><span class="tg crew">Crew</span><span class="tg cost">Cost</span></div></div><div class="ev may"><div class="t">Battlefield wreckage</div><div class="id">WRECKAGE_EVENT</div><div class="tags"><span class="tg may-fight">May fight</span><span class="tg crew">Crew</span></div></div><div class="ev may"><div class="t">Refueling platform</div><div class="id">FUELING_STATION</div><div class="tags"><span class="tg may-fight">May fight</span><span class="tg boarders">Boarders</span><span class="tg crew">Crew</span></div></div><div class="ev risk"><div class="t">Confused Mantis</div><div class="id">CONFUSED_MANTIS</div><div class="tags"><span class="tg crew-loss">Crew loss</span><span class="tg crew">Crew</span><span class="tg reward">Reward</span></div></div><div class="ev may"><div class="t">Engi smashed ships</div><div class="id">ENGI_SEX</div><div class="tags"><span class="tg may-fight">May fight</span><span class="tg unique">Unique</span></div></div><div class="ev may"><div class="t">The Engi virus</div><div class="id">ENGI_VIRUS</div><div class="tags"><span class="tg may-fight">May fight</span><span class="tg crew-loss">Crew loss</span><span class="tg crew">Crew</span></div></div></div><p class="note">Sixteen events competing for four to six beacons, so most of this list never shows. It holds both halves of the Crystal route — <span class="ref">Dense asteroid field distress</span> hands over the Damaged Stasis Pod, <span class="ref">Zoltan research facility</span> turns it into a Crystal crew member — and the only two Engi ships in the sector that ever shoot at you, in <span class="ref">The Engi virus</span> and <span class="ref">Engi smashed ships</span>.</p></section><section><h2>Distress<span class="meta">DISTRESS_BEACON_ENGI · 1–3 beacons · someone is calling for help</span></h2><div class="pool"><div class="ev may"><div class="t">Engi ship attacked by Mantis ship</div><div class="id">ENGI_STATION_DISTRESS</div><div class="tags"><span class="tg may-fight">May fight</span><span class="tg boarders">Boarders</span><span class="tg crew">Crew</span></div></div><div class="ev fight"><div class="t">Engi distress Rebel fight</div><div class="id">DISTRESS_ENGI_REBEL</div><div class="tags"><span class="tg fight">Fight</span><span class="tg cost">Cost</span><span class="tg unique">Unique</span></div></div><div class="ev risk"><div class="t">Engi research station</div><div class="id">DISTRESS_ENGI_REACTOR</div><div class="tags"><span class="tg crew-loss">Crew loss</span><span class="tg crew">Crew</span><span class="tg reward">Reward</span></div></div><div class="ev may"><div class="t">Asteroid belt distress</div><div class="id">CIVILIAN_ASTEROIDS_BEACON</div><div class="tags"><span class="tg may-fight">May fight</span><span class="tg crew">Crew</span><span class="tg quest">Quest</span></div></div><div class="ev good"><div class="t">Friendly ship out of fuel</div><div class="id">FRIENDLY_BEACON</div><div class="tags"><span class="tg crew">Crew</span><span class="tg reward">Reward</span><span class="tg cost">Cost</span></div></div><div class="ev fight"><div class="t">Pirate ship distress trap</div><div class="id">TRAP_BEACON</div><div class="tags"><span class="tg fight">Fight</span><span class="tg crew">Crew</span><span class="tg unique">Unique</span></div></div><div class="ev may"><div class="t">Crushed pirate</div><div class="id">DISTRESS_TRAPPED_MINER</div><div class="tags"><span class="tg may-fight">May fight</span><span class="tg crew">Crew</span><span class="tg cost">Cost</span></div></div><div class="ev risk"><div class="t">Giant alien spiders</div><div class="id">DISTRESS_INFESTATION</div><div class="tags"><span class="tg crew-loss">Crew loss</span><span class="tg reward">Reward</span><span class="tg cost">Cost</span></div></div><div class="ev good"><div class="t">Malfunctioning defense system</div><div class="id">DISTRESS_SATELLITE_DEFENSE</div><div class="tags"><span class="tg reward">Reward</span><span class="tg unique">Unique</span></div></div></div><p class="note">The thinnest allocation on the page: nine events, and the sector is only obliged to place one of them. <span class="ref">Engi ship attacked by Mantis ship</span> is the one event that sits in two of this sector&#x27;s pools, so it can turn up here or on a neutral beacon.</p></section><section><h2>Items<span class="meta">ITEMS · 2 beacons · free kit, trades and stations</span></h2><div class="pool"><div class="ev good"><div class="t">Free drone schematic</div><div class="id">FIND_DRONE</div><div class="tags"><span class="tg reward">Reward</span></div></div><div class="ev good"><div class="t">Free weapon</div><div class="id">FIND_WEAPON</div><div class="tags"><span class="tg reward">Reward</span></div></div><div class="ev good"><div class="t">Free scrap with resources</div><div class="id">FREE_ITEMS</div><div class="tags"><span class="tg reward">Reward</span></div></div><div class="ev good"><div class="t">Trade fuel for drone parts</div><div class="id">FUEL_FOR_DRONE</div><div class="tags"><span class="tg reward">Reward</span><span class="tg cost">Cost</span></div></div><div class="ev good"><div class="t">Refueling station</div><div class="id">REFUEL_STATION</div><div class="tags"><span class="tg reward">Reward</span><span class="tg cost">Cost</span><span class="tg unique">Unique</span></div></div><div class="ev"><div class="t">Repair station</div><div class="id">REPAIR_STATION</div><div class="tags"><span class="tg cost">Cost</span><span class="tg unique">Unique</span></div></div><div class="ev good"><div class="t">Sell drone parts for scrap</div><div class="id">SELL_DRONES_STATION</div><div class="tags"><span class="tg reward">Reward</span><span class="tg cost">Cost</span><span class="tg unique">Unique</span></div></div><div class="ev good"><div class="t">Sell missiles for scrap</div><div class="id">SELL_MISSILES_STATION</div><div class="tags"><span class="tg reward">Reward</span><span class="tg cost">Cost</span><span class="tg unique">Unique</span></div></div><div class="ev good"><div class="t">Trade resources</div><div class="id">TRADER_CIV</div><div class="tags"><span class="tg reward">Reward</span><span class="tg cost">Cost</span></div></div><div class="ev good"><div class="t">Crew hiring station</div><div class="id">TAVERN_HIRE</div><div class="tags"><span class="tg crew">Crew</span><span class="tg cost">Cost</span><span class="tg unique">Unique</span></div></div><div class="ev"><div class="t">Trade scrap for upgrades</div><div class="id">TRADER_UPGRADES</div><div class="tags"><span class="tg cost">Cost</span><span class="tg unique">Unique</span></div></div><div class="ev"><div class="t">Improve reactor for supplies</div><div class="id">TRADER_UPGRADES_EXCHANGE</div><div class="tags"><span class="tg cost">Cost</span><span class="tg unique">Unique</span></div></div><div class="ev good"><div class="t">Asteroid mining colony</div><div class="id">HELP_MINERS</div><div class="tags"><span class="tg reward">Reward</span><span class="tg cost">Cost</span><span class="tg unique">Unique</span></div></div></div><div class="delta"><div class="head">Advanced Edition also defines OVERRIDE_ITEMS</div><p class="note">It adds:</p><div class="pool"><div class="ev may"><div class="t">Large trade station</div><div class="id">STORE_REBELSIDE</div><div class="tags"><span class="tg may-fight">May fight</span><span class="tg crew">Crew</span><span class="tg store">Store</span></div></div></div><p class="note">Whether the engine substitutes this list for ITEMS is not stated by any file here.</p></div></section><section><h2>Items<span class="meta">ITEMS_ENGI · 3 beacons · free kit, trades and stations</span></h2><div class="pool"><div class="ev good"><div class="t">Free scrap with resources (Engi)</div><div class="id">ENGI_GIFT</div><div class="tags"><span class="tg reward">Reward</span></div></div><div class="ev good"><div class="t">Engi cache</div><div class="id">ENGI_FLEET_DELAY</div><div class="tags"><span class="tg reward">Reward</span><span class="tg cost">Cost</span><span class="tg unique">Unique</span></div></div><div class="ev good"><div class="t">Engi surrender</div><div class="id">ENGI_SURRENDER</div><div class="tags"><span class="tg reward">Reward</span><span class="tg unique">Unique</span></div></div><div class="ev good"><div class="t">Free drone schematic</div><div class="id">FIND_DRONE</div><div class="tags"><span class="tg reward">Reward</span></div></div><div class="ev good"><div class="t">Free weapon</div><div class="id">FIND_WEAPON</div><div class="tags"><span class="tg reward">Reward</span></div></div><div class="ev good"><div class="t">Refueling station</div><div class="id">REFUEL_STATION</div><div class="tags"><span class="tg reward">Reward</span><span class="tg cost">Cost</span><span class="tg unique">Unique</span></div></div></div><p class="note">Three beacons of Engi generosity off a six-event list. <span class="ref">Free scrap with resources (Engi)</span> is a reward with no choice attached at all, <span class="ref">Engi surrender</span> is an Engi ship handing over goods because you looked armed, and <span class="ref">Engi cache</span> sells two missiles for two jumps of fleet delay.</p></section><section><h2>Stores<span class="meta">STORE_ENGI · 2–3 beacons</span></h2><div class="pool"><div class="ev good"><div class="t">Store (Engi)</div><div class="id">STORE_ENGI</div><div class="tags"><span class="tg store">Store</span></div></div></div></section><section><h2>Quest starts<span class="meta">QUESTS_ENGI · 1 beacon · marks a beacon elsewhere on the map</span></h2><div class="pool"><div class="ev may"><div class="t">Escort civilians</div><div class="id">QUEST_ESCORT</div><div class="tags"><span class="tg may-fight">May fight</span><span class="tg crew">Crew</span><span class="tg quest">Quest</span></div></div><div class="ev may"><div class="t">Merchant&#x27;s request</div><div class="id">MERCHANT_REQUEST</div><div class="tags"><span class="tg may-fight">May fight</span><span class="tg boarders">Boarders</span><span class="tg crew-loss">Crew loss</span></div></div><div class="ev may"><div class="t">Encrypted federation signal</div><div class="id">FEDERATION_PLANET_SIGNAL</div><div class="tags"><span class="tg may-fight">May fight</span><span class="tg boarders">Boarders</span><span class="tg crew">Crew</span></div></div><div class="ev may"><div class="t">Settlement mercenary work</div><div class="id">MERCENARY_WORK_START</div><div class="tags"><span class="tg may-fight">May fight</span><span class="tg quest">Quest</span><span class="tg store">Store</span></div></div></div><p class="note">Exactly one beacon from four candidates — but six events in the sector can plant a quest marker, <span class="ref">Asteroid belt distress</span> and <span class="ref">Engi ship attacked by Mantis ship</span> doing it from outside this list. <span class="ref">Merchant&#x27;s request</span> is the widest event on the page: it pays five drone parts up front, and its other half can leave you with a traitor aboard and three to four boarders.</p></section><section><h2>Empty<span class="meta">NOTHING_ENGI · 1–2 beacons · flavour text, nothing happens</span></h2><div class="pool"><div class="ev"><div class="t">Empty beacon (Engi)</div><div class="id">NOTHING_ENGI</div></div></div></section><section><h2>Quest chain<span class="meta">The hidden Federation base</span></h2><div class="chain"><div class="step"><div class="marker"><div class="dot">1</div><div class="line"></div></div><div class="body"><div class="t">Three ways to get the marker</div><div class="d"><span class="ref">Encrypted federation signal</span> on the quest beacon, <span class="ref">Asteroid belt distress</span> on a distress call, or <span class="ref">Engi ship attacked by Mantis ship</span> through the <strong>Engi crew</strong> blue option — on that one the blue option is the only branch that plants anything.</div><div class="id">quest event=&quot;HIDDEN_FEDERATION_BASE_LIST&quot;</div></div></div><div class="step"><div class="marker"><div class="dot">2</div><div class="line"></div></div><div class="body"><div class="t">The signal is a five-way draw</div><div class="d">Investigating the federation signal draws one of five: the base marker, a different marker plus supplies, nothing, a high reward, or a Rebel ship with two to three human boarders already inside you.</div><div class="id">FEDERATION_PLANET_SIGNAL_LIST</div></div></div><div class="step end"><div class="marker"><div class="dot">✓</div></div><div class="body"><div class="t">The marked beacon</div><div class="d">Also a five-way draw — a high drone reward, a free crew member, 35 hull repaired, a cache that pays more with Sensors or Long-Ranged Scanners, or an automated Federation defender that opens fire on you.</div><div class="id">HIDDEN_FEDERATION_BASE_LIST / FEDERATION_BASE_ASSIST</div></div></div></div></section><div class="cols"><div class="panel"><h3>Blue options that pay here</h3><ul><li><span class="lead">Engi crew · 4 events</span><span>The virus, the smashed ships, the Mantis-held station and the defence satellite. It is the only way to get the base marker out of <span class="ref">Engi ship attacked by Mantis ship</span>, and on <span class="ref">The Engi virus</span> it is the branch that gets a crewman killed.</span></li><li><span class="lead">Hacking · 2 events</span><span>Three graded outs inside <span class="ref">The Engi virus</span> — quarantine it, or reprogram it for 15 hull and a reactor bar, or 30 hull at level 3, all three ending with the augment. Also the only alternative to crippled engines in <span class="ref">Pirate engine hacker</span>.</span></li><li><span class="lead">Sensors · 7 events</span><span>The widest gate in the sector. Level 2 tells you what is aboard the burning station in <span class="ref">Engi research station</span> before you commit, which turns its coin-flip into a clean crew pickup; level 2 or 3 also opens <span class="ref">Battlefield wreckage</span>, <span class="ref">Deactivated Auto-ship</span> and <span class="ref">Engi ship attacked by Mantis ship</span>.</span></li><li><span class="lead">Long-Ranged Scanners · 4 events</span><span>All three events that can plant the hidden-base marker — <span class="ref">Encrypted federation signal</span>, <span class="ref">Asteroid belt distress</span> and <span class="ref">Engi ship attacked by Mantis ship</span> — plus <span class="ref">Engi research station</span>.</span></li><li><span class="lead">Cloaking · 3 events</span><span>Ways out of <span class="ref">Mantis fight choice</span>, the storage station in <span class="ref">Auto-ship near storage station</span> and the satellite in <span class="ref">Malfunctioning defense system</span>, which grades its payoff by cloak level.</span></li><li><span class="lead">Lanius crew · 1 event</span><span>One clean solve on <span class="ref">The Engi virus</span> — scrap and the augment, no fight and nobody lost.</span></li></ul></div><div class="panel"><h3>What you can leave with</h3><ul><li><span class="lead">Augment</span><span><strong>Damaged Stasis Pod</strong> from <span class="ref">Dense asteroid field distress</span> — the Crystal route starts here, and there is no fight anywhere under it. Searching plainly costs 4 hull and an engine hit; <strong>Rock Plating</strong> searches for free.</span></li><li><span class="lead">Crew</span><span>A <strong>Crystal crew member</strong> at <span class="ref">Zoltan research facility</span>, if you arrive already carrying the pod.</span></li><li><span class="lead">Augment · Weapon</span><span><strong>Engi Med-bot Dispersal</strong> from <span class="ref">Engi distress Rebel fight</span> for 40 scrap, 2 missiles and 2 fuel; the <strong>Healing Burst</strong> bomb is one of three draws off the cheaper 25-scrap option.</span></li><li><span class="lead">Augment</span><span><strong>Drone Reactor Booster</strong> from <span class="ref">The Engi virus</span> — every Hacking and Lanius branch hands it over.</span></li><li><span class="lead">Crew</span><span>An <strong>Engi with two levels in every skill</strong>: take the Engi option on <span class="ref">The Engi virus</span>, lose the crewman to the virus, win the fight, and it walks back out.</span></li><li><span class="lead">Scrap</span><span><span class="ref">Free scrap with resources (Engi)</span> and <span class="ref">Engi surrender</span> are free standard rewards with nothing asked in return — two of the six events on the three Engi item beacons.</span></li></ul></div><div class="panel"><h3>What can bite</h3><ul><li><span class="lead">Crew</span><span>Five events can cost you a crew member: <span class="ref">Giant alien spiders</span>, <span class="ref">Engi research station</span>, <span class="ref">Confused Mantis</span>, <span class="ref">Merchant&#x27;s request</span>, and the Engi branch of <span class="ref">The Engi virus</span>.</span></li><li><span class="lead">Boarders</span><span>Six events put someone aboard — up to four at <span class="ref">Refueling platform</span>, three to four at <span class="ref">Merchant&#x27;s request</span>, two at <span class="ref">Zoltan research facility</span>, Mantis from <span class="ref">Engi ship attacked by Mantis ship</span> and <span class="ref">Mantis fugitive</span>, two to three humans on one draw of <span class="ref">Encrypted federation signal</span>.</span></li><li><span class="lead">Systems</span><span><span class="ref">The Engi virus</span> halves your shields <strong>and</strong> engines before the fight if you try to purge it yourself, and <span class="ref">Pirate engine hacker</span> holds engines at one bar until the pirate is dead.</span></li><li><span class="lead">The fleet</span><span><span class="ref">Rebel ship warning</span> is a fight with no choice attached, and letting the scout jump away costs a jump of your lead. <span class="ref">Pirate briber</span> can buy one back, but only on the branch where you fight the pirate and the victim turns out to be a Rebel scout.</span></li></ul></div><div class="panel"><h3>Crew in stores</h3><div class="rar"><div class="rrow"><span>Engi</span><span class="pips"><i class="pip"></i><i class="pip off"></i><i class="pip off"></i><i class="pip off"></i><i class="pip off"></i></span><span class="v">1</span></div><div class="rrow zero"><span>Mantis</span><span class="pips"><i class="pip off"></i><i class="pip off"></i><i class="pip off"></i><i class="pip off"></i><i class="pip off"></i></span><span class="v">never</span></div><div class="rrow"><span>Zoltan</span><span class="pips"><i class="pip"></i><i class="pip"></i><i class="pip"></i><i class="pip"></i><i class="pip off"></i></span><span class="v">4</span></div><div class="rrow zero"><span>Slug</span><span class="pips"><i class="pip off"></i><i class="pip off"></i><i class="pip off"></i><i class="pip off"></i><i class="pip off"></i></span><span class="v">never</span></div><div class="rrow zero"><span>Rockman</span><span class="pips"><i class="pip off"></i><i class="pip off"></i><i class="pip off"></i><i class="pip off"></i><i class="pip off"></i></span><span class="v">never</span></div><div class="rrow"><span>Human</span><span class="pips"><i class="pip"></i><i class="pip"></i><i class="pip"></i><i class="pip off"></i><i class="pip off"></i></span><span class="v">3</span></div></div><p class="note">Lower number = more common. A crew type at 0 is not sold in this sector&#x27;s stores.</p></div></div><footer><p>Built from sector_data.xml, events*.xml, newEvents.xml, dlcEventsOverwrite.xml.</p><p>&quot;Unique&quot; is the files&#x27; own unique=&quot;true&quot;. Whether that means once per sector or once per run is not stated in any file here; the wiki&#x27;s better bet is once per sector.</p><p>The shipped event lists carry no weights, so no beacon here has stated odds. A pool entry listed twice is counted as ×2 and marked.</p></footer>
+</div>

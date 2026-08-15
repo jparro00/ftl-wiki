@@ -10,7 +10,7 @@ chain: []
 version: ae
 first_seen: 2026-08-09
 last_updated: 2026-08-09
-sources: 7
+sources: 8
 tags: [store, rebel, blue-option, mind-control, optional-fight, unique, advanced-edition]
 ---
 

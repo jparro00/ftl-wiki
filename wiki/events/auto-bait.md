@@ -10,7 +10,7 @@ chain: []
 version: both
 first_seen: 2026-08-09
 last_updated: 2026-08-09
-sources: 3
+sources: 5
 tags: [rebel, auto-ship, unique, unreachable, cut-content, fleet-advance-risk, no-fandom-page]
 ---
 

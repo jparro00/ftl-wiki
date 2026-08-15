@@ -1,0 +1,244 @@
+{
+  "schema": "ftl-sector-profile/1",
+  "id": "FINAL",
+  "slug": "the-last-stand",
+  "title": "The Last Stand",
+  "display_name": "The Last Stand",
+  "short_name": "The Last Stand",
+  "extracted_from": "raw/gamedata/sector_data.xml",
+  "min_sector": 7,
+  "unique": true,
+  "tracks": [
+    "laststand"
+  ],
+  "crew_rarity": [],
+  "start_event": {
+    "id": "BOSS_NEUTRAL",
+    "slug": null,
+    "title": "Boss neutral",
+    "card": false
+  },
+  "entries": [
+    {
+      "name": "BOSS_HOSTILE",
+      "min": 6,
+      "max": 6,
+      "kind": "list",
+      "section": "hostile",
+      "events": [
+        {
+          "id": "BOSS_SCOUT",
+          "slug": "fight-in-last-stand",
+          "title": "Fight in Last Stand",
+          "card": true,
+          "tags": [
+            "fight",
+            "crew"
+          ],
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": [],
+          "weight": 3
+        }
+      ]
+    },
+    {
+      "name": "BOSS_NEUTRAL",
+      "min": 7,
+      "max": 10,
+      "kind": "list",
+      "section": "neutral",
+      "events": [
+        {
+          "id": "BOSS_SCOUT_RESCUE",
+          "slug": "rebel-ship-attacking-civilians-in-last-stand",
+          "title": "Rebel ship attacking civilians in Last Stand",
+          "card": true,
+          "tags": [
+            "may-fight"
+          ],
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "BOSS_FLEETS_BOTH_FIGHT",
+          "slug": "rebel-fight-among-federation-and-rebel-fleets",
+          "title": "Rebel fight among Federation and Rebel fleets",
+          "card": true,
+          "tags": [
+            "fight"
+          ],
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "BOSS_FLEETS_FED",
+          "slug": "empty-beacon-last-stand",
+          "title": "Empty beacon (Last Stand)",
+          "card": true,
+          "tags": [],
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "SQUAT_REFUEL_STATION",
+          "slug": "rebel-ship-attacking-refueling-outpost",
+          "title": "Rebel ship attacking refueling outpost",
+          "card": true,
+          "tags": [
+            "may-fight",
+            "unique"
+          ],
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "REBEL",
+          "slug": "rebel-fight",
+          "title": "Rebel fight",
+          "card": true,
+          "tags": [
+            "fight",
+            "crew"
+          ],
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        }
+      ]
+    },
+    {
+      "name": "BOSS_REPAIR_STATION",
+      "min": 3,
+      "max": 3,
+      "kind": "event",
+      "section": "store",
+      "events": [
+        {
+          "id": "BOSS_REPAIR_STATION",
+          "slug": "repair-station-in-last-stand",
+          "title": "Repair station in Last Stand",
+          "card": true,
+          "tags": [
+            "reward"
+          ],
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        }
+      ]
+    },
+    {
+      "name": "STORE",
+      "min": 1,
+      "max": 1,
+      "kind": "event",
+      "section": "store",
+      "events": [
+        {
+          "id": "STORE",
+          "slug": "store",
+          "title": "Store",
+          "card": true,
+          "tags": [
+            "store"
+          ],
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        }
+      ]
+    }
+  ],
+  "rollup": {
+    "distinct_events": 8,
+    "no_card": [],
+    "always_fight": [
+      "BOSS_FLEETS_BOTH_FIGHT",
+      "BOSS_SCOUT",
+      "REBEL"
+    ],
+    "may_fight": [
+      "BOSS_SCOUT_RESCUE",
+      "SQUAT_REFUEL_STATION"
+    ],
+    "crew_loss": [],
+    "crew_gain": [
+      "BOSS_SCOUT",
+      "REBEL"
+    ],
+    "boarders": [],
+    "unique": [
+      "SQUAT_REFUEL_STATION"
+    ],
+    "quest_starts": [],
+    "gates": [],
+    "named_items": [],
+    "crew_classes": [],
+    "unlock_ships": [],
+    "quest_targets": []
+  },
+  "metrics": {
+    "beacons_min": 17,
+    "beacons_max": 20,
+    "distinct_events": 8,
+    "always_fight_events": 3,
+    "may_fight_events": 2,
+    "crew_loss_events": 0,
+    "crew_gain_events": 2,
+    "boarder_events": 0,
+    "unique_events": 1,
+    "gated_events": 0,
+    "quest_start_events": 0,
+    "section:hostile:min": 6,
+    "section:hostile:max": 6,
+    "section:neutral:min": 7,
+    "section:neutral:max": 10,
+    "section:store:min": 4,
+    "section:store:max": 4,
+    "entry:BOSS_HOSTILE:min": 6,
+    "entry:BOSS_HOSTILE:max": 6,
+    "entry:BOSS_NEUTRAL:min": 7,
+    "entry:BOSS_NEUTRAL:max": 10,
+    "entry:BOSS_REPAIR_STATION:min": 3,
+    "entry:BOSS_REPAIR_STATION:max": 3,
+    "entry:STORE:min": 1,
+    "entry:STORE:max": 1
+  }
+}

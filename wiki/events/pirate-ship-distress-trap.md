@@ -9,8 +9,8 @@ blue_options: []
 chain: []
 version: both
 first_seen: 2026-08-09
-last_updated: 2026-08-09
-sources: 14
+last_updated: 2026-08-13
+sources: 15
 tags: [unique, combat, forced-fight, distress, varies-text, default-rewards, pirate]
 ---
 
@@ -108,7 +108,10 @@ Nothing in the event, its `textList`, or its ship block carries a `<!--DLC-->` m
 - Do not jump into an unscanned distress beacon at low hull expecting a gift.
 
 ## Related
-- [[event-friendly-distress-beacon]] — the benign sibling that shares every distress pool
+- [[event-friendly-ship-out-of-fuel]] — the benign sibling, sharing **8 of the 9** distress
+  pools (`DISTRESS_BEACON` and the Engi, Mantis, Pirate, Rebel, Rock, Zoltan and Lanius
+  variants). `DISTRESS_BEACON_SLUG` carries `TRAP_BEACON` **without** `FRIENDLY_BEACON`, so
+  the Slug pool is the one place this trap has no benign twin ([[source-events-slug]])
 - [[event-single-life-form-on-moon]] — another `DISTRESS_BEACON` member, in this batch
 - [[concept-surrender-offers]] — why `chance="0.5"` means a 50% surrender offer
 - [[concept-sector-event-allocation]]

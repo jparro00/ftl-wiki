@@ -10,7 +10,7 @@ chain: []
 version: both
 first_seen: 2026-08-09
 last_updated: 2026-08-09
-sources: 6
+sources: 8
 tags: [rebel, auto-ship, unique, filler, blue-option, item-reward, optional-fight]
 ---
 

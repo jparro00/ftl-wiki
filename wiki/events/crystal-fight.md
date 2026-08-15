@@ -9,8 +9,8 @@ blue_options: []
 chain: []
 version: both
 first_seen: 2026-08-09
-last_updated: 2026-08-09
-sources: 4
+last_updated: 2026-08-13
+sources: 5
 tags: [combat, surrender, crew-reward, no-choices]
 ---
 
@@ -45,8 +45,9 @@ no".
 | — | _none — the event has no choice nodes_ | — | `<ship load="CRYSTAL_SHIP" hostile="true"/>` → immediate combat, **default rewards** | 100% |
 
 ### Sub-outcome: the ship surrenders
-`CRYSTAL_SHIP` carries `<surrender chance="0.6" min="3" max="4">`, i.e. a surrender offer
-once its hull is low ([[source-events-xml]], per raw/gamedata/events_ships.xml). The offer
+`CRYSTAL_SHIP` carries `<surrender chance="0.6" min="3" max="4">` — a **40%** surrender
+offer once its hull is low, since `chance` is the probability the ship *keeps fighting*
+([[concept-surrender-offers]]) ([[source-events-xml]], per raw/gamedata/events_ships.xml). The offer
 text itself varies across 7 strings (`CRYSTAL_SHIP_SURRENDER` text list). Accepting loads
 the `CRYSTAL_SHIP_SURRENDER` **event** list — 7 entries:
 
@@ -87,9 +88,16 @@ Refusing the surrender (`Ignore them.`) simply continues the fight.
 >   ([[source-fandom-crystal-fight]]), where the same template's parameter carries 50 for
 >   `CRYSTAL_HUNTER` (game file `chance="0.5"`) — so the parameter does mean the surrender
 >   percentage, and 40 ≠ 60.
-> Trusting the game files (`high` vs `medium`), i.e. **60%**. Not obviously a vanilla/AE
+> ~~Trusting the game files (`high` vs `medium`), i.e. **60%**. Not obviously a vanilla/AE
 > difference — `chance="0.5"` on `CRYSTAL_HUNTER` matches Fandom exactly in the same file,
-> so this looks like a stale or mistyped wiki parameter rather than a version drift.
+> so this looks like a stale or mistyped wiki parameter rather than a version drift.~~
+>
+> **RESOLVED (lint, 2026-08-13) — and the resolution goes to Fandom, not to us.**
+> [[concept-surrender-offers]] establishes that `chance` is the probability the ship **keeps
+> fighting**, so `chance="0.6"` *is* a 40% surrender offer and Fandom's 40 was right all
+> along. The reasoning above even contains the key: `CRYSTAL_HUNTER` at `chance="0.5"`
+> "matches Fandom exactly" precisely because 0.5 is the one value that reads the same under
+> both conventions. The **60%** stated here was wrong and is corrected above.
 
 ## Related
 - [[sector-hidden-crystal-worlds]]
@@ -102,7 +110,7 @@ Refusing the surrender (`Ignore them.`) simply continues the fight.
 - [[concept-surrender-offers]]
 
 ## Open Questions
-- [ ] Resolve the 60% vs 40% surrender chance above.
+- [x] ~~Resolve the 60% vs 40% surrender chance above.~~ **40%** — [[concept-surrender-offers]].
 - [ ] What "default rewards" resolves to numerically for `CRYSTAL_SHIP`.
 - [ ] Is the surrender reward visible before accepting? (raised by
       [[source-fandom-crystal-fight]] itself)

@@ -1,0 +1,85 @@
+{
+  "slug": "rock-homeworlds",
+
+  "lede": "**The Rockmen fight you at home, and they fight you in weather.** Every ship in the hostile pool is Rock, and five of the eight events across the hostile and boarder pools drop you into an asteroid field or beside a sun before anyone fires. You come anyway for the two beacons the sector must place by name: one opens the **Rock Cruiser quest**, and {{ROCK_CRYSTAL_BEACON}} is the wormhole to the Crystal worlds — for a ship that already has a Crystal aboard.",
+
+  "stats": [
+    { "metric": "beacons_min..beacons_max", "label": "Beacon spread" },
+    { "metric": "section:hostile:min..section:hostile:max", "label": "Guaranteed fights" },
+    { "metric": "entry:STORE_ROCK:min..entry:STORE_ROCK:max", "label": "Stores" },
+    { "metric": "quest_start_events", "label": "Quest starters in pool" },
+    { "metric": "distinct_events", "label": "Events in pool" }
+  ],
+
+  "callout": "**Versus a plain Rock Controlled Sector:** every pool and every number is identical. The homeworlds add exactly three things — `unique=\"true\"`, `minSector=\"4\"`, and the two named beacons. The shooting is the same shooting; the reason to come is the two beacons.",
+
+  "section_notes": {
+    "ROCK_CRYSTAL_BEACON": "The way out of the game's normal map, and the **Crystal crew** blue option is the only choice that opens it — the Damaged Stasis Pod on its own will not do. Without a Crystal aboard the device is a gamble: scrapping it either pays out a large pile of scrap or brings a Rock warship down on you for the vandalism.",
+    "ROCK_UNLOCK1": "No fight here — the Rock warship never turns hostile and jumps away whatever you say. Two of the three replies plant the next marker; ignoring them ends the line on the spot.",
+    "HOSTILE_ROCK": "Rock ships, all five. Three of them arrive with the environment already against you — twice in an asteroid field, once beside a sun.",
+    "BOARDERS_ROCK": "{{ROCK_BOARDERS_SUN}} has no ship fight and no choice at all: two to three Rockmen are aboard the moment you arrive, and the sun is on you the whole time.",
+    "NEUTRAL_ROCK": "The deepest pool in the sector, and where the Crystal route's other half sits — {{ASTEROID_DERELICT_SHIP}} is the **Damaged Stasis Pod**. It is also where the trap is: {{ROCK_STARSHIP_MINE}} is the only event in this pool that can kill a crew member.",
+    "DISTRESS_BEACON_ROCK": "Allocated one to two beacons, and four of the sector's five crew-killing events live in this pool.",
+    "QUESTS_ROCK": "Allocated **0–1**, so this pool can place nothing at all. {{ROCK_QUEST_MARRIAGE_START}} is the sector's own: carry the bride to Numa V and hand her over for a random augment, or refuse, keep her as Rock crew, and fight the wedding party.",
+    "STORE_ROCK": "Fixed at two, not a range — this is the entire resupply the sector is required to give you."
+  },
+
+  "chain": {
+    "title": "Rock Cruiser · The Bulwark",
+    "steps": [
+      {
+        "marker": "1",
+        "title": "{{ROCK_UNLOCK1}}",
+        "detail": "A Rock war vessel sizes up your ship and offers a test. Both defiant answers plant the marker; **Ignore them** ends the chain there and then.",
+        "ref": "ROCK_UNLOCK1"
+      },
+      {
+        "marker": "2",
+        "title": "Endure the heat",
+        "detail": "The coordinates put you next to an M-class star with a Rock Assault shooting at you. Killing it pays scrap and stops the chain — what continues it is **surviving until they jump away**.",
+        "ref": "ROCK_UNLOCK2 · environment=\"sun\""
+      },
+      {
+        "marker": "✓",
+        "title": "The shipyard",
+        "detail": "\"I am convinced of your strength.\" The ship unlocks, they patch 29 hull, and they bolt on **Rock Plating** — the same augment that is a blue option at three separate beacons in this sector's pools.",
+        "ref": "ROCK_UNLOCK3 · unlockShip id=\"6\""
+      }
+    ]
+  },
+
+  "panels": [
+    {
+      "title": "Blue options that pay here",
+      "items": [
+        { "lead": "Crew Teleporter ×4", "text": "The widest gate in the pool — {{FRIENDLY_SLAVER}}, {{CIVILIAN_ASTEROIDS_BEACON}}, {{REBEL_VS_FEDERATION}} and {{QUEST_CREWDEAD_START}}." },
+        { "lead": "Rockman ×3", "text": "{{ROCK_MANTIS_HUNTER}}, {{DISTRESS_STATION_FIRE}} and {{DISTRESS_STATION_DISEASE}} all take a Rock crew member's word where yours does not count." },
+        { "lead": "Rock Plating ×3", "text": "{{ROCK_MANTIS_HUNTER}}, {{ASTEROID_DERELICT_SHIP}} and {{CIVILIAN_ASTEROIDS_BEACON}} — the augment the unlock chain pays out at its last step, spent straight back into this sector's pools." },
+        { "lead": "System Repair Drone ×3", "text": "{{ROCK_MANTIS_FREIGHTER}}, {{CIVILIAN_ASTEROIDS_BEACON}}, and sending it into the flames at {{DISTRESS_STATION_FIRE}} instead of a crew member." },
+        { "lead": "Crystal ×1", "text": "One event, and it is the one that matters: {{ROCK_CRYSTAL_BEACON}}." },
+        { "lead": "Slug ×2", "text": "A lookout while you loot at {{ROCK_LOOTING}}, and a read on what is actually down there at {{STRANDED_BEACON}}." }
+      ]
+    },
+    {
+      "title": "Named things you can leave with",
+      "items": [
+        { "lead": "Augment", "text": "**Damaged Stasis Pod** at {{ASTEROID_DERELICT_SHIP}} — the only named item the entire pool hands out." },
+        { "lead": "Augment", "text": "A **random augment** for delivering the bride to Numa V, if you start {{ROCK_QUEST_MARRIAGE_START}} and go through with it." },
+        { "lead": "Crew", "text": "Rockmen three ways: converted at {{ROCK_ATHIEST}}, bought at {{FRIENDLY_SLAVER}}, or kept as **Ariadne** by refusing the wedding." },
+        { "lead": "Crew", "text": "{{FRIENDLY_SLAVER}} is the one beacon that can produce a Mantis, a Rockman or an Engi; {{TAVERN_HIRE}} sells crew outright; **Dr Jones** comes off the burning station at {{DISTRESS_STATION_FIRE}}." },
+        { "lead": "Crew", "text": "28 of the 52 events in the pool can add a crew member — more than half the sector." },
+        { "lead": "Reactor", "text": "**A reactor bar for 10–15 scrap** at {{ROCK_SLUG_ARGUMENT}}: pay off the Rock ship's debt and the Slugs sell you the power." }
+      ]
+    },
+    {
+      "title": "What can bite",
+      "items": [
+        { "lead": "Crew", "text": "Five events can kill a crew member outright, and four of them are packed into a distress pool that only gets one or two beacons: {{DISTRESS_INFESTATION}}, {{DISTRESS_STATION_FIRE}}, {{DISTRESS_STATION_DISEASE}} and {{STRANDED_BEACON}}." },
+        { "lead": "Boarders", "text": "Four events put someone aboard. Three are Rockmen — up to three of them at {{ROCK_BOARDERS_SHIP}} and at {{ROCK_BOARDERS_SUN}} — and {{FEDERATION_PLANET_SIGNAL}} sends two to three humans." },
+        { "lead": "Environment", "text": "Weather is the sector's second weapon: {{ROCK_FIGHT_ASTEROID}}, {{ROCK_PIRATE_ASTEROID}} and {{ROCK_BOARDERS_ASTEROID}} in asteroids, {{ROCK_PIRATE_SUN}} and {{ROCK_BOARDERS_SUN}} beside a sun." },
+        { "lead": "Ammo", "text": "{{ROCK_STARSHIP_MINE}} costs one drone part to cut away, or one missile and 3 hull to detonate. Send someone out to defuse it by hand and **both** wire choices end the same way: the crew member dies, 5 hull, a breach. Engines 5 backs you out of it for nothing." },
+        { "lead": "Scrap", "text": "Demand payment instead of paying at {{ROCK_SLUG_ARGUMENT}} and it opens with 3 hull damage, a system knocked out, and a fight. Freeing a slave at {{FRIENDLY_SLAVER}} runs 25–45 scrap." }
+      ]
+    }
+  ]
+}

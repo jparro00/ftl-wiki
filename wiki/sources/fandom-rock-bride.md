@@ -36,7 +36,7 @@ event at Numa V — on one page, which is why the wiki event page does the same.
 
 ## Other Pages Touched
 - [[chain-rock-bride]], [[item-rock-crew]], [[entity-rock-men]],
-  [[concept-quest-markers]]
+  [[concept-quest-beacon-placement]]
 
 ## Reliability Notes
 `medium`. No version stated. Every mechanical claim matches the game files; only prose

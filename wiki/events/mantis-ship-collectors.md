@@ -6,7 +6,7 @@ sectors: [[[sector-mantis-controlled-sector]], [[sector-mantis-homeworlds]]]
 beacon_type: hostile
 hostile: true
 blue_options: []
-chain: []
+chain: [[[chain-mantis-collectors-chase]]]
 version: both
 first_seen: 2026-08-09
 last_updated: 2026-08-09
@@ -138,9 +138,10 @@ None. Neither half of this event has a `req=` gate.
 ## Related
 - [[sector-mantis-controlled-sector]], [[sector-mantis-homeworlds]] — where it appears
 - [[entity-mantis]] — the crew you are fighting on both ships
-- [[event-donor-mantis-chase2]] — the rematch, if it is ever split out to its own page
+- [[chain-mantis-collectors-chase]] — the quest this plants, end to end
+- [[event-donor-mantis-chase2]] — the rematch beacon itself
 - [[concept-surrender-offers]] — how to read the `<surrender>` and `<escape>` attributes
-- [[concept-quest-beacons]] — how the `<quest>` marker works
+- [[concept-quest-beacon-placement]] — how the `<quest>` marker works
 
 ## Open Questions
 - [ ] Does `<escape>` without a `chance` attribute mean a guaranteed attempt, as Fandom

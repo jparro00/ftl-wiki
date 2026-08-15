@@ -6,8 +6,8 @@ rarity: 0
 unlocks_blue: [[[event-lanius-ship-attacking-civilian-distress]], [[event-lanius-with-federation-science-craft]], [[event-lanius-craftsmen]], [[event-lanius-trader]], [[event-lanius-ship-salvager]], [[event-lanius-lone-ship]], [[event-lanius-ship-absorbing-rebel-base]], [[event-lanius-ship-absorbing-jump-beacon]], [[event-lanius-powered-down-ship]], [[event-the-engi-virus]], [[event-space-station-under-construction]]]
 version: ae
 first_seen: 2026-08-09
-last_updated: 2026-08-09
-sources: 5
+last_updated: 2026-08-14
+sources: 7
 tags: [crew, lanius, advanced-edition]
 ---
 
@@ -23,6 +23,20 @@ name is Lanius.
 - Powers, verbatim: *"Drains oxygen from rooms."* and *"Slow movement but no damage from
   lack of oxygen."*
 - Hire cost **50** scrap, `bp` 2, `rarity` **0**.
+
+### What the drain actually is
+**8% O₂ per second — the engine treats a Lanius as a hull breach.**
+[[source-xftl-oxygen-mechanics]] reads them through the same `OxygenSystem::ComputeAirLoss`
+path, calling anaerobic crew *"equivalent"* to a breach, which turns Fandom's looser "same
+draining rate" claim into a structural fact. Like a breach, the drain propagates to connected
+rooms at `0.75^distance`, so an open door bleeds the neighbour too.
+
+Consequences that follow from the rate ([[concept-oxygen-and-suffocation]]):
+- A level-1 [[item-oxygen-system]] (1.2%/sec) loses to one Lanius badly. Level 2 (4.8%/sec)
+  holds with doors managed; level 3 (8.4%/sec) beats it outright with doors shut.
+- **Two Lanius in separate rooms break level 3 if you open the door between them** — *"they
+  both vent each other's rooms"*, nearly doubling the loss.
+- Suffocation damage is 0 for them; they are the only crew fully exempt.
 
 ## How To Get It
 - Hired at stores, most often in [[sector-abandoned-sector]].
@@ -50,7 +64,9 @@ name is Lanius.
   diplomatic ("we have one of you aboard") rather than mechanical.
 
 ## Related
+- [[concept-oxygen-and-suffocation]] — the 8%/sec drain in context with every other O₂ rate
 - [[item-oxygen-system]] / [[item-emergency-respirators]] — the systems its drain fights
+- [[entity-lanius]] — the species page
 - [[sector-abandoned-sector]] — where the whole event set lives
 
 ## Open Questions
@@ -62,3 +78,5 @@ name is Lanius.
 - [[source-dlcevents-anaerobic]] (per raw/gamedata/dlcEvents_anaerobic.xml)
 - [[source-events-engi]] (per raw/gamedata/events_engi.xml)
 - [[source-newevents]] (per raw/gamedata/newEvents.xml)
+- [[source-xftl-oxygen-mechanics]] (per raw/modding/2026-08-14-xftl-oxygen-mechanics.txt)
+- [[source-fandom-oxygen]] (per raw/wiki/oxygen.md)

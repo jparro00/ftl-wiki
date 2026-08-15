@@ -1,0 +1,213 @@
+<!--
+  FTL sector profile — shared shell.
+
+  Layout, colour and type for every sector page. Holds no sector-specific content:
+  build-sector.py replaces the <title> line and the SECTOR-CONTENT marker below.
+  Editing this file changes all 19 pages, which is the point — see tools/SECTOR-PAGE.md §8.
+-->
+<title>Rock Homeworlds — sector profile</title>
+<style>
+  :root {
+    --void:   #070B10;
+    --panel:  #101822;
+    --sunk:   #0B1219;
+    --edge:   #1F2E3C;
+    --ink:    #D6E2EC;
+    --dim:    #7C8FA3;
+    --faint:  #55697C;
+    --cyan:   #5FD3E8;
+    --green:  #78C46B;
+    --amber:  #E8B84B;
+    --red:    #E0685C;
+    --rail:   #22384A;
+    --hex:    rgba(95,211,232,.035);
+    --barlo:  rgba(95,211,232,.22);
+    --barred: rgba(224,104,92,.28);
+
+    --sans: ui-sans-serif, system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+  }
+  @media (prefers-color-scheme: light) {
+    :root {
+      --void: #EEF1F4; --panel: #FFFFFF; --sunk: #F5F7F9; --edge: #D3DBE2;
+      --ink: #14202B; --dim: #5B6C7B; --faint: #7A8895; --cyan: #12708A;
+      --green: #3B7A31; --amber: #8A6606; --red: #AF3B2E; --rail: #C2CDD6;
+      --hex: rgba(18,112,138,.045); --barlo: rgba(18,112,138,.18);
+      --barred: rgba(175,59,46,.22);
+    }
+  }
+  :root[data-theme="dark"] {
+    --void: #070B10; --panel: #101822; --sunk: #0B1219; --edge: #1F2E3C;
+    --ink: #D6E2EC; --dim: #7C8FA3; --faint: #55697C; --cyan: #5FD3E8;
+    --green: #78C46B; --amber: #E8B84B; --red: #E0685C; --rail: #22384A;
+    --hex: rgba(95,211,232,.035); --barlo: rgba(95,211,232,.22);
+    --barred: rgba(224,104,92,.28);
+  }
+  :root[data-theme="light"] {
+    --void: #EEF1F4; --panel: #FFFFFF; --sunk: #F5F7F9; --edge: #D3DBE2;
+    --ink: #14202B; --dim: #5B6C7B; --faint: #7A8895; --cyan: #12708A;
+    --green: #3B7A31; --amber: #8A6606; --red: #AF3B2E; --rail: #C2CDD6;
+    --hex: rgba(18,112,138,.045); --barlo: rgba(18,112,138,.18);
+    --barred: rgba(175,59,46,.22);
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; padding: 2.6rem 1.15rem 4.5rem;
+    background: var(--void);
+    background-image: radial-gradient(var(--hex) 1px, transparent 1.6px);
+    background-size: 22px 22px;
+    color: var(--ink); font-family: var(--sans); line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 58rem; margin: 0 auto; display: flex; flex-direction: column; gap: 2.1rem; }
+
+  .eyebrow {
+    font-family: var(--mono); font-size: .66rem; letter-spacing: .19em;
+    text-transform: uppercase; color: var(--cyan); margin: 0 0 .55rem;
+  }
+  h1 { font-size: 2.05rem; font-weight: 600; letter-spacing: -.02em; margin: 0 0 .7rem; text-wrap: balance; }
+  .lede { margin: 0 0 1rem; max-width: 42rem; color: var(--dim); font-size: .95rem; }
+  .lede strong { color: var(--ink); font-weight: 600; }
+  .facts { display: flex; flex-wrap: wrap; gap: .4rem; }
+  .fact {
+    font-family: var(--mono); font-size: .68rem; letter-spacing: .06em;
+    color: var(--dim); border: 1px solid var(--edge); border-radius: 2px;
+    padding: .22rem .5rem; background: var(--panel);
+  }
+  .fact b { color: var(--ink); font-weight: 600; }
+
+  .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(9.2rem, 1fr)); gap: .55rem; }
+  .stat {
+    background: var(--panel); border: 1px solid var(--edge); border-radius: 3px;
+    padding: .75rem .8rem; display: flex; flex-direction: column; gap: .15rem;
+  }
+  .stat .n {
+    font-family: var(--mono); font-size: 1.5rem; font-weight: 600;
+    font-variant-numeric: tabular-nums; letter-spacing: -.02em; line-height: 1.1; color: var(--cyan);
+  }
+  .stat .k {
+    font-family: var(--mono); font-size: .62rem; letter-spacing: .14em;
+    text-transform: uppercase; color: var(--faint);
+  }
+
+  section { display: flex; flex-direction: column; gap: .8rem; }
+  h2 {
+    font-size: .74rem; font-family: var(--mono); font-weight: 600;
+    letter-spacing: .17em; text-transform: uppercase; color: var(--cyan);
+    margin: 0; padding-bottom: .45rem; border-bottom: 1px solid var(--edge);
+    display: flex; justify-content: space-between; align-items: baseline; gap: 1rem;
+  }
+  h2 .meta { color: var(--faint); font-weight: 400; letter-spacing: .08em; text-transform: none; flex: none; }
+  .note { margin: 0; font-size: .84rem; color: var(--dim); max-width: 44rem; }
+
+  .budget { display: flex; flex-direction: column; gap: .3rem; }
+  .brow {
+    display: grid; grid-template-columns: 14rem 3.4rem 1fr; align-items: center;
+    gap: .7rem; padding: .34rem .55rem; border-radius: 2px; background: var(--panel);
+    border: 1px solid var(--edge);
+  }
+  .brow .name { font-family: var(--mono); font-size: .74rem; color: var(--ink); overflow-wrap: anywhere; }
+  .brow .cnt {
+    font-family: var(--mono); font-size: .74rem; color: var(--dim);
+    font-variant-numeric: tabular-nums; text-align: right;
+  }
+  .track { display: flex; align-items: center; gap: 2px; height: .62rem; flex-wrap: wrap; }
+  .blk { width: .62rem; height: .62rem; background: var(--cyan); border-radius: 1px; flex: none; }
+  .blk.maybe { background: var(--barlo); }
+  .brow.hostile .blk { background: var(--red); }
+  .brow.hostile .blk.maybe { background: var(--barred); }
+  .brow.zero .cnt { color: var(--faint); }
+
+  .pool { display: grid; grid-template-columns: repeat(auto-fill, minmax(16.5rem, 1fr)); gap: .4rem; }
+  .ev {
+    background: var(--panel); border: 1px solid var(--edge); border-left: 2px solid var(--rail);
+    border-radius: 2px; padding: .48rem .6rem; display: flex; flex-direction: column; gap: .22rem;
+  }
+  .ev.fight { border-left-color: var(--red); }
+  .ev.may { border-left-color: var(--barred); }
+  .ev.good { border-left-color: var(--green); }
+  .ev.risk { border-left-color: var(--amber); }
+  .ev .t { font-size: .84rem; font-weight: 500; line-height: 1.25; }
+  .ev .id { font-family: var(--mono); font-size: .63rem; color: var(--faint); letter-spacing: .03em; overflow-wrap: anywhere; }
+  .tags { display: flex; flex-wrap: wrap; gap: .25rem; margin-top: .1rem; }
+  .tg {
+    font-family: var(--mono); font-size: .57rem; letter-spacing: .1em; text-transform: uppercase;
+    padding: .08rem .3rem; border-radius: 2px; border: 1px solid currentColor; color: var(--faint);
+  }
+  .tg.fight, .tg.may-fight { color: var(--red); }
+  .tg.crew, .tg.reward { color: var(--green); }
+  .tg.crew-loss, .tg.boarders, .tg.cost { color: var(--amber); }
+  .tg.quest, .tg.store { color: var(--cyan); }
+
+  .delta {
+    border: 1px dashed var(--edge); border-radius: 2px; background: var(--sunk);
+    padding: .6rem .75rem; display: flex; flex-direction: column; gap: .5rem;
+  }
+  .delta .head {
+    font-family: var(--mono); font-size: .62rem; letter-spacing: .12em;
+    text-transform: uppercase; color: var(--amber);
+  }
+
+  .cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr)); gap: .9rem; align-items: start; }
+  .panel {
+    background: var(--panel); border: 1px solid var(--edge); border-radius: 3px;
+    padding: .9rem 1rem 1rem; display: flex; flex-direction: column; gap: .55rem;
+  }
+  .panel h3 {
+    margin: 0; font-family: var(--mono); font-size: .66rem; letter-spacing: .15em;
+    text-transform: uppercase; color: var(--dim); font-weight: 600;
+  }
+  .panel ul { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: .45rem; }
+  .panel li { font-size: .82rem; line-height: 1.42; display: flex; gap: .5rem; align-items: baseline; }
+  .lead {
+    font-family: var(--mono); font-size: .72rem; color: var(--cyan); flex: none;
+    min-width: 4.6rem; font-variant-numeric: tabular-nums;
+  }
+
+  .rar { display: flex; flex-direction: column; gap: .3rem; }
+  .rrow { display: grid; grid-template-columns: 5.2rem 1fr 3rem; gap: .55rem; align-items: center; font-size: .8rem; }
+  .pips { display: flex; gap: 2px; }
+  .pip { width: .52rem; height: .52rem; border-radius: 50%; background: var(--cyan); flex: none; }
+  .pip.off { background: var(--rail); }
+  .rrow .v { font-family: var(--mono); font-size: .68rem; color: var(--dim); text-align: right; }
+  .rrow.zero .v { color: var(--red); }
+
+  .chain { display: flex; flex-direction: column; gap: 0; }
+  .step { display: grid; grid-template-columns: 1.6rem 1fr; gap: .7rem; }
+  .marker { display: flex; flex-direction: column; align-items: center; }
+  .dot {
+    width: 1.35rem; height: 1.35rem; border-radius: 50%; flex: none;
+    border: 1px solid var(--cyan); color: var(--cyan); background: var(--panel);
+    font-family: var(--mono); font-size: .68rem; display: flex; align-items: center; justify-content: center;
+    font-variant-numeric: tabular-nums;
+  }
+  .step .line { width: 1px; flex: 1; background: var(--rail); min-height: .6rem; }
+  .step .body { padding-bottom: .95rem; }
+  .step .body .t { font-size: .88rem; font-weight: 500; }
+  .step .body .d { font-size: .81rem; color: var(--dim); margin-top: .15rem; }
+  .step .body .id { font-family: var(--mono); font-size: .63rem; color: var(--faint); margin-top: .12rem; }
+  .step.end .dot { border-color: var(--green); color: var(--green); }
+
+  .callout {
+    border: 1px solid var(--edge); border-left: 2px solid var(--amber);
+    background: var(--sunk); border-radius: 2px; padding: .7rem .9rem;
+    font-size: .84rem; color: var(--dim);
+  }
+  .callout b { color: var(--ink); font-weight: 600; }
+  .ref { color: var(--ink); font-weight: 500; }
+  code { font-family: var(--mono); font-size: .92em; color: var(--ink); }
+  footer {
+    border-top: 1px solid var(--edge); padding-top: .8rem;
+    font-family: var(--mono); font-size: .66rem; color: var(--faint); line-height: 1.8;
+  }
+  footer p { margin: 0; }
+  @media (max-width: 34rem) {
+    .brow { grid-template-columns: 1fr 3.4rem; }
+    .brow .track { grid-column: 1 / -1; }
+  }
+</style>
+
+<div class="wrap">
+<header><p class="eyebrow">Sector profile · ROCK_HOME</p><h1>Rock Homeworlds</h1><p class="lede"><strong>The Rockmen fight you at home, and they fight you in weather.</strong> Every ship in the hostile pool is Rock, and five of the eight events across the hostile and boarder pools drop you into an asteroid field or beside a sun before anyone fires. You come anyway for the two beacons the sector must place by name: one opens the <strong>Rock Cruiser quest</strong>, and <span class="ref">Ancient device</span> is the wormhole to the Crystal worlds — for a ship that already has a Crystal aboard.</p><div class="facts"><span class="fact">minSector <b>4</b></span><span class="fact"><b>at most one per run</b></span><span class="fact">entry beacon <b>START_BEACON_ROCK</b></span><span class="fact">tracks <b>rock · wasteland</b></span><span class="fact"><b>Advanced Edition data</b></span></div></header><div class="stats"><div class="stat"><div class="n">22–30</div><div class="k">Beacon spread</div></div><div class="stat"><div class="n">6–8</div><div class="k">Guaranteed fights</div></div><div class="stat"><div class="n">2</div><div class="k">Stores</div></div><div class="stat"><div class="n">9</div><div class="k">Quest starters in pool</div></div><div class="stat"><div class="n">52</div><div class="k">Events in pool</div></div></div><section><h2>Beacon budget<span class="meta">what the sector is required to place</span></h2><div class="budget"><div class="brow"><div class="name">ROCK_CRYSTAL_BEACON</div><div class="cnt">1</div><div class="track"><i class="blk"></i></div></div><div class="brow"><div class="name">ROCK_UNLOCK1</div><div class="cnt">1</div><div class="track"><i class="blk"></i></div></div><div class="brow hostile"><div class="name">HOSTILE_ROCK</div><div class="cnt">6–8</div><div class="track"><i class="blk"></i><i class="blk"></i><i class="blk"></i><i class="blk"></i><i class="blk"></i><i class="blk"></i><i class="blk maybe"></i><i class="blk maybe"></i></div></div><div class="brow hostile"><div class="name">BOARDERS_ROCK</div><div class="cnt">1–2</div><div class="track"><i class="blk"></i><i class="blk maybe"></i></div></div><div class="brow"><div class="name">NEUTRAL_ROCK</div><div class="cnt">7–8</div><div class="track"><i class="blk"></i><i class="blk"></i><i class="blk"></i><i class="blk"></i><i class="blk"></i><i class="blk"></i><i class="blk"></i><i class="blk maybe"></i></div></div><div class="brow"><div class="name">DISTRESS_BEACON_ROCK</div><div class="cnt">1–2</div><div class="track"><i class="blk"></i><i class="blk maybe"></i></div></div><div class="brow"><div class="name">ITEMS</div><div class="cnt">1–2</div><div class="track"><i class="blk"></i><i class="blk maybe"></i></div></div><div class="brow"><div class="name">STORE_ROCK</div><div class="cnt">2</div><div class="track"><i class="blk"></i><i class="blk"></i></div></div><div class="brow"><div class="name">QUESTS_ROCK</div><div class="cnt">0–1</div><div class="track"><i class="blk maybe"></i></div></div><div class="brow"><div class="name">NOTHING_ROCK</div><div class="cnt">2–3</div><div class="track"><i class="blk"></i><i class="blk"></i><i class="blk maybe"></i></div></div></div><p class="note">Solid blocks are the minimum the sector must place; faded blocks are the optional extra.</p><p class="note">Entry beacon is always START_BEACON_ROCK.</p><div class="callout"><strong>Versus a plain Rock Controlled Sector:</strong> every pool and every number is identical. The homeworlds add exactly three things — <code>unique=&quot;true&quot;</code>, <code>minSector=&quot;4&quot;</code>, and the two named beacons. The shooting is the same shooting; the reason to come is the two beacons.</div></section><section><h2>Named beacons<span class="meta">ROCK_CRYSTAL_BEACON · 1 beacon · placed by name, not drawn from a pool</span></h2><div class="pool"><div class="ev may"><div class="t">Ancient device</div><div class="id">ROCK_CRYSTAL_BEACON</div><div class="tags"><span class="tg may-fight">May fight</span><span class="tg crew">Crew</span></div></div></div><p class="note">The way out of the game&#x27;s normal map, and the <strong>Crystal crew</strong> blue option is the only choice that opens it — the Damaged Stasis Pod on its own will not do. Without a Crystal aboard the device is a gamble: scrapping it either pays out a large pile of scrap or brings a Rock warship down on you for the vandalism.</p></section><section><h2>Named beacons<span class="meta">ROCK_UNLOCK1 · 1 beacon · placed by name, not drawn from a pool</span></h2><div class="pool"><div class="ev may"><div class="t">Rock cruiser unlock, step 1</div><div class="id">ROCK_UNLOCK1</div><div class="tags"><span class="tg may-fight">May fight</span><span class="tg crew">Crew</span><span class="tg quest">Quest</span></div></div></div><p class="note">No fight here — the Rock warship never turns hostile and jumps away whatever you say. Two of the three replies plant the next marker; ignoring them ends the line on the spot.</p></section><section><h2>Hostile<span class="meta">HOSTILE_ROCK · 6–8 beacons · combat unless the row says otherwise</span></h2><div class="pool"><div class="ev fight"><div class="t">Rock fight</div><div class="id">ROCK_SHIP</div><div class="tags"><span class="tg fight">Fight</span><span class="tg crew">Crew</span></div></div><div class="ev fight"><div class="t">Rock pirates fight</div><div class="id">ROCK_PIRATE</div><div class="tags"><span class="tg fight">Fight</span><span class="tg crew">Crew</span></div></div><div class="ev fight"><div class="t">Rock fight in asteroid field</div><div class="id">ROCK_FIGHT_ASTEROID</div><div class="tags"><span class="tg fight">Fight</span><span class="tg crew">Crew</span><span class="tg unique">Unique</span></div></div><div class="ev fight"><div class="t">Rock pirates fight in asteroid field</div><div class="id">ROCK_PIRATE_ASTEROID</div><div class="tags"><span class="tg fight">Fight</span><span class="tg crew">Crew</span><span class="tg unique">Unique</span></div></div><div class="ev fight"><div class="t">Rock pirates fight near sun</div><div class="id">ROCK_PIRATE_SUN</div><div class="tags"><span class="tg fight">Fight</span><span class="tg crew">Crew</span><span class="tg unique">Unique</span></div></div></div><p class="note">Rock ships, all five. Three of them arrive with the environment already against you — twice in an asteroid field, once beside a sun.</p></section><section><h2>Boarders<span class="meta">BOARDERS_ROCK · 1–2 beacons · something comes aboard</span></h2><div class="pool"><div class="ev fight"><div class="t">Rock fight with boarders</div><div class="id">ROCK_BOARDERS_SHIP</div><div class="tags"><span class="tg fight">Fight</span><span class="tg boarders">Boarders</span><span class="tg crew">Crew</span></div></div><div class="ev fight"><div class="t">Rock fight with boarders in asteroid field</div><div class="id">ROCK_BOARDERS_ASTEROID</div><div class="tags"><span class="tg fight">Fight</span><span class="tg boarders">Boarders</span><span class="tg crew">Crew</span></div></div><div class="ev risk"><div class="t">Boarders: Rockmen near sun</div><div class="id">ROCK_BOARDERS_SUN</div><div class="tags"><span class="tg boarders">Boarders</span><span class="tg unique">Unique</span></div></div></div><p class="note"><span class="ref">Boarders: Rockmen near sun</span> has no ship fight and no choice at all: two to three Rockmen are aboard the moment you arrive, and the sun is on you the whole time.</p></section><section><h2>Neutral<span class="meta">NEUTRAL_ROCK · 7–8 beacons · a choice, sometimes a fight</span></h2><div class="pool"><div class="ev may"><div class="t">Mantis ship with Rock body parts</div><div class="id">ROCK_MANTIS_HUNTER</div><div class="tags"><span class="tg may-fight">May fight</span><span class="tg crew">Crew</span><span class="tg unique">Unique</span></div></div><div class="ev may"><div class="t">Mantis ships battle for Rock freighter</div><div class="id">ROCK_MANTIS_FREIGHTER</div><div class="tags"><span class="tg may-fight">May fight</span><span class="tg cost">Cost</span><span class="tg unique">Unique</span></div></div><div class="ev may"><div class="t">Rock atheists</div><div class="id">ROCK_ATHIEST</div><div class="tags"><span class="tg may-fight">May fight</span><span class="tg crew">Crew</span><span class="tg unique">Unique</span></div></div><div class="ev may"><div class="t">Disabled Rock ship</div><div class="id">ROCK_LOOTING</div><div class="tags"><span class="tg may-fight">May fight</span><span class="tg crew">Crew</span><span class="tg unique">Unique</span></div></div><div class="ev risk"><div class="t">Rock live mine</div><div class="id">ROCK_STARSHIP_MINE</div><div class="tags"><span class="tg crew-loss">Crew loss</span><span class="tg reward">Reward</span><span class="tg cost">Cost</span></div></div><div class="ev may"><div class="t">Pirate ship attacking civilian</div><div class="id">PIRATE_CIVILIAN</div><div class="tags"><span class="tg may-fight">May fight</span><span class="tg crew">Crew</span></div></div><div class="ev may"><div class="t">The mercenary</div><div class="id">MERCENARY</div><div class="tags"><span class="tg may-fight">May fight</span><span class="tg crew">Crew</span><span class="tg cost">Cost</span></div></div><div class="ev may"><div class="t">Slaver (friendly)</div><div class="id">FRIENDLY_SLAVER</div><div class="tags"><span class="tg may-fight">May fight</span><span class="tg crew">Crew</span><span class="tg cost">Cost</span></div></div><div class="ev good"><div class="t">Dense asteroid field distress</div><div class="id">ASTEROID_DERELICT_SHIP</div><div class="tags"><span class="tg reward">Reward</span><span class="tg unique">Unique</span></div></div><div class="ev may"><div class="t">Rock and Slug standoff</div><div class="id">ROCK_SLUG_ARGUMENT</div><div class="tags"><span class="tg may-fight">May fight</span><span class="tg cost">Cost</span><span class="tg unique">Unique</span></div></div></div><p class="note">The deepest pool in the sector, and where the Crystal route&#x27;s other half sits — <span class="ref">Dense asteroid field distress</span> is the <strong>Damaged Stasis Pod</strong>. It is also where the trap is: <span class="ref">Rock live mine</span> is the only event in this pool that can kill a crew member.</p></section><section><h2>Distress<span class="meta">DISTRESS_BEACON_ROCK · 1–2 beacons · someone is calling for help</span></h2><div class="pool"><div class="ev good"><div class="t">Friendly ship out of fuel</div><div class="id">FRIENDLY_BEACON</div><div class="tags"><span class="tg crew">Crew</span><span class="tg reward">Reward</span><span class="tg cost">Cost</span></div></div><div class="ev fight"><div class="t">Pirate ship distress trap</div><div class="id">TRAP_BEACON</div><div class="tags"><span class="tg fight">Fight</span><span class="tg crew">Crew</span><span class="tg unique">Unique</span></div></div><div class="ev risk"><div class="t">Single life form on moon</div><div class="id">STRANDED_BEACON</div><div class="tags"><span class="tg crew-loss">Crew loss</span><span class="tg crew">Crew</span><span class="tg reward">Reward</span></div></div><div class="ev may"><div class="t">Pirate ship attacking civilian distress</div><div class="id">PIRATE_CIVILIAN_BEACON</div><div class="tags"><span class="tg may-fight">May fight</span><span class="tg crew">Crew</span></div></div><div class="ev may"><div class="t">Asteroid belt distress</div><div class="id">CIVILIAN_ASTEROIDS_BEACON</div><div class="tags"><span class="tg may-fight">May fight</span><span class="tg crew">Crew</span><span class="tg quest">Quest</span></div></div><div class="ev may"><div class="t">Rebel ship attacking Federation loyalists</div><div class="id">REBEL_VS_FEDERATION</div><div class="tags"><span class="tg may-fight">May fight</span><span class="tg crew">Crew</span><span class="tg quest">Quest</span></div></div><div class="ev may"><div class="t">Escort civilians FTL haywire</div><div class="id">ESCORT_BEACON</div><div class="tags"><span class="tg may-fight">May fight</span><span class="tg crew">Crew</span><span class="tg quest">Quest</span></div></div><div class="ev may"><div class="t">Crushed pirate</div><div class="id">DISTRESS_TRAPPED_MINER</div><div class="tags"><span class="tg may-fight">May fight</span><span class="tg crew">Crew</span><span class="tg cost">Cost</span></div></div><div class="ev risk"><div class="t">Giant alien spiders</div><div class="id">DISTRESS_INFESTATION</div><div class="tags"><span class="tg crew-loss">Crew loss</span><span class="tg reward">Reward</span><span class="tg cost">Cost</span></div></div><div class="ev good"><div class="t">Malfunctioning defense system</div><div class="id">DISTRESS_SATELLITE_DEFENSE</div><div class="tags"><span class="tg reward">Reward</span><span class="tg unique">Unique</span></div></div><div class="ev risk"><div class="t">Fire on research station</div><div class="id">DISTRESS_STATION_FIRE</div><div class="tags"><span class="tg crew-loss">Crew loss</span><span class="tg crew">Crew</span><span class="tg reward">Reward</span></div></div><div class="ev risk"><div class="t">Unknown disease on mining colony</div><div class="id">DISTRESS_STATION_DISEASE</div><div class="tags"><span class="tg crew-loss">Crew loss</span><span class="tg reward">Reward</span><span class="tg unique">Unique</span></div></div></div><p class="note">Allocated one to two beacons, and four of the sector&#x27;s five crew-killing events live in this pool.</p></section><section><h2>Items<span class="meta">ITEMS · 1–2 beacons · free kit, trades and stations</span></h2><div class="pool"><div class="ev good"><div class="t">Free drone schematic</div><div class="id">FIND_DRONE</div><div class="tags"><span class="tg reward">Reward</span></div></div><div class="ev good"><div class="t">Free weapon</div><div class="id">FIND_WEAPON</div><div class="tags"><span class="tg reward">Reward</span></div></div><div class="ev good"><div class="t">Free scrap with resources</div><div class="id">FREE_ITEMS</div><div class="tags"><span class="tg reward">Reward</span></div></div><div class="ev good"><div class="t">Trade fuel for drone parts</div><div class="id">FUEL_FOR_DRONE</div><div class="tags"><span class="tg reward">Reward</span><span class="tg cost">Cost</span></div></div><div class="ev good"><div class="t">Refueling station</div><div class="id">REFUEL_STATION</div><div class="tags"><span class="tg reward">Reward</span><span class="tg cost">Cost</span><span class="tg unique">Unique</span></div></div><div class="ev"><div class="t">Repair station</div><div class="id">REPAIR_STATION</div><div class="tags"><span class="tg cost">Cost</span><span class="tg unique">Unique</span></div></div><div class="ev good"><div class="t">Sell drone parts for scrap</div><div class="id">SELL_DRONES_STATION</div><div class="tags"><span class="tg reward">Reward</span><span class="tg cost">Cost</span><span class="tg unique">Unique</span></div></div><div class="ev good"><div class="t">Sell missiles for scrap</div><div class="id">SELL_MISSILES_STATION</div><div class="tags"><span class="tg reward">Reward</span><span class="tg cost">Cost</span><span class="tg unique">Unique</span></div></div><div class="ev good"><div class="t">Trade resources</div><div class="id">TRADER_CIV</div><div class="tags"><span class="tg reward">Reward</span><span class="tg cost">Cost</span></div></div><div class="ev good"><div class="t">Crew hiring station</div><div class="id">TAVERN_HIRE</div><div class="tags"><span class="tg crew">Crew</span><span class="tg cost">Cost</span><span class="tg unique">Unique</span></div></div><div class="ev"><div class="t">Trade scrap for upgrades</div><div class="id">TRADER_UPGRADES</div><div class="tags"><span class="tg cost">Cost</span><span class="tg unique">Unique</span></div></div><div class="ev"><div class="t">Improve reactor for supplies</div><div class="id">TRADER_UPGRADES_EXCHANGE</div><div class="tags"><span class="tg cost">Cost</span><span class="tg unique">Unique</span></div></div><div class="ev good"><div class="t">Asteroid mining colony</div><div class="id">HELP_MINERS</div><div class="tags"><span class="tg reward">Reward</span><span class="tg cost">Cost</span><span class="tg unique">Unique</span></div></div></div><div class="delta"><div class="head">Advanced Edition also defines OVERRIDE_ITEMS</div><p class="note">It adds:</p><div class="pool"><div class="ev may"><div class="t">Large trade station</div><div class="id">STORE_REBELSIDE</div><div class="tags"><span class="tg may-fight">May fight</span><span class="tg crew">Crew</span><span class="tg store">Store</span></div></div></div><p class="note">Whether the engine substitutes this list for ITEMS is not stated by any file here.</p></div></section><section><h2>Stores<span class="meta">STORE_ROCK · 2 beacons</span></h2><div class="pool"><div class="ev good"><div class="t">Store (Rock)</div><div class="id">STORE_ROCK</div><div class="tags"><span class="tg store">Store</span></div></div></div><p class="note">Fixed at two, not a range — this is the entire resupply the sector is required to give you.</p></section><section><h2>Quest starts<span class="meta">QUESTS_ROCK · 0–1 beacons · marks a beacon elsewhere on the map</span></h2><div class="pool"><div class="ev may"><div class="t">Rock bride</div><div class="id">ROCK_QUEST_MARRIAGE_START</div><div class="tags"><span class="tg may-fight">May fight</span><span class="tg crew">Crew</span><span class="tg quest">Quest</span></div></div><div class="ev may"><div class="t">Escort civilians</div><div class="id">QUEST_ESCORT</div><div class="tags"><span class="tg may-fight">May fight</span><span class="tg crew">Crew</span><span class="tg quest">Quest</span></div></div><div class="ev may"><div class="t">Encrypted federation signal</div><div class="id">FEDERATION_PLANET_SIGNAL</div><div class="tags"><span class="tg may-fight">May fight</span><span class="tg boarders">Boarders</span><span class="tg crew">Crew</span></div></div><div class="ev may"><div class="t">Settlement mercenary work</div><div class="id">MERCENARY_WORK_START</div><div class="tags"><span class="tg may-fight">May fight</span><span class="tg quest">Quest</span><span class="tg store">Store</span></div></div><div class="ev may"><div class="t">Capture the ship</div><div class="id">QUEST_CREWDEAD_START</div><div class="tags"><span class="tg may-fight">May fight</span><span class="tg quest">Quest</span><span class="tg unique">Unique</span></div></div></div><p class="note">Allocated <strong>0–1</strong>, so this pool can place nothing at all. <span class="ref">Rock bride</span> is the sector&#x27;s own: carry the bride to Numa V and hand her over for a random augment, or refuse, keep her as Rock crew, and fight the wedding party.</p></section><section><h2>Empty<span class="meta">NOTHING_ROCK · 2–3 beacons · flavour text, nothing happens</span></h2><div class="pool"><div class="ev"><div class="t">Empty beacon (Rock)</div><div class="id">NOTHING_ROCK</div></div></div></section><section><h2>Quest chain<span class="meta">Rock Cruiser · The Bulwark</span></h2><div class="chain"><div class="step"><div class="marker"><div class="dot">1</div><div class="line"></div></div><div class="body"><div class="t"><span class="ref">Rock cruiser unlock, step 1</span></div><div class="d">A Rock war vessel sizes up your ship and offers a test. Both defiant answers plant the marker; <strong>Ignore them</strong> ends the chain there and then.</div><div class="id">ROCK_UNLOCK1</div></div></div><div class="step"><div class="marker"><div class="dot">2</div><div class="line"></div></div><div class="body"><div class="t">Endure the heat</div><div class="d">The coordinates put you next to an M-class star with a Rock Assault shooting at you. Killing it pays scrap and stops the chain — what continues it is <strong>surviving until they jump away</strong>.</div><div class="id">ROCK_UNLOCK2 · environment=&quot;sun&quot;</div></div></div><div class="step end"><div class="marker"><div class="dot">✓</div></div><div class="body"><div class="t">The shipyard</div><div class="d">&quot;I am convinced of your strength.&quot; The ship unlocks, they patch 29 hull, and they bolt on <strong>Rock Plating</strong> — the same augment that is a blue option at three separate beacons in this sector&#x27;s pools.</div><div class="id">ROCK_UNLOCK3 · unlockShip id=&quot;6&quot;</div></div></div></div></section><div class="cols"><div class="panel"><h3>Blue options that pay here</h3><ul><li><span class="lead">Crew Teleporter ×4</span><span>The widest gate in the pool — <span class="ref">Slaver (friendly)</span>, <span class="ref">Asteroid belt distress</span>, <span class="ref">Rebel ship attacking Federation loyalists</span> and <span class="ref">Capture the ship</span>.</span></li><li><span class="lead">Rockman ×3</span><span><span class="ref">Mantis ship with Rock body parts</span>, <span class="ref">Fire on research station</span> and <span class="ref">Unknown disease on mining colony</span> all take a Rock crew member&#x27;s word where yours does not count.</span></li><li><span class="lead">Rock Plating ×3</span><span><span class="ref">Mantis ship with Rock body parts</span>, <span class="ref">Dense asteroid field distress</span> and <span class="ref">Asteroid belt distress</span> — the augment the unlock chain pays out at its last step, spent straight back into this sector&#x27;s pools.</span></li><li><span class="lead">System Repair Drone ×3</span><span><span class="ref">Mantis ships battle for Rock freighter</span>, <span class="ref">Asteroid belt distress</span>, and sending it into the flames at <span class="ref">Fire on research station</span> instead of a crew member.</span></li><li><span class="lead">Crystal ×1</span><span>One event, and it is the one that matters: <span class="ref">Ancient device</span>.</span></li><li><span class="lead">Slug ×2</span><span>A lookout while you loot at <span class="ref">Disabled Rock ship</span>, and a read on what is actually down there at <span class="ref">Single life form on moon</span>.</span></li></ul></div><div class="panel"><h3>Named things you can leave with</h3><ul><li><span class="lead">Augment</span><span><strong>Damaged Stasis Pod</strong> at <span class="ref">Dense asteroid field distress</span> — the only named item the entire pool hands out.</span></li><li><span class="lead">Augment</span><span>A <strong>random augment</strong> for delivering the bride to Numa V, if you start <span class="ref">Rock bride</span> and go through with it.</span></li><li><span class="lead">Crew</span><span>Rockmen three ways: converted at <span class="ref">Rock atheists</span>, bought at <span class="ref">Slaver (friendly)</span>, or kept as <strong>Ariadne</strong> by refusing the wedding.</span></li><li><span class="lead">Crew</span><span><span class="ref">Slaver (friendly)</span> is the one beacon that can produce a Mantis, a Rockman or an Engi; <span class="ref">Crew hiring station</span> sells crew outright; <strong>Dr Jones</strong> comes off the burning station at <span class="ref">Fire on research station</span>.</span></li><li><span class="lead">Crew</span><span>28 of the 52 events in the pool can add a crew member — more than half the sector.</span></li><li><span class="lead">Reactor</span><span><strong>A reactor bar for 10–15 scrap</strong> at <span class="ref">Rock and Slug standoff</span>: pay off the Rock ship&#x27;s debt and the Slugs sell you the power.</span></li></ul></div><div class="panel"><h3>What can bite</h3><ul><li><span class="lead">Crew</span><span>Five events can kill a crew member outright, and four of them are packed into a distress pool that only gets one or two beacons: <span class="ref">Giant alien spiders</span>, <span class="ref">Fire on research station</span>, <span class="ref">Unknown disease on mining colony</span> and <span class="ref">Single life form on moon</span>.</span></li><li><span class="lead">Boarders</span><span>Four events put someone aboard. Three are Rockmen — up to three of them at <span class="ref">Rock fight with boarders</span> and at <span class="ref">Boarders: Rockmen near sun</span> — and <span class="ref">Encrypted federation signal</span> sends two to three humans.</span></li><li><span class="lead">Environment</span><span>Weather is the sector&#x27;s second weapon: <span class="ref">Rock fight in asteroid field</span>, <span class="ref">Rock pirates fight in asteroid field</span> and <span class="ref">Rock fight with boarders in asteroid field</span> in asteroids, <span class="ref">Rock pirates fight near sun</span> and <span class="ref">Boarders: Rockmen near sun</span> beside a sun.</span></li><li><span class="lead">Ammo</span><span><span class="ref">Rock live mine</span> costs one drone part to cut away, or one missile and 3 hull to detonate. Send someone out to defuse it by hand and <strong>both</strong> wire choices end the same way: the crew member dies, 5 hull, a breach. Engines 5 backs you out of it for nothing.</span></li><li><span class="lead">Scrap</span><span>Demand payment instead of paying at <span class="ref">Rock and Slug standoff</span> and it opens with 3 hull damage, a system knocked out, and a fight. Freeing a slave at <span class="ref">Slaver (friendly)</span> runs 25–45 scrap.</span></li></ul></div><div class="panel"><h3>Crew in stores</h3><div class="rar"><div class="rrow zero"><span>Engi</span><span class="pips"><i class="pip off"></i><i class="pip off"></i><i class="pip off"></i><i class="pip off"></i><i class="pip off"></i></span><span class="v">never</span></div><div class="rrow zero"><span>Mantis</span><span class="pips"><i class="pip off"></i><i class="pip off"></i><i class="pip off"></i><i class="pip off"></i><i class="pip off"></i></span><span class="v">never</span></div><div class="rrow"><span>Zoltan</span><span class="pips"><i class="pip"></i><i class="pip"></i><i class="pip"></i><i class="pip off"></i><i class="pip off"></i></span><span class="v">3</span></div><div class="rrow zero"><span>Slug</span><span class="pips"><i class="pip off"></i><i class="pip off"></i><i class="pip off"></i><i class="pip off"></i><i class="pip off"></i></span><span class="v">never</span></div><div class="rrow"><span>Rockman</span><span class="pips"><i class="pip"></i><i class="pip off"></i><i class="pip off"></i><i class="pip off"></i><i class="pip off"></i></span><span class="v">1</span></div><div class="rrow"><span>Human</span><span class="pips"><i class="pip"></i><i class="pip"></i><i class="pip off"></i><i class="pip off"></i><i class="pip off"></i></span><span class="v">2</span></div><div class="rrow"><span>Crystal Lockdown Bomb</span><span class="pips"><i class="pip"></i><i class="pip"></i><i class="pip off"></i><i class="pip off"></i><i class="pip off"></i></span><span class="v">2</span></div></div><p class="note">Lower number = more common. A crew type at 0 is not sold in this sector&#x27;s stores.</p></div></div><footer><p>Built from sector_data.xml, events*.xml, newEvents.xml, dlcEventsOverwrite.xml.</p><p>&quot;Unique&quot; is the files&#x27; own unique=&quot;true&quot;. Whether that means once per sector or once per run is not stated in any file here; the wiki&#x27;s better bet is once per sector.</p><p>The shipped event lists carry no weights, so no beacon here has stated odds. A pool entry listed twice is counted as ×2 and marked.</p></footer>
+</div>

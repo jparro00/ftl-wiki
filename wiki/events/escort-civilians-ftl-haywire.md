@@ -6,7 +6,7 @@ sectors: [[[sector-civilian-sector]], [[sector-federation-space]], [[sector-mant
 beacon_type: distress
 hostile: false
 blue_options: [[[item-ftl-jumper]]]
-chain: []
+chain: [[[chain-escort-civilians]]]
 version: both
 first_seen: 2026-08-09
 last_updated: 2026-08-09
@@ -54,7 +54,7 @@ into a one-screen payout.
 ### The destination — `QUEST_ESCORT_ARRIVE`
 
 Choice 1 marks a beacon; arriving there fires the `QUEST_ESCORT_ARRIVE` event list. That
-list is **shared with `QUEST_ESCORT`** ([[event-escort-nearby-ship]]) — the two escort
+list is **shared with `QUEST_ESCORT`** ([[event-escort-civilians]]) — the two escort
 events lead to the same four destinations ([[source-events-xml]]). Fandom notes the same
 similarity ([[source-fandom-escort-civilians-ftl-haywire]]).
 
@@ -105,11 +105,12 @@ surrender chance** — `chance` is the probability the ship keeps fighting.
   the Rebel fleet forward one step.
 
 ## Related
-- [[event-escort-nearby-ship]] — `QUEST_ESCORT`, which shares the exact same
+- [[chain-escort-civilians]] — the full quest line this belongs to
+- [[event-escort-civilians]] — `QUEST_ESCORT`, which shares the exact same
   `QUEST_ESCORT_ARRIVE` destination list
 - [[item-ftl-jumper]] — the blue-option gate
 - [[entity-rebels]] — the ambush ship
-- [[concept-quest-beacons]], [[concept-surrender-offers]]
+- [[concept-quest-beacon-placement]], [[concept-surrender-offers]]
 - [[event-pirate-surrender]] — the shared `PIRATE_SURRENDER` aftermath this hull loads
 - [[event-pirate-escape]] — the shared `PIRATE_ESCAPE` aftermath this hull loads
 

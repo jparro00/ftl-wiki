@@ -723,3 +723,1012 @@ Both are flagged on the source page and in the index rather than silently absorb
 [[concept-sector-event-allocation]], [[concept-event-list-weighting]],
 [[item-long-ranged-scanners]] — plus `index.md`.
 **Deferred:** nothing.
+
+## [2026-08-13] lint | Two wrong percentages, a misattributed source, and the chain gap measured
+
+Second full lint. 836 pages audited mechanically (frontmatter, link graph, `event_name` join,
+source→raw resolution) plus targeted checks on the items the 2026-08-13 ingest deferred.
+
+### Stated something false — the two that mattered
+
+- **[[event-crystal-fight]] said 60% and [[event-rock-fight]] said 70% surrender.** Both were
+  reading `<surrender chance>` at face value and explicitly *"trusting the game files"* over
+  Fandom's 40 and 30. [[concept-surrender-offers]] settled this on 2026-08-09 — `chance` is
+  the probability the ship **keeps fighting** — and left a note saying the affected event
+  pages should be updated on the next lint. That note was never actioned, so two pages carried
+  a wrong number. Both corrected in the body, both flags annotated **RESOLVED**, both Open
+  Questions closed. `ROCK_SHIP` (0.7→30) turns out to be one of the two decisive rows in the
+  original finding, which makes the page stating 70% the sharper embarrassment.
+- **[[source-text-achievements]] claimed the ship-unlock hint strings live in
+  `text_achievements.xml`.** They live in **`text_blueprints.xml`** —
+  `ship_PLAYER_SHIP_*_unlock` appears in `blueprints.xml`, `dlcBlueprints.xml` and
+  `text_blueprints.xml`, and nowhere in the file that page describes. It also claimed five
+  chain pages cite it for those strings; none ever did. **The two errors were the same error:
+  the page was an orphan, so nothing ever exercised the claim.** Corrected, and the file's
+  real value recorded — it is negative evidence, the place an alternative unlock route would
+  be stated if one existed. [[chain-rock-cruiser-unlock]] now cites the actual hint string,
+  *"Prove yourself to the Rockmen…"*, against the unverifiable Slug-Cruiser-victory route.
+
+### Numbers settled
+
+- **`unique="true"` is 194.** The count flagged on 2026-08-13 as unreproducible (206 on
+  [[concept-event-tree-grammar]], 195 in its own contradiction block) is resolved by a
+  comment-stripped census of every `.xml`: **242** `unique=` attributes exist and partition
+  without remainder — 216 on `<event>` (194 `true` + 22 `false`), 5 on `<textList>`, 21 on
+  `<sectorDescription>`. The partition closing exactly is what makes it safe to adopt.
+  Corrected on both pages with the derivation recorded. **Arithmetic only — the per-sector
+  vs per-run contradiction at [[concept-event-uniqueness]] is untouched and still open.**
+- **"460 event ids" resolves as 458 live + 2 that exist only inside XML comments** —
+  `FLEET_EASY_AGAIN` and `LANIUS_BOARDERS`. Both already have pages, both already correctly
+  tagged `unreachable`/`cut-content` with the comment quoted. The lint's own first scan
+  "found" them missing because its comment-stripping swallowed real definitions — the same
+  bug the 2026-08-09 audit hit, rediscovered by writing the same naive regex. Re-scanned with
+  a left-to-right comment scanner; zero anomalies.
+
+### The chain layer is the real gap, and it is now measured
+
+The 43 `<quest>` tags resolve into **21 connected components**. **7 have a chain page and all
+7 are ship unlocks or the Flagship.** ~12 genuine quest lines have none: the Federation base
+quest (planted from 5 different beacons), Merchant's Request, the two escort quests, the
+Mantis invasion, the Rock bride, the store rescue, Zoltan primitives, the construction yard,
+the Slug pirate trap, Abadoth's secret word, the crew-dead capture, the Mantis chase. Their
+steps are all paged; only the sequence is missing — which is why 8 already have dangling
+`[[chain-...]]` links pointing at them. Derived with a tag-stack scan; a span regex
+undercounts badly (25 of 43) because `<quest>` sits inside `<choice>` and the first
+`</event>` closes the span early.
+
+### Fixed
+
+- **Link repair, 33 files.** 6 slug mismatches resolved through the `event_name` join
+  (`event-escort-nearby-ship`→[[event-escort-civilians]], `event-merchants-request`→
+  [[event-merchant-s-request]], `event-small-asteroid-belt-distress-beacon`→
+  [[event-asteroid-belt-distress]], `event-friendly-distress-beacon`→
+  [[event-friendly-ship-out-of-fuel]], `sector-last-stand`→[[sector-the-last-stand]], and a
+  raw Fandom title `Escort nearby ship` written as a wikilink). 4 concepts repointed to pages that already
+  existed under another name (`concept-nebula-beacons` and `concept-plasma-storm` →
+  [[concept-nebula-mechanics]]; `concept-quest-beacons` and `concept-quest-markers` →
+  [[concept-quest-beacon-placement]]). 3 pairs of duplicate spellings merged
+  (`asteroid-field`/`asteroid-fields`, `hazards`/`environmental-hazards`,
+  `auto-rewards`/`autoreward-tiers`). `ship-` is not a page type per §3, so
+  `ship-rock-cruiser` / `ship-stealth-cruiser` became `entity-` to match the three
+  player-cruiser links that already used that prefix. **Broken targets: 48 → 35**, and the 35
+  are all genuine to-do signals, not errors.
+- **`sources:` counts on 115 pages** set to the number of distinct `source-*` pages cited.
+  `last_updated` deliberately **not** bumped for these — a bookkeeping correction is not a
+  content change, and bumping would have invalidated 115 `index.md` dates to say nothing new.
+- **Orphans 3 → 0.** [[event-stalemate-surrender]] linked from [[concept-surrender-offers]]
+  (it is the *other* way a fight ends in a stand-down); [[source-events-imagelist]] from
+  [[concept-event-tree-grammar]]'s presentation section; [[source-text-achievements]] from
+  [[source-achievements]].
+- **Two stale flags cleared.** [[event-rock-unlock2]]'s contradiction said its siblings were
+  tagged `version: ae` and uncovered by Fandom — both fixed by the 2026-08-09 lint, flag never
+  cleared. [[chain-rock-cruiser-unlock]]'s matching open question closed. Struck through, not
+  deleted; both were disagreements between our own pages, never between sources.
+- **A factual overstatement:** [[event-pirate-ship-distress-trap]] said its benign twin
+  `FRIENDLY_BEACON` "shares every distress pool". It shares **8 of 9** —
+  `DISTRESS_BEACON_SLUG` carries the trap without it, so Slug space is the one place this
+  distress trap has no benign counterpart.
+- **`overview.md` was materially stale:** counts (832→836 pages, 10→14 concepts, 323→325
+  sources, and a source breakdown that added to 323 rather than 325), and *"9 cards built so
+  far"* against a real inventory of 385. Rewritten, with the chain gap added to Thin Spots and
+  the `unique=` scope question added to the Watch List.
+- **One missing card built.** [[event-trade-fuel-for-drone-parts]] (`FUEL_FOR_DRONE`) was the
+  only ordinary event with no tree; it extracted and rendered clean with no pipeline changes.
+  Now **386 trees, 386 cards**. The other 10 uncarded events are 7 engine `FLEET_*` events,
+  2 tutorials, and the 2 commented-out ones, which cannot be extracted at all.
+
+### Checked and found correct
+
+- **All 12 "no Fandom page covers this" claims hold up.** The one substring hit
+  (`BOARDERS_ASTEROID` inside `ROCK_BOARDERS_ASTEROID`) had already been disambiguated on the
+  page itself. The 2026-08-09 lint found 2 false claims of this kind; there are now none.
+- **384 of 385 trees resolve their card title through the `event_name` join.** The exception,
+  `CIVILIAN_ASTEROIDS_BEACON_2`, is a sub-event folded into
+  [[event-asteroid-belt-distress]], so its card carries a machine-made title. Working as
+  designed, but the only card in the set whose heading no human wrote.
+- No duplicate `event_name` claims, no page claiming a non-existent id, every source page's
+  `raw:` path resolves, every raw file still has a source page, and every page is in
+  `index.md` with a date matching its frontmatter.
+
+### Not fixed — needs a decision
+
+- **`beacon_type: unknown` on 35 event pages** and `item_kind: unknown` on
+  [[item-drone-parts]] are not in CLAUDE.md's allowed values. The pages are right and the
+  schema is short: they are tutorials, engine events and surrender aftermaths that occupy no
+  beacon. Proposed: add `unknown` to both enums, matching how `version` already works.
+- **`source_kind: research` and `raw/modding/`**, introduced by the 2026-08-13 ingest and
+  flagged there, still need their one-line amendments to CLAUDE.md §1 and §2.7.
+- **~12 chain pages, 5 player-ship entity pages, 14 concept pages** — the dangling-link
+  backlog. All are content work, not lint fixes.
+
+## [2026-08-13] ingest | The lint backlog cleared: 14 chains, 5 ships, 15 concepts, and the schema amended
+
+Follow-up to the lint above, at the user's direction. All three deferred items actioned.
+
+### Schema amendments (CLAUDE.md)
+
+- **`beacon_type: unknown`** added to the §2.1 enum, with a definition rather than a bare
+  value: it means the event *occupies no beacon* — tutorials, engine-invoked combat
+  resolutions, `<ship>`-block aftermaths, cut content — **not** "we didn't look". 35 event
+  pages were already using it correctly.
+- **`item_kind: unknown`** added to §2.5 for the same reason ([[item-drone-parts]]).
+- **`source_kind: research`** added to §2.7, with the rule that it is never `high`: it cites
+  sources this repo does not hold, so it inherits their uncertainty.
+- **`raw/modding/`** added to the §1 directory layout.
+
+### 14 new chain pages — the quest layer is now closed
+
+Derived from the `<quest>` graph rather than from prose: 43 tags, 21 connected components, and
+every component that is a real quest line now has a page. The chain layer goes **7 → 21**.
+
+- [[chain-hidden-federation-base]] — the largest: **four trigger beacons across six sector
+  types, five planting sites**, all feeding one 5-outcome table (high drone · free crew ·
+  **35 hull repaired** · a Sensors/Scanners-gated consolation · an unasked-for auto-ship fight).
+- [[chain-merchant-s-request]] — one beacon that forks into two unrelated quests and never
+  rejoins. Carries the only price haggle in the game: 20–30 scrap, 40–55 with Mind Control,
+  55–70 plus fuel with Weapons 6.
+- [[chain-escort-civilians]] — two triggers, one destination, and a 25% Rebel ambush.
+  [[item-ftl-jumper]] skips the whole quest for a `HIGH standard` payout.
+- [[chain-capture-the-ship]] — **invisible without a Teleporter, Anti-Bio Beam or Fire Bomb**;
+  the ungated choice is answered *"not properly equipped"* and the event ends. Destroying the
+  target costs 13 hull, a system, and fires in every room.
+- [[chain-rock-bride]] — deliver the bride for a random augment, or refuse and get **Ariadne**
+  plus a fight. The only quest whose final choice is purely ethical.
+- [[chain-mantis-war-camp]] — paid up front; the Fire Bomb branch is the best-paying blue
+  option of any non-unlock quest (`HIGH stuff` + a free Engi crew member for 2 missiles), and
+  the missile-weapon branch is a **trap** that is strictly worse than leaving.
+- [[chain-settlement-mercenary-work]] — two jobs, both paying more for restraint: a store
+  opens on one, and the other pays `MED weapon` only if you spare the pirates.
+- [[chain-zoltan-primitives]] — a quest you *overhear* at a cantina; three-way moral choice
+  where making first contact gets you shot by the people you were siding with.
+- [[chain-construction-yard]] — contains the strangest blue option in the game: the yard
+  offers to **buy your Lanius crew member**, and the file carries a line noting the Clone Bay
+  does not apply *"since they did not die"*.
+- [[chain-slug-pirate-trap]] — the rare event that rewards trusting a Slug: `HIGH scrap_only`
+  for keeping the bargain, `MED standard` at best for cutting them out.
+- [[chain-secret-word-abadoth]] — **the only puzzle in FTL that tests the player, not the
+  ship.** Three near-identical options; the word is ABADOTH, and two of the three start a
+  fight. The Engi blue option exists to compensate for the player's memory.
+- [[chain-mantis-collectors-chase]] — a grudge match reached *because you lost the first
+  fight*; all four resolutions pay.
+- [[chain-rebel-defector]] — a 6-entry table where three identical entries make the honest
+  outcome exactly 50%, the clearest live demonstration of [[concept-event-list-weighting]].
+- [[chain-tutorial]] — filed as what it is: **not a quest**, but a scripted sequence, recorded
+  because it is where the game states its own design rules — including the only in-fiction
+  definition of a blue option, which claims they are *"nearly always a good choice"*. The
+  Mantis war camp disproves that in the same session.
+
+### 5 new entity pages — the unlockable player ships
+
+`entity_kind: ship`, built from `<shipBlueprint>` (hull, reactor, crew, `start="true"`
+systems, weapons, augments) plus the `ship_PLAYER_SHIP_*_unlock` hint strings:
+[[entity-rock-cruiser]] (*Bulwark*), [[entity-stealth-cruiser]] (*The Nesasio* — the only
+layout that **starts with no shields**), [[entity-mantis-cruiser]] (*The Gila Monster* —
+Weapons 1, reactor 7, no Sensors), [[entity-zoltan-cruiser]] (*The Adjudicator* — **reactor 5**,
+the lowest in the game), [[entity-federation-cruiser]] (*The Osprey* — the only Artillery Beam,
+and one crew member of each of four species).
+
+This also resolved a naming inconsistency the lint flagged: the same five ships were being
+linked as both `ship-*` and `entity-*`. `ship-` is not a page type per §3, so all are now
+`entity-`, and [[entity-federation]]'s standing naming note is satisfied.
+
+### 15 new concept pages
+
+Each built from a fresh census of the game files rather than from the event pages:
+
+[[concept-autoreward-tiers]] (551 uses, a level × tier matrix, and **the numbers are simply
+not in the files** — the wiki's largest single unknown) · [[concept-hazards]] (the parent page:
+exactly six `<environment>` types, 91 uses, with the engine's own tooltips quoted) ·
+[[concept-asteroid-fields]] · [[concept-solar-flares]] · [[concept-anti-ship-battery]] ·
+[[concept-scrap-economy]] · [[concept-crew-loss-risk]] · [[concept-fuel]] ·
+[[concept-cut-content]] · [[concept-empty-beacons]] · [[concept-start-beacons]] ·
+[[concept-map-reveal]] · [[concept-ship-unlocks]] · [[concept-augmentations]] ·
+[[concept-ae-vs-vanilla]].
+
+**Findings that came out of writing them:**
+
+- **Two new shipped-data bugs.** `autoReward level="low"` in lowercase (7 uses) alongside the
+  documented `MEDIUM` (6); and one `<item type="missile">` singular where the schema uses
+  `missiles`. Both recorded, neither corrected.
+- **The game is precise about what it takes and vague about what it gives.** Of 116 explicit
+  `<item type="scrap">` records, **84 are losses and 32 gains** — while 551 `autoReward`
+  rewards carry no number at all. Fuel is the exact inverse: 59 gains to 14 losses.
+- **Ship id 3 is never used.** `<unlockShip>` covers ids 1, 2, 4, 5, 6, 7, 8 — and id 4 is not
+  identified anywhere in this raw set. Filed as an open question on [[concept-ship-unlocks]].
+- **The sun tooltip is the only stated hazard/system interaction in the entire game data**:
+  *"Shields will reduce the effect."* No other hazard's description mentions any mitigation.
+- **`PDS` is the only hazard with no in-fight tooltip** — it is announced on the map instead,
+  which fits the one hazard you can route around. It is also the only one that can be
+  one-sided (`target="player"`, 8 of 16 uses).
+- **A third of all named augment awards are `RANDOM`** (10 of 30), which is why so many pages
+  cannot say what you get.
+- **Rarity-0 augments cannot be bought at all**, so [[item-rock-plating]] and
+  [[item-mantis-pheromones]] are obtainable *only* from their chains.
+
+### Bookkeeping
+
+- **Backlinks:** 19 step-event pages gained a `chain:` frontmatter value and a Related bullet
+  pointing at their new chain, so every chain↔event link is bidirectional. A bracket-count bug
+  in the script wrote `chain: [[[[x]]]]` on 14 pages; caught and repaired to the `[[[x]]]`
+  list-containing-a-wikilink form the schema uses.
+- **`index.md`:** Chains, Entities and Concepts sections regenerated from frontmatter.
+- **`overview.md`:** counts corrected (870 pages, 21 chains, 29 concepts, 16 entities), the
+  chain gap removed from Thin Spots, and two new "what this wiki answers well" entries added.
+- **[[event-encrypted-federation-signal]]** had a dangling `[[event-hidden-federation-base]]`
+  reading *"the first quest destination, if it is split out"*. It now points at the chain page,
+  with the reason it is a chain and not an event: `HIDDEN_FEDERATION_BASE_LIST` is an
+  `eventList`, not an `<event name>`, and four beacons feed it.
+
+### State after this pass
+
+**870 pages. Zero orphans, zero pages missing from `index.md`, zero frontmatter errors, zero
+`sources:` count mismatches, and every wikilink resolves** except the literal placeholders in
+schema prose and two historical slugs quoted in this log. The remaining gaps are quantities the
+game files do not contain, not pages.
+
+---
+
+## [2026-08-13] tooling | Event-labels mod — every carded event names itself in game
+
+Built `mods/event-labels`, a Slipstream mod that prints each event's card title above its
+in-game text. New: `tools/build-mod.py` (generator + verifier) and `tools/EVENT-LABELS.md`
+(the normative spec). Output is a new top-level `mods/` directory — a sibling of `wiki/`, on
+the same reasoning as `cards/`: generated machine output stays out of the wiki's search space.
+
+### What it does
+
+The label is the `title` field of `cards/trees/<slug>.tree.json`, which the card pipeline
+derives from the wiki page's H1. **The wiki is the label source** — retitle a page, rebuild
+its card, rebuild the mod, and the in-game text follows. 386 of 449 top-level event
+definitions are labelled; the 63 without are developer tests and mid-event continuations that
+have no wiki page and therefore no name to print. Nothing is invented.
+
+### The two mechanisms, and why not a third
+
+Both use only the plain append convention from
+[[concept-modding-and-the-append-convention]] — *reuse an identical tag name, last one counts*:
+
+- **351 events via string override.** Where the event's text resolves to a string only that
+  event can reach, the mod replaces the string in `text_events.xml.append` and never mentions
+  the event. Measured, not assumed: all 261 `<text id="event_X_text"/>` ids are referenced
+  exactly once game-wide, and 90 of the 118 list-backed events have private variants too.
+  Structure is untouched, so this path cannot break an event.
+- **35 events via redefinition.** Shared strings, shared textLists, and the 7 events with
+  prose inlined in the definition. The event's verbatim source bytes are copied and re-emitted
+  with only its own `<text>` rewritten; a shared list becomes a new `EVLBL_<ID>` list so the
+  vanilla one is left alone and its other users keep their own labels.
+
+Slipstream's **Advanced XML (`mod:findName`) was deliberately not used**, though it is the
+tidier instrument. `raw/modding/2026-08-12-ftl-modding-research.md` §5 summarizes the tag set
+but not its nesting rules, and there is no Slipstream install here to test against — so using
+it would have meant guessing at syntax. Recorded in the spec as the first thing to revisit if
+anyone verifies that syntax against `readme_modders.txt`.
+
+### Two data facts worth keeping
+
+- **`<event name="X"/>` inside an `<eventList>` is a reference, not a definition.** A regex
+  that ignores depth counts `NOTHING` and `STORE` as defined five times and inflates the event
+  count from 449 to 479. The generator and verifier both select on depth.
+- **An event's own `<text>` is its depth-1 child**; the `<text>` elements under its `<choice>`
+  children are option labels. Relabelling by document order would have printed event names on
+  buttons.
+
+### Verification
+
+Every build checks: each append parses, none carries an `<FTL>` wrapper, each targets a real
+vanilla file, all 386 labels are present, no byte above 0x7E survives (FTL's fonts have no
+typographic punctuation — 13 titles carried em dashes), no string carries two labels, and
+every emitted name is either a vanilla name or `EVLBL_`-prefixed. The load-bearing one:
+**each redefined event is proven byte-identical to vanilla outside its `<text>`** — negative-
+tested by deleting a `<choice>` from a generated append and confirming the verifier fails.
+
+### Open
+
+**Not yet run in game.** The semantics are documented convention and the output is verified
+structurally, but nothing has been through Slipstream. One patch and one beacon settles it.
+
+---
+
+## [2026-08-13] tooling | Slipstream installed; event-labels loads and validates clean
+
+Installed Slipstream Mod Manager 1.9.1 to `C:\Users\jparr\Documents\Slipstream`, pointed it at
+the local FTL install, and got [[concept-modding-and-the-append-convention]]'s central claim
+confirmed from the primary source. The mod is loaded and validated but **not yet patched in** —
+that is the user's call.
+
+### Verified against the real install
+
+FTL lives at `D:\Steam\steamapps\common\FTL Faster Than Light` — FTL 1.6.x, a single `ftl.dat`
+in `PKG\n` format. Extracted it with `tools/ftlpkg.py` and hashed: **all 14 vanilla files the
+mod appends to are byte-identical to `raw/gamedata/`**. The 35 byte-copied event definitions
+therefore match the installed vanilla exactly, and all 701 string overrides target names that
+exist in the installed `text_events.xml`.
+
+> ⚠️ **CONTRADICTION:** [[concept-modding-and-the-append-convention]] says *"`ftl.dat` in older
+> builds, `data.dat` + `resource.dat` in 1.6.x"*. The installed 1.6.x game has a **single
+> `ftl.dat`** in `PKG\n` format, which is what `tools/ftlpkg.py`'s docstring describes
+> ("FTL 1.6.x `PKG\n` archives (ftl.dat)"). The concept page has the two eras backwards.
+> Trusting the install + the extractor over the summary. Not yet corrected on the page.
+
+### `readme_modders.txt` — now a primary source
+
+The Slipstream download ships Vhati's `readme_modders.txt`, which
+`raw/modding/2026-08-12-ftl-modding-research.md` had only summarized secondhand. It states the
+rule this mod is built on verbatim: *"Whenever multiple tags share the same name, only the last
+one counts."* It also confirms LF line endings are fine (Slipstream converts to CR-LF while
+patching) and that `mod-appendix/metadata.xml` is optional.
+
+It further documents the **full Advanced XML tag set and its nesting** — the thing the spec
+said was unverifiable — and notes Slipstream ships an **XML Sandbox** under its File menu for
+testing such patches interactively. `tools/EVENT-LABELS.md` now records Advanced XML as the
+upgrade path rather than an unknown: one `mod:findLike` per event would replace all 35 event
+redefinitions and conflict with almost nothing.
+
+### One real bug, caught by patching-adjacent reality
+
+Slipstream refused the first build outright:
+
+```
+ERROR JDOMModMetadataReader - While processing "event-labels.ftl:mod-appendix/metadata.xml",
+strict parsing failed: Missing threadUrl.
+```
+
+`metadata.xml` is parsed **strictly**; an empty `<threadUrl/>` — which a locally built mod has
+no honest value for — makes the mod silently absent from the list. Fixed by emitting all five
+elements with CDATA values (matching the example mods Slipstream ships), and
+`build-mod.py` now verifies the metadata on every build so it cannot recur. Nothing about the
+event data was wrong; the mod was rejected before its appends were ever read.
+
+### State
+
+Slipstream lists **event-labels**, and its own **Validate** returns `No Problems`. What remains
+untested is only whether the labels render — one Patch and one beacon.
+
+---
+
+## [2026-08-13] ingest | Slipstream `readme_modders.txt` — the primary source behind the modding concept
+
+Filed `raw/modding/slipstream-1.9.1-readme_modders.txt`, Vhati's own reference documentation,
+copied out of the Slipstream 1.9.1 distribution. [[source-modding-research]] had been
+summarizing this file secondhand from a GitHub copy; the wiki now holds the document itself.
+
+### New
+- [[source-slipstream-readme-modders]] — `source_kind: wiki`, `reliability: high`.
+
+### Updated
+- [[concept-modding-and-the-append-convention]] — primary citation, two contradictions, and
+  four sections the summary had flattened. `sources: 3 → 4`.
+- [[source-modding-research]] — a "Superseded by the primary source" section saying exactly
+  what the synthesis got right, what it lost, and what it is still the only source for
+  (Hyperspace, Superluminal2, the distribution landscape).
+- `index.md` — new **Vendor documentation** subsection under Sources; count 325 → 326.
+
+### What the primary source settles
+
+- **Last-wins is stated twice, about different actors**, and the wiki had recorded only one.
+  *"Whenever multiple tags share the same name, only the last one counts"* describes
+  **Slipstream** resolving duplicates while patching. But the Raw XML section — describing
+  `.rawappend`, where Slipstream deliberately does no parsing — says *"you can still override
+  existing tags by adding your own with the same 'name' attribute, since **FTL honors the last
+  it sees**."* The resolution is the **engine's**. That is why a text-only mod works without
+  redefining anything, and it is the load-bearing fact under [[concept-event-tree-grammar]]'s
+  load-order reading too.
+- **`<mod:findName>` searches backwards** — defaults `reverse="true" limit="1"`, so it matches
+  the *last* tag of that name. Correct, given last-wins, and the opposite of what "find" implies.
+- **`panic` defaults to false**, so an Advanced XML find that matches nothing is a silent no-op.
+  `--global-panic` is the only way to surface a typo.
+- **`--patch` and `--validate` accept directories**, so `mods/event-labels/src/` can be tested
+  without zipping.
+- **Encoding vs. glyphs are separate problems.** FTL 1.01–1.5.13 assumes windows-1252; 1.6.1+
+  assumes UTF-8. On 1.6.x non-ASCII is read fine, and the only remaining risk is *"whether the
+  fonts contain the glyphs"*. `tools/build-mod.py`'s ASCII fold is still the safe choice, but
+  the reason recorded in its spec was half right.
+- **FTL crashes on event loops** — a choice loading an event whose choice loads the first kills
+  the game at the main menu. Recorded as a pitfall for any tool that generates event chains.
+
+### Contradictions recorded (both kept, neither overwritten)
+
+> ⚠️ **1.6.x archive layout.** [[source-modding-research]] says 1.6.x uses `data.dat` +
+> `resource.dat` and `ftl.dat` is the older form. The local 1.6.x install has a single
+> `ftl.dat` with `PKG\n` magic, matching `tools/ftlpkg.py`. The eras are reversed in the
+> synthesis. Trusting install + extractor.
+
+> ⚠️ **`metadata.xml` "optional".** The readme calls it optional; Slipstream 1.9.1 parses it
+> strictly once present, and an empty `<threadUrl/>` removed the mod from the list entirely.
+> Optional file, mandatory contents.
+
+### Note on schema
+
+`reliability: high` on a `source_kind: wiki` page departs from the §2.7 convention
+(*high = game files*). First-party vendor documentation has no value in that scale; flagged on
+the page rather than filed quietly, as [[source-modding-research]] did for `research`.
+
+---
+
+## [2026-08-13] tooling | Fullscreen stops minimizing on focus loss — an engine switch, not a data mod
+
+The user runs two 4K monitors; FTL's fullscreen window minimized every time they clicked the
+other screen, at any resolution. Asked to fix it "with a mod".
+
+### What it isn't
+
+Not a Slipstream `.ftl` mod. Window behaviour is engine code, not anything reachable from
+`ftl.dat` — no XML append can touch it. Filed under `mods/` anyway, as
+`mods/fullscreen-no-minimize/`, with the README leading on that distinction.
+
+### What the binary gave up
+
+`FTLGame.exe` 1.6.14 (Steam) has no SDL strings except one: `SDL_VIDEO_MINIMIZE_ON_FOCUS_LOSS`.
+Alongside it, `SILWindowClass`, `SILCPFWindowClass`, `SIL_WINDOWS_USE_RAWINPUT`,
+`SIL_WINDOWS_USE_XINPUT`, and a display-attribute table (`center_window`, `depth_bits`,
+`fullscreen_minimize_on_focus_loss`, `window_resizable`, `window_thread`, …). That identifies the
+engine layer as **SIL**, Andrew Church's System Interface Library — he did the 1.6 ports.
+
+### What the SIL source settles
+
+- The minimize is **deliberate engine behaviour**, not Windows reclaiming an exclusive display
+  mode: `graphics.c:2656` minimizes from the `WM_ACTIVATE` handler. So no choice of resolution
+  avoids it — which matches the user's "any resolution".
+- `should_minimize_fullscreen()` (`graphics.c:3069`) consults `minimize_fullscreen` (default
+  `-1`, unspecified), then falls back to reading `SDL_VIDEO_MINIMIZE_ON_FOCUS_LOSS` from the
+  process environment, then defaults to minimize. SIL borrows SDL's variable name even though
+  the Windows backend is WGL/D3D11, not SDL.
+- `windows_getenv()` is a `GetEnvironmentVariable()` wrapper (`util.c:165`) — an ordinary
+  environment variable is the whole mechanism.
+- Fullscreen is `WS_POPUP | WS_VISIBLE` at `HWND_TOPMOST` (`graphics.c:1221`), so suppressing
+  the minimize yields borderless-fullscreen behaviour without running the game windowed.
+- Bonus: `ChangeDisplaySettingsEx` is skipped entirely when the requested size equals the
+  monitor's current mode (`graphics.c:1111`). At native 3840×2160 there is no real mode switch.
+
+### Shipped
+
+`mods/fullscreen-no-minimize/` — `README.md` (mechanism + citations), `install.ps1`
+(idempotent, `-Uninstall`), `launch-ftl.cmd` (per-process alternative). Installer run; variable
+is set at user scope. Steam restart pending — Steam hands its own environment to its children.
+
+### Unverified
+
+Whether FTL ever calls `graphics_set_display_attr("fullscreen_minimize_on_focus_loss", …)`
+itself, which would pin `minimize_fullscreen >= 0` and make the environment variable inert.
+Nothing in the binary settles it; the in-game smoke test is the proof.
+
+## [2026-08-13] tooling | Save watcher — cards open themselves from continue.sav
+
+Asked how a mod could open HTML in game. It cannot: FTL has no HTML renderer, and
+Hyperspace's Lua sandbox has `io`, `os`, `package` and `debug` commented out of its
+`linit.c`, so no in-game script can launch a browser or write a file. Any card display is
+an external process; the only question is how it learns the current event. Chose the save
+file, which needs no game modification at all.
+
+### Shipped
+
+- `tools/ftlsave.py` — read-only parser for `continue.sav`, stopping at `EncounterState`.
+  Port of Vhati/ftl-profile-editor `SavedGameParser.readSavedGame` plus
+  `DatParser.readLayout`. Ship layouts read live from `ftl.dat` via `tools/ftlpkg.py`;
+  blueprints from `raw/gamedata/`.
+- `tools/save-watch.py` — watches the save, resolves the encounter to a card, serves one
+  auto-updating page on localhost.
+- `tools/SAVE-WATCH.md` — the specification.
+
+### Two findings that made it work
+
+**Stopping at the encounter is what makes 1.6.14 parseable.** The reference parser cannot
+read 1.6.14 saves at all (`Unsupported projectileType flag: 6`, ftl-profile-editor #119).
+Every byte it fails on sits after the encounter block, so the early stop sidesteps it.
+
+**The save is written mid-encounter, not just on jump.** Observed directly: `continue.sav`
+rewritten at 19:20:31 with no jump, 6909 → 6212 bytes, encounter text changing from
+`event_ROGUE_REBEL_SEARCH_2_text` to `event_DEAD_CREW_DEFAULT_1_text` as a fight resolved.
+This was the open question when the approach was chosen; it is now settled by observation.
+
+### Resolution
+
+`EncounterState.text` holds a string-table id. Indexing `raw/gamedata` for it does not
+work — the text on screen is usually an *outcome* sub-event, not the named top-level event
+(`event_ROGUE_REBEL_SEARCH_2_text` lives in an anonymous `<event>` inside
+`<eventList ROGUE_REBEL_SEARCH>`, which the card `rebel-fight-chance` covers but never
+names). The index is built from `cards/trees/*.tree.json` instead, whose `text.ref` /
+`text.value` pairs already cover every expanded node.
+
+Measured over the 386 cards: 3448 text keys, and 739 of 749 root texts pin exactly one
+card. Shared outcome prose is resolved by staying on the card already displayed; when
+there is nothing to continue from, the watcher shows no card rather than guessing.
+
+### Verified
+
+Parser: format 11, `PLAYER_SHIP_ANAEROBIC_2`, 4082 of 6212 bytes consumed, landing on an
+`EncounterState` whose five ship-event ids were all real event names. Server: `/`,
+`/current` and `/card/<slug>` all 200, card served at 107,864 bytes; unknown slug 404s.
+Resolution chain exercised across root → continued → ambiguous.
+
+### Not verified
+
+The page has not been watched during live play — the transitions above were reconstructed
+from two reads of a save the game rewrote between them, not from a browser open on the
+second monitor while jumping beacons.
+
+## [2026-08-13] tooling | Save watcher — operating docs
+
+Documented the watcher so a future agent can launch it without rediscovering anything.
+
+- `tools/SAVE-WATCH.md` §1 rewritten from "quick start" into **Running it**: the agent
+  caveat (it is a server that never returns — background it, and check with `--once`
+  first), the verified save/`ftl.dat` paths, and how to stop it.
+- `tools/SAVE-WATCH.md` §5 gained a **States** table (`ok` / `ambiguous` / `nocard` /
+  `noevent` / `nosave` / `waiting` / `error`, and which are faults — only a persistent
+  `error`) plus four concrete failure modes.
+- `CLAUDE.md` — new §5.2c pointing at the spec, and the `tools/` layout line now names it.
+- `README.md` — user-facing "Let the cards open themselves", and `mods/` added to the
+  directory map, which it had been missing.
+
+### Corrected
+
+The first draft said to stop the watcher with `pkill -f save-watch.py`. Both halves are
+wrong on this machine: `pkill` is not in this Git Bash, and matching `python.exe` misses
+the process because the interpreter is the Windows Store `python3.10.exe`. Found by
+following the doc as written and watching it fail. Replaced with a kill-by-port
+`Get-NetTCPConnection` one-liner, which is name- and shell-agnostic, and verified.
+
+### Verified
+
+Followed the documented path end to end: `--once` → JSON with `status`; background launch
+→ `/current` and `/` both 200; documented stop command → port released.
+
+## [2026-08-13] tooling | Save watcher — starts without a run in progress
+
+Went to start the watcher and it exited 2: `could not find continue.sav`. The run logged
+earlier had ended (profile written 21:05, `continue.sav` deleted — FTL removes it when a
+run finishes), and `main()` refused to start without it.
+
+That contradicted the design: `Watcher.poll_once` already had a `nosave` state for exactly
+this case. The guard in `main()` made the watcher unstartable precisely when it is most
+useful — before launching the game.
+
+**Fixed:** `find_save()` now falls back to the canonical save location instead of `None`,
+so it resolves *where the save will appear* rather than requiring it to exist, and the
+`ap.error` guard is gone. `--once` with no run now reports `nosave` rather than exiting 2.
+
+`tools/SAVE-WATCH.md` §1 gained the rule this implies: start it whenever, including before
+FTL; a missing save is never a reason not to start.
+
+### Verified
+
+`--once` with no run → `{"status": "nosave"}`. Watcher launched, `/current` 200 with
+`nosave`, `/` 200. Serving on http://127.0.0.1:8787.
+
+## [2026-08-14] tooling | Save watcher — the last card stays up
+
+Changed at the user's request: when the save names no card — shared outcome prose, an
+uncarded event, a torn read, a finished run — the watcher now leaves the previous card on
+screen instead of replacing it with a message. The messages are only ever seen before the
+first card of a session.
+
+### What it took
+
+The naive version (keep showing the last slug) would have broken resolution, because the
+resolver's stickiness rule reads "the card currently on screen" to decide whether a shared
+outcome text continues the current event. Held cards had to be kept out of that.
+
+So the watcher now tracks two things that were previously one:
+
+- `_displayed` — what is on screen. Survives everything; only a *different* card replaces it.
+- `_anchor` — the event we are actually in, which drives stickiness. **Cleared when a run
+  ends**, so a card still up from a finished run cannot capture a shared text in the next.
+
+`/current` gained `held: true` for a stale display; `status` still reports what the save
+says, so "what is shown" and "what the save contains" stay separately answerable. The page
+now keys its iframe on the slug alone, so a held card never reloads or flickers.
+
+### Verified
+
+Drove a full sequence: arrive → outcome → shared outcome → uncarded event → run ends → new
+run. The uncarded event and the run boundary both held `rebel-fight-chance` with
+`held=true`; the first shared text of the new run resolved `ambiguous` rather than falsely
+continuing the old run — the anchor separation working; and the next real event
+(`event_ROCK_CRYSTAL_BEACON_text`) took over cleanly with `held=false`.
+
+Watcher restarted on the new build. It now reports `noevent` rather than `nosave` — a new
+run is in progress, with no event text yet.
+
+## [2026-08-14] tooling | Save watcher — textList variants indexed; holding narrowed
+
+User was sitting on the **Pirate briber** event and the watcher could not see it. It was
+showing `pirate-engine-hacker` instead — a stale card, presented as if current. Two
+separate defects, neither in the parser, which read the save correctly throughout.
+
+### 1. The index missed every textList variant
+
+`PIRATE_BRIBER` reads its prose via `<text load="PIRATE_BRIBER"/>`. A card tree records
+such a text as the **list name plus a count** — `{"ref": "PIRATE_BRIBER", "variants": 3}` —
+never the individual variants. The save records the variant actually shown,
+`text_PIRATE_BRIBER_3`, which appears in no tree. So every list-backed event resolved to
+nothing.
+
+Fixed with `load_textlists()`, which expands each `<textList>` from `raw/gamedata` (reusing
+`build-mod.py`'s `load_game` / `variants_of`) and indexes every variant id and prose against
+the card whose tree loads that list.
+
+Measured before → after:
+
+```
+text keys indexed          3448 → 4516
+root texts (event start)    749 → 1782
+  pinning exactly one card  739 → 1741
+```
+
+**1033 of 1782 root texts were missing** — most beacon arrivals could not resolve. The
+earlier "739 of 749 root texts pin a single card" figure was measuring only the events
+whose text is a plain `<text id=…>`, and read as far better coverage than existed.
+
+### 2. Holding made the failure invisible
+
+Yesterday's change held the last card whenever no card resolved — including `nocard`, where
+the event *is* identified and merely has no card. That turned "I don't know this event" into
+a confidently wrong display, and is why the gap looked like a working watcher rather than a
+bug. `HOLDING_STATUSES` now excludes `nocard`: hold when uncertain, never when known-wrong.
+
+The tradeoff was flagged when holding was added but judged acceptable; it was not. A held
+card is indistinguishable from a live one, so holding is only safe where the alternative is
+*no information*, not where it contradicts information we have.
+
+### Verified live
+
+Against the running game, mid-event: `text_PIRATE_BRIBER_3` → `pirate-briber` /
+"Pirate briber", `reason: root`, `held: false`. First time the watcher has resolved a real
+card from a live save.
+
+---
+
+## [2026-08-14] ingest | Oxygen and suffocation — two external sources for numbers the game files don't hold
+
+**Question that started it:** "how much damage does no oxygen do per second?" The wiki couldn't
+answer it and neither could `raw/` — so the answer was fetched rather than guessed.
+
+### Why these sources
+
+The suffocation rate is **not in any XML**. Every file in `raw/gamedata/` was checked;
+`text_tooltips.xml` gets closest with *"Most crew need oxygen to live."* The constant is
+compiled into `FTLGame.exe`, so "check the decompiled files" would have meant binary RE, not a
+re-extract of `ftl.dat` — which `tools/ftlpkg.py` had already done exhaustively.
+
+Fandom's Oxygen page was the target. Its See-also then pointed at a reverse-engineering project,
+so both were taken: the community page for crew-facing consequences, the RE doc for the engine
+model. They corroborate each other on everything they both cover.
+
+**Capture note:** `curl` on `ftl.fandom.com/wiki/Oxygen?action=raw` returns a Cloudflare
+challenge page. `api.php?action=query&prop=revisions&rvprop=content` does not — that is the path
+to use for any future Fandom capture.
+
+### New raw files
+
+- `raw/wiki/oxygen.md` — Fandom "Oxygen", revision 74853 (edited 2025-12-09), verbatim wikitext
+- `raw/modding/2026-08-14-xftl-oxygen-mechanics.txt` — xftl (znixian) reverse-engineered doc.
+  No upstream revision id exists: GitLab raw URLs pinned to `master` return none.
+- `raw/wiki/_manifest.csv` — **edited**, one row added for the Oxygen page. The only file under
+  `raw/` modified rather than created; leaving the capture index stale would have made it wrong.
+
+### New pages
+
+- [[concept-oxygen-and-suffocation]] — the payload. Full rate table, modifier table, the venting
+  model, and the caveats.
+- [[source-fandom-oxygen]], [[source-xftl-oxygen-mechanics]]
+
+### Updated pages
+
+- [[item-oxygen-system]] — gained a refill-rate table (1.2 / 4.8 / 8.4 %/sec) and the UI-bug note
+- [[item-emergency-respirators]] — its `<value>0.5</value>` finally has a base to multiply: 6.4 → 3.2
+- [[item-lanius-crew]], [[entity-lanius]] — drain quantified at 8%/sec, engine-identical to a breach
+- [[entity-crystal-men]] — *"Reduced suffocation damage"* quantified at 50%
+- [[item-medbay]] — gained undocumented suffocation immunity, absent from its in-game tooltip
+- [[item-doors]] — gained the venting model (16%/sec per airlock, `0.75^distance` propagation)
+- `index.md` — 2 source rows, 1 concept row, 7 date refreshes; Concepts 29 → 30
+
+### Open questions closed
+
+- [[entity-crystal-men]] — "What 'reduced suffocation damage' is as a number" → **50%**
+- [[entity-lanius]] — "The rate at which Lanius crew drain oxygen, and whether it scales with
+  crew count" → **8%/sec each, and yes it scales**
+
+Both marked resolved in place rather than deleted, per §4.
+
+### Contradictions found
+
+> ⚠️ **Airlock drain speed.** Fandom: an open airlock *"instantly drains"* its room. xftl, from
+> `OxygenSystem::ComputeAirLoss`: **16%/sec per airlock door**. Not instant — ~6s for a full
+> room. xftl trusted; Fandom's own tactical advice presupposes a finite rate.
+
+> ⚠️ **The game's UI is wrong about its own system.** The upgrade menu shows Oxygen refill
+> multipliers of 1/3/6; both sources independently give **1/4/7**. Not source disagreement — a
+> display bug in the shipped game. Levels 2 and 3 are better than advertised.
+
+### What this ingest did *not* establish
+
+**The 6.4 HP/sec figure is single-sourced.** xftl documents air — drain, refill, redistribution —
+and never touches crew health, so the one number the ingest was run to obtain has no
+corroboration. Everything *around* it is doubly sourced; the headline is not. Recorded as the
+first open question on [[concept-oxygen-and-suffocation]], resolvable cheaply by a timed run note.
+
+Also deferred: baseline crew HP is not directly sourced anywhere in this repo (inferred at 100
+from [[item-rock-crew]]'s *"Max Health is increased to 150"*), so time-to-death is not yet
+derivable. The fire-mechanics Pastebin cited by the Fandom page was not retrieved.
+
+---
+
+## [2026-08-14] tooling | Dispatch pools no longer inlined — the exit-beacon card was 30 events deep
+
+**Reported:** the Long-Range Beacon card meant filtering through "17 and 13 different unique
+events instead of being presented with the correct one".
+
+### What was actually wrong
+
+Not the watcher. Replaying a captured 40-minute save trace through `Resolver.resolve` showed
+every state resolving correctly, including the one in question:
+
+```
+event_FINISH_BEACON_text     -> finish-beacon          (root)
+event_REBEL_TRANSPORT_text   -> rebel-transport-ship   (root)   <- switches on the next save write
+```
+
+That transition also settles a question the watcher's design rested on but had never observed:
+**FTL rewrites `continue.sav` when a `<choice hidden="true">` chains into another event.**
+`event_FINISH_BEACON_text` / `choices []` became `event_REBEL_TRANSPORT_text` / `choices [0]`
+in one write. So the exit beacon's roll is visible to the watcher one poll after the player
+clicks Continue.
+
+The defect was the card. `FINISH_BEACON` is a dispatcher — its only choice is
+`<event load="EXIT_LIST"/>`, and `EXIT_LIST` is `NEUTRAL_EXIT` (17 events) + `ITEMS` (13). The
+extractor inlined all 30 whole events, giving **529 text nodes, 2.7× the next largest card**.
+
+### The rule added — `Extractor.dispatch_pool`
+
+An `eventList` collapses to one pointer row per entry when **every** entry is a bare
+`<event load="X"/>` whose target is a top-level event with a `wiki/events/` page. Such a list
+does nothing but pick a complete event to run, and the watcher will show that event's own card
+a moment later, so the pool card only has to say what *can* follow.
+
+All-or-nothing is the load-bearing part. A first attempt collapsed *any* qualifying entry and
+silently gutted the eight refugee cards: `REFUGEE`'s list is four `REFUGEE_TRADER` loads plus
+four inline ambushes, and the trade offers are the reason to read that card. A list mixing
+`load=` with anonymous `<event>` bodies is an outcome table, not a dispatcher. The structural
+test separates them without a judgement call about which lists are "too big". Single-entry
+lists are excluded — R10 already collapses those into the row above.
+
+New: `chance.dispatch: true`; option rows carry `label` (the target's title) and a
+`{"kind":"ref","target":…,"card":…}` child. `leads.card_ref` ("a separate event") distinguishes
+this from the recursion-guard `ref` ("the same table again").
+
+### Effect
+
+| card | text nodes before | after |
+|---|---|---|
+| `finish-beacon` | 529 | 1 |
+| `fuel-fleet-distress` | 196 | 1 |
+| `no-fuel-rebel-fleet-delay` | 195 | 1 |
+
+Three of 386 trees changed; every card rebuilt (shared vocabulary and renderer are inlined) and
+all 386 smoke-tested clean. Extraction re-verified deterministic.
+
+Resolution quality is unchanged or better: root texts pinning exactly one card stayed at
+**1741 of 1782**, while keys appearing in more than one card's tree fell **1250 → 738**. Less
+duplicated prose across trees means fewer chances for stickiness to latch onto the wrong card.
+
+### Not addressed
+
+The two `EXIT_LIST` rows render as the unlabelled "Outcome → 1 of 17" / "1 of 13", because
+those entries load *lists*, which have no title to borrow. The game names them only internally,
+and I3 keeps internal ids off cards.
+
+## [2026-08-14] tooling | Save watcher — live verification, and whitespace normalisation
+
+### The live verification is done
+
+The watcher's own log covers a real run from 15:15 to 15:56, sector 5, beacon 16 — the
+end-to-end check that had been outstanding since the watcher was built. It resolved event
+after event correctly:
+
+```
+15:25:09 event_PIRATE_STATION_CROPS_text          -> remote-settlement (root)
+15:25:41 event_PIRATE_STATION_CROPS_c1_text       -> remote-settlement (continued)
+15:36:16 ship_PIRATE_STATION_CROPS_destroyed_text -> remote-settlement (continued)
+15:36:18 event_PIRATE_STATION_CROPS_RESULT_text   -> remote-settlement (continued)
+15:47:53 text_STORE_TEXT_3                        -> store (root)
+```
+
+Root detection, stickiness across a multi-step encounter including its combat outcome, and
+textList variants (`text_STORE_TEXT_3`, `text_TRAP_BEACON_TEXT_4`) all confirmed against
+live play rather than reconstruction.
+
+### One miss, and its cause
+
+`15:46:41  They upload the delivery destination once on b… -> no card (nocard)`
+
+That prose is in two trees, so it should have resolved (and, with the anchor on
+`merchant-investigate`, continued). It reported **zero** candidates, meaning the lookup
+missed outright — the save's copy of the string did not match the XML's byte for byte.
+`SavedGameParser` documents that `EncounterState.text` "may include line breaks", so exact
+prose matching was always fragile.
+
+`_norm` now collapses whitespace runs to a single space at both index and lookup. Verified:
+the same prose with an inserted newline, a doubled space, or a trailing newline all resolve
+where previously only the exact form did.
+
+### A number I reported was wrong
+
+I gave "keys in >1 card's tree: 1250" after the textList fix. It does not reproduce —
+the figure is **738** (582 not a root). Confirmed by building the index twice, with and
+without normalisation: both give 4516 keys and 738 shared, and **zero** keys change
+spelling under `_norm`. The tree values are already clean, so normalisation's entire value
+is on the query side. Measuring its effect on the index would suggest it is useless; that
+is the wrong side to measure, and the spec now says so.
+
+### Note
+
+The harness reports these background watcher tasks as "failed, exit 127" while the process
+is demonstrably alive and serving. The notification is spurious — check the port, not the
+task status.
+
+---
+
+## [2026-08-14] ingest | The reactor cost curve — and the power economy around it
+
+**Question that started it:** "how much does the 12th reactor energy cost?" **25 scrap.**
+
+### Why an external source again
+
+Same shape as this morning's oxygen ingest. [[item-reactor]] is **the only system in the game
+with no `<systemBlueprint>` entry at all** — it exists in `raw/gamedata/` purely as a target for
+`<upgrade system="reactor">` and `req="reactor"`. Its cost, curve and ceiling are absent by
+construction. The page had already recorded this as its top open question.
+
+**Two capture wrinkles worth remembering:**
+1. `wiki/Reactor` is a `#REDIRECT [[Ship#Reactor]]`, and has been since 2014. No standalone page.
+2. The cost table is **transcluded**, not inline — `{{Reactor power cost}}`. Reading `Ship`'s
+   wikitext alone yields the prose and an empty marker. The template needed its own capture.
+
+### New raw files
+
+- `raw/wiki/ship.md` — Fandom "Ship", rev 74911 (2026-06-21); the most recently edited source
+  in the repo
+- `raw/wiki/template-reactor-power-cost.md` — Template:Reactor power cost, rev 68667 (2023-11-01)
+- `raw/wiki/_manifest.csv` — two rows added (294 total)
+
+### The answer, and how it was verified
+
+Costs are banded **by the bar being bought**: 30 / 20 / 25 / 30 / 35 per band of five, ceiling
+**25 bars**. The 12th bar is in the 11–15 band → **25 scrap**.
+
+The band labels were ambiguous — "11–15" could mean the bar bought or the level held. The Ship
+page's independent *"fully upgrade a ship with 8 power, it costs 490"* discriminates:
+bar-being-bought sums to **490** ✓, level-held to 475 ✗. Two Fandom pages edited three years
+apart agreeing to the scrap.
+
+**The curve is non-monotonic** — bars 6–10 at 20 scrap are the cheapest in the game, below the
+opening band's 30. The Ship page's own prose ("upgrades become more expensive") contradicts its
+own table; the table wins.
+
+### New pages
+
+- [[concept-power-and-reactor]] — the payload: cost curve, the 37-bar maximum, and the two
+  power sources ion storms don't halve
+- [[item-backup-battery]] — **a page that should have existed already.** The `battery` system is
+  in `dlcBlueprints.xml` (35 scrap, upgrade 50, maxPower 2) and had no page. Confirmed it has
+  **no `req="battery"` gate and no `<upgrade system="battery">` anywhere** in the event files.
+- [[source-fandom-ship]], [[source-fandom-template-reactor-power-cost]]
+
+### Updated pages
+
+- [[item-reactor]] — Stats section filled in; both open questions closed
+- [[entity-zoltan]] — "provides power" quantified: exactly 1 bar, ion-immune, plus the
+  movement/slot-ordering gotchas
+- [[item-rock-plating]] — the 15% roll **excludes** fires, sabotage, solar flares and events; an
+  exclusion list absent from the game-file description
+- [[concept-nebula-mechanics]] — what the storm halving does *not* touch
+- `index.md` — 2 source rows, 1 concept row, 1 item row, 4 date refreshes; Concepts 30 → 31,
+  Items 64 → 65
+
+### Open questions closed
+
+- [[item-reactor]] — "the real upgrade cost curve and maximum" → **30/20/25/30/35, cap 25**
+- [[item-reactor]] — "whether `max_lvl=24` is the true ceiling" → **neither; it is an inverse
+  gate, and 24 is exactly what a 25-bar cap implies.** The apparent conflict with the game files
+  dissolves rather than needing a contradiction block.
+- [[entity-zoltan]] — "how much power a Zoltan actually supplies" → **exactly 1 bar**
+
+All marked resolved in place per §4.
+
+### Correction made during this ingest
+
+An earlier draft of the nebula edit claimed Fandom supplied the reactor-halving figure "the
+tooltips never do". Wrong — [[concept-nebula-mechanics]] already documented `tooltip_storm`
+(*"your main reactor can only function at half capacity"*) from the game files. Rewritten to
+credit the game files and confine the new material to what Fandom actually adds: **the enemy is
+halved too**, and **Zoltan and Battery power are exempt** (both AE-only, so the counter-play
+does not exist in vanilla).
+
+### Contradiction amended
+
+The naming contradiction on [[concept-nebula-mechanics]] ("ion storm" in `map_ion_loc` vs
+"plasma storm" in `tooltip_storm`) previously noted that *Fandom uses "plasma storm" throughout*.
+[[source-fandom-ship]] disproves it — that page says **"ion storms"** three times and never
+"plasma". Both names are live on both sides, split by page type: event pages say plasma,
+mechanics pages say ion. Note amended in place rather than replaced.
+
+### Deferred
+
+The Ship page carries more than was ingested: ship-unlock progression (Layout A/B/C rules,
+the 4-ship Lanius threshold), hull mechanics (all playable ships start at exactly 30; Hull
+Beam/Laser/Missiles double-damage systemless rooms; bombs cannot damage hull), and the enemy-ship
+taxonomy. None conflicts with existing pages; all is uningested. A `concept-hull-and-damage` page
+is the obvious next step if that becomes a question.
+
+Also noted, unpaged: `BATTERY_BOOSTER` ("Battery Charger", 40 scrap, `<value>0.5</value>`,
+*"Backup Battery's lock time is halved"*) — recorded on [[item-backup-battery]], no page of its
+own, and no source we hold defines "lock time".
+
+## [2026-08-14] tooling | Sector-profile pipeline — a page for all 19 sectors
+
+New pipeline, mirroring the card pipeline in shape and in doctrine (generated, never
+hand-written). Spec: `tools/SECTOR-PAGE.md`, normative and self-contained.
+
+```
+raw/gamedata/*.xml + cards/trees/*  →  sectors/data/<slug>.sector.json  →  sectors/sector-<slug>.html
+                          extract-sector.py                     build-sector.py + sector-page-render.html
+                                                                + tools/sector-copy/<slug>.json
+```
+
+**New files:** `tools/extract-sector.py`, `tools/build-sector.py`, `tools/sector-page-render.html`,
+`tools/sector-vocab.json`, `tools/smoke-sector.py`, `tools/check-sector-numbers.py`,
+`tools/SECTOR-PAGE.md`, `tools/sector-copy/*.json` (19), `sectors/` (19 pages + 19 data files).
+`CLAUDE.md` gains the `sectors/` layout entry and §5.2b-2.
+
+**The design rule:** prose may not contain facts. A stat tile names a *metric id* and the build
+supplies the number; prose names events as `{{EVENT_ID}}` and the build fails if the sector cannot
+produce that event. Per-event tags are derived by walking that event's existing tree — all 19
+sectors' pools were already fully covered by `cards/trees/`, so no backfill was needed.
+
+**Two open questions are rendered as open, not resolved:**
+- `OVERRIDE_*` lists are shown as a marked delta with `applies: "unconfirmed"`, never merged into a
+  pool — per [[concept-sector-event-allocation]], nobody has established that the engine
+  substitutes them.
+- `unique="true"` renders as a bare "Unique" tag with a standing footnote on the scope question,
+  per [[concept-event-uniqueness]].
+
+**Four defects found and fixed during the run**, three of them by the authoring agents:
+1. `extract-sector.py` did not walk `chain[]`, so quest-stage gates, items and `unlockShip` ids were
+   missing. Fixing it moved metrics on 14 of 19 sectors and surfaced the Rock, Slug and Zoltan ship
+   unlocks. Stale counts in already-written copy were re-verified and patched.
+2. The `fight` tag ignored `hostile="false"`, so `ZOLTAN_FREE_MAP` — a ship that hands you the map —
+   counted as a forced fight in two sectors' rollups.
+3. `rarity_html()` emitted an empty "Crew in stores" panel for `FINAL`, which declares no `rarityList`.
+4. The ambiguous-entry footnote had a plural agreement bug in `sector-vocab.json`.
+
+`check-sector-numbers.py` exists because of #1: the build can verify a tile but not a sentence, so
+it lints "N events …" claims and "Label ×N" gate tallies against the data. It reports candidates,
+including legitimate subset claims, rather than failing a build.
+
+### Contradictions found against existing `wiki/sectors/` pages
+
+Reported by the authoring agents, **not yet filed** — each needs a wiki edit:
+
+- [[sector-the-last-stand]] — `BOSS_NEUTRAL` is five events, not four; the page names
+  `BOSS_FLEETS_REBEL` (which is in `BOSS_WARNING_NODE`), omits `SQUAT_REFUEL_STATION` and `REBEL`,
+  and states "1/5 each" odds the files do not carry.
+- [[sector-uncharted-nebula]] — "pool built from dedicated `NEBULA_*` lists rather than the generic
+  ones" is wrong: 3 of 7 entries are generic, covering 29 of 48 events.
+- [[sector-civilian-sector]] — "more stores and item beacons than any other non-home sector" is
+  contradicted by `ENGI_SECTOR` and `LANIUS_SECTOR`; its `startEvent` is commented out in the XML
+  with a developer TODO, which answers its own open question about the missing start beacon.
+- [[sector-abandoned-sector]] — "heaviest item allocation in the game" is second to both Engi
+  sectors; and its open question guessing oxygen drain for `HOSTILE_ENVIRONMENT_LANIUS` is answered:
+  the three events are asteroid, pulsar and an ASB aimed at the *enemy*.
+- [[sector-mantis-controlled-sector]] — "narrowest event pool of any faction sector" is not
+  supported (37 distinct events is mid-pack); and quests do start here despite no `QUESTS_*` entry.
+- [[sector-rock-controlled-sector]] — "the game's largest neutral allocation at 7–8" is
+  contradicted by `CRYSTAL_HOME` at 12–12.
+- [[sector-rebel-controlled-sector]] — the pool is not the pirate pool "swapped to `_REBEL` lists";
+  the `ITEMS` entry is shared, not swapped.
+- Answerable open questions now closed by the data: `ROCK_UNLOCK1`'s chain and reward
+  ([[sector-rock-homeworlds]]), `NEBULA_SLUG_FIGHT_UNLOCK` ([[sector-slug-home-nebula]]),
+  `MANTIS_NAMED_THIEF` ([[sector-mantis-homeworlds]]), `FLAGSHIP_CONSTRUCTION`
+  ([[sector-rebel-stronghold]]), `ZOLTAN_CREW_STUDY` without the pod
+  ([[sector-zoltan-controlled-sector]]).

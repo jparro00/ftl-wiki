@@ -10,7 +10,7 @@ chain: [[[chain-mantis-cruiser-unlock]]]
 version: both
 first_seen: 2026-08-09
 last_updated: 2026-08-09
-sources: 8
+sources: 6
 tags: [ship-unlock, unique, guaranteed, blue-option, quest-marker, crew-reward, augment-reward, mantis]
 ---
 

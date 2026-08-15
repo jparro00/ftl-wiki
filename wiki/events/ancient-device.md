@@ -10,7 +10,7 @@ chain: [[[chain-crystal-cruiser-unlock]]]
 version: both
 first_seen: 2026-08-09
 last_updated: 2026-08-09
-sources: 3
+sources: 4
 tags: [crystal-route, ship-unlock, unique, blue-option]
 ---
 

@@ -1,0 +1,1989 @@
+{
+  "schema": "ftl-sector-profile/1",
+  "id": "ZOLTAN_SECTOR",
+  "slug": "zoltan-controlled-sector",
+  "title": "Zoltan Controlled Sector",
+  "display_name": "Zoltan Controlled Sector",
+  "short_name": "Zoltan Controlled",
+  "extracted_from": "raw/gamedata/sector_data.xml",
+  "min_sector": 1,
+  "unique": false,
+  "tracks": [
+    "zoltan",
+    "cosmos"
+  ],
+  "crew_rarity": [
+    {
+      "id": "engi",
+      "label": "Engi",
+      "rarity": 3
+    },
+    {
+      "id": "mantis",
+      "label": "Mantis",
+      "rarity": 3
+    },
+    {
+      "id": "energy",
+      "label": "Zoltan",
+      "rarity": 1
+    },
+    {
+      "id": "slug",
+      "label": "Slug",
+      "rarity": 3
+    },
+    {
+      "id": "rock",
+      "label": "Rockman",
+      "rarity": 3
+    },
+    {
+      "id": "human",
+      "label": "Human",
+      "rarity": 2
+    }
+  ],
+  "start_event": {
+    "id": "START_BEACON_ZOLTAN",
+    "slug": "start-beacon-zoltan",
+    "title": "Start beacon (Zoltan)",
+    "card": true,
+    "tags": [],
+    "gates": [],
+    "items": [],
+    "crew_classes": [],
+    "quests": [],
+    "boarders": [],
+    "unlock_ship": [],
+    "fleet_delay": []
+  },
+  "entries": [
+    {
+      "name": "ZOLTAN_CREW_STUDY",
+      "min": 1,
+      "max": 1,
+      "kind": "event",
+      "section": "special",
+      "events": [
+        {
+          "id": "ZOLTAN_CREW_STUDY",
+          "slug": "zoltan-research-facility",
+          "title": "Zoltan research facility",
+          "card": true,
+          "tags": [
+            "may-fight",
+            "boarders",
+            "crew"
+          ],
+          "gates": [
+            {
+              "req": "medbay",
+              "label": "Medbay",
+              "lvl": "3"
+            },
+            {
+              "req": "STASIS_POD",
+              "label": "Damaged Stasis Pod"
+            }
+          ],
+          "items": [],
+          "crew_classes": [
+            "crystal"
+          ],
+          "quests": [],
+          "boarders": [
+            {
+              "class": "random",
+              "min": 2,
+              "max": 2
+            }
+          ],
+          "unlock_ship": [],
+          "fleet_delay": []
+        }
+      ]
+    },
+    {
+      "name": "HOSTILE_ZOLTAN",
+      "min": 6,
+      "max": 8,
+      "kind": "list",
+      "section": "hostile",
+      "events": [
+        {
+          "id": "ZOLTAN_FIGHT",
+          "slug": "zoltan-fight",
+          "title": "Zoltan fight",
+          "card": true,
+          "tags": [
+            "fight",
+            "crew"
+          ],
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "ZOLTAN_PIRATE",
+          "slug": "pirate-fight-zoltan",
+          "title": "Pirate fight (Zoltan)",
+          "card": true,
+          "tags": [
+            "fight",
+            "crew"
+          ],
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "ZOLTAN_MANTIS",
+          "slug": "mantis-fight-zoltan",
+          "title": "Mantis fight (Zoltan)",
+          "card": true,
+          "tags": [
+            "fight",
+            "crew",
+            "unique"
+          ],
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "ZOLTAN_ENGI",
+          "slug": "engi-fight",
+          "title": "Engi fight",
+          "card": true,
+          "tags": [
+            "fight",
+            "crew",
+            "unique"
+          ],
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "ZOLTAN_ASTEROID",
+          "slug": "zoltan-fight-in-asteroid-field",
+          "title": "Zoltan fight in asteroid field",
+          "card": true,
+          "tags": [
+            "fight",
+            "crew",
+            "unique"
+          ],
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "REBEL",
+          "slug": "rebel-fight",
+          "title": "Rebel fight",
+          "card": true,
+          "tags": [
+            "fight",
+            "crew"
+          ],
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "REBEL_AUTO",
+          "slug": "auto-ship-fight",
+          "title": "Auto-ship fight",
+          "card": true,
+          "tags": [
+            "fight",
+            "crew"
+          ],
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        }
+      ],
+      "override": {
+        "list": "OVERRIDE_HOSTILE_ZOLTAN",
+        "added": [
+          {
+            "id": "REBEL_PULSAR",
+            "slug": "rebel-fight-near-pulsar",
+            "title": "Rebel fight near pulsar",
+            "card": true,
+            "tags": [
+              "fight",
+              "crew",
+              "unique"
+            ],
+            "gates": [],
+            "items": [],
+            "crew_classes": [],
+            "quests": [],
+            "boarders": [],
+            "unlock_ship": [],
+            "fleet_delay": []
+          }
+        ],
+        "removed": [],
+        "applies": "unconfirmed"
+      }
+    },
+    {
+      "name": "BOARDERS_ZOLTAN",
+      "min": 1,
+      "max": 2,
+      "kind": "list",
+      "section": "boarders",
+      "events": [
+        {
+          "id": "ZOLTAN_BOARDERS",
+          "slug": "zoltan-border-police",
+          "title": "Zoltan border police",
+          "card": true,
+          "tags": [
+            "fight",
+            "boarders",
+            "crew",
+            "unique"
+          ],
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [
+            {
+              "class": "energy",
+              "min": 3,
+              "max": 4
+            }
+          ],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "ZOLTAN_BOARDERS_MANTIS",
+          "slug": "mantis-outcasts",
+          "title": "Mantis outcasts",
+          "card": true,
+          "tags": [
+            "fight",
+            "boarders",
+            "crew",
+            "unique"
+          ],
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [
+            {
+              "class": "mantis",
+              "min": 2,
+              "max": 3
+            }
+          ],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "BOARDERS_HACKING",
+          "slug": "boarders-humans-jammed-sensors",
+          "title": "Boarders: Humans jammed sensors",
+          "card": true,
+          "tags": [
+            "boarders",
+            "unique"
+          ],
+          "gates": [
+            {
+              "req": "hacking",
+              "label": "Hacking"
+            }
+          ],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [
+            {
+              "class": "human",
+              "min": 3,
+              "max": 5
+            }
+          ],
+          "unlock_ship": [],
+          "fleet_delay": []
+        }
+      ]
+    },
+    {
+      "name": "NEUTRAL_ZOLTAN",
+      "min": 5,
+      "max": 6,
+      "kind": "list",
+      "section": "neutral",
+      "events": [
+        {
+          "id": "ZOLTAN_LIFERAFT",
+          "slug": "zoltan-retake-the-ship",
+          "title": "Zoltan retake the ship",
+          "card": true,
+          "tags": [
+            "may-fight",
+            "crew",
+            "cost",
+            "unique"
+          ],
+          "gates": [],
+          "items": [],
+          "crew_classes": [
+            "energy"
+          ],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "ZOLTAN_SCIENCE_DOCK",
+          "slug": "zoltan-ship-asks-to-dock",
+          "title": "Zoltan ship asks to dock",
+          "card": true,
+          "tags": [
+            "may-fight",
+            "crew",
+            "unique"
+          ],
+          "gates": [],
+          "items": [],
+          "crew_classes": [
+            "energy"
+          ],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "ZOLTAN_RIFT_FIGHT",
+          "slug": "zoltan-wise-man",
+          "title": "Zoltan wise man",
+          "card": true,
+          "tags": [
+            "may-fight",
+            "unique"
+          ],
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "ZOLTAN_CREW_SCAN",
+          "slug": "zoltan-security-checkpoint",
+          "title": "Zoltan security checkpoint",
+          "card": true,
+          "tags": [
+            "may-fight",
+            "boarders",
+            "crew-loss",
+            "crew",
+            "unique"
+          ],
+          "gates": [
+            {
+              "req": "slug",
+              "label": "Slug"
+            },
+            {
+              "req": "mind",
+              "label": "Mind Control"
+            }
+          ],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [
+            {
+              "class": "energy",
+              "min": 2,
+              "max": 4
+            }
+          ],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "REFUGEE_NO_DISTRESS_ZOLTAN",
+          "slug": "refugee-zoltan",
+          "title": "Refugee (Zoltan)",
+          "card": true,
+          "tags": [
+            "may-fight",
+            "cost"
+          ],
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "FRIENDLY_SLAVER",
+          "slug": "slaver-friendly",
+          "title": "Slaver (friendly)",
+          "card": true,
+          "tags": [
+            "may-fight",
+            "crew",
+            "cost",
+            "unique"
+          ],
+          "gates": [
+            {
+              "req": "teleporter",
+              "label": "Crew Teleporter",
+              "lvl": "2"
+            }
+          ],
+          "items": [],
+          "crew_classes": [
+            "mantis",
+            "rock",
+            "engi"
+          ],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "PIRATE_BRIBER",
+          "slug": "pirate-briber",
+          "title": "Pirate briber",
+          "card": true,
+          "tags": [
+            "may-fight",
+            "store",
+            "unique"
+          ],
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": [
+            -1
+          ]
+        },
+        {
+          "id": "ASTEROID_EXPLORE",
+          "slug": "large-asteroid-field",
+          "title": "Large asteroid field",
+          "card": true,
+          "tags": [
+            "may-fight",
+            "crew",
+            "unique"
+          ],
+          "gates": [
+            {
+              "req": "SCRAP_COLLECTOR",
+              "label": "Scrap Recovery Arm"
+            }
+          ],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        }
+      ]
+    },
+    {
+      "name": "NEBULA_ZOLTAN",
+      "min": 2,
+      "max": 6,
+      "kind": "list",
+      "section": "nebula",
+      "events": [
+        {
+          "id": "NEBULA_ZOLTAN_ROCK",
+          "slug": "rock-fight-in-nebula",
+          "title": "Rock fight in nebula",
+          "card": true,
+          "tags": [
+            "fight",
+            "crew",
+            "unique"
+          ],
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "NEBULA_ZOLTAN_EYE",
+          "slug": "zoltan-great-eye",
+          "title": "Zoltan Great Eye",
+          "card": true,
+          "tags": [
+            "may-fight",
+            "crew-loss",
+            "crew",
+            "unique"
+          ],
+          "gates": [],
+          "items": [
+            {
+              "id": "BOMB_HEAL",
+              "kind": "weapon",
+              "label": "Healing Burst"
+            }
+          ],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "STORM_ZOLTAN_SUPPLY_CHOICE",
+          "slug": "pirate-ships-in-plasma-storm",
+          "title": "Pirate ships in plasma storm",
+          "card": true,
+          "tags": [
+            "may-fight",
+            "unique"
+          ],
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "NEBULA_EMPTY",
+          "slug": "empty-nebula-beacon",
+          "title": "Empty nebula beacon",
+          "card": true,
+          "tags": [],
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": [],
+          "weight": 3
+        },
+        {
+          "id": "NEBULA_AUTO",
+          "slug": "auto-ship-fight-in-nebula",
+          "title": "Auto-ship fight in nebula",
+          "card": true,
+          "tags": [
+            "fight",
+            "crew"
+          ],
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": [],
+          "via": "NEBULA_REBEL",
+          "weight": 2
+        },
+        {
+          "id": "NEBULA_AUTO_WARNING",
+          "slug": "auto-ship-warning-in-nebula",
+          "title": "Auto-ship warning in nebula",
+          "card": true,
+          "tags": [
+            "fight",
+            "unique"
+          ],
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": [
+            1
+          ],
+          "via": "NEBULA_REBEL"
+        },
+        {
+          "id": "NEBULA_AUTO_DEFENSE_ITEM",
+          "slug": "auto-ship-near-storage-station-in-nebula",
+          "title": "Auto-ship near storage station in nebula",
+          "card": true,
+          "tags": [
+            "may-fight",
+            "cost",
+            "unique"
+          ],
+          "gates": [
+            {
+              "req": "cloaking",
+              "label": "Cloaking",
+              "lvl": "1"
+            },
+            {
+              "req": "cloaking",
+              "label": "Cloaking",
+              "lvl": "2"
+            },
+            {
+              "req": "hacking",
+              "label": "Hacking",
+              "lvl": "1"
+            },
+            {
+              "req": "hacking",
+              "label": "Hacking",
+              "lvl": "2"
+            }
+          ],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": [],
+          "via": "NEBULA_REBEL"
+        },
+        {
+          "id": "NEBULA_TRADER",
+          "slug": "trade-resources-in-nebula",
+          "title": "Trade resources in nebula",
+          "card": true,
+          "tags": [
+            "reward",
+            "cost",
+            "unique"
+          ],
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": [],
+          "via": "NEBULA_REBEL"
+        },
+        {
+          "id": "STORM_REBEL",
+          "slug": "rebel-fight-in-plasma-storm",
+          "title": "Rebel fight in plasma storm",
+          "card": true,
+          "tags": [
+            "fight",
+            "crew",
+            "unique"
+          ],
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": [],
+          "via": "NEBULA_REBEL"
+        },
+        {
+          "id": "STORM_AUTO",
+          "slug": "auto-ship-fight-in-plasma-storm",
+          "title": "Auto-ship fight in plasma storm",
+          "card": true,
+          "tags": [
+            "may-fight",
+            "crew",
+            "unique"
+          ],
+          "gates": [
+            {
+              "req": "engines",
+              "label": "Engines",
+              "lvl": "3"
+            },
+            {
+              "req": "engines",
+              "label": "Engines",
+              "lvl": "6"
+            },
+            {
+              "req": "cloaking",
+              "label": "Cloaking"
+            }
+          ],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": [],
+          "via": "NEBULA_REBEL"
+        },
+        {
+          "id": "STORM_ITEMS",
+          "slug": "plasma-storm-incapacitated-ships",
+          "title": "Plasma storm incapacitated ships",
+          "card": true,
+          "tags": [
+            "crew-loss",
+            "crew",
+            "reward",
+            "unique"
+          ],
+          "gates": [
+            {
+              "req": "pilot",
+              "label": "Piloting",
+              "lvl": "2"
+            }
+          ],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": [],
+          "via": "NEBULA_REBEL"
+        },
+        {
+          "id": "NEBULA_REBEL_UNDETECTED",
+          "slug": "rebel-fight-choice-in-nebula",
+          "title": "Rebel fight choice in nebula",
+          "card": true,
+          "tags": [
+            "may-fight",
+            "crew",
+            "unique"
+          ],
+          "gates": [
+            {
+              "req": "engines",
+              "label": "Engines",
+              "lvl": "4"
+            },
+            {
+              "req": "cloaking",
+              "label": "Cloaking"
+            }
+          ],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": [
+            1
+          ],
+          "via": "NEBULA_REBEL"
+        },
+        {
+          "id": "NEBULA_LOST_SHIP",
+          "slug": "nebula-lost-ship",
+          "title": "Nebula lost ship",
+          "card": true,
+          "tags": [
+            "may-fight",
+            "crew",
+            "unique"
+          ],
+          "gates": [
+            {
+              "req": "teleporter",
+              "label": "Crew Teleporter"
+            },
+            {
+              "req": "ADV_SCANNERS",
+              "label": "Long-Ranged Scanners"
+            }
+          ],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": [],
+          "via": "NEBULA_REBEL"
+        },
+        {
+          "id": "NEBULA_REBEL_BOARDING",
+          "slug": "boarders-rebels-in-nebula",
+          "title": "Boarders: rebels in nebula",
+          "card": true,
+          "tags": [
+            "boarders",
+            "unique"
+          ],
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [
+            {
+              "class": "human",
+              "min": 3,
+              "max": 4
+            }
+          ],
+          "unlock_ship": [],
+          "fleet_delay": [],
+          "via": "NEBULA_REBEL"
+        }
+      ]
+    },
+    {
+      "name": "DISTRESS_BEACON_ZOLTAN",
+      "min": 1,
+      "max": 2,
+      "kind": "list",
+      "section": "distress",
+      "events": [
+        {
+          "id": "ZOLTAN_DISTRESS_MANTIS",
+          "slug": "zoltan-ship-follows-mantis-ship",
+          "title": "Zoltan ship follows Mantis ship",
+          "card": true,
+          "tags": [
+            "may-fight",
+            "unique"
+          ],
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "ZOLTAN_DISTRESS_SHELL",
+          "slug": "free-scrap-with-resources-zoltan",
+          "title": "Free scrap with resources (Zoltan)",
+          "card": true,
+          "tags": [
+            "reward",
+            "unique"
+          ],
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "REFUGEE_DISTRESS_ZOLTAN",
+          "slug": "refugee-distress-zoltan",
+          "title": "Refugee distress (Zoltan)",
+          "card": true,
+          "tags": [
+            "may-fight",
+            "cost"
+          ],
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "DISTRESS_SATELLITE_DEFENSE",
+          "slug": "malfunctioning-defense-system",
+          "title": "Malfunctioning defense system",
+          "card": true,
+          "tags": [
+            "reward",
+            "unique"
+          ],
+          "gates": [
+            {
+              "req": "WEAPONS_ION",
+              "label": "WEAPONS_ION"
+            },
+            {
+              "req": "cloaking",
+              "label": "Cloaking",
+              "lvl": "1"
+            },
+            {
+              "req": "cloaking",
+              "label": "Cloaking",
+              "lvl": "2"
+            },
+            {
+              "req": "cloaking",
+              "label": "Cloaking",
+              "lvl": "3"
+            },
+            {
+              "req": "engi",
+              "label": "Engi"
+            }
+          ],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "DISTRESS_STATION_FIRE",
+          "slug": "fire-on-research-station",
+          "title": "Fire on research station",
+          "card": true,
+          "tags": [
+            "crew-loss",
+            "crew",
+            "reward",
+            "unique"
+          ],
+          "gates": [
+            {
+              "req": "rock",
+              "label": "Rockman"
+            },
+            {
+              "req": "REPAIR",
+              "label": "System Repair Drone"
+            }
+          ],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "FRIENDLY_BEACON",
+          "slug": "friendly-ship-out-of-fuel",
+          "title": "Friendly ship out of fuel",
+          "card": true,
+          "tags": [
+            "crew",
+            "reward",
+            "cost"
+          ],
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "TRAP_BEACON",
+          "slug": "pirate-ship-distress-trap",
+          "title": "Pirate ship distress trap",
+          "card": true,
+          "tags": [
+            "fight",
+            "crew",
+            "unique"
+          ],
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "STRANDED_BEACON",
+          "slug": "single-life-form-on-moon",
+          "title": "Single life form on moon",
+          "card": true,
+          "tags": [
+            "crew-loss",
+            "crew",
+            "reward",
+            "unique"
+          ],
+          "gates": [
+            {
+              "req": "medbay",
+              "label": "Medbay",
+              "lvl": "2"
+            },
+            {
+              "req": "clonebay",
+              "label": "Clone Bay",
+              "lvl": "2"
+            },
+            {
+              "req": "medbay",
+              "label": "Medbay",
+              "lvl": "3"
+            },
+            {
+              "req": "slug",
+              "label": "Slug"
+            }
+          ],
+          "items": [],
+          "crew_classes": [
+            "human"
+          ],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        }
+      ]
+    },
+    {
+      "name": "ITEM_ZOLTAN",
+      "min": 1,
+      "max": 2,
+      "kind": "list",
+      "section": "items",
+      "events": [
+        {
+          "id": "ZOLTAN_FREE_AUGMENT",
+          "slug": "zoltan-free-augment",
+          "title": "Zoltan free augment",
+          "card": true,
+          "tags": [
+            "reward",
+            "unique"
+          ],
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "ZOLTAN_FREE_MAP",
+          "slug": "zoltan-free-map",
+          "title": "Zoltan free map",
+          "card": true,
+          "tags": [
+            "crew",
+            "reward",
+            "unique"
+          ],
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "ZOLTAN_ODD_MOON",
+          "slug": "zoltan-odd-moon",
+          "title": "Zoltan odd moon",
+          "card": true,
+          "tags": [
+            "crew",
+            "reward",
+            "cost",
+            "unique"
+          ],
+          "gates": [
+            {
+              "req": "BOARDER",
+              "label": "Boarding Drone"
+            }
+          ],
+          "items": [],
+          "crew_classes": [
+            "energy"
+          ],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "FIND_DRONE",
+          "slug": "free-drone-schematic",
+          "title": "Free drone schematic",
+          "card": true,
+          "tags": [
+            "reward"
+          ],
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "FREE_ITEMS",
+          "slug": "free-scrap-with-resources",
+          "title": "Free scrap with resources",
+          "card": true,
+          "tags": [
+            "reward"
+          ],
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "FUEL_FOR_DRONE",
+          "slug": "trade-fuel-for-drone-parts",
+          "title": "Trade fuel for drone parts",
+          "card": true,
+          "tags": [
+            "reward",
+            "cost"
+          ],
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "REFUEL_STATION",
+          "slug": "refueling-station",
+          "title": "Refueling station",
+          "card": true,
+          "tags": [
+            "reward",
+            "cost",
+            "unique"
+          ],
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "REPAIR_STATION",
+          "slug": "repair-station",
+          "title": "Repair station",
+          "card": true,
+          "tags": [
+            "cost",
+            "unique"
+          ],
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "TRADER_CIV",
+          "slug": "trade-resources",
+          "title": "Trade resources",
+          "card": true,
+          "tags": [
+            "reward",
+            "cost"
+          ],
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        }
+      ]
+    },
+    {
+      "name": "STORE_ZOLTAN",
+      "min": 2,
+      "max": 2,
+      "kind": "event",
+      "section": "store",
+      "events": [
+        {
+          "id": "STORE_ZOLTAN",
+          "slug": "store-zoltan",
+          "title": "Store (Zoltan)",
+          "card": true,
+          "tags": [
+            "store"
+          ],
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        }
+      ]
+    },
+    {
+      "name": "QUESTS_ZOLTAN",
+      "min": 0,
+      "max": 1,
+      "kind": "list",
+      "section": "quests",
+      "events": [
+        {
+          "id": "ZOLTAN_TRADE_HUB",
+          "slug": "zoltan-trade-hub",
+          "title": "Zoltan trade hub",
+          "card": true,
+          "tags": [
+            "may-fight",
+            "boarders",
+            "crew",
+            "store",
+            "quest",
+            "cost",
+            "unique"
+          ],
+          "gates": [
+            {
+              "req": "teleporter",
+              "label": "Crew Teleporter",
+              "lvl": "1"
+            },
+            {
+              "req": "energy",
+              "label": "Zoltan"
+            }
+          ],
+          "items": [],
+          "crew_classes": [],
+          "quests": [
+            "ZOLTAN_QUEST_PRIMITIVES"
+          ],
+          "boarders": [
+            {
+              "class": "energy",
+              "min": 2,
+              "max": 4
+            }
+          ],
+          "unlock_ship": [],
+          "fleet_delay": [
+            1
+          ]
+        },
+        {
+          "id": "ZOLTAN_QUEST_PRIMITIVES",
+          "slug": "zoltan-quest-primitives",
+          "title": "Zoltan quest primitives",
+          "card": true,
+          "tags": [
+            "may-fight",
+            "unique"
+          ],
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": [
+            1
+          ]
+        },
+        {
+          "id": "FEDERATION_PLANET_SIGNAL",
+          "slug": "encrypted-federation-signal",
+          "title": "Encrypted federation signal",
+          "card": true,
+          "tags": [
+            "may-fight",
+            "boarders",
+            "crew",
+            "quest",
+            "unique"
+          ],
+          "gates": [
+            {
+              "req": "sensors",
+              "label": "Sensors",
+              "lvl": "2"
+            },
+            {
+              "req": "sensors",
+              "label": "Sensors",
+              "lvl": "3"
+            },
+            {
+              "req": "ADV_SCANNERS",
+              "label": "Long-Ranged Scanners"
+            }
+          ],
+          "items": [],
+          "crew_classes": [],
+          "quests": [
+            "HIDDEN_FEDERATION_BASE_LIST",
+            "FEDERATION_BASE_ASSIST"
+          ],
+          "boarders": [
+            {
+              "class": "human",
+              "min": 2,
+              "max": 3
+            }
+          ],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "QUEST_MANTIS_INVASION_START",
+          "slug": "mantis-war-camp",
+          "title": "Mantis war camp",
+          "card": true,
+          "tags": [
+            "may-fight",
+            "crew",
+            "quest",
+            "cost",
+            "unique"
+          ],
+          "gates": [
+            {
+              "req": "WEAPONS_MISSILES",
+              "label": "WEAPONS_MISSILES"
+            },
+            {
+              "req": "BOMB_FIRE",
+              "label": "Fire Bomb"
+            }
+          ],
+          "items": [],
+          "crew_classes": [
+            "engi"
+          ],
+          "quests": [
+            "QUEST_MANTIS_INVASION"
+          ],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "QUEST_CREWDEAD_START",
+          "slug": "capture-the-ship",
+          "title": "Capture the ship",
+          "card": true,
+          "tags": [
+            "may-fight",
+            "quest",
+            "unique"
+          ],
+          "gates": [
+            {
+              "req": "teleporter",
+              "label": "Crew Teleporter",
+              "lvl": "1"
+            },
+            {
+              "req": "BEAM_BIO",
+              "label": "Anti-Bio Beam"
+            },
+            {
+              "req": "BOMB_FIRE",
+              "label": "Fire Bomb"
+            }
+          ],
+          "items": [],
+          "crew_classes": [],
+          "quests": [
+            "QUEST_CREWDEAD"
+          ],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        }
+      ]
+    },
+    {
+      "name": "NOTHING_ZOLTAN",
+      "min": 1,
+      "max": 2,
+      "kind": "event",
+      "section": "empty",
+      "events": [
+        {
+          "id": "NOTHING_ZOLTAN",
+          "slug": "empty-beacon-zoltan",
+          "title": "Empty beacon (Zoltan)",
+          "card": true,
+          "tags": [],
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        }
+      ]
+    }
+  ],
+  "rollup": {
+    "distinct_events": 57,
+    "no_card": [],
+    "always_fight": [
+      "NEBULA_AUTO",
+      "NEBULA_AUTO_WARNING",
+      "NEBULA_ZOLTAN_ROCK",
+      "REBEL",
+      "REBEL_AUTO",
+      "STORM_REBEL",
+      "TRAP_BEACON",
+      "ZOLTAN_ASTEROID",
+      "ZOLTAN_BOARDERS",
+      "ZOLTAN_BOARDERS_MANTIS",
+      "ZOLTAN_ENGI",
+      "ZOLTAN_FIGHT",
+      "ZOLTAN_MANTIS",
+      "ZOLTAN_PIRATE"
+    ],
+    "may_fight": [
+      "ASTEROID_EXPLORE",
+      "FEDERATION_PLANET_SIGNAL",
+      "FRIENDLY_SLAVER",
+      "NEBULA_AUTO_DEFENSE_ITEM",
+      "NEBULA_LOST_SHIP",
+      "NEBULA_REBEL_UNDETECTED",
+      "NEBULA_ZOLTAN_EYE",
+      "PIRATE_BRIBER",
+      "QUEST_CREWDEAD_START",
+      "QUEST_MANTIS_INVASION_START",
+      "REFUGEE_DISTRESS_ZOLTAN",
+      "REFUGEE_NO_DISTRESS_ZOLTAN",
+      "STORM_AUTO",
+      "STORM_ZOLTAN_SUPPLY_CHOICE",
+      "ZOLTAN_CREW_SCAN",
+      "ZOLTAN_CREW_STUDY",
+      "ZOLTAN_DISTRESS_MANTIS",
+      "ZOLTAN_LIFERAFT",
+      "ZOLTAN_QUEST_PRIMITIVES",
+      "ZOLTAN_RIFT_FIGHT",
+      "ZOLTAN_SCIENCE_DOCK",
+      "ZOLTAN_TRADE_HUB"
+    ],
+    "crew_loss": [
+      "DISTRESS_STATION_FIRE",
+      "NEBULA_ZOLTAN_EYE",
+      "STORM_ITEMS",
+      "STRANDED_BEACON",
+      "ZOLTAN_CREW_SCAN"
+    ],
+    "crew_gain": [
+      "ASTEROID_EXPLORE",
+      "DISTRESS_STATION_FIRE",
+      "FEDERATION_PLANET_SIGNAL",
+      "FRIENDLY_BEACON",
+      "FRIENDLY_SLAVER",
+      "NEBULA_AUTO",
+      "NEBULA_LOST_SHIP",
+      "NEBULA_REBEL_UNDETECTED",
+      "NEBULA_ZOLTAN_EYE",
+      "NEBULA_ZOLTAN_ROCK",
+      "QUEST_MANTIS_INVASION_START",
+      "REBEL",
+      "REBEL_AUTO",
+      "STORM_AUTO",
+      "STORM_ITEMS",
+      "STORM_REBEL",
+      "STRANDED_BEACON",
+      "TRAP_BEACON",
+      "ZOLTAN_ASTEROID",
+      "ZOLTAN_BOARDERS",
+      "ZOLTAN_BOARDERS_MANTIS",
+      "ZOLTAN_CREW_SCAN",
+      "ZOLTAN_CREW_STUDY",
+      "ZOLTAN_ENGI",
+      "ZOLTAN_FIGHT",
+      "ZOLTAN_FREE_MAP",
+      "ZOLTAN_LIFERAFT",
+      "ZOLTAN_MANTIS",
+      "ZOLTAN_ODD_MOON",
+      "ZOLTAN_PIRATE",
+      "ZOLTAN_SCIENCE_DOCK",
+      "ZOLTAN_TRADE_HUB"
+    ],
+    "boarders": [
+      "BOARDERS_HACKING",
+      "FEDERATION_PLANET_SIGNAL",
+      "NEBULA_REBEL_BOARDING",
+      "ZOLTAN_BOARDERS",
+      "ZOLTAN_BOARDERS_MANTIS",
+      "ZOLTAN_CREW_SCAN",
+      "ZOLTAN_CREW_STUDY",
+      "ZOLTAN_TRADE_HUB"
+    ],
+    "unique": [
+      "ASTEROID_EXPLORE",
+      "BOARDERS_HACKING",
+      "DISTRESS_SATELLITE_DEFENSE",
+      "DISTRESS_STATION_FIRE",
+      "FEDERATION_PLANET_SIGNAL",
+      "FRIENDLY_SLAVER",
+      "NEBULA_AUTO_DEFENSE_ITEM",
+      "NEBULA_AUTO_WARNING",
+      "NEBULA_LOST_SHIP",
+      "NEBULA_REBEL_BOARDING",
+      "NEBULA_REBEL_UNDETECTED",
+      "NEBULA_TRADER",
+      "NEBULA_ZOLTAN_EYE",
+      "NEBULA_ZOLTAN_ROCK",
+      "PIRATE_BRIBER",
+      "QUEST_CREWDEAD_START",
+      "QUEST_MANTIS_INVASION_START",
+      "REFUEL_STATION",
+      "REPAIR_STATION",
+      "STORM_AUTO",
+      "STORM_ITEMS",
+      "STORM_REBEL",
+      "STORM_ZOLTAN_SUPPLY_CHOICE",
+      "STRANDED_BEACON",
+      "TRAP_BEACON",
+      "ZOLTAN_ASTEROID",
+      "ZOLTAN_BOARDERS",
+      "ZOLTAN_BOARDERS_MANTIS",
+      "ZOLTAN_CREW_SCAN",
+      "ZOLTAN_DISTRESS_MANTIS",
+      "ZOLTAN_DISTRESS_SHELL",
+      "ZOLTAN_ENGI",
+      "ZOLTAN_FREE_AUGMENT",
+      "ZOLTAN_FREE_MAP",
+      "ZOLTAN_LIFERAFT",
+      "ZOLTAN_MANTIS",
+      "ZOLTAN_ODD_MOON",
+      "ZOLTAN_QUEST_PRIMITIVES",
+      "ZOLTAN_RIFT_FIGHT",
+      "ZOLTAN_SCIENCE_DOCK",
+      "ZOLTAN_TRADE_HUB"
+    ],
+    "quest_starts": [
+      "FEDERATION_PLANET_SIGNAL",
+      "QUEST_CREWDEAD_START",
+      "QUEST_MANTIS_INVASION_START",
+      "ZOLTAN_TRADE_HUB"
+    ],
+    "gates": [
+      {
+        "req": "cloaking",
+        "label": "Cloaking",
+        "levels": [
+          "1",
+          "2",
+          "3"
+        ],
+        "events": [
+          "NEBULA_AUTO_DEFENSE_ITEM",
+          "STORM_AUTO",
+          "NEBULA_REBEL_UNDETECTED",
+          "DISTRESS_SATELLITE_DEFENSE"
+        ]
+      },
+      {
+        "req": "teleporter",
+        "label": "Crew Teleporter",
+        "levels": [
+          "2",
+          "1"
+        ],
+        "events": [
+          "FRIENDLY_SLAVER",
+          "NEBULA_LOST_SHIP",
+          "ZOLTAN_TRADE_HUB",
+          "QUEST_CREWDEAD_START"
+        ]
+      },
+      {
+        "req": "ADV_SCANNERS",
+        "label": "Long-Ranged Scanners",
+        "levels": [],
+        "events": [
+          "NEBULA_LOST_SHIP",
+          "FEDERATION_PLANET_SIGNAL"
+        ]
+      },
+      {
+        "req": "BOMB_FIRE",
+        "label": "Fire Bomb",
+        "levels": [],
+        "events": [
+          "QUEST_MANTIS_INVASION_START",
+          "QUEST_CREWDEAD_START"
+        ]
+      },
+      {
+        "req": "engines",
+        "label": "Engines",
+        "levels": [
+          "3",
+          "6",
+          "4"
+        ],
+        "events": [
+          "STORM_AUTO",
+          "NEBULA_REBEL_UNDETECTED"
+        ]
+      },
+      {
+        "req": "hacking",
+        "label": "Hacking",
+        "levels": [
+          "1",
+          "2"
+        ],
+        "events": [
+          "BOARDERS_HACKING",
+          "NEBULA_AUTO_DEFENSE_ITEM"
+        ]
+      },
+      {
+        "req": "medbay",
+        "label": "Medbay",
+        "levels": [
+          "3",
+          "2"
+        ],
+        "events": [
+          "ZOLTAN_CREW_STUDY",
+          "STRANDED_BEACON"
+        ]
+      },
+      {
+        "req": "slug",
+        "label": "Slug",
+        "levels": [],
+        "events": [
+          "ZOLTAN_CREW_SCAN",
+          "STRANDED_BEACON"
+        ]
+      },
+      {
+        "req": "BEAM_BIO",
+        "label": "Anti-Bio Beam",
+        "levels": [],
+        "events": [
+          "QUEST_CREWDEAD_START"
+        ]
+      },
+      {
+        "req": "BOARDER",
+        "label": "Boarding Drone",
+        "levels": [],
+        "events": [
+          "ZOLTAN_ODD_MOON"
+        ]
+      },
+      {
+        "req": "REPAIR",
+        "label": "System Repair Drone",
+        "levels": [],
+        "events": [
+          "DISTRESS_STATION_FIRE"
+        ]
+      },
+      {
+        "req": "SCRAP_COLLECTOR",
+        "label": "Scrap Recovery Arm",
+        "levels": [],
+        "events": [
+          "ASTEROID_EXPLORE"
+        ]
+      },
+      {
+        "req": "STASIS_POD",
+        "label": "Damaged Stasis Pod",
+        "levels": [],
+        "events": [
+          "ZOLTAN_CREW_STUDY"
+        ]
+      },
+      {
+        "req": "WEAPONS_ION",
+        "label": "WEAPONS_ION",
+        "levels": [],
+        "events": [
+          "DISTRESS_SATELLITE_DEFENSE"
+        ]
+      },
+      {
+        "req": "WEAPONS_MISSILES",
+        "label": "WEAPONS_MISSILES",
+        "levels": [],
+        "events": [
+          "QUEST_MANTIS_INVASION_START"
+        ]
+      },
+      {
+        "req": "clonebay",
+        "label": "Clone Bay",
+        "levels": [
+          "2"
+        ],
+        "events": [
+          "STRANDED_BEACON"
+        ]
+      },
+      {
+        "req": "energy",
+        "label": "Zoltan",
+        "levels": [],
+        "events": [
+          "ZOLTAN_TRADE_HUB"
+        ]
+      },
+      {
+        "req": "engi",
+        "label": "Engi",
+        "levels": [],
+        "events": [
+          "DISTRESS_SATELLITE_DEFENSE"
+        ]
+      },
+      {
+        "req": "mind",
+        "label": "Mind Control",
+        "levels": [],
+        "events": [
+          "ZOLTAN_CREW_SCAN"
+        ]
+      },
+      {
+        "req": "pilot",
+        "label": "Piloting",
+        "levels": [
+          "2"
+        ],
+        "events": [
+          "STORM_ITEMS"
+        ]
+      },
+      {
+        "req": "rock",
+        "label": "Rockman",
+        "levels": [],
+        "events": [
+          "DISTRESS_STATION_FIRE"
+        ]
+      },
+      {
+        "req": "sensors",
+        "label": "Sensors",
+        "levels": [
+          "2",
+          "3"
+        ],
+        "events": [
+          "FEDERATION_PLANET_SIGNAL"
+        ]
+      }
+    ],
+    "named_items": [
+      {
+        "value": {
+          "id": "BOMB_HEAL",
+          "kind": "weapon",
+          "label": "Healing Burst"
+        },
+        "events": [
+          "NEBULA_ZOLTAN_EYE"
+        ]
+      }
+    ],
+    "crew_classes": [
+      {
+        "value": "energy",
+        "events": [
+          "ZOLTAN_LIFERAFT",
+          "ZOLTAN_SCIENCE_DOCK",
+          "ZOLTAN_ODD_MOON"
+        ]
+      },
+      {
+        "value": "engi",
+        "events": [
+          "FRIENDLY_SLAVER",
+          "QUEST_MANTIS_INVASION_START"
+        ]
+      },
+      {
+        "value": "crystal",
+        "events": [
+          "ZOLTAN_CREW_STUDY"
+        ]
+      },
+      {
+        "value": "human",
+        "events": [
+          "STRANDED_BEACON"
+        ]
+      },
+      {
+        "value": "mantis",
+        "events": [
+          "FRIENDLY_SLAVER"
+        ]
+      },
+      {
+        "value": "rock",
+        "events": [
+          "FRIENDLY_SLAVER"
+        ]
+      }
+    ],
+    "unlock_ships": [],
+    "quest_targets": [
+      {
+        "value": "FEDERATION_BASE_ASSIST",
+        "events": [
+          "FEDERATION_PLANET_SIGNAL"
+        ]
+      },
+      {
+        "value": "HIDDEN_FEDERATION_BASE_LIST",
+        "events": [
+          "FEDERATION_PLANET_SIGNAL"
+        ]
+      },
+      {
+        "value": "QUEST_CREWDEAD",
+        "events": [
+          "QUEST_CREWDEAD_START"
+        ]
+      },
+      {
+        "value": "QUEST_MANTIS_INVASION",
+        "events": [
+          "QUEST_MANTIS_INVASION_START"
+        ]
+      },
+      {
+        "value": "ZOLTAN_QUEST_PRIMITIVES",
+        "events": [
+          "ZOLTAN_TRADE_HUB"
+        ]
+      }
+    ]
+  },
+  "metrics": {
+    "beacons_min": 20,
+    "beacons_max": 32,
+    "distinct_events": 57,
+    "always_fight_events": 14,
+    "may_fight_events": 22,
+    "crew_loss_events": 5,
+    "crew_gain_events": 32,
+    "boarder_events": 8,
+    "unique_events": 41,
+    "gated_events": 18,
+    "quest_start_events": 4,
+    "section:special:min": 1,
+    "section:special:max": 1,
+    "section:hostile:min": 6,
+    "section:hostile:max": 8,
+    "section:boarders:min": 1,
+    "section:boarders:max": 2,
+    "section:neutral:min": 5,
+    "section:neutral:max": 6,
+    "section:nebula:min": 2,
+    "section:nebula:max": 6,
+    "section:distress:min": 1,
+    "section:distress:max": 2,
+    "section:items:min": 1,
+    "section:items:max": 2,
+    "section:store:min": 2,
+    "section:store:max": 2,
+    "section:quests:min": 0,
+    "section:quests:max": 1,
+    "section:empty:min": 1,
+    "section:empty:max": 2,
+    "entry:ZOLTAN_CREW_STUDY:min": 1,
+    "entry:ZOLTAN_CREW_STUDY:max": 1,
+    "entry:HOSTILE_ZOLTAN:min": 6,
+    "entry:HOSTILE_ZOLTAN:max": 8,
+    "entry:BOARDERS_ZOLTAN:min": 1,
+    "entry:BOARDERS_ZOLTAN:max": 2,
+    "entry:NEUTRAL_ZOLTAN:min": 5,
+    "entry:NEUTRAL_ZOLTAN:max": 6,
+    "entry:NEBULA_ZOLTAN:min": 2,
+    "entry:NEBULA_ZOLTAN:max": 6,
+    "entry:DISTRESS_BEACON_ZOLTAN:min": 1,
+    "entry:DISTRESS_BEACON_ZOLTAN:max": 2,
+    "entry:ITEM_ZOLTAN:min": 1,
+    "entry:ITEM_ZOLTAN:max": 2,
+    "entry:STORE_ZOLTAN:min": 2,
+    "entry:STORE_ZOLTAN:max": 2,
+    "entry:QUESTS_ZOLTAN:min": 0,
+    "entry:QUESTS_ZOLTAN:max": 1,
+    "entry:NOTHING_ZOLTAN:min": 1,
+    "entry:NOTHING_ZOLTAN:max": 2
+  }
+}

@@ -6,7 +6,7 @@ sectors: [[[sector-zoltan-controlled-sector]], [[sector-zoltan-homeworlds]]]
 beacon_type: quest
 hostile: false
 blue_options: [teleporter, zoltan crew]
-chain: []
+chain: [[[chain-zoltan-primitives]]]
 version: both
 first_seen: 2026-08-09
 last_updated: 2026-08-09
@@ -120,6 +120,7 @@ split inside.
   of that content permanently ([[source-fandom-zoltan-trade-hub]]).
 
 ## Related
+- [[chain-zoltan-primitives]] — the full quest line this belongs to
 - [[event-zoltan-quest-primitives]] — where the quest-marker branch leads
 - [[event-store-zoltan]] — the sector's guaranteed store beacons; this event is a possible
   third

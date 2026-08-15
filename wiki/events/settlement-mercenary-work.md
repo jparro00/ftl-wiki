@@ -10,7 +10,7 @@ chain: [[[chain-settlement-mercenary-work]]]
 version: ae
 first_seen: 2026-08-09
 last_updated: 2026-08-09
-sources: 5
+sources: 7
 tags: [quest-start, unique, pirate-fight, store-chance, weapon-reward]
 ---
 
@@ -122,6 +122,7 @@ None. No choice in this event or its sub-events carries a `req` ([[source-events
   costs jumps to reach the marker.
 
 ## Related
+- [[chain-settlement-mercenary-work]] — the full quest line this belongs to
 - [[event-quest-store-rescue]] — the destination of entry 1's quest marker
 - [[event-quest-store]] — an unreferenced hidden-space-dock store event with the same premise
 - [[event-the-mercenary]] — the other "mercenary" beacon, unrelated mechanically

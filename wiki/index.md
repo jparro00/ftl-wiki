@@ -456,15 +456,29 @@ _Reached by quest marker, fleet or boss logic, or unreachable — see [[concept-
 
 ## Chains
 
-7 pages.
+21 pages.
 
-- [[chain-crystal-cruiser-unlock]] — The four-step quest line that unlocks the Crystal Cruiser and the Ancestry achievement. It is the most… | Crystal Cruiser unlock + Crystal Vengeance augment · ae | Updated: 2026-08-09
+- [[chain-capture-the-ship]] — The only quest in the game that is invisible without the right equipment. You overhear merchants who need an enemy ship… | autoReward HIGH weapon — but only if you kill the crew without destroying the hull · ae | Updated: 2026-08-13
+- [[chain-construction-yard]] — A half-built space station has lost contact with its supply ship and asks you to find out why. Ordinary enough — but… | 1 of 3 destinations: a PDS fight for med/high scrap, an abandoned-station gamble, or a fuel-for-scrap trade · ae | Updated: 2026-08-13
+- [[chain-crystal-cruiser-unlock]] — The four-step quest line that unlocks the Crystal Cruiser and the Ancestry achievement. It is the most route-dependent… | Crystal Cruiser unlock + Crystal Vengeance augment · ae | Updated: 2026-08-09
+- [[chain-escort-civilians]] — Two different beacons ask you to escort a civilian ship, and both resolve to the same destination list,… | 1 of 4: high scrap · a store plus 5 hull · +1 reactor bar (AE) · or a Rebel ambush · both | Updated: 2026-08-13
+- [[chain-hidden-federation-base]] — The most widely-reachable quest in the game and the shortest: four different beacons, across six sector types, all… | 1 of 5: high drone reward · free crew · 35 hull repair · a gated scrap/weapon roll · an auto-ship fight · both | Updated: 2026-08-13
+- [[chain-mantis-collectors-chase]] — A running grudge. A Mantis ship escapes you once; the quest marker lets you catch up with it — and find the crew… | a high weapon for sparing them; a random weapon + med scrap for killing them; high scrap if they escape · both | Updated: 2026-08-13
 - [[chain-mantis-cruiser-unlock]] — A single set-piece fight in the mantis homeworlds whose aftermath is the real chain. Beat the legendary thief… | Mantis Cruiser unlock + Mantis Pheromones + the crew member Kazaaak + a weapon cache · both | Updated: 2026-08-09
-- [[chain-rock-cruiser-unlock]] — Three events, two beacons, and one inverted win condition: the Rockmen challenge you to a duel beside a star… | Rock Cruiser unlock + Rock Plating augment + 29 hull repairs · both | Updated: 2026-08-09
-- [[chain-slug-cruiser-unlock]] — The only ship-unlock chain in the game with a hidden entry point. Its first beacon is deliberately disguised… | Slug Cruiser unlock + Slug Repair Gel + HIGH scrap (or the Anti-Bio Beam instead) · both | Updated: 2026-08-09
-- [[chain-stealth-cruiser-unlock]] — Four beacons in the engi homeworlds that end with <unlockShip id="1"/ — the Stealth Cruiser — plus the… | Stealth Cruiser unlock + Titanium System Casing + HIGH scrap + 20 hull · both | Updated: 2026-08-09
-- [[chain-the-flagship]] — The endgame sequence: you reach the Federation Base in the last stand, the Rebel Flagship arrives to destroy… | Victory — the Federation Victory achievements; no in-run payout · both | Updated: 2026-08-09
-- [[chain-zoltan-cruiser-unlock]] — The shortest ship-unlock chain in the game: two beacons, no fight, no equipment requirement, no crew… | Zoltan Cruiser unlock + Zoltan Shield augment or the crew member Envoy · both | Updated: 2026-08-09
+- [[chain-mantis-war-camp]] — A settlement asks you to scout a Mantis war camp, pays you before you go, and then the destination turns out to be… | med scrap up front; then nothing, a fight, or (2 Fire Bombs) high stuff + a free Engi crew member · ae | Updated: 2026-08-13
+- [[chain-merchant-s-request]] — One beacon that forks into two entirely different quests and never rejoins. A merchant broadcasting for a mercenary… | scrap, a drone reward, possible crew, or a random weapon — depending which of two jobs you draw · ae | Updated: 2026-08-13
+- [[chain-rebel-defector]] — A Rebel offers to defect, join your crew, and lead you to a hoard of supplies. Accepting rolls a six-entry table, and… | a human crew member, then high stuff or low scrap at the stash — if the defector was genuine · both | Updated: 2026-08-13
+- [[chain-rock-bride]] — A courier job with a person as the cargo, and the only quest in the game whose final choice is purely ethical: deliver… | a random augment + low scrap, OR Ariadne (a named Rock crew member) and a fight · both | Updated: 2026-08-13
+- [[chain-rock-cruiser-unlock]] — Three events, two beacons, and one inverted win condition: the Rockmen challenge you to a duel beside a star and the… | Rock Cruiser unlock + Rock Plating augment + 29 hull repairs · both | Updated: 2026-08-13
+- [[chain-secret-word-abadoth]] — The only puzzle in FTL that tests the player, not the ship. A dying crewman gives you a word and some coordinates.… | autoReward MED standard — for remembering one word · both | Updated: 2026-08-13
+- [[chain-settlement-mercenary-work]] — Two jobs offered by the same kind of civilian settlement, feeding one shared destination. Both are mercenary contracts,… | a store plus 5 hull and med scrap; or a med weapon for sparing the pirates · ae | Updated: 2026-08-13
+- [[chain-slug-cruiser-unlock]] — The only ship-unlock chain in the game with a hidden entry point. Its first beacon is deliberately disguised as an… | Slug Cruiser unlock + Slug Repair Gel + HIGH scrap (or the Anti-Bio Beam instead) · both | Updated: 2026-08-09
+- [[chain-slug-pirate-trap]] — You eavesdrop on two Slug ships planning to rob a pirate, follow them to the scene, and are invited to join a heist… | high scrap for trusting the Slugs; med/high standard for finishing the pirate; low/med for going it alone · both | Updated: 2026-08-13
+- [[chain-stealth-cruiser-unlock]] — Four beacons in the engi homeworlds that end with <unlockShip id="1"/ — the Stealth Cruiser — plus the Titanium System… | Stealth Cruiser unlock + Titanium System Casing + HIGH scrap + 20 hull · both | Updated: 2026-08-09
+- [[chain-the-flagship]] — The endgame sequence: you reach the Federation Base in the last stand, the Rebel Flagship arrives to destroy it, and… | Victory — the Federation Victory achievements; no in-run payout · both | Updated: 2026-08-09
+- [[chain-tutorial]] — Not a quest. The three TUTORIAL events are a scripted onboarding sequence the engine runs outside the beacon system… | — · both | Updated: 2026-08-13
+- [[chain-zoltan-cruiser-unlock]] — The shortest ship-unlock chain in the game: two beacons, no fight, no equipment requirement, no crew requirement. A… | Zoltan Cruiser unlock + Zoltan Shield augment or the crew member Envoy · both | Updated: 2026-08-09
+- [[chain-zoltan-primitives]] — A quest you are not offered but overhear. Visiting the cantina at a Zoltan trade hub, you catch gossip about a newly… | a weapon roll — low/med for defending the planet, low/random scrap for siding against it · both | Updated: 2026-08-13
 
 ## Sectors
 
@@ -493,23 +507,28 @@ _Reached by quest marker, fleet or boss logic, or unreachable — see [[concept-
 
 ## Entities
 
-11 pages.
+16 pages.
 
-- [[entity-crystal-men]] — The ancestors of the rock men, sealed away in a hidden sector that most runs never see. Crystal crew are the… | species · varies | Updated: 2026-08-09
-- [[entity-engi]] — A machine-or-machine-adjacent species allied to the Federation, and the wiki's best-covered "friendly"… | species · friendly | Updated: 2026-08-09
-- [[entity-federation]] — The side you fly for. The Federation is the losing power in the war against rebels: your ship is a Federation… | faction · friendly | Updated: 2026-08-09
-- [[entity-flagship]] — The endgame boss: one ship, fought in three phases at the Federation Base in the last stand, with a separate… | ship · hostile | Updated: 2026-08-09
-- [[entity-lanius]] — Advanced Edition's added species: anaerobic metal scavengers who drain the oxygen out of any room they stand… | species · varies | Updated: 2026-08-09
-- [[entity-mantis]] — The game's dedicated boarding faction. Mantis crew hit 1.5× as hard as anyone else and move faster; Mantis… | species · hostile | Updated: 2026-08-09
-- [[entity-pirates]] — Pirates are not a species and have no ships of their own. Mechanically they are a relabelling layer: thirteen… | faction · hostile | Updated: 2026-08-09
-- [[entity-rebels]] — The run's antagonist and the only faction you can never make peace with. The Rebels are present in three… | faction · hostile | Updated: 2026-08-09
-- [[entity-rock-men]] — A heavy, slow, fire-proof species from Vrachos IV. Rockmen crew have the highest max health in the game (150)… | species · varies | Updated: 2026-08-09
-- [[entity-slugs]] — Telepathic con artists who live in nebulas. Slug crew see through walls without sensors — which matters… | species · varies | Updated: 2026-08-09
-- [[entity-zoltan]] — An energy-bodied species allied to the engi and, through them, to the Federation. Zoltan crew are walking… | species · neutral | Updated: 2026-08-09
+- [[entity-crystal-men]] — The ancestors of the rock men, sealed away in a hidden sector that most runs never see. Crystal crew are the game's… | species · varies | Updated: 2026-08-14
+- [[entity-engi]] — A machine-or-machine-adjacent species allied to the Federation, and the wiki's best-covered "friendly" faction. Engi… | species · friendly | Updated: 2026-08-09
+- [[entity-federation-cruiser]] — The player ship awarded by rebel shipyard, the miniboss beacon in rebel stronghold. In-game description: | ship · friendly | Updated: 2026-08-13
+- [[entity-federation]] — The side you fly for. The Federation is the losing power in the war against rebels: your ship is a Federation cruiser… | faction · friendly | Updated: 2026-08-09
+- [[entity-flagship]] — The endgame boss: one ship, fought in three phases at the Federation Base in the last stand, with a separate blueprint… | ship · hostile | Updated: 2026-08-09
+- [[entity-lanius]] — Advanced Edition's added species: anaerobic metal scavengers who drain the oxygen out of any room they stand in. They… | species · varies | Updated: 2026-08-14
+- [[entity-mantis-cruiser]] — The player ship awarded by mantis cruiser unlock. In-game description: | ship · friendly | Updated: 2026-08-13
+- [[entity-mantis]] — The game's dedicated boarding faction. Mantis crew hit 1.5× as hard as anyone else and move faster; Mantis ships carry… | species · hostile | Updated: 2026-08-09
+- [[entity-pirates]] — Pirates are not a species and have no ships of their own. Mechanically they are a relabelling layer: thirteen other… | faction · hostile | Updated: 2026-08-09
+- [[entity-rebels]] — The run's antagonist and the only faction you can never make peace with. The Rebels are present in three distinct… | faction · hostile | Updated: 2026-08-09
+- [[entity-rock-cruiser]] — The player ship awarded by rock cruiser unlock. In-game description: | ship · friendly | Updated: 2026-08-13
+- [[entity-rock-men]] — A heavy, slow, fire-proof species from Vrachos IV. Rockmen crew have the highest max health in the game (150) and move… | species · varies | Updated: 2026-08-09
+- [[entity-slugs]] — Telepathic con artists who live in nebulas. Slug crew see through walls without sensors — which matters enormously… | species · varies | Updated: 2026-08-09
+- [[entity-stealth-cruiser]] — The player ship awarded by stealth cruiser unlock. In-game description: | ship · friendly | Updated: 2026-08-13
+- [[entity-zoltan-cruiser]] — The player ship awarded by zoltan cruiser unlock. In-game description: | ship · friendly | Updated: 2026-08-13
+- [[entity-zoltan]] — An energy-bodied species allied to the engi and, through them, to the Federation. Zoltan crew are walking power… | species · neutral | Updated: 2026-08-14
 
 ## Items
 
-64 pages.
+65 pages.
 
 - [[item-adv-scanners]] — Alias page. ADVSCANNERS is the blueprint id; the in-game title is Long-Ranged Scanners (text blueprints).… | augment · 1 | Updated: 2026-08-09
 - [[item-anti-bio-beam]] — The BEAMBIO weapon — "This terrifying beam does no physical damage but rips through organic material, dealing… | weapon · 5 | Updated: 2026-08-09
@@ -517,6 +536,7 @@ _Reached by quest marker, fleet or boss logic, or unreachable — see [[concept-
 - [[item-artemis-missiles]] — The MISSILES2 weapon — "Standard missile launcher on most Federation ships." Tooltip: "Fires 1 missile; does… | weapon · 0 | Updated: 2026-08-09
 - [[item-artillery-beam]] — The ARTILLERYFED weapon — "Powers a slow, high-powered beam that pierces all shields and does one damage per… | weapon · 0 | Updated: 2026-08-09
 - [[item-backup-dna-bank]] — The BACKUPDNA augment, added in Advanced Edition — "Your crew is safe in clone storage even if the system is… | augment · 2 | Updated: 2026-08-09
+- [[item-backup-battery]] — The battery system, added in Advanced Edition — "Provides a 30 second power boost to your Reactor." | system · 1 | Updated: 2026-08-14
 - [[item-beam-drone]] — Alias page. The COMBATBEAM drone's in-game title is Anti-Ship Beam Drone I (text blueprints). Full write-up… | drone · 3 | Updated: 2026-08-09
 - [[item-beam-weapons]] — Not a single item: WEAPONSBEAMDAMAGE is a <blueprintList annotated "for events". The name is precise — it is… | weapon | Updated: 2026-08-09
 - [[item-boarding-drone]] — The BOARDER drone — "Breaches through the enemy hull and wreaks havoc. Awesome." (text blueprints; the… | drone · 4 | Updated: 2026-08-09
@@ -533,12 +553,12 @@ _Reached by quest marker, fleet or boss logic, or unreachable — see [[concept-
 - [[item-defense-drone]] — The DEFENSE1 drone — "Shoots down incoming missiles, asteroids, and flak debris." (text blueprints). Event… | drone · 1 | Updated: 2026-08-09
 - [[item-distraction-buoys]] — The FLEETDISTRACTION augment, added in Advanced Edition — "Leaves a false signal at sector start to delay… | augment · 3 | Updated: 2026-08-09
 - [[item-door-system]] — Alias page. "Door System" is the in-game display title of the doors subsystem (text blueprints). The full… | system · 1 | Updated: 2026-08-09
-- [[item-doors]] — The doors subsystem, displayed as Door System — "Allows remote opening and closing of doors. Upgrades to… | system · 1 | Updated: 2026-08-09
+- [[item-doors]] — The doors subsystem, displayed as Door System — "Allows remote opening and closing of doors. Upgrades to… | system · 1 | Updated: 2026-08-14
 - [[item-drone-control]] — The drones system, displayed as Drone Control — "Powers all of the ship's drones. Drones are automated robots… | system · 1 | Updated: 2026-08-09
 - [[item-drone-parts]] — The drones <itemBlueprint — "Allows you to deploy drone schematics you've found. Each deployment costs one… | 3 | Updated: 2026-08-09
 - [[item-drone-reactor-booster]] — The DRONESPEED augment — "Your shipboard drones have their movement speed increased by 25 percent." (text… | augment · 0 | Updated: 2026-08-09
 - [[item-drones]] — Alias page. The blueprint id drones names two different things in blueprints: a <systemBlueprint (Drone… | system · 1 | Updated: 2026-08-09
-- [[item-emergency-respirators]] — The O2MASKS augment, added in Advanced Edition — "Crew take half damage from low oxygen." (text blueprints). | augment · 2 | Updated: 2026-08-09
+- [[item-emergency-respirators]] — The O2MASKS augment, added in Advanced Edition — "Crew take half damage from low oxygen." (text blueprints). | augment · 2 | Updated: 2026-08-14
 - [[item-engi-med-bot-dispersal]] — The NANOMEDBAY augment — "Engi nano med-bots heal the crew outside of the med-bay (at a reduced speed)."… | augment · 0 | Updated: 2026-08-09
 - [[item-engines]] — The engines system — "Powers the FTL drive and allows the ship to dodge. Upgrading improves dodge chance and… | system · 1 | Updated: 2026-08-09
 - [[item-fire-beam]] — The BEAMFIRE weapon — "This terrifying beam does no physical damage but ignites fires." (text blueprints).… | weapon · 3 | Updated: 2026-08-09
@@ -551,20 +571,20 @@ _Reached by quest marker, fleet or boss logic, or unreachable — see [[concept-
 - [[item-heavy-crystal-mark-ii]] — The CRYSTALHEAVY2 weapon — "Modified projectile weapon that fires a shield piercing large crystal." Tooltip:… | weapon · 0 | Updated: 2026-08-09
 - [[item-hull-repair-drone]] — The SHIPREPAIR drone, titled Hull Repair in game — "Automatically repairs 3-5 damage to your hull per drone… | drone · 4 | Updated: 2026-08-09
 - [[item-ion-weapons]] — Not a single item: WEAPONSION is a <blueprintList annotated "for events" that asks "do you own any ion weapon?". | weapon | Updated: 2026-08-09
-- [[item-lanius-crew]] — The anaerobic crew blueprint, added in Advanced Edition — "These anaerobic beings seem friendly enough."… | crew · 0 | Updated: 2026-08-09
+- [[item-lanius-crew]] — The anaerobic crew blueprint, added in Advanced Edition — "These anaerobic beings seem friendly enough."… | crew · 0 | Updated: 2026-08-14
 - [[item-lifeform-scanner]] — The LIFESCANNER augment, added in Advanced Edition — "Detects the location of any life forms, even when… | augment · 3 | Updated: 2026-08-09
 - [[item-long-ranged-scanners]] — The ADVSCANNERS augment — "Adds additional info about nearby Beacons on the star map." (text blueprints). Six… | augment · 1 | Updated: 2026-08-09
 - [[item-mantis-pheromones]] — The CREWSTIMS augment — "Your crew's movement speed is increased by 25 percent." (text blueprints). | augment · 0 | Updated: 2026-08-09
-- [[item-medbay]] — The medbay system — "Heals all crew-members within the Medbay room. Upgrading increases healing speed." (text… | system · 1 | Updated: 2026-08-09
+- [[item-medbay]] — The medbay system — "Heals all crew-members within the Medbay room. Upgrading increases healing speed." (text… | system · 1 | Updated: 2026-08-14
 - [[item-mind-control]] — The mind system, added in Advanced Edition. "Temporarily turn enemies into allies." (text blueprints). | system · 1 | Updated: 2026-08-09
 - [[item-missile-weapon]] — Not a single item: WEAPONSMISSILES and WEAPONSMISSILESEVENTS are <blueprintList entries that events use to… | weapon | Updated: 2026-08-09
 - [[item-nano-med-bot-dispersal]] — Alias page. NANOMEDBAY is the blueprint id; the in-game title is Engi Med-bot Dispersal (text blueprints).… | augment · 0 | Updated: 2026-08-09
-- [[item-oxygen-system]] — The oxygen subsystem — "Refills the oxygen in the ship. Upgrading increases the rate of refill." (text blueprints). | system · 1 | Updated: 2026-08-09
+- [[item-oxygen-system]] — The oxygen subsystem — "Refills the oxygen in the ship. Upgrading increases the rate of refill." (text blueprints). | system · 1 | Updated: 2026-08-14
 - [[item-piloting]] — The pilot subsystem — "Allows the ship to make FTL jumps and dodge when piloted. Upgrading adds auto-pilot… | system · 1 | Updated: 2026-08-09
-- [[item-reactor]] — The ship's power plant. Unlike every other system on this list the reactor has no <systemBlueprint entry in… | system | Updated: 2026-08-09
+- [[item-reactor]] — The ship's power plant. Unlike every other system on this list the reactor has no <systemBlueprint entry in… | system | Updated: 2026-08-14
 - [[item-repair-drone]] — The REPAIR drone — "Will seek out damaged systems and repair them automatically." (text blueprints). A… | drone · 1 | Updated: 2026-08-09
 - [[item-rock-crew]] — The rock crew blueprint — "The 'Rockmen' of Vrachos IV are rarely seen and are known for their fortitude."… | crew · 3 | Updated: 2026-08-09
-- [[item-rock-plating]] — The ROCKARMOR augment — "Superior hull armor provides a 15 percent chance to negate incoming hull damage (hit… | augment · 0 | Updated: 2026-08-09
+- [[item-rock-plating]] — The ROCKARMOR augment — "Superior hull armor provides a 15 percent chance to negate incoming hull damage (hit… | augment · 0 | Updated: 2026-08-14
 - [[item-scrap-recovery-arm]] — The SCRAPCOLLECTOR augment — "Allows the ship to collect 10 percent more scrap from any source." (text… | augment · 1 | Updated: 2026-08-09
 - [[item-sensors]] — The sensors subsystem — "Reveals the interior of your ship and gives information about enemy ships." (text… | system · 1 | Updated: 2026-08-09
 - [[item-shields]] — The shields system — "Powers your shields. Each additional barrier can block one shot." (text blueprints). | system · 1 | Updated: 2026-08-09
@@ -578,27 +598,45 @@ _Reached by quest marker, fleet or boss logic, or unreachable — see [[concept-
 
 ## Concepts
 
-14 pages.
+31 pages.
 
+- [[concept-ae-vs-vanilla]] — Advanced Edition vs vanilla | both | Updated: 2026-08-13
+- [[concept-anti-ship-battery]] — The Anti-Ship Battery — the `PDS` hazard | both | Updated: 2026-08-13
+- [[concept-asteroid-fields]] — Asteroid fields | both | Updated: 2026-08-13
+- [[concept-augmentations]] — Augmentations | both | Updated: 2026-08-13
+- [[concept-autoreward-tiers]] — `autoReward` — the reward matrix, and what it does not tell you | both | Updated: 2026-08-13
 - [[concept-blue-options]] — Blue options — how `req=` gates work | both | Updated: 2026-08-09
-- [[concept-event-cards]] — What a generated event card guarantees, and what it deliberately omits | both | Updated: 2026-08-12
-- [[concept-event-tree-grammar]] — The node grammar every event is built from, and the tag census behind it | both | Updated: 2026-08-13
-- [[concept-event-uniqueness]] — `unique="true"` — once per sector, or once per run? The unresolved scope, and why per-sector is the better bet | both | Updated: 2026-08-13
 - [[concept-blueprint-rarity]] — `rarity` on blueprints — what the files do and don't say | both | Updated: 2026-08-09
+- [[concept-crew-loss-risk]] — Crew-loss risk | both | Updated: 2026-08-13
+- [[concept-cut-content]] — Cut and unreachable content | both | Updated: 2026-08-13
+- [[concept-empty-beacons]] — Empty beacons — the events where nothing happens | both | Updated: 2026-08-13
+- [[concept-event-cards]] — Event cards — what they are and what they promise | both | Updated: 2026-08-12
 - [[concept-event-list-weighting]] — Event list weighting — how odds are derived | both | Updated: 2026-08-13
-- [[concept-modding-and-the-append-convention]] — The `.ftl` format, `.xml.append`, the `mod:` namespace, and what a mod would break in this repo's extractor | both | Updated: 2026-08-13
-- [[concept-nebula-mechanics]] — Nebulae, sensors, and storms | both | Updated: 2026-08-09
+- [[concept-event-tree-grammar]] — The event tree grammar — how every FTL event is shaped | both | Updated: 2026-08-13
+- [[concept-event-uniqueness]] — `unique="true"` — once per sector, or once per run? | both | Updated: 2026-08-13
+- [[concept-fuel]] — Fuel | both | Updated: 2026-08-13
+- [[concept-hazards]] — Beacon hazards — the `<environment>` tag | both | Updated: 2026-08-13
+- [[concept-map-reveal]] — Map reveal — `<reveal_map/>` | both | Updated: 2026-08-13
+- [[concept-modding-and-the-append-convention]] — Modding FTL — the `.ftl` format, the append convention, and what it would take to ingest a mod | both | Updated: 2026-08-13
+- [[concept-nebula-mechanics]] — Nebulae, sensors, and storms | both | Updated: 2026-08-14
 - [[concept-out-of-fuel]] — Running out of fuel | both | Updated: 2026-08-09
-- [[concept-quest-beacon-placement]] — Where a quest beacon lands, and when the quest is silently thrown away | unknown | Updated: 2026-08-13
+- [[concept-oxygen-and-suffocation]] — Oxygen and suffocation — the rates (6.4 HP/sec, drain/refill/venting) | both | Updated: 2026-08-14
+- [[concept-power-and-reactor]] — Power — the reactor, and the two things that aren't it (cost curve, 25-bar cap) | ae | Updated: 2026-08-14
+- [[concept-quest-beacon-placement]] — Where a quest beacon lands — and when the quest is silently thrown away | unknown | Updated: 2026-08-13
 - [[concept-rebel-fleet-advance]] — The Rebel fleet advance and `modifyPursuit` | both | Updated: 2026-08-09
+- [[concept-scrap-economy]] — The scrap economy | both | Updated: 2026-08-13
 - [[concept-sector-event-allocation]] — How events get allocated to beacons — and what "unreachable" can mean | both | Updated: 2026-08-13
+- [[concept-ship-unlocks]] — Ship unlocks | both | Updated: 2026-08-13
+- [[concept-solar-flares]] — Solar flares — the `sun` hazard | both | Updated: 2026-08-13
+- [[concept-start-beacons]] — Start beacons — the sector-entry events | both | Updated: 2026-08-13
 - [[concept-stores]] — Stores — the `<store/>` tag, store beacons, and what they stock | both | Updated: 2026-08-13
-- [[concept-surrender-offers]] — Surrender offers and the `chance` attribute | both | Updated: 2026-08-09
+- [[concept-surrender-offers]] — Surrender offers and the `chance` attribute | both | Updated: 2026-08-13
 
 ## Sources
 
-325 source pages: 33 game-data files (`reliability: high`), 291 Fandom pages
-(`reliability: medium`), and 1 research synthesis (`reliability: medium`).
+326 source pages: 33 game-data files (`reliability: high`), 291 Fandom pages
+(`reliability: medium`), 1 research synthesis (`reliability: medium`), and 1 piece of
+first-party vendor documentation (`reliability: high`).
 
 ### Game data
 
@@ -792,6 +830,7 @@ One page per ingested Fandom page, all `game_version: unknown`. Listed in `raw/w
 - [[source-fandom-no-fuel-slug-fuel-trader]] — raw/wiki/no-fuel-slug-fuel-trader.md
 - [[source-fandom-no-fuel-wait-fail-distress-off]] — raw/wiki/no-fuel-wait-fail-distress-off.md
 - [[source-fandom-no-fuel-wait-fail-distress-on]] — raw/wiki/no-fuel-wait-fail-distress-on.md
+- [[source-fandom-oxygen]] — raw/wiki/oxygen.md | rev 74853 | **the only source with oxygen/suffocation rates** | Ingested: 2026-08-14
 - [[source-fandom-pirate-briber]] — raw/wiki/pirate-briber.md
 - [[source-fandom-pirate-engine-hacker]] — raw/wiki/pirate-engine-hacker.md
 - [[source-fandom-pirate-fight]] — raw/wiki/pirate-fight.md
@@ -883,6 +922,7 @@ One page per ingested Fandom page, all `game_version: unknown`. Listed in `raw/w
 - [[source-fandom-slug-drink]] — raw/wiki/slug-drink.md
 - [[source-fandom-slug-fight]] — raw/wiki/slug-fight.md
 - [[source-fandom-slug-fight-in-nebula]] — raw/wiki/slug-fight-in-nebula.md
+- [[source-fandom-ship]] — raw/wiki/ship.md | rev 74911 | **the only source with the reactor cost curve** | Ingested: 2026-08-14
 - [[source-fandom-slug-fight-in-plasma-storm]] — raw/wiki/slug-fight-in-plasma-storm.md
 - [[source-fandom-slug-hacker-choice]] — raw/wiki/slug-hacker-choice.md
 - [[source-fandom-slug-hacker-doors]] — raw/wiki/slug-hacker-doors.md
@@ -907,6 +947,7 @@ One page per ingested Fandom page, all `game_version: unknown`. Listed in `raw/w
 - [[source-fandom-store-rock]] — raw/wiki/store-rock.md
 - [[source-fandom-store-zoltan]] — raw/wiki/store-zoltan.md
 - [[source-fandom-terraforming-scan]] — raw/wiki/terraforming-scan.md
+- [[source-fandom-template-reactor-power-cost]] — raw/wiki/template-reactor-power-cost.md | rev 68667 | a transcluded template, not an article | Ingested: 2026-08-14
 - [[source-fandom-the-black-raven]] — raw/wiki/the-black-raven.md
 - [[source-fandom-the-engi-virus]] — raw/wiki/the-engi-virus.md
 - [[source-fandom-the-mercenary]] — raw/wiki/the-mercenary.md
@@ -939,3 +980,11 @@ page. `source_kind: research` and the `raw/modding/` directory are extensions be
 `CLAUDE.md` §1 / §2.7 — see the log entry for 2026-08-13.
 
 - [[source-modding-research]] — raw/modding/2026-08-12-ftl-modding-research.md | both | Ingested: 2026-08-13
+- [[source-xftl-oxygen-mechanics]] — raw/modding/2026-08-14-xftl-oxygen-mechanics.txt | reverse-engineered engine constants for oxygen | unknown | Ingested: 2026-08-14
+
+### Vendor documentation
+
+Captured first-party documentation for the modding toolchain. Filed `source_kind: wiki` for
+lack of a better value, but at `reliability: high` — see the page's own schema note.
+
+- [[source-slipstream-readme-modders]] — raw/modding/slipstream-1.9.1-readme_modders.txt | both | Ingested: 2026-08-13

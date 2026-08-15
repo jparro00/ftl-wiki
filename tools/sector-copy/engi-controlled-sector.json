@@ -1,0 +1,81 @@
+{
+  "slug": "engi-controlled-sector",
+
+  "lede": "The Engi sector you actually meet — no depth requirement, no once-per-run limit, so a run can fly through two of them. The pools are generous: three beacons of Engi hand-outs, two to three stores, and a hostile list with no Engi ship anywhere in it. What it does not have is a **named beacon** — nothing here is placed by id, so there is no ship unlock and no guaranteed quest start.",
+
+  "stats": [
+    { "metric": "beacons_min..beacons_max", "label": "Beacon spread" },
+    { "metric": "section:hostile:min..section:hostile:max", "label": "Guaranteed fights" },
+    { "metric": "entry:STORE_ENGI:min..entry:STORE_ENGI:max", "label": "Stores" },
+    { "metric": "section:items:min..section:items:max", "label": "Item beacons" },
+    { "metric": "unique_events", "label": "Once-only events" }
+  ],
+
+  "callout": "**Versus Engi Homeworlds:** the same eight lists, two differences — Homeworlds bolts a named `ENGI_UNLOCK_1` beacon on the front, and gives `NEUTRAL_ENGI` 5–7 beacons instead of 4–6. Strip those and you have this sector. Every beacon here is drawn from a pool, and with the sector repeatable, the once-only tag on more than half the pool is worth reading twice.",
+
+  "section_notes": {
+    "HOSTILE_ENGI": "Ten events for five to seven beacons, and not one of them is an Engi ship — Mantis, Rebel and pirate hulls only. {{PIRATE_NO_ESCAPE}} pins your engines at a single bar so running is off the table, and if the scout in {{SQUAT_WARNING}} gets its FTL up, the Rebel fleet gains a jump on you.",
+    "NEUTRAL_ENGI": "Sixteen events competing for four to six beacons, so most of this list never shows. It holds both halves of the Crystal route — {{ASTEROID_DERELICT_SHIP}} hands over the Damaged Stasis Pod, {{ZOLTAN_CREW_STUDY}} turns it into a Crystal crew member — and the only two Engi ships in the sector that ever shoot at you, in {{ENGI_VIRUS}} and {{ENGI_SEX}}.",
+    "DISTRESS_BEACON_ENGI": "The thinnest allocation on the page: nine events, and the sector is only obliged to place one of them. {{ENGI_STATION_DISTRESS}} is the one event that sits in two of this sector's pools, so it can turn up here or on a neutral beacon.",
+    "ITEMS_ENGI": "Three beacons of Engi generosity off a six-event list. {{ENGI_GIFT}} is a reward with no choice attached at all, {{ENGI_SURRENDER}} is an Engi ship handing over goods because you looked armed, and {{ENGI_FLEET_DELAY}} sells two missiles for two jumps of fleet delay.",
+    "QUESTS_ENGI": "Exactly one beacon from four candidates — but six events in the sector can plant a quest marker, {{CIVILIAN_ASTEROIDS_BEACON}} and {{ENGI_STATION_DISTRESS}} doing it from outside this list. {{MERCHANT_REQUEST}} is the widest event on the page: it pays five drone parts up front, and its other half can leave you with a traitor aboard and three to four boarders."
+  },
+
+  "chain": {
+    "title": "The hidden Federation base",
+    "steps": [
+      {
+        "marker": "1",
+        "title": "Three ways to get the marker",
+        "detail": "{{FEDERATION_PLANET_SIGNAL}} on the quest beacon, {{CIVILIAN_ASTEROIDS_BEACON}} on a distress call, or {{ENGI_STATION_DISTRESS}} through the **Engi crew** blue option — on that one the blue option is the only branch that plants anything.",
+        "ref": "quest event=\"HIDDEN_FEDERATION_BASE_LIST\""
+      },
+      {
+        "marker": "2",
+        "title": "The signal is a five-way draw",
+        "detail": "Investigating the federation signal draws one of five: the base marker, a different marker plus supplies, nothing, a high reward, or a Rebel ship with two to three human boarders already inside you.",
+        "ref": "FEDERATION_PLANET_SIGNAL_LIST"
+      },
+      {
+        "marker": "✓",
+        "title": "The marked beacon",
+        "detail": "Also a five-way draw — a high drone reward, a free crew member, 35 hull repaired, a cache that pays more with Sensors or Long-Ranged Scanners, or an automated Federation defender that opens fire on you.",
+        "ref": "HIDDEN_FEDERATION_BASE_LIST / FEDERATION_BASE_ASSIST"
+      }
+    ]
+  },
+
+  "panels": [
+    {
+      "title": "Blue options that pay here",
+      "items": [
+        { "lead": "Engi crew · 4 events", "text": "The virus, the smashed ships, the Mantis-held station and the defence satellite. It is the only way to get the base marker out of {{ENGI_STATION_DISTRESS}}, and on {{ENGI_VIRUS}} it is the branch that gets a crewman killed." },
+        { "lead": "Hacking · 2 events", "text": "Three graded outs inside {{ENGI_VIRUS}} — quarantine it, or reprogram it for 15 hull and a reactor bar, or 30 hull at level 3, all three ending with the augment. Also the only alternative to crippled engines in {{PIRATE_NO_ESCAPE}}." },
+        { "lead": "Sensors · 7 events", "text": "The widest gate in the sector. Level 2 tells you what is aboard the burning station in {{DISTRESS_ENGI_REACTOR}} before you commit, which turns its coin-flip into a clean crew pickup; level 2 or 3 also opens {{WRECKAGE_EVENT}}, {{BROKEN_REBEL_DRONE}} and {{ENGI_STATION_DISTRESS}}." },
+        { "lead": "Long-Ranged Scanners · 4 events", "text": "All three events that can plant the hidden-base marker — {{FEDERATION_PLANET_SIGNAL}}, {{CIVILIAN_ASTEROIDS_BEACON}} and {{ENGI_STATION_DISTRESS}} — plus {{DISTRESS_ENGI_REACTOR}}." },
+        { "lead": "Cloaking · 3 events", "text": "Ways out of {{MANTIS_FIGHT_CHOICE}}, the storage station in {{AUTO_DEFENSE_ITEM}} and the satellite in {{DISTRESS_SATELLITE_DEFENSE}}, which grades its payoff by cloak level." },
+        { "lead": "Lanius crew · 1 event", "text": "One clean solve on {{ENGI_VIRUS}} — scrap and the augment, no fight and nobody lost." }
+      ]
+    },
+    {
+      "title": "What you can leave with",
+      "items": [
+        { "lead": "Augment", "text": "**Damaged Stasis Pod** from {{ASTEROID_DERELICT_SHIP}} — the Crystal route starts here, and there is no fight anywhere under it. Searching plainly costs 4 hull and an engine hit; **Rock Plating** searches for free." },
+        { "lead": "Crew", "text": "A **Crystal crew member** at {{ZOLTAN_CREW_STUDY}}, if you arrive already carrying the pod." },
+        { "lead": "Augment · Weapon", "text": "**Engi Med-bot Dispersal** from {{DISTRESS_ENGI_REBEL}} for 40 scrap, 2 missiles and 2 fuel; the **Healing Burst** bomb is one of three draws off the cheaper 25-scrap option." },
+        { "lead": "Augment", "text": "**Drone Reactor Booster** from {{ENGI_VIRUS}} — every Hacking and Lanius branch hands it over." },
+        { "lead": "Crew", "text": "An **Engi with two levels in every skill**: take the Engi option on {{ENGI_VIRUS}}, lose the crewman to the virus, win the fight, and it walks back out." },
+        { "lead": "Scrap", "text": "{{ENGI_GIFT}} and {{ENGI_SURRENDER}} are free standard rewards with nothing asked in return — two of the six events on the three Engi item beacons." }
+      ]
+    },
+    {
+      "title": "What can bite",
+      "items": [
+        { "lead": "Crew", "text": "Five events can cost you a crew member: {{DISTRESS_INFESTATION}}, {{DISTRESS_ENGI_REACTOR}}, {{CONFUSED_MANTIS}}, {{MERCHANT_REQUEST}}, and the Engi branch of {{ENGI_VIRUS}}." },
+        { "lead": "Boarders", "text": "Six events put someone aboard — up to four at {{FUELING_STATION}}, three to four at {{MERCHANT_REQUEST}}, two at {{ZOLTAN_CREW_STUDY}}, Mantis from {{ENGI_STATION_DISTRESS}} and {{ALISON_MANTIS_CREW}}, two to three humans on one draw of {{FEDERATION_PLANET_SIGNAL}}." },
+        { "lead": "Systems", "text": "{{ENGI_VIRUS}} halves your shields **and** engines before the fight if you try to purge it yourself, and {{PIRATE_NO_ESCAPE}} holds engines at one bar until the pirate is dead." },
+        { "lead": "The fleet", "text": "{{SQUAT_WARNING}} is a fight with no choice attached, and letting the scout jump away costs a jump of your lead. {{PIRATE_BRIBER}} can buy one back, but only on the branch where you fight the pirate and the victim turns out to be a Rebel scout." }
+      ]
+    }
+  ]
+}

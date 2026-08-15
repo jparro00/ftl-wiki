@@ -110,7 +110,7 @@ Different prose, identical mechanics. There is no downside branch.
 - [[event-rock-fight]] — the `ROCK_SHIP` fight both risky branches load
 - [[event-rock-atheists]] — the other `NEUTRAL_ROCK` blue-option beacon
 - [[item-slug-crew]] — the gate on choice 3
-- [[concept-auto-rewards]] — how `autoReward` levels resolve
+- [[concept-autoreward-tiers]] — how `autoReward` levels resolve
 
 ## Open Questions
 - [ ] Does an unrecognised `autoReward level` string genuinely fall through to `RANDOM`?

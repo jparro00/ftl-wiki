@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata>
+	<title><![CDATA[ Event Labels ]]></title>
+	<threadUrl><![CDATA[ https://subsetgames.com/ftl_mods.html ]]></threadUrl>
+	<author><![CDATA[ generated from an FTL event wiki ]]></author>
+	<version><![CDATA[ 1.0 ]]></version>
+	<description>
+<![CDATA[
+Prints the name of each event above its text, so you always know which
+encounter you are looking at. 386 events are labelled.
+
+Text only - no choice, requirement, reward, ship or probability is changed.
+
+Compatibility:
+- Built against FTL 1.6.x data.
+- 351 events are relabelled by replacing a string only that event uses, which
+  leaves every event definition untouched.
+- 35 events are redefined outright, and will clobber another mod that redefines
+  the same event (or be clobbered by it, depending on patch order).
+]]>
+	</description>
+</metadata>

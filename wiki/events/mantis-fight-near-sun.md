@@ -10,7 +10,7 @@ chain: []
 version: ae
 first_seen: 2026-08-09
 last_updated: 2026-08-09
-sources: 5
+sources: 4
 tags: [mantis, no-choice, default-rewards, environmental-hazard, sun, combat]
 ---
 
@@ -67,7 +67,7 @@ None.
 ## Related
 - [[event-mantis-fight]] — the same fight without the star
 - [[event-mantis-fight-choice]] — the avoidable version
-- [[concept-environmental-hazards]] — sun / asteroid / pulsar / nebula beacon effects
+- [[concept-hazards]] — sun / asteroid / pulsar / nebula beacon effects
 - [[entity-mantis]]
 - [[sector-mantis-controlled-sector]], [[sector-mantis-homeworlds]]
 

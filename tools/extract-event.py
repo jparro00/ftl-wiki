@@ -368,8 +368,53 @@ def gate_of(choice, idx):
 
 
 class Extractor:
-    def __init__(self, idx):
+    def __init__(self, idx, pages=None):
         self.idx = idx
+        # event id → (slug, title) for events documented as events in their own
+        # right. Used only by dispatch_pool(): see there for why extraction needs it.
+        self.pages = pages or {}
+
+    def dispatch(self, el):
+        """This list entry as a pointer to a whole event of its own, or None.
+
+        An entry qualifies when it is a bare `<event load="X"/>` and X is a
+        top-level event with a wiki page — i.e. a complete, separately documented
+        encounter rather than an outcome of the event being extracted.
+        """
+        target = el.get("load")
+        if not target or len(el):
+            return None
+        if target not in self.idx.events or target not in self.pages:
+            return None
+        slug, title = self.pages[target]
+        return {"label": title,
+                "child": {"effects": [],
+                          "node": {"kind": "ref", "target": target, "card": slug}}}
+
+    def dispatch_pool(self, entries):
+        """Options for a list every one of whose entries is a whole event, else None.
+
+        `EXIT_LIST` → `NEUTRAL_EXIT` / `ITEMS`, and `NO_FUEL`, are *dispatch pools*:
+        the list does nothing but pick one complete event to run. Inlining those
+        copies thirty cards into one — FINISH_BEACON reached 529 text nodes, 2.7x
+        the next largest card, and reading it meant scanning every event that could
+        roll instead of the one that did. Nothing is lost by pointing instead: the
+        save records the rolled event's text as soon as the pool resolves, so the
+        watcher swaps to that event's own card on the next poll, and the pool card
+        only ever has to say what *can* follow.
+
+        **All or nothing, and that is the point.** A list that mixes `load=` entries
+        with anonymous `<event>` bodies is an outcome table, not a dispatcher — its
+        loads are outcomes of *this* event and must stay inlined. REFUGEE's list is
+        four `REFUGEE_TRADER` loads plus four inline ambushes; collapsing the four
+        loads there threw away the trade offers, which are the reason to read the
+        card at all. Requiring every entry to qualify is what separates the two,
+        structurally, without a judgement call about which lists are "big".
+        """
+        if len(entries) < 2:
+            return None
+        options = [self.dispatch(e) for e in entries]
+        return options if all(options) else None
 
     def event(self, el, stack, depth, name=None):
         """One <event> element → an event record: text, effects, and one node."""
@@ -417,6 +462,7 @@ class Extractor:
         lst = self.idx.lists[name]
         entries = [e for e in lst if isinstance(e.tag, str) and e.tag == "event"]
         src = self.idx.where("eventList", name)
+        pool = self.dispatch_pool(entries)
         return {
             "kind": "chance",
             "list": name,
@@ -424,11 +470,13 @@ class Extractor:
             "source": f"raw/gamedata/{src}" if src else None,
             # No entry in the shipped files carries a weight attribute.
             "odds_basis": "unweighted" if not any("prop" in e.attrib for e in entries) else "file-weight",
+            **({"dispatch": True} if pool else {}),
             "options": [
                 {"share": e.attrib.get("prop"),
                  **({"dlc": True} if dlc_marked(lst, e) or dlc_first_child(e) else {}),
-                 "child": self.event(e, stack | {name}, depth + 1)}
-                for e in entries
+                 **(pool[i] if pool
+                    else {"child": self.event(e, stack | {name}, depth + 1)})}
+                for i, e in enumerate(entries)
             ],
         }
 
@@ -623,7 +671,7 @@ def main():
     slug = args.slug or page_slug or args.event.lower().replace("_", "-")
     title = args.title or page_title or slug.replace("-", " ").capitalize()
 
-    ex = Extractor(idx)
+    ex = Extractor(idx, pages)
     root = ex.event(idx.events[args.event], {args.event}, 0, name=args.event)
 
     # Follow quest markers breadth-first: a stage can hand out another marker

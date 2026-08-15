@@ -28,7 +28,7 @@ joke and pays out.
 - [[event-engi-smashed-ships]] — `ENGI_SEX`
 
 ## Other Pages Touched
-- [[entity-engi]], [[concept-auto-rewards]]
+- [[entity-engi]], [[concept-autoreward-tiers]]
 
 ## Contradictions Flagged
 None against the game files; the `MEDIUM`/`MED` note is an interpretation recorded on

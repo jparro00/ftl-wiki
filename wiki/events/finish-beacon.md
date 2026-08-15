@@ -9,7 +9,7 @@ blue_options: []
 chain: []
 version: both
 first_seen: 2026-08-09
-last_updated: 2026-08-09
+last_updated: 2026-08-14
 sources: 4
 tags: [exit-beacon, structural, engine-event, orphan, no-choice]
 ---
@@ -44,7 +44,20 @@ It fires on arrival at the sector's exit (Long-Range) beacon. Compare
 |---|--------|-------------|-----------|------|
 | — | `<choice hidden="true">` labelled `continue` | — | Loads `EXIT_LIST` — a bonus encounter fires at the exit beacon. | 100% |
 
-The choice is `hidden="true"`, meaning it is not a decision — it chains automatically.
+The choice is `hidden="true"`. That attribute has no documented meaning in any source this
+repo holds, so what it does was read off the game instead.
+
+> ⚠️ **CONTRADICTION: "chains automatically" is wrong.** This page previously stated the
+> hidden choice fires without player input. Observed on 2026-08-14 (`wiki/log.md`, tooling
+> entry of that date): the save sat at `event_FINISH_BEACON_text` with `choices []` for about
+> twelve minutes of wall time while the player idled at the exit beacon, then moved in a
+> single write to `event_REBEL_TRANSPORT_text` with `choices [0]`. An automatic chain would
+> have advanced the displayed text on arrival. So the player **does** see the Long-Range
+> Beacon window and dismisses it, and only then does `EXIT_LIST` resolve.
+>
+> What `hidden="true"` changes is therefore something about how the choice is *presented*,
+> not whether it is taken. This is one observation of one event, not a general finding about
+> the attribute's other 796 uses.
 
 ### `EXIT_LIST`
 

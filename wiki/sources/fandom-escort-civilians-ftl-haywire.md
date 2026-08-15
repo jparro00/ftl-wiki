@@ -28,8 +28,9 @@ quest-destination content via a transcluded template.
 - States that choice 1 grants low **scrap only** plus a quest marker, and that the blue
   option grants **high scrap with resources**. Both match the files' `autoReward` payload
   types (`scrap_only` / `standard`).
-- Notes the event *"is similar to [[Escort nearby ship]] in terms of quest beacon
-  rewards"* — the two share the `QUEST_ESCORT_ARRIVE` destination list in the files.
+- Notes the event *"is similar to Escort nearby ship in terms of quest beacon
+  rewards"* — Fandom's "Escort nearby ship" is [[event-escort-civilians]] (`QUEST_ESCORT`),
+  and the two share the `QUEST_ESCORT_ARRIVE` destination list in the files.
 - The destination content is transcluded (`{{Escort Civilian Ship}}`), so the retrieved
   markup does **not** contain the destination outcomes; those come from
   [[source-events-xml]] here.
@@ -39,7 +40,7 @@ quest-destination content via a transcluded template.
 - [[event-escort-civilians-ftl-haywire]]
 
 ## Other Pages Touched
-- [[item-ftl-jumper]], [[event-escort-nearby-ship]], [[concept-quest-beacons]]
+- [[item-ftl-jumper]], [[event-escort-civilians]], [[concept-quest-beacon-placement]]
 
 ## Reliability Notes
 `medium`. No game version stated. The unexpanded template means this page is *less*

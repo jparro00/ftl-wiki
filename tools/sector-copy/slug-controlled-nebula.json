@@ -1,0 +1,89 @@
+{
+  "slug": "slug-controlled-nebula",
+
+  "lede": "Slug space does not open a fight, it opens with one of your systems already switched off — your doors, your oxygen, your medbay, or whichever of shields, oxygen and weapons you are made to nominate. **A Hacking system is the one blue option that answers all four**, and the nebula takes your sensors away before you can see any of it coming. Eleven entries, and the whole pool is built twice: once inside the clouds and once outside them.",
+
+  "stats": [
+    { "metric": "beacons_min..beacons_max", "label": "Beacon spread" },
+    { "metric": "section:hostile:min..section:hostile:max", "label": "Hostile beacons" },
+    { "metric": "section:distress:min..section:distress:max", "label": "Distress beacons" },
+    { "metric": "entry:STORM_SLUG:min..entry:STORM_SLUG:max", "label": "Plasma storms" },
+    { "metric": "gated_events", "label": "Events with blue options" }
+  ],
+
+  "callout": "**The nebula split is the sector.** Five entries carry `NEBULA` or `STORM` names and own 13 of the 18 guaranteed beacons; the other six fill the rest. Four of them are literal twins — hostile, neutral, store and empty each exist in both forms, and every event inside a `NEBULA` list carries the nebula flag while none outside one does.",
+
+  "section_notes": {
+    "HOSTILE_SLUG": "The dry half of the hostile pool: four straight fights, plus {{DONOR_BLACK_RAVEN}}, which is a challenge you can answer with a Slug telepath instead of guns.",
+    "NEBULA_HOSTILE_SLUG": "The largest single allocation in the sector, and three of its six events are the same trick — a remote hack that kills your doors, your oxygen, or your medbay and clone bay together, and only then powers weapons. Hacking counters all three, at the cost of your own hacking system for that fight.",
+    "NEBULA_NEUTRAL_SLUG": "Thirteen events competing for three to five beacons, and the least neutral list in the sector: a repair station that bills you afterwards, a store that is sometimes an ambush, and both of the quest markers.",
+    "NEUTRAL": "The generic pool, and where five of the six Sensors blue options live — outside the clouds, where sensors still work.",
+    "STORM_SLUG": "Only the Slug sectors allocate this. Two plasma-storm fights, and {{STORM_BOARDING}}, which puts three to four humans aboard with no ship to shoot back at.",
+    "DISTRESS_BEACON_SLUG": "The one mixed list — five of these eight carry the nebula flag and three do not. {{TRAP_BEACON}} is a fight on arrival, {{SLUG_DISTRESS_TRICK}} is a boarding dressed as a repair job, and {{SLUG_DISTRESS_MANTIS}} lets you pick which of the two ships to shoot."
+  },
+
+  "chain": {
+    "title": "ABADOTH · the dying stranger's coordinates",
+    "steps": [
+      {
+        "marker": "1",
+        "title": "{{NEBULA_BATTLEFIELD}}",
+        "detail": "A Slug crewman finds the survivor straight away. Without one you investigate blind: one outcome in five turns up the life form, and another pummels you for 4 hull, a system and a fire.",
+        "ref": "NEBULA_BATTLEFIELD · req=\"slug\""
+      },
+      {
+        "marker": "2",
+        "title": "Let them die",
+        "detail": "The marker is only planted if you make them comfortable for their final moments. **Advanced Medbay and Clone Bay both save them** — you gain a crew member and the coordinates are never spoken.",
+        "ref": "BATTLEFIELD_SURVIVOR"
+      },
+      {
+        "marker": "3",
+        "title": "Empty coordinates",
+        "detail": "Nothing at the beacon. A Slug crewman scans it out for free; anyone else pays a jump of Rebel lead for a full system scan. Either way a cloaked Zoltan ship decloaks and asks what you are doing here.",
+        "ref": "SECRET_WORD_ABADOTH"
+      },
+      {
+        "marker": "✓",
+        "title": "Say the word",
+        "detail": "It is a password test with five answers. **ABADOTH** pays; an Engi crewman recalls it from memory. Explaining yourself, ANODYNE and ABATODH all end with the Zoltan ship cloaking and opening fire.",
+        "ref": "SECRET_WORD_ABADOTH_CONCLUSION"
+      }
+    ]
+  },
+
+  "panels": [
+    {
+      "title": "Blue options that pay here",
+      "items": [
+        { "lead": "Hacking ×6", "text": "The sector's answer key. It counters every Slug system hack — {{NEBULA_SLUG_DOORS}}, {{NEBULA_SLUG_OXYGEN}}, {{NEBULA_SLUG_MEDBAY}} and {{NEBULA_SLUG_CHOOSE_DEATH}} — though the counter zeroes your own hacking system for the duration of that fight." },
+        { "lead": "Slug ×5", "text": "A mind duel instead of a battle at {{DONOR_BLACK_RAVEN}}, the teleporting boarder spotted early at {{NEBULA_SLUG_FAKE_STORE}}, the survivor found at {{NEBULA_BATTLEFIELD}}, a conversation at {{DONOR_PONY}}, and a better price at {{PIRATE_SALESMAN}}." },
+        { "lead": "Sensors ×6", "text": "Level 2 or 3, and worth less than the count suggests: only {{NEBULA_REBEL_CHASE}} is inside the clouds. The other five sit in the non-nebula lists." },
+        { "lead": "Scanners ×2", "text": "Long-Ranged Scanners work where sensors do not — {{NEBULA_LOST_SHIP}} and {{NEBULA_REBEL_CHASE}} both say outright that you cannot track anything through the nebula without them." },
+        { "lead": "Medbay ×3", "text": "Level 2 saves the plague victim at {{DONOR_PLAGUE}}, keeps half your medbay powered through {{NEBULA_SLUG_MEDBAY}} instead of losing it entirely, and turns the dying survivor into crew." },
+        { "lead": "Mind Control ×1", "text": "Talks {{NEBULA_WEAPONS_TRADER}} down on price. One of its two outcomes has him come to his senses and attack instead." }
+      ]
+    },
+    {
+      "title": "What you can leave with",
+      "items": [
+        { "lead": "Crew", "text": "A free Slug at {{SLUG_DISTRESS_QUESTION}} if you count the moons correctly — the text names the number. Getting it wrong costs 35 scrap, fuel and drone parts." },
+        { "lead": "Crew", "text": "Slocknog at {{SLUG_DISTRESS_RESCUE}} asks 55 scrap. Ignore him once and he offers to come along for nothing." },
+        { "lead": "Crew", "text": "An Engi from {{DONOR_PONY}}, a Human from {{DONOR_PLAGUE}}, and Mantis, Rock or Engi for sale at {{FRIENDLY_SLAVER}}." },
+        { "lead": "Weapon", "text": "A high weapon reward from {{DONOR_BLACK_RAVEN}} for winning the duel or taking his surrender; a random weapon for 45 scrap from {{NEBULA_WEAPONS_TRADER}}, where one of two outcomes takes the scrap and hands over nothing." },
+        { "lead": "Reactor", "text": "{{ROCK_SLUG_ARGUMENT_NEBULA}} can end with the Slug captain giving you a free reactor bar for settling the debt — or selling you one." },
+        { "lead": "Hull", "text": "10 hull repaired by drinking with the captain at {{SLUG_DRINK}}, which a Rockman can do for you safely." }
+      ]
+    },
+    {
+      "title": "What can bite",
+      "items": [
+        { "lead": "Systems", "text": "The hacker trio does not damage a system, it switches it off: doors, oxygen production, or medbay and clone bay both. {{NEBULA_SLUG_CHOOSE_DEATH}} halves shields, oxygen or weapons at your choice, or takes 35 scrap to go away." },
+        { "lead": "Boarders", "text": "Six events put someone aboard — up to four at {{FUELING_STATION}}, three to four humans at {{STORM_BOARDING}}, two Slugs teleported in before the fight even starts at {{NEBULA_SLUG_MEDBAY}}." },
+        { "lead": "Crew", "text": "Only three events can kill a crew member outright: {{SLUG_DISTRESS_TRICK}}, {{DONOR_PLAGUE}} and {{DONOR_PONY}} — and the last two sit in `NEUTRAL`, which places one or two beacons." },
+        { "lead": "Scrap", "text": "{{NEBULA_SLUG_HULLFIX}} repairs you and then presents a bill for 50 scrap or 15 fuel. Refusing to pay starts a fight with your weapons halved or 4 hull already gone, and a third docking outcome caps your engines at 1 before the shooting even begins." },
+        { "lead": "Sales", "text": "{{NEBULA_SLUG_FAKE_STORE}} is a real store on one of three outcomes. The other two board you, and one of them locks your weapons off first." }
+      ]
+    }
+  ]
+}

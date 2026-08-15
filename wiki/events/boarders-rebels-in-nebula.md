@@ -10,7 +10,7 @@ chain: []
 version: both
 first_seen: 2026-08-09
 last_updated: 2026-08-09
-sources: 4
+sources: 5
 tags: [rebel, nebula, boarding, unique, no-choice, no-enemy-ship]
 ---
 
@@ -75,7 +75,7 @@ None.
 - [[event-rebel-fight-with-boarders]] — Rebel boarders *with* a ship attached
 - [[event-boarders-mantis]], [[event-boarders-crystal]] — other faction boarding events
 - [[sector-uncharted-nebula]]
-- [[concept-nebula-beacons]]
+- [[concept-nebula-mechanics]]
 - [[concept-rebel-fleet-advance]]
 
 ## Open Questions

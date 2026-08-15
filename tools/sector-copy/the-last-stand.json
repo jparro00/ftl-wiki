@@ -1,0 +1,90 @@
+{
+  "slug": "the-last-stand",
+
+  "lede": "Eight events, seventeen to twenty beacons, and not one blue option anywhere in the pool — every allocation but the neutral list is fixed, and all six hostile beacons are the same fight. What the sector places is mostly supply: three repair stations and a store. What it is actually about is not in the table below at all — the **Rebel Flagship** sits at the Federation Base, put there by the endgame rather than by any entry here.",
+
+  "stats": [
+    { "metric": "beacons_min..beacons_max", "label": "Beacon spread" },
+    { "metric": "section:hostile:min..section:hostile:max", "label": "Forced fights" },
+    { "metric": "entry:BOSS_REPAIR_STATION:min..entry:BOSS_REPAIR_STATION:max", "label": "Repair stations" },
+    { "metric": "distinct_events", "label": "Events in pool" },
+    { "metric": "gated_events", "label": "Blue options" }
+  ],
+
+  "callout": "**The fight that is not listed.** Every row above is an allocation the sector must satisfy. The Flagship is not one of them: `BOSS_TEXT_1`, `BOSS_TEXT_2` and `BOSS_TEXT_3` sit in no event list and no sector description, and the Federation Base beacon is placed by the endgame. The entry beacon is odd in the other direction — the sector starts you on the `BOSS_NEUTRAL` list rather than on a named event, so the beacon you arrive at is a different encounter every run.",
+
+  "section_notes": {
+    "BOSS_HOSTILE": "One event, written into the list three times, filling six beacons — every hostile beacon in the sector is the same encounter. Its ship is drawn from a roster of two crewed Rebel hulls and two automated ones, and it has no surrender branch and no escape branch: once {{BOSS_SCOUT}} starts, it runs to a wreck.",
+    "BOSS_NEUTRAL": "The only entry with any range in it, and the sector's entry beacon draws from here too. {{BOSS_FLEETS_BOTH_FIGHT}} and {{REBEL}} are fighting the moment you drop in; {{BOSS_FLEETS_FED}} is pure scenery; {{BOSS_SCOUT_RESCUE}} and {{SQUAT_REFUEL_STATION}} both let you decline.",
+    "BOSS_REPAIR_STATION": "No choices, no risk and no fight: 15 hull, every damaged system restored, 4 missiles, 5 fuel, 5 drone parts and 22–44 scrap, three times over.",
+    "STORE": "One store, and the only beacon in the sector where scrap turns into anything."
+  },
+
+  "chain": {
+    "title": "The Rebel Flagship · fought in three phases",
+    "steps": [
+      {
+        "marker": "1",
+        "title": "Arrive at the Federation Base",
+        "detail": "The entry event runs once and pays **10 fuel** and **10 hull repaired** before you jump anywhere. The base beacon itself is flavour: you hang back near the far side of the moon while the two fleets skirmish, and prepare to face the Flagship.",
+        "ref": "LAST_STAND_START → FEDERATION_BASE"
+      },
+      {
+        "marker": "2",
+        "title": "Phase 1 — four artillery mounts",
+        "detail": "It carries no weapons and no drones; everything it fires comes from four artillery mounts, behind cloaking and four layers of shields. Advanced Edition adds a **Hacking** system and removes the Easy-difficulty shield discount.",
+        "ref": "BOSS_TEXT_1 · bosses.xml BOSS_1_*"
+      },
+      {
+        "marker": "3",
+        "title": "Phase 2 — the drone surge",
+        "detail": "One artillery mount fewer, and the drone system running at power 8. The only edition difference is the lost Easy-mode shield discount; the systems are otherwise identical between vanilla and Advanced Edition.",
+        "ref": "BOSS_TEXT_2 · bosses.xml BOSS_2_*"
+      },
+      {
+        "marker": "4",
+        "title": "Phase 3 — boarders and the super weapon",
+        "detail": "Two artillery mounts, engines at 6, a teleporter and an `invasion` boarding AI. Advanced Edition adds **Mind Control** — so in AE the last phase mind-controls your crew while it boards you, where vanilla only boards.",
+        "ref": "BOSS_TEXT_3 · bosses.xml BOSS_3_*"
+      },
+      {
+        "marker": "✓",
+        "title": "It dies, or it jumps",
+        "detail": "A phase that loses its crew but keeps shooting is the AI taking over. A phase that breaks off pays a high standard reward and sends you after it. The kill event still ends on a leftover beta message thanking you for playing.",
+        "ref": "BOSS_AUTOMATED / BOSS_ESCAPED / BOSS_DESTROYED"
+      }
+    ]
+  },
+
+  "panels": [
+    {
+      "title": "What the sector hands you",
+      "items": [
+        { "lead": "Repair", "text": "{{BOSS_REPAIR_STATION}} is a fixed three beacons: 15 hull, every damaged system restored, 4 missiles, 5 fuel, 5 drone parts and 22–44 scrap, each time." },
+        { "lead": "On arrival", "text": "Entering the sector pays 10 fuel and repairs 10 hull before you have jumped anywhere." },
+        { "lead": "Hull", "text": "{{BOSS_SCOUT_RESCUE}} can repair 8 more hull — one of three outcomes after you save the cruiser, the others being thanks and a bundle of supplies." },
+        { "lead": "Fuel", "text": "{{SQUAT_REFUEL_STATION}} pays a fuel bonus from the grateful outpost on top of the salvage, but only if you choose to intervene." },
+        { "lead": "Crew", "text": "Two events can hand you a crew member, {{BOSS_SCOUT}} and {{REBEL}}, and only through the dead-crew salvage — the prisoner is found aboard a ship whose crew you killed, not one you blew up." },
+        { "lead": "Store", "text": "Exactly one, allocated 1–1, and the last place to spend scrap before the Flagship." }
+      ]
+    },
+    {
+      "title": "What can bite",
+      "items": [
+        { "lead": "Six forced fights", "text": "{{BOSS_SCOUT}} fills every hostile beacon, and the ship it loads has no surrender and no escape branch. Every one of the six ends in a destroyed hull or a dead crew." },
+        { "lead": "Thin pay", "text": "{{BOSS_FLEETS_BOTH_FIGHT}} is fighting on arrival and pays a low, scrap-only reward when destroyed — the text says outright there is no time to salvage the wreck." },
+        { "lead": "Runners", "text": "{{REBEL}} can surrender or power up its FTL and leave, so a beacon that looks like scrap can end with neither the fight nor the salvage." },
+        { "lead": "Attrition, not disaster", "text": "No event in this pool puts boarders aboard and none can kill a crew member. What the sector takes is hull and ammunition, across the six guaranteed fights plus whatever the neutral pool adds." }
+      ]
+    },
+    {
+      "title": "What is not here",
+      "items": [
+        { "lead": "Blue options", "text": "None. Not one event in the pool has a gated choice, so no system level, augment or crew species changes a single outcome in this sector." },
+        { "lead": "Quests and unlocks", "text": "Nothing here plants a quest marker, unlocks a ship, or hands out a named weapon or augment." },
+        { "lead": "Species", "text": "No crew type is referenced anywhere in the pool, and the sector declares no store rarity list of its own." },
+        { "lead": "Unique", "text": "{{SQUAT_REFUEL_STATION}} is the only event here carrying the files' own unique flag." }
+      ]
+    }
+  ]
+}

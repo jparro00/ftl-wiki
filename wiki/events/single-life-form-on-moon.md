@@ -154,7 +154,7 @@ Questions.
 
 ## Related
 - [[concept-event-tree-grammar]] — the node grammar every event is built from
-- [[event-small-asteroid-belt-distress-beacon]] — Fandom notes its Teleporter blue option
+- [[event-asteroid-belt-distress]] — Fandom notes its Teleporter blue option
   loads the same `FAMILY_RETURN` sub-event
   ([[source-fandom-single-life-form-on-moon]])
 - [[concept-event-list-weighting]] — the assumption behind every fraction above

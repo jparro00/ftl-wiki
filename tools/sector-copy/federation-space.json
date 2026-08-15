@@ -1,0 +1,82 @@
+{
+  "slug": "federation-space",
+
+  "lede": "The sector a run opens in, and the only one in the game that names a boarding pool and then allocates it nothing: `HOSTILE_BOARDING` sits at **0–0**, eight events listed with no beacon to put them on. What is left is the plainest pool there is — pirates, Rebel patrols and auto-scouts across six to eight hostile beacons, one store guaranteed, one quest beacon guaranteed, and **nothing named** anywhere in it. The nebula entry is the widest swing in the budget: 0–4 beacons, and a map can roll none.",
+
+  "stats": [
+    { "metric": "beacons_min..beacons_max", "label": "Beacon spread" },
+    { "metric": "section:hostile:min..section:hostile:max", "label": "Hostile beacons" },
+    { "metric": "entry:HOSTILE_BOARDING:max", "label": "Boarding beacons" },
+    { "metric": "entry:QUESTS:min..entry:QUESTS:max", "label": "Quest beacons" },
+    { "metric": "distinct_events", "label": "Events in pool" }
+  ],
+
+  "callout": "**Versus the Civilian Sector**, which draws the same list at almost every entry: that one gets 2–3 stores and 2–3 item beacons against this sector's 1–2 and 1, and up to 8 nebula beacons against 4. What Federation Space has instead is the guaranteed quest beacon — 1–1, where the Civilian Sector's is 0–2 — and a `HOSTILE_BOARDING` entry at all, which the Civilian Sector's XML has commented out.",
+
+  "section_notes": {
+    "HOSTILE1": "Two beacons, fixed, no range. {{SQUAT_WARNING}} and {{AUTO_WARNING}} both call the fleet a jump closer if the ship gets away, and {{PIRATE_CHOICE}} sells you a way past for 15–25 scrap.",
+    "HOSTILE_BOARDING": "Eight events, zero beacons — the only entry in any sector with a maximum of zero. Whether the engine reaches this list by some route outside sector allocation is not something the files answer, so it is shown here rather than dropped.",
+    "NEUTRAL_CIVILIAN": "The deepest entry in the sector, because it contains the whole distress list: all 14 `DISTRESS_BEACON` events can land here too, on top of its own nine.",
+    "NEBULA": "0–4 beacons, the widest range in the budget. Three of the five boarding events this sector can actually place live in here, so a nebula-free map is close to a boarder-free one.",
+    "ITEMS": "One beacon, guaranteed — but only three of these thirteen hand over anything free: {{FIND_DRONE}}, {{FIND_WEAPON}} and {{FREE_ITEMS}}. The rest are trades, and {{TAVERN_HIRE}} is a crew shop that happens to sit in the item pool.",
+    "QUESTS": "One beacon, guaranteed, out of six. {{QUEST_CREWDEAD_START}} is the one you cannot accept empty-handed — every branch that plants its marker is behind a Teleporter, an Anti-Bio Beam or a Fire Bomb."
+  },
+
+  "chain": {
+    "title": "The hidden Federation base",
+    "steps": [
+      {
+        "marker": "1",
+        "title": "Three ways in",
+        "detail": "{{FEDERATION_PLANET_SIGNAL}}, {{CIVILIAN_ASTEROIDS_BEACON}} and {{REBEL_VS_FEDERATION}} all plant the same marker — one from the quest beacon, two from distress calls. On the asteroid belt it takes a Defense Drone or a Repair Drone to get there.",
+        "ref": "HIDDEN_FEDERATION_BASE_LIST"
+      },
+      {
+        "marker": "2",
+        "title": "The marked beacon",
+        "detail": "Five outcomes: a drone, a crew member, supplies with **35 hull repaired**, a second base under attack — or an empty search, which Sensors 2, Sensors 3 or Long-Ranged Scanners turns into a cache under the rock.",
+        "ref": "HIDDEN_FEDERATION_BASE_LIST"
+      },
+      {
+        "marker": "✓",
+        "title": "The base under fire",
+        "detail": "An automated drone bombarding the outpost, no choices before the fight. Destroy it and a survivor joins the crew; one of the two versions also repairs 7 hull and pays a high standard reward.",
+        "ref": "FEDERATION_BASE_ASSIST"
+      }
+    ]
+  },
+
+  "panels": [
+    {
+      "title": "Blue options that pay here",
+      "items": [
+        { "lead": "Crew Teleporter ×8", "text": "The most-used gate in the sector. It is one of three keys into {{QUEST_CREWDEAD_START}}, lifts a survivor off {{CIVILIAN_ASTEROIDS_BEACON}}, and at level 2 tries to take a slave from {{FRIENDLY_SLAVER}} without paying — which can turn him hostile instead." },
+        { "lead": "Cloaking ×5", "text": "Graded at {{DISTRESS_SATELLITE_DEFENSE}}: the same choice pays low, medium or high at levels 1, 2 and 3." },
+        { "lead": "Hacking ×4", "text": "{{AUTO_HACKER}} halves your shield system if you have no answer. Hacking cancels the virus and turns it into an ordinary fight." },
+        { "lead": "Engines ×4", "text": "Level 6 is the alternative to handing a crew member over at {{PIRATE_SLAVER}} — it starts the fight on your terms rather than avoiding it." },
+        { "lead": "Medbay ×4", "text": "Both levels matter at {{STRANDED_BEACON}}: level 2 saves the man, level 3 returns him with a level in **every** skill." },
+        { "lead": "Rockman / Engi ×2", "text": "{{DISTRESS_STATION_FIRE}} pays a high-tier augment for a Rock crew member; {{DISTRESS_STATION_DISEASE}} takes either species. In both events it is the plain choice that risks a crew member." }
+      ]
+    },
+    {
+      "title": "What you can leave with",
+      "items": [
+        { "lead": "Nothing named", "text": "No event in this pool hands over a specific weapon, drone or augment — every reward is a generic tier roll. Crew and fleet time are what is actually worth routing for." },
+        { "lead": "Crew, bought", "text": "{{TAVERN_HIRE}} sells crew outright at 25–45 and 25–55 scrap. {{FRIENDLY_SLAVER}} sells one for 25–45." },
+        { "lead": "Crew, free", "text": "{{STRANDED_BEACON}} is a free hand with a level in one skill — unless the roll gives you the madman instead, which costs a crew member." },
+        { "lead": "Fleet time", "text": "{{MERCENARY}} sells two jumps of delay for 10–25 scrap, or the whole sector map for 10–20." },
+        { "lead": "Fleet time", "text": "Beat the pirate at {{PIRATE_BRIBER}} and the ship you saved can be leaned on for a jump of delay instead of scrap." },
+        { "lead": "Hull", "text": "The biggest repair in reach is on the hidden-base chain: one of its outcomes puts 35 hull back." }
+      ]
+    },
+    {
+      "title": "What can bite",
+      "items": [
+        { "lead": "Boarders", "text": "14 events in the pool put boarders aboard, and 8 of them sit in the 0–0 list. The six that remain are {{FEDERATION_PLANET_SIGNAL}}, {{REFUGEE_GHOST}}, {{MERCHANT_REQUEST}} and three nebula beacons." },
+        { "lead": "Crew", "text": "10 events can kill a crew member. Only two of them specify no clone: {{PIRATE_SLAVER}}, where you hand one over, and {{DISTRESS_STATION_DISEASE}}." },
+        { "lead": "The fleet", "text": "{{SQUAT_WARNING}} and {{AUTO_WARNING}} are both in the fixed two-beacon hostile pair, and both advance the fleet a jump if the ship escapes." },
+        { "lead": "Systems", "text": "{{QUEST_CREWDEAD_START}} asks you to take a ship intact. Destroying it instead costs 13 hull, a system, and fires — the payout only comes from killing the crew." }
+      ]
+    }
+  ]
+}

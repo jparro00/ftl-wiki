@@ -23,7 +23,7 @@ Anti-Personnel Drone branch's drone-part cost.
 - **Names the in-game id explicitly**: *"This event is called 'STATION_SICK' in the
   datafiles."* This is the join key.
 - Records that the event also occurs as *"the station doesn't respond"* sub-event of
-  [[event-merchants-request]]'s Merchant's Delivery scenario, and that the Lifeform Scanner
+  [[event-merchant-s-request]]'s Merchant's Delivery scenario, and that the Lifeform Scanner
   blue option *"only appears if this event is found alone"* — consistent with the XML,
   where `MERCHANT_DELIVER_LIST` loads `STATION_SICK_LIST` and `STATION_SICK_DRONE_LIST` but
   not `STATION_SICK_SCANNER`.
@@ -46,7 +46,7 @@ Anti-Personnel Drone branch's drone-part cost.
 - [[event-research-station-with-no-response]]
 
 ## Other Pages Touched
-- [[event-merchants-request]], [[item-anti-personnel-drone]], [[item-lifeform-scanner]]
+- [[event-merchant-s-request]], [[item-anti-personnel-drone]], [[item-lifeform-scanner]]
 
 ## Reliability Notes
 `medium`. The page states no game version, so `game_version` is `unknown` — not `ae`, even

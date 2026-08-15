@@ -1,0 +1,84 @@
+{
+  "eyebrow": "Sector profile",
+  "facts": {
+    "unique": "at most one per run",
+    "repeatable": "can repeat in a run",
+    "min_sector": "minSector",
+    "tracks": "tracks",
+    "data": "Advanced Edition data",
+    "start": "entry beacon"
+  },
+  "headings": {
+    "budget": "Beacon budget",
+    "budget_meta": "what the sector is required to place",
+    "chain": "Quest chain",
+    "rarity": "Crew in stores",
+    "panels": "Notes"
+  },
+  "sections": {
+    "special":  { "label": "Named beacons",  "hint": "placed by name, not drawn from a pool" },
+    "hostile":  { "label": "Hostile",        "hint": "combat unless the row says otherwise" },
+    "boarders": { "label": "Boarders",       "hint": "something comes aboard" },
+    "neutral":  { "label": "Neutral",        "hint": "a choice, sometimes a fight" },
+    "nebula":   { "label": "Nebula",         "hint": "inside the cloud" },
+    "distress": { "label": "Distress",       "hint": "someone is calling for help" },
+    "items":    { "label": "Items",          "hint": "free kit, trades and stations" },
+    "store":    { "label": "Stores",         "hint": "" },
+    "quests":   { "label": "Quest starts",   "hint": "marks a beacon elsewhere on the map" },
+    "empty":    { "label": "Empty",          "hint": "flavour text, nothing happens" }
+  },
+  "tags": {
+    "fight":     "Fight",
+    "may-fight": "May fight",
+    "boarders":  "Boarders",
+    "crew":      "Crew",
+    "crew-loss": "Crew loss",
+    "store":     "Store",
+    "quest":     "Quest",
+    "reward":    "Reward",
+    "cost":      "Cost",
+    "unique":    "Unique"
+  },
+  "tag_order": ["fight", "may-fight", "boarders", "crew-loss", "crew", "quest", "store", "reward", "cost", "unique"],
+  "tag_limit": 3,
+  "rail": {
+    "fight": "fight",
+    "may-fight": "may",
+    "crew-loss": "risk",
+    "boarders": "risk",
+    "crew": "good",
+    "reward": "good",
+    "store": "good"
+  },
+  "delta": {
+    "head": "Advanced Edition also defines {list}",
+    "added": "It adds:",
+    "removed": "It drops:",
+    "unconfirmed": "Whether the engine substitutes this list for {name} is not stated by any file here."
+  },
+  "rarity": {
+    "never": "never",
+    "note": "Lower number = more common. A crew type at 0 is not sold in this sector's stores."
+  },
+  "budget": {
+    "legend": "Solid blocks are the minimum the sector must place; faded blocks are the optional extra.",
+    "entry": "entry beacon is always {event}.",
+    "zero": "allocated 0–0 — the sector reserves the list but places none."
+  },
+  "footnotes": {
+    "sources": "Built from {files}.",
+    "unique": "\"Unique\" is the files' own unique=\"true\". Whether that means once per sector or once per run is not stated in any file here; the wiki's better bet is once per sector.",
+    "unweighted": "The shipped event lists carry no weights, so no beacon here has stated odds. A pool entry listed twice is counted as ×2 and marked.",
+    "ambiguous": "Defined in the files both as an event list and as a single event, and read here as the list: {names}.",
+    "anonymous": "{count} outcome(s) in these lists are written inline with no event id of their own, so they have no row here.",
+    "no_card": "No event tree was found for {names}, so those rows carry no tags."
+  },
+  "format": {
+    "range_join": "–",
+    "meta_join": " · ",
+    "weight": "×{n}",
+    "beacons": "{min}–{max} beacons",
+    "beacons_fixed": "{min} beacons",
+    "beacons_one": "1 beacon"
+  }
+}

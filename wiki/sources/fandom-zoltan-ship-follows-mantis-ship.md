@@ -34,7 +34,7 @@ same**.
 - [[event-zoltan-ship-follows-mantis-ship]]
 
 ## Other Pages Touched
-- [[entity-zoltan]], [[entity-mantis]], [[concept-asteroid-field]]
+- [[entity-zoltan]], [[entity-mantis]], [[concept-asteroid-fields]]
 
 ## Reliability Notes
 `medium`. States no game version. Gives no loadouts for

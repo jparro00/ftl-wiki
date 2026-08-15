@@ -9,7 +9,7 @@ unique: true
 version: ae
 first_seen: 2026-08-09
 last_updated: 2026-08-09
-sources: 2
+sources: 3
 tags: [endgame, flagship]
 ---
 

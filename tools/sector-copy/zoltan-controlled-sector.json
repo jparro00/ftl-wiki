@@ -1,0 +1,83 @@
+{
+  "slug": "zoltan-controlled-sector",
+
+  "lede": "One beacon here is fixed: the **Zoltan research facility**, where a Damaged Stasis Pod becomes a Crystal crew member. Everything else is Zoltan bureaucracy — checkpoints, customs sweeps, docking permits, entry fees — and the fights that come out of it are mostly ones you agreed to. Only two of the seven events on the guaranteed-hostile list are actually Zoltan; the rest are pirates, Mantis, a jumpy Engi escort and the Rebel fleet flying under Zoltan flavour text.",
+
+  "stats": [
+    { "metric": "beacons_min..beacons_max", "label": "Beacon spread" },
+    { "metric": "section:hostile:min..section:hostile:max", "label": "Guaranteed fights" },
+    { "metric": "entry:STORE_ZOLTAN:min..entry:STORE_ZOLTAN:max", "label": "Stores" },
+    { "metric": "section:nebula:min..section:nebula:max", "label": "Nebula beacons" },
+    { "metric": "distinct_events", "label": "Events in pool" }
+  ],
+
+  "callout": "**Zoltan crew buys you almost nothing here.** Of the 16 gated events in the pool, exactly one blue option asks for a Zoltan — the {{ZOLTAN_TRADE_HUB}} entry fee, and it still costs 10 scrap. What this sector actually rewards is a **Crew Teleporter** and **Cloaking**, four events each.",
+
+  "section_notes": {
+    "ZOLTAN_CREW_STUDY": "The one beacon the sector must place. Two of the three ways the scan goes are a polite thank-you and a little scrap; the third is pirates holding the station hostage — two boarders aboard and a pirate ship on the radar. An **Advanced Medbay** trades your medical records for a drone. The **Damaged Stasis Pod** option consumes the pod: they repair it, the crystal inside reassembles, and Ruwen steps out asking to be taken to a hidden wormhole near the Rock home-worlds.",
+    "HOSTILE_ZOLTAN": "Only {{ZOLTAN_FIGHT}} and {{ZOLTAN_ASTEROID}} put an Energy Fighter in front of you — a crew driven mad by deep space, and a guard enforcing mining rights. {{ZOLTAN_PIRATE}}, {{ZOLTAN_MANTIS}} and {{ZOLTAN_ENGI}} are pirate, Mantis and Engi hulls; the last two are the Rebel fleet.",
+    "NEUTRAL_ZOLTAN": "Where the sector's character actually lives — a security checkpoint, a docking request, a wise man offering you a fight of your choosing in {{ZOLTAN_RIFT_FIGHT}}. Read {{ZOLTAN_CREW_SCAN}} carefully: submitting can cost a crew member outright, and refusing puts 2–4 Zoltan aboard with your weapons already cut in half.",
+    "BOARDERS_ZOLTAN": "{{ZOLTAN_BOARDERS}} is a customs check that escalates — 3–4 Zoltan aboard and a ship outside. {{ZOLTAN_BOARDERS_MANTIS}} sends 2–3 Mantis with a scout in support. {{BOARDERS_HACKING}} drops 3–5 humans and no ship at all.",
+    "NEBULA_ZOLTAN": "Ten of the fourteen events here arrive through `NEBULA_REBEL`, so most of this block is the generic Rebel nebula pool rather than anything Zoltan. The standout is {{NEBULA_ZOLTAN_EYE}}: approaching the monolith gives you the **Healing Burst**, a heap of scrap, nothing at all, a fight, or one crew member aged backwards out of existence.",
+    "ITEM_ZOLTAN": "{{ZOLTAN_FREE_MAP}} carries a **Fight** tag it does not earn — the map reveal is free and the Zoltan ship parked at the beacon is loaded non-hostile. It only becomes a fight if you start one.",
+    "QUESTS_ZOLTAN": "Zero to one beacons from a list of five, and four of the five plant a marker somewhere else on the map — a Mantis war camp, a Federation signal, a derelict worth capturing, and the trade hub below."
+  },
+
+  "chain": {
+    "title": "Zoltan trade hub · the uncontacted planet",
+    "steps": [
+      {
+        "marker": "1",
+        "title": "{{ZOLTAN_TRADE_HUB}}",
+        "detail": "Getting inside. Talking your way in can end with 2–4 Zoltan guards following you home and a ship on your tail. A **Crew Teleporter** puts you on the civilian deck unseen; a **Zoltan crew member** just pays the 10-scrap entry fee.",
+        "ref": "ZOLTAN_TRADE_HUB · req=\"teleporter\" / req=\"energy\""
+      },
+      {
+        "marker": "2",
+        "title": "A store, or a rumour in the cantina",
+        "detail": "Once in, it is one of two things: a self-service supply store, or gossip about a newly discovered planet that has never had first contact. Only the cantina continues the chain.",
+        "ref": "ZOLTAN_TRADE_HUB_SUCCESS"
+      },
+      {
+        "marker": "✓",
+        "title": "{{ZOLTAN_QUEST_PRIMITIVES}}",
+        "detail": "A Zoltan ship and a Rebel assault craft facing off over the planet. Make first contact yourself and the Zoltan open fire — the Rebel thanks you and tips off the fleet. Shoot the Rebel instead and the Zoltan pay you in weaponry, for old times' sake.",
+        "ref": "ZOLTAN_QUEST_PRIMITIVES"
+      }
+    ]
+  },
+
+  "panels": [
+    {
+      "title": "Blue options that pay here",
+      "items": [
+        { "lead": "Crew Teleporter ×4", "text": "Clean entry to {{ZOLTAN_TRADE_HUB}}, freed slaves at {{FRIENDLY_SLAVER}} at level 2, plus branches in {{NEBULA_LOST_SHIP}} and {{QUEST_CREWDEAD_START}}." },
+        { "lead": "Cloaking ×4", "text": "Three graded payoffs inside {{DISTRESS_SATELLITE_DEFENSE}}, and a way out of {{STORM_AUTO}}, {{NEBULA_REBEL_UNDETECTED}} and {{NEBULA_AUTO_DEFENSE_ITEM}}." },
+        { "lead": "Medbay ×2", "text": "Level 3 turns {{ZOLTAN_CREW_STUDY}} into a free drone; level 2 or 3 saves the man dying on the moon in {{STRANDED_BEACON}}." },
+        { "lead": "Slug ×2", "text": "Talks the {{ZOLTAN_CREW_SCAN}} guards out of searching you, and reads the madman's intentions in {{STRANDED_BEACON}}." },
+        { "lead": "Mind Control ×1", "text": "Convinces the {{ZOLTAN_CREW_SCAN}} checkpoint it already cleared you today, for the same fuel the Slug gets." },
+        { "lead": "Boarding Drone ×1", "text": "One drone part digs a Zoltan scientist out of the caves under {{ZOLTAN_ODD_MOON}}." }
+      ]
+    },
+    {
+      "title": "What you can leave with",
+      "items": [
+        { "lead": "Crew", "text": "**Ruwen, a Crystal crew member**, at {{ZOLTAN_CREW_STUDY}} — the guaranteed beacon, if you arrive carrying the Damaged Stasis Pod. The pod is spent doing it." },
+        { "lead": "Crew", "text": "Zoltan from three places: dug out of {{ZOLTAN_ODD_MOON}}, hired for 40 scrap off {{ZOLTAN_LIFERAFT}} (he may refuse), or handed over by {{ZOLTAN_SCIENCE_DOCK}} after they shoot first and then call it a test you passed." },
+        { "lead": "Weapon", "text": "**Healing Burst** from {{NEBULA_ZOLTAN_EYE}} — the only named item anywhere in this pool." },
+        { "lead": "Augment", "text": "{{ZOLTAN_FREE_AUGMENT}} is an academy handing one over for nothing. {{ZOLTAN_LIFERAFT}} pays a better one, but only if you clear his ship without destroying it." },
+        { "lead": "Crew", "text": "Mantis, Rockman or Engi — your pick — out of the hold of {{FRIENDLY_SLAVER}}; a human named Charlie from {{STRANDED_BEACON}}." },
+        { "lead": "Map", "text": "{{ZOLTAN_FREE_MAP}} reveals the sector for free, on a tour of the ship you are not supposed to be reading the charts on." }
+      ]
+    },
+    {
+      "title": "What can bite",
+      "items": [
+        { "lead": "Crew", "text": "Five events in the pool can take a crew member. Two of them — {{ZOLTAN_CREW_SCAN}} and {{NEBULA_ZOLTAN_EYE}} — do it in a way a Clone Bay cannot undo." },
+        { "lead": "Boarders", "text": "Eight events put someone aboard, and three are Zoltan: 3–4 at {{ZOLTAN_BOARDERS}}, 2–4 at both {{ZOLTAN_CREW_SCAN}} and {{ZOLTAN_TRADE_HUB}}." },
+        { "lead": "Systems", "text": "Refusing to hand over a crew member at {{ZOLTAN_CREW_SCAN}} costs you half your weapons before the shooting starts." },
+        { "lead": "Fleet", "text": "{{PIRATE_BRIBER}} is the only event here that can buy a jump back from the pursuit. {{NEBULA_AUTO_WARNING}} and {{NEBULA_REBEL_UNDETECTED}} each cost you one." }
+      ]
+    }
+  ]
+}

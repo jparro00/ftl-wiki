@@ -36,7 +36,7 @@ away-party branch and, uniquely, puts numbers on the `stuff` reward tier.
 - [[event-encrypted-federation-signal]]
 
 ## Other Pages Touched
-- [[entity-rebels]], [[entity-federation]], [[concept-quest-beacons]],
+- [[entity-rebels]], [[entity-federation]], [[concept-quest-beacon-placement]],
   [[concept-surrender-offers]]
 
 ## Reliability Notes

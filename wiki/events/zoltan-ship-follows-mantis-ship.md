@@ -87,7 +87,7 @@ None. No `req` attribute on any choice.
   member, and a strictly better one
 - [[event-zoltan-fight-in-asteroid-field]] — the other Zoltan asteroid-field event
 - [[entity-zoltan]], [[entity-mantis]] — the two opponents
-- [[concept-asteroid-field]] — the hazard
+- [[concept-asteroid-fields]] — the hazard
 
 ## Open Questions
 - [ ] Loadouts of `ZOLTAN_SHIP_SAVE_MANTIS1` and `ZOLTAN_SHIP_SAVE_MANTIS2`.

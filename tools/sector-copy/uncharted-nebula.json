@@ -1,0 +1,55 @@
+{
+  "slug": "uncharted-nebula",
+
+  "lede": "Almost everything this sector is required to place sits **inside the cloud**, and the events are written around the blackout: you cannot tell whether the intruders are already aboard, what is inside the Rebel station, or where the damaged Federation ship went. A nebula is supposed to buy time against the fleet — but four events here **double Rebel pursuit for a jump** and not one delays it. The distress, item and store beacons are the only clear space on the map.",
+
+  "stats": [
+    { "metric": "beacons_min..beacons_max", "label": "Beacon spread" },
+    { "metric": "section:hostile:min..section:hostile:max", "label": "Hostile pool" },
+    { "metric": "section:neutral:min..section:neutral:max", "label": "Neutral pool" },
+    { "metric": "entry:NEBULA_EMPTY:min..entry:NEBULA_EMPTY:max", "label": "Beacons of pure fog" },
+    { "metric": "section:distress:min..section:distress:max", "label": "Distress calls" }
+  ],
+
+  "callout": "**Two shops at most, and only one is promised.** `NEBULA_STORE` is fixed at 1 while the plain `STORE` entry is allowed to allocate none. There is no quest entry at all either — all three quest starts in the sector hide in the distress pool, which can be as little as one beacon.",
+
+  "section_notes": {
+    "NEBULA_HOSTILE": "Assembled out of the Rebel and pirate nebula lists, which is why {{NEBULA_EMPTY}} sits in it twice — a hostile allocation can land on nothing at all. Three of the rest are plasma storms, where your reactor runs at half capacity.",
+    "NEBULA_NEUTRAL": "Nothing in this pool opens hostile; every ship here lets you decide whether to shoot. {{NEBULA_ROCK_RACIST}} is the odd one — a plasma storm despite the list, and its Rockman option pays a full standard reward for leading them out.",
+    "NEBULA_EMPTY": "Four beacons of nothing but gas and a charging FTL. The only pool in the sector that cannot cost you anything — and it turns up inside the hostile pool as well.",
+    "DISTRESS_BEACON": "The generic distress list, untouched by the nebula: none of these events carry an environment of their own, and all three quest starts — {{CIVILIAN_ASTEROIDS_BEACON}}, {{REBEL_VS_FEDERATION}} and {{ESCORT_BEACON}} — are here."
+  },
+
+  "panels": [
+    {
+      "title": "Blue options that pay here",
+      "items": [
+        { "lead": "Cloaking ×4", "text": "The sector's best key: past the guard at {{NEBULA_AUTO_DEFENSE_ITEM}}, out of the storm fight at {{STORM_AUTO}}, past the Rebel picket at {{NEBULA_REBEL_UNDETECTED}}, and graded across three levels at {{DISTRESS_SATELLITE_DEFENSE}}." },
+        { "lead": "Long-Ranged Scanners ×4", "text": "The blackout workaround — tracks the drifting crew at {{NEBULA_LOST_SHIP}} and holds the lock at {{NEBULA_REBEL_CHASE}}, which otherwise loses them or loses you." },
+        { "lead": "Sensors 3 · Lifeform Scanner", "text": "Both buy the same certain engagement at {{NEBULA_REBEL_CHASE}}; Sensors also pays at {{TRADER_UPGRADES}}." },
+        { "lead": "Engines ×2", "text": "Level 3 or 6 to run from {{STORM_AUTO}}, level 4 to break contact at {{NEBULA_REBEL_UNDETECTED}} once you have been spotted." },
+        { "lead": "Crew Teleporter ×3", "text": "The clean answer at {{NEBULA_LOST_SHIP}} — a crew member and scrap with no roll at all — plus options at {{CIVILIAN_ASTEROIDS_BEACON}} and {{REBEL_VS_FEDERATION}}." },
+        { "lead": "Hacking · Rockman", "text": "Hacking opens two graded routes into {{NEBULA_AUTO_DEFENSE_ITEM}}, both costing a drone part; Rockman pays at {{NEBULA_ROCK_RACIST}}, {{DISTRESS_STATION_FIRE}} and {{DISTRESS_STATION_DISEASE}}." }
+      ]
+    },
+    {
+      "title": "What you can leave with",
+      "items": [
+        { "lead": "Crew", "text": "Over half the pool can hand you someone — {{NEBULA_LOST_SHIP}}, {{STORM_ITEMS}}, {{STRANDED_BEACON}} and the hiring station at {{TAVERN_HIRE}} among them." },
+        { "lead": "Weapons", "text": "No named item drops in this sector — every weapon in the pool is a random one. {{NEBULA_WEAPONS_TRADER}} sells one unseen for 45 scrap, and one branch takes the scrap and hands over nothing." },
+        { "lead": "The station", "text": "{{NEBULA_AUTO_DEFENSE_ITEM}} is the sector's loot box — a drone schematic, a weapon, a haul of resources, or a stripped hull with nothing in it." },
+        { "lead": "Fuel", "text": "{{NEBULA_TRADER}} swaps fuel, missiles and drone parts in both directions, {{NEBULA_PIRATE_SMUGGLE}} pays a fuel bribe to a Weapon Control 6 threat, and {{REFUEL_STATION}} sits in the item pool." }
+      ]
+    },
+    {
+      "title": "Flying blind",
+      "items": [
+        { "lead": "No sensors", "text": "The blackout is written into the events themselves: you cannot confirm you have been boarded at {{NEBULA_BOARDING}}, cannot see inside the station at {{NEBULA_AUTO_DEFENSE_ITEM}}, and cannot find the Federation ship at {{NEBULA_LOST_SHIP}} without help." },
+        { "lead": "The fleet clock", "text": "Four events double pursuit for a jump — {{NEBULA_AUTO_WARNING}} if the scout gets away, {{NEBULA_REBEL_UNDETECTED}} and {{NEBULA_REBEL_CHASE}} when you lose your bearings in the cloud, and {{CIVILIAN_ASTEROIDS_BEACON}}. Nothing in the pool delays it." },
+        { "lead": "Plasma storms ×4", "text": "{{STORM_REBEL}}, {{STORM_AUTO}}, {{STORM_ITEMS}} and {{NEBULA_ROCK_RACIST}} trade fog for a storm and half a reactor; {{STORM_REBEL}} starts shooting on arrival." },
+        { "lead": "Boarders ×3", "text": "{{NEBULA_BOARDING}} (2–4 humans) and {{NEBULA_REBEL_BOARDING}} (3–4) open with an alarm and no ship to shoot back at. {{REFUGEE_GHOST}} is the third." },
+        { "lead": "Crew loss ×6", "text": "Six events can cost a crew member outright. {{STORM_ITEMS}} is the sector's own: searching the wrecks blind also risks 4 hull damage and a breach." }
+      ]
+    }
+  ]
+}

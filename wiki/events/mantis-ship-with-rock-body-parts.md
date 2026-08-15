@@ -94,7 +94,7 @@ the Rock Crew option starts the same fight for nothing but a line of dialogue.
 - [[event-mantis-ships-battle-for-rock-freighter]] — the other Mantis beacon in Rock space
 - [[event-rock-atheists]] — where you can pick up the Rock crew member this event asks for
 - [[item-rock-plating]], [[item-rock-crew]]
-- [[entity-mantis]], [[entity-rock-men]], [[ship-rock-cruiser]]
+- [[entity-mantis]], [[entity-rock-men]], [[entity-rock-cruiser]]
 
 ## Open Questions
 - [ ] Does `status type="limit" amount="0"` on engines persist for the whole fight, or can

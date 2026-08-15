@@ -114,7 +114,7 @@ None.
 - [[chain-rock-cruiser-unlock]] — the chain this completes
 - [[event-rock-unlock1]] — steps 1 and 2
 - [[item-rock-plating]] — the augment granted
-- [[ship-rock-cruiser]] — the ship unlocked
+- [[entity-rock-cruiser]] — the ship unlocked
 - [[event-mantis-ship-with-rock-body-parts]] — where Rock Plating pays off again
 - [[event-rock-unlock2]] — step 2, the sun duel (`ROCK_UNLOCK2`)
 

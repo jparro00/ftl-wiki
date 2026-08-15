@@ -1,0 +1,213 @@
+<!--
+  FTL sector profile — shared shell.
+
+  Layout, colour and type for every sector page. Holds no sector-specific content:
+  build-sector.py replaces the <title> line and the SECTOR-CONTENT marker below.
+  Editing this file changes all 19 pages, which is the point — see tools/SECTOR-PAGE.md §8.
+-->
+<title>Hidden Crystal Worlds — sector profile</title>
+<style>
+  :root {
+    --void:   #070B10;
+    --panel:  #101822;
+    --sunk:   #0B1219;
+    --edge:   #1F2E3C;
+    --ink:    #D6E2EC;
+    --dim:    #7C8FA3;
+    --faint:  #55697C;
+    --cyan:   #5FD3E8;
+    --green:  #78C46B;
+    --amber:  #E8B84B;
+    --red:    #E0685C;
+    --rail:   #22384A;
+    --hex:    rgba(95,211,232,.035);
+    --barlo:  rgba(95,211,232,.22);
+    --barred: rgba(224,104,92,.28);
+
+    --sans: ui-sans-serif, system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+  }
+  @media (prefers-color-scheme: light) {
+    :root {
+      --void: #EEF1F4; --panel: #FFFFFF; --sunk: #F5F7F9; --edge: #D3DBE2;
+      --ink: #14202B; --dim: #5B6C7B; --faint: #7A8895; --cyan: #12708A;
+      --green: #3B7A31; --amber: #8A6606; --red: #AF3B2E; --rail: #C2CDD6;
+      --hex: rgba(18,112,138,.045); --barlo: rgba(18,112,138,.18);
+      --barred: rgba(175,59,46,.22);
+    }
+  }
+  :root[data-theme="dark"] {
+    --void: #070B10; --panel: #101822; --sunk: #0B1219; --edge: #1F2E3C;
+    --ink: #D6E2EC; --dim: #7C8FA3; --faint: #55697C; --cyan: #5FD3E8;
+    --green: #78C46B; --amber: #E8B84B; --red: #E0685C; --rail: #22384A;
+    --hex: rgba(95,211,232,.035); --barlo: rgba(95,211,232,.22);
+    --barred: rgba(224,104,92,.28);
+  }
+  :root[data-theme="light"] {
+    --void: #EEF1F4; --panel: #FFFFFF; --sunk: #F5F7F9; --edge: #D3DBE2;
+    --ink: #14202B; --dim: #5B6C7B; --faint: #7A8895; --cyan: #12708A;
+    --green: #3B7A31; --amber: #8A6606; --red: #AF3B2E; --rail: #C2CDD6;
+    --hex: rgba(18,112,138,.045); --barlo: rgba(18,112,138,.18);
+    --barred: rgba(175,59,46,.22);
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; padding: 2.6rem 1.15rem 4.5rem;
+    background: var(--void);
+    background-image: radial-gradient(var(--hex) 1px, transparent 1.6px);
+    background-size: 22px 22px;
+    color: var(--ink); font-family: var(--sans); line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 58rem; margin: 0 auto; display: flex; flex-direction: column; gap: 2.1rem; }
+
+  .eyebrow {
+    font-family: var(--mono); font-size: .66rem; letter-spacing: .19em;
+    text-transform: uppercase; color: var(--cyan); margin: 0 0 .55rem;
+  }
+  h1 { font-size: 2.05rem; font-weight: 600; letter-spacing: -.02em; margin: 0 0 .7rem; text-wrap: balance; }
+  .lede { margin: 0 0 1rem; max-width: 42rem; color: var(--dim); font-size: .95rem; }
+  .lede strong { color: var(--ink); font-weight: 600; }
+  .facts { display: flex; flex-wrap: wrap; gap: .4rem; }
+  .fact {
+    font-family: var(--mono); font-size: .68rem; letter-spacing: .06em;
+    color: var(--dim); border: 1px solid var(--edge); border-radius: 2px;
+    padding: .22rem .5rem; background: var(--panel);
+  }
+  .fact b { color: var(--ink); font-weight: 600; }
+
+  .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(9.2rem, 1fr)); gap: .55rem; }
+  .stat {
+    background: var(--panel); border: 1px solid var(--edge); border-radius: 3px;
+    padding: .75rem .8rem; display: flex; flex-direction: column; gap: .15rem;
+  }
+  .stat .n {
+    font-family: var(--mono); font-size: 1.5rem; font-weight: 600;
+    font-variant-numeric: tabular-nums; letter-spacing: -.02em; line-height: 1.1; color: var(--cyan);
+  }
+  .stat .k {
+    font-family: var(--mono); font-size: .62rem; letter-spacing: .14em;
+    text-transform: uppercase; color: var(--faint);
+  }
+
+  section { display: flex; flex-direction: column; gap: .8rem; }
+  h2 {
+    font-size: .74rem; font-family: var(--mono); font-weight: 600;
+    letter-spacing: .17em; text-transform: uppercase; color: var(--cyan);
+    margin: 0; padding-bottom: .45rem; border-bottom: 1px solid var(--edge);
+    display: flex; justify-content: space-between; align-items: baseline; gap: 1rem;
+  }
+  h2 .meta { color: var(--faint); font-weight: 400; letter-spacing: .08em; text-transform: none; flex: none; }
+  .note { margin: 0; font-size: .84rem; color: var(--dim); max-width: 44rem; }
+
+  .budget { display: flex; flex-direction: column; gap: .3rem; }
+  .brow {
+    display: grid; grid-template-columns: 14rem 3.4rem 1fr; align-items: center;
+    gap: .7rem; padding: .34rem .55rem; border-radius: 2px; background: var(--panel);
+    border: 1px solid var(--edge);
+  }
+  .brow .name { font-family: var(--mono); font-size: .74rem; color: var(--ink); overflow-wrap: anywhere; }
+  .brow .cnt {
+    font-family: var(--mono); font-size: .74rem; color: var(--dim);
+    font-variant-numeric: tabular-nums; text-align: right;
+  }
+  .track { display: flex; align-items: center; gap: 2px; height: .62rem; flex-wrap: wrap; }
+  .blk { width: .62rem; height: .62rem; background: var(--cyan); border-radius: 1px; flex: none; }
+  .blk.maybe { background: var(--barlo); }
+  .brow.hostile .blk { background: var(--red); }
+  .brow.hostile .blk.maybe { background: var(--barred); }
+  .brow.zero .cnt { color: var(--faint); }
+
+  .pool { display: grid; grid-template-columns: repeat(auto-fill, minmax(16.5rem, 1fr)); gap: .4rem; }
+  .ev {
+    background: var(--panel); border: 1px solid var(--edge); border-left: 2px solid var(--rail);
+    border-radius: 2px; padding: .48rem .6rem; display: flex; flex-direction: column; gap: .22rem;
+  }
+  .ev.fight { border-left-color: var(--red); }
+  .ev.may { border-left-color: var(--barred); }
+  .ev.good { border-left-color: var(--green); }
+  .ev.risk { border-left-color: var(--amber); }
+  .ev .t { font-size: .84rem; font-weight: 500; line-height: 1.25; }
+  .ev .id { font-family: var(--mono); font-size: .63rem; color: var(--faint); letter-spacing: .03em; overflow-wrap: anywhere; }
+  .tags { display: flex; flex-wrap: wrap; gap: .25rem; margin-top: .1rem; }
+  .tg {
+    font-family: var(--mono); font-size: .57rem; letter-spacing: .1em; text-transform: uppercase;
+    padding: .08rem .3rem; border-radius: 2px; border: 1px solid currentColor; color: var(--faint);
+  }
+  .tg.fight, .tg.may-fight { color: var(--red); }
+  .tg.crew, .tg.reward { color: var(--green); }
+  .tg.crew-loss, .tg.boarders, .tg.cost { color: var(--amber); }
+  .tg.quest, .tg.store { color: var(--cyan); }
+
+  .delta {
+    border: 1px dashed var(--edge); border-radius: 2px; background: var(--sunk);
+    padding: .6rem .75rem; display: flex; flex-direction: column; gap: .5rem;
+  }
+  .delta .head {
+    font-family: var(--mono); font-size: .62rem; letter-spacing: .12em;
+    text-transform: uppercase; color: var(--amber);
+  }
+
+  .cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr)); gap: .9rem; align-items: start; }
+  .panel {
+    background: var(--panel); border: 1px solid var(--edge); border-radius: 3px;
+    padding: .9rem 1rem 1rem; display: flex; flex-direction: column; gap: .55rem;
+  }
+  .panel h3 {
+    margin: 0; font-family: var(--mono); font-size: .66rem; letter-spacing: .15em;
+    text-transform: uppercase; color: var(--dim); font-weight: 600;
+  }
+  .panel ul { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: .45rem; }
+  .panel li { font-size: .82rem; line-height: 1.42; display: flex; gap: .5rem; align-items: baseline; }
+  .lead {
+    font-family: var(--mono); font-size: .72rem; color: var(--cyan); flex: none;
+    min-width: 4.6rem; font-variant-numeric: tabular-nums;
+  }
+
+  .rar { display: flex; flex-direction: column; gap: .3rem; }
+  .rrow { display: grid; grid-template-columns: 5.2rem 1fr 3rem; gap: .55rem; align-items: center; font-size: .8rem; }
+  .pips { display: flex; gap: 2px; }
+  .pip { width: .52rem; height: .52rem; border-radius: 50%; background: var(--cyan); flex: none; }
+  .pip.off { background: var(--rail); }
+  .rrow .v { font-family: var(--mono); font-size: .68rem; color: var(--dim); text-align: right; }
+  .rrow.zero .v { color: var(--red); }
+
+  .chain { display: flex; flex-direction: column; gap: 0; }
+  .step { display: grid; grid-template-columns: 1.6rem 1fr; gap: .7rem; }
+  .marker { display: flex; flex-direction: column; align-items: center; }
+  .dot {
+    width: 1.35rem; height: 1.35rem; border-radius: 50%; flex: none;
+    border: 1px solid var(--cyan); color: var(--cyan); background: var(--panel);
+    font-family: var(--mono); font-size: .68rem; display: flex; align-items: center; justify-content: center;
+    font-variant-numeric: tabular-nums;
+  }
+  .step .line { width: 1px; flex: 1; background: var(--rail); min-height: .6rem; }
+  .step .body { padding-bottom: .95rem; }
+  .step .body .t { font-size: .88rem; font-weight: 500; }
+  .step .body .d { font-size: .81rem; color: var(--dim); margin-top: .15rem; }
+  .step .body .id { font-family: var(--mono); font-size: .63rem; color: var(--faint); margin-top: .12rem; }
+  .step.end .dot { border-color: var(--green); color: var(--green); }
+
+  .callout {
+    border: 1px solid var(--edge); border-left: 2px solid var(--amber);
+    background: var(--sunk); border-radius: 2px; padding: .7rem .9rem;
+    font-size: .84rem; color: var(--dim);
+  }
+  .callout b { color: var(--ink); font-weight: 600; }
+  .ref { color: var(--ink); font-weight: 500; }
+  code { font-family: var(--mono); font-size: .92em; color: var(--ink); }
+  footer {
+    border-top: 1px solid var(--edge); padding-top: .8rem;
+    font-family: var(--mono); font-size: .66rem; color: var(--faint); line-height: 1.8;
+  }
+  footer p { margin: 0; }
+  @media (max-width: 34rem) {
+    .brow { grid-template-columns: 1fr 3.4rem; }
+    .brow .track { grid-column: 1 / -1; }
+  }
+</style>
+
+<div class="wrap">
+<header><p class="eyebrow">Sector profile · CRYSTAL_HOME</p><h1>Hidden Crystal Worlds</h1><p class="lede">The sector you cannot fly to. Nothing on the map routes here — a Crystal crewmember brings you, and the arrival beacon plants the ship-unlock marker before you have made a single choice. Its floor of 25 beacons is the highest of any sector in the game and its pool is the smallest outside the flagship&#x27;s, so the map is filled by fighting, a fixed block of twelve neutral beacons, and Crystalline hospitality that keeps turning back into fighting.</p><div class="facts"><span class="fact">minSector <b>0</b></span><span class="fact"><b>at most one per run</b></span><span class="fact">entry beacon <b>START_BEACON_CRYSTAL</b></span><span class="fact">tracks <b>debris · wasteland · deepspace</b></span><span class="fact"><b>Advanced Edition data</b></span></div></header><div class="stats"><div class="stat"><div class="n">25–31</div><div class="k">Beacon spread</div></div><div class="stat"><div class="n">24</div><div class="k">Events in pool</div></div><div class="stat"><div class="n">6–10</div><div class="k">Guaranteed fights</div></div><div class="stat"><div class="n">12</div><div class="k">Neutral beacons</div></div><div class="stat"><div class="n">13</div><div class="k">Once-only events</div></div></div><section><h2>Beacon budget<span class="meta">what the sector is required to place</span></h2><div class="budget"><div class="brow hostile"><div class="name">HOSTILE_CRYSTAL</div><div class="cnt">6–10</div><div class="track"><i class="blk"></i><i class="blk"></i><i class="blk"></i><i class="blk"></i><i class="blk"></i><i class="blk"></i><i class="blk maybe"></i><i class="blk maybe"></i><i class="blk maybe"></i><i class="blk maybe"></i></div></div><div class="brow hostile"><div class="name">BOARDERS_CRYSTAL</div><div class="cnt">1–2</div><div class="track"><i class="blk"></i><i class="blk maybe"></i></div></div><div class="brow"><div class="name">NEUTRAL_CRYSTAL</div><div class="cnt">12</div><div class="track"><i class="blk"></i><i class="blk"></i><i class="blk"></i><i class="blk"></i><i class="blk"></i><i class="blk"></i><i class="blk"></i><i class="blk"></i><i class="blk"></i><i class="blk"></i><i class="blk"></i><i class="blk"></i></div></div><div class="brow"><div class="name">ITEMS_CRYSTAL</div><div class="cnt">2</div><div class="track"><i class="blk"></i><i class="blk"></i></div></div><div class="brow"><div class="name">STORE_CRYSTAL</div><div class="cnt">2–3</div><div class="track"><i class="blk"></i><i class="blk"></i><i class="blk maybe"></i></div></div><div class="brow"><div class="name">NOTHING_CRYSTAL</div><div class="cnt">2</div><div class="track"><i class="blk"></i><i class="blk"></i></div></div></div><p class="note">Solid blocks are the minimum the sector must place; faded blocks are the optional extra.</p><p class="note">Entry beacon is always START_BEACON_CRYSTAL.</p><div class="callout"><strong>The pool is smaller than the map.</strong> Twelve beacons come off a ten-event neutral list where six events are once-only, and six to ten more off a five-event hostile list where three are — leaving four neutral events and two hostile ones to cover everything that repeats. Repetition here is not bad luck, it is arithmetic. And nothing in this sector calls for help: it is the only sector outside the flagship&#x27;s with no distress list and no quest list at all.</div></section><section><h2>Hostile<span class="meta">HOSTILE_CRYSTAL · 6–10 beacons · combat unless the row says otherwise</span></h2><div class="pool"><div class="ev fight"><div class="t">Crystal fight</div><div class="id">CRYSTAL_FIGHT</div><div class="tags"><span class="tg fight">Fight</span><span class="tg crew">Crew</span><span class="tg">×3</span></div></div><div class="ev fight"><div class="t">Crystal fight with surrender offer (hull repairs)</div><div class="id">CRYSTAL_CONVOY</div><div class="tags"><span class="tg fight">Fight</span><span class="tg unique">Unique</span></div></div><div class="ev fight"><div class="t">Rebel fight (Crystal)</div><div class="id">CRYSTAL_REBEL</div><div class="tags"><span class="tg fight">Fight</span><span class="tg crew">Crew</span></div></div><div class="ev fight"><div class="t">Crystal fight with surrender offer (Human crew)</div><div class="id">CRYSTAL_HUNTER</div><div class="tags"><span class="tg fight">Fight</span><span class="tg crew">Crew</span><span class="tg unique">Unique</span></div></div><div class="ev fight"><div class="t">Auto-ship fight (Crystal)</div><div class="id">CRYSTAL_AUTO</div><div class="tags"><span class="tg fight">Fight</span><span class="tg crew">Crew</span><span class="tg unique">Unique</span></div></div></div><p class="note">Six to ten beacons off five events, three of them once-only, so most of the shooting is <span class="ref">Crystal fight</span> — which the list names three times — and <span class="ref">Rebel fight (Crystal)</span>. Four of the five will take a surrender; the Rebel auto-scout at <span class="ref">Auto-ship fight (Crystal)</span> has no crew to offer one.</p></section><section><h2>Boarders<span class="meta">BOARDERS_CRYSTAL · 1–2 beacons · something comes aboard</span></h2><div class="pool"><div class="ev risk"><div class="t">Boarders: Crystal</div><div class="id">BOARDERS_CRYSTAL</div><div class="tags"><span class="tg boarders">Boarders</span></div></div></div><p class="note">A prison escort rounding up intruders. Two to three Crystalline boarders, no choice offered and nothing to read — they are aboard before the text finishes. Allocated once or twice.</p></section><section><h2>Neutral<span class="meta">NEUTRAL_CRYSTAL · 12 beacons · a choice, sometimes a fight</span></h2><div class="pool"><div class="ev may"><div class="t">Rebel ship attacking Crystal ship</div><div class="id">CRYSTAL_REBEL_CRYSTAL</div><div class="tags"><span class="tg may-fight">May fight</span><span class="tg crew">Crew</span></div></div><div class="ev may"><div class="t">Crystal fight choice</div><div class="id">CRYSTAL_REBEL_CRYSTAL2</div><div class="tags"><span class="tg may-fight">May fight</span><span class="tg crew">Crew</span><span class="tg unique">Unique</span></div></div><div class="ev may"><div class="t">Mantis ship attacking Crystal</div><div class="id">CRYSTAL_MANTIS_CRYSTAL</div><div class="tags"><span class="tg may-fight">May fight</span></div></div><div class="ev may"><div class="t">Pirate ship attacking Crystal</div><div class="id">CRYSTAL_PIRATE_CRYSTAL</div><div class="tags"><span class="tg may-fight">May fight</span></div></div><div class="ev may"><div class="t">Crystal ship attacking Federation loyalists</div><div class="id">CRYSTAL_FED</div><div class="tags"><span class="tg may-fight">May fight</span><span class="tg crew">Crew</span></div></div><div class="ev may"><div class="t">Federation deserters</div><div class="id">CRYSTAL_FED_DESERTER</div><div class="tags"><span class="tg may-fight">May fight</span><span class="tg crew">Crew</span><span class="tg cost">Cost</span></div></div><div class="ev may"><div class="t">Crystalline research facility</div><div class="id">CRYSTAL_HUMAN_TESTS</div><div class="tags"><span class="tg may-fight">May fight</span><span class="tg crew-loss">Crew loss</span><span class="tg crew">Crew</span></div></div><div class="ev may"><div class="t">Crystal chat</div><div class="id">CRYSTAL_CHATTY</div><div class="tags"><span class="tg may-fight">May fight</span><span class="tg crew">Crew</span><span class="tg unique">Unique</span></div></div><div class="ev may"><div class="t">Crystalline ship messaging about Rebels</div><div class="id">CRYSTAL_REQUEST</div><div class="tags"><span class="tg may-fight">May fight</span><span class="tg boarders">Boarders</span><span class="tg crew">Crew</span></div></div><div class="ev may"><div class="t">Crystalline men buried</div><div class="id">CRYSTAL_HELP_DIG</div><div class="tags"><span class="tg may-fight">May fight</span><span class="tg crew-loss">Crew loss</span><span class="tg crew">Crew</span></div></div></div><p class="note">Pinned at exactly twelve — the only allocation in the game with no range at all above single digits. Three of the ten are a third party shooting at a Crystal ship (<span class="ref">Rebel ship attacking Crystal ship</span>, <span class="ref">Mantis ship attacking Crystal</span>, <span class="ref">Pirate ship attacking Crystal</span>), where stepping in can be paid off with a Crystal weapon. <span class="ref">Federation deserters</span> is the outlier: 15–25 scrap and 1–3 fuel to a Federation ship that ran, in exchange for the map.</p></section><section><h2>Items<span class="meta">ITEMS_CRYSTAL · 2 beacons · free kit, trades and stations</span></h2><div class="pool"><div class="ev risk"><div class="t">Crystalline cache</div><div class="id">CRYSTAL_CACHE</div><div class="tags"><span class="tg boarders">Boarders</span><span class="tg crew-loss">Crew loss</span><span class="tg reward">Reward</span></div></div><div class="ev good"><div class="t">Crystal scrap collector</div><div class="id">CRYSTAL_SCRAP_EXCITED</div><div class="tags"><span class="tg crew">Crew</span><span class="tg cost">Cost</span><span class="tg unique">Unique</span></div></div><div class="ev good"><div class="t">Free drone schematic</div><div class="id">FIND_DRONE</div><div class="tags"><span class="tg reward">Reward</span></div></div><div class="ev good"><div class="t">Free weapon</div><div class="id">FIND_WEAPON</div><div class="tags"><span class="tg reward">Reward</span></div></div><div class="ev good"><div class="t">Refueling station</div><div class="id">REFUEL_STATION</div><div class="tags"><span class="tg reward">Reward</span><span class="tg cost">Cost</span><span class="tg unique">Unique</span></div></div><div class="ev"><div class="t">Repair station</div><div class="id">REPAIR_STATION</div><div class="tags"><span class="tg cost">Cost</span><span class="tg unique">Unique</span></div></div></div><p class="note">Two beacons off six events, and four of the six are the generic free weapon, free drone, refuelling station and repair station. The two that are actually Crystalline — <span class="ref">Crystalline cache</span> and <span class="ref">Crystal scrap collector</span> — are both once-only, so there is no guarantee either one shows up.</p></section><section><h2>Stores<span class="meta">STORE_CRYSTAL · 2–3 beacons</span></h2><div class="pool"><div class="ev good"><div class="t">Store (Crystal)</div><div class="id">STORE_CRYSTAL</div><div class="tags"><span class="tg store">Store</span></div></div></div><p class="note">Two to three stores, and the only rarity table in the game that carries the Crystal weapons — both Crystal Bursts and both Heavy Crystals (the Lockdown Bomb also turns up in Rock space). The only crew type on sale is Crystal; every other species is set to never.</p></section><section><h2>Empty<span class="meta">NOTHING_CRYSTAL · 2 beacons · flavour text, nothing happens</span></h2><div class="pool"><div class="ev"><div class="t">Empty beacon (Crystal)</div><div class="id">NOTHING_CRYSTAL</div></div></div><p class="note">Two guaranteed dead beacons. The docked ships scatter and the station itself cloaks rather than deal with an outsider.</p></section><section><h2>Quest chain<span class="meta">Crystal Cruiser · the ship at the end of the route</span></h2><div class="chain"><div class="step"><div class="marker"><div class="dot">1</div><div class="line"></div></div><div class="body"><div class="t"><span class="ref">Start beacon (Crystal)</span></div><div class="d">&quot;Here we are, my home sector.&quot; Your Crystal companion makes good on the deal and forwards the coordinates of their old ship. One option, no way to miss it — the marker is planted on arrival.</div><div class="id">START_BEACON_CRYSTAL → quest CRYSTAL_UNLOCK</div></div></div><div class="step end"><div class="marker"><div class="dot">✓</div></div><div class="body"><div class="t">The cruiser at the repair station</div><div class="d">The marked beacon has no fight and no choice in it: the cruiser is shipped back to the Federation base, the station repairs <strong>10 hull</strong>, and you leave with a mid-tier reward and the <strong>Crystal Vengeance</strong> augment.</div><div class="id">CRYSTAL_UNLOCK · unlockShip id=&quot;8&quot;</div></div></div></div></section><div class="cols"><div class="panel"><h3>Blue options that pay here</h3><ul><li><span class="lead">Crystal ×2</span><span>Your own Crystalline Being retunes the ship&#x27;s weapons and opens <span class="ref">Crystalline cache</span> with no roll at all, and turns <span class="ref">Crystal chat</span> into free supplies.</span></li><li><span class="lead">Breach Missiles ×1</span><span>The other clean way into the cache — one missile spent, instead of firing everything you have and mostly bouncing off.</span></li><li><span class="lead">Engines 7 · Teleporter 2</span><span>Both pull your crewmember back out of the cache&#x27;s singularity trap. Engines keep the cargo as well; the teleporter saves the person only.</span></li><li><span class="lead">Rockman · Backup DNA Bank</span><span>Two ways through <span class="ref">Crystalline research facility</span> without putting a body on the table — the Rockman is an evolutionary cousin, the DNA bank is data they have never seen.</span></li><li><span class="lead">Distraction Buoys ×1</span><span>At <span class="ref">Crystalline ship messaging about Rebels</span>, takes the scrap and the jump of fleet delay with none of the chance of being caught faking it.</span></li><li><span class="lead">Four events, seven gates</span><span>Only four events in the whole pool gate anything, and <span class="ref">Crystalline cache</span> carries four of the seven gates by itself.</span></li></ul></div><div class="panel"><h3>Named things you can leave with</h3><ul><li><span class="lead">Weapon</span><span><strong>Heavy Crystal Mark II</strong> from <span class="ref">Crystalline men buried</span> — but only by sending a crewmember down to the dig and then waiting out two full cycles.</span></li><li><span class="lead">Weapon</span><span><strong>Crystal Lockdown Bomb</strong> or <strong>Crystal Burst Mark II</strong> from <span class="ref">Crystal scrap collector</span>: pay the collector 35 scrap, then ask for payment in kind rather than taking him aboard.</span></li><li><span class="lead">Crew</span><span>A <strong>Crystal crewmember</strong> two ways — that same collector, or accepting the surrender at <span class="ref">Crystal fight</span> and agreeing to take one of the survivors.</span></li><li><span class="lead">Crew</span><span>A <strong>Human</strong>, out of the cargo hold of the ship that was hunting them, if <span class="ref">Crystal fight with surrender offer (Human crew)</span> surrenders.</span></li><li><span class="lead">Weapon</span><span>A Crystal weapon off the cache at <span class="ref">Crystalline cache</span>, and off rescuing the ship under fire at <span class="ref">Rebel ship attacking Crystal ship</span>, <span class="ref">Mantis ship attacking Crystal</span> or <span class="ref">Pirate ship attacking Crystal</span>.</span></li><li><span class="lead">Hull</span><span><span class="ref">Crystal fight with surrender offer (hull repairs)</span> repairs 8 if you stop the fight once the escort falters; <span class="ref">Crystal chat</span> repairs 6 on one of the three ways the conversation can go.</span></li></ul></div><div class="panel"><h3>What can bite</h3><ul><li><span class="lead">Crew</span><span>Three events can cost a crewmember and all three are your own choice: the singularity in <span class="ref">Crystalline cache</span>, the dig at <span class="ref">Crystalline men buried</span>, and letting the scientists at <span class="ref">Crystalline research facility</span> run their tests.</span></li><li><span class="lead">Boarders</span><span>Three events put Crystalline crew on your ship — two to three at <span class="ref">Boarders: Crystal</span> and again if the cache&#x27;s owners are home, one or two at <span class="ref">Crystalline ship messaging about Rebels</span> if they catch you lying.</span></li><li><span class="lead">Fleet</span><span><span class="ref">Crystalline men buried</span> advances the Rebel fleet a jump for every cycle you wait, and the Heavy Crystal is behind two of them. <span class="ref">Rebel ship attacking Crystal ship</span> advances it one if you shoot the Crystal ship rather than the Rebel.</span></li><li><span class="lead">Fuel</span><span>The cache escape that saves both the crewmember and the cargo detonates <strong>your entire fuel reserve</strong> to do it. Advanced Engines do the same job for nothing.</span></li><li><span class="lead">Refusals</span><span><span class="ref">Crystalline research facility</span> can answer a flat no by undocking a warship that will not accept surrender. <span class="ref">Crystalline men buried</span> is safe to decline outright — it only turns hostile if you promise help and then pull your crewmember back out.</span></li></ul></div><div class="panel"><h3>Crew in stores</h3><div class="rar"><div class="rrow zero"><span>Engi</span><span class="pips"><i class="pip off"></i><i class="pip off"></i><i class="pip off"></i><i class="pip off"></i><i class="pip off"></i></span><span class="v">never</span></div><div class="rrow zero"><span>Mantis</span><span class="pips"><i class="pip off"></i><i class="pip off"></i><i class="pip off"></i><i class="pip off"></i><i class="pip off"></i></span><span class="v">never</span></div><div class="rrow zero"><span>Zoltan</span><span class="pips"><i class="pip off"></i><i class="pip off"></i><i class="pip off"></i><i class="pip off"></i><i class="pip off"></i></span><span class="v">never</span></div><div class="rrow zero"><span>Slug</span><span class="pips"><i class="pip off"></i><i class="pip off"></i><i class="pip off"></i><i class="pip off"></i><i class="pip off"></i></span><span class="v">never</span></div><div class="rrow zero"><span>Rockman</span><span class="pips"><i class="pip off"></i><i class="pip off"></i><i class="pip off"></i><i class="pip off"></i><i class="pip off"></i></span><span class="v">never</span></div><div class="rrow zero"><span>Human</span><span class="pips"><i class="pip off"></i><i class="pip off"></i><i class="pip off"></i><i class="pip off"></i><i class="pip off"></i></span><span class="v">never</span></div><div class="rrow"><span>Crystal</span><span class="pips"><i class="pip"></i><i class="pip off"></i><i class="pip off"></i><i class="pip off"></i><i class="pip off"></i></span><span class="v">1</span></div><div class="rrow zero"><span>Defense Laser Mark I</span><span class="pips"><i class="pip off"></i><i class="pip off"></i><i class="pip off"></i><i class="pip off"></i><i class="pip off"></i></span><span class="v">never</span></div><div class="rrow zero"><span>Dual Shot Laser</span><span class="pips"><i class="pip off"></i><i class="pip off"></i><i class="pip off"></i><i class="pip off"></i><i class="pip off"></i></span><span class="v">never</span></div><div class="rrow zero"><span>Burst Laser Mark I</span><span class="pips"><i class="pip off"></i><i class="pip off"></i><i class="pip off"></i><i class="pip off"></i><i class="pip off"></i></span><span class="v">never</span></div><div class="rrow zero"><span>Burst Laser Mark II</span><span class="pips"><i class="pip off"></i><i class="pip off"></i><i class="pip off"></i><i class="pip off"></i><i class="pip off"></i></span><span class="v">never</span></div><div class="rrow zero"><span>Burst Laser Mark III</span><span class="pips"><i class="pip off"></i><i class="pip off"></i><i class="pip off"></i><i class="pip off"></i><i class="pip off"></i></span><span class="v">never</span></div><div class="rrow zero"><span>Heavy Laser Mark I</span><span class="pips"><i class="pip off"></i><i class="pip off"></i><i class="pip off"></i><i class="pip off"></i><i class="pip off"></i></span><span class="v">never</span></div><div class="rrow zero"><span>Heavy Laser Mark II</span><span class="pips"><i class="pip off"></i><i class="pip off"></i><i class="pip off"></i><i class="pip off"></i><i class="pip off"></i></span><span class="v">never</span></div><div class="rrow zero"><span>Leto Missiles</span><span class="pips"><i class="pip off"></i><i class="pip off"></i><i class="pip off"></i><i class="pip off"></i><i class="pip off"></i></span><span class="v">never</span></div><div class="rrow zero"><span>Artemis Missiles</span><span class="pips"><i class="pip off"></i><i class="pip off"></i><i class="pip off"></i><i class="pip off"></i><i class="pip off"></i></span><span class="v">never</span></div><div class="rrow zero"><span>Artemis Missiles</span><span class="pips"><i class="pip off"></i><i class="pip off"></i><i class="pip off"></i><i class="pip off"></i><i class="pip off"></i></span><span class="v">never</span></div><div class="rrow zero"><span>Hermes Missile</span><span class="pips"><i class="pip off"></i><i class="pip off"></i><i class="pip off"></i><i class="pip off"></i><i class="pip off"></i></span><span class="v">never</span></div><div class="rrow zero"><span>Pegasus Missile</span><span class="pips"><i class="pip off"></i><i class="pip off"></i><i class="pip off"></i><i class="pip off"></i><i class="pip off"></i></span><span class="v">never</span></div><div class="rrow zero"><span>Breach Missiles</span><span class="pips"><i class="pip off"></i><i class="pip off"></i><i class="pip off"></i><i class="pip off"></i><i class="pip off"></i></span><span class="v">never</span></div><div class="rrow zero"><span>Mini Beam</span><span class="pips"><i class="pip off"></i><i class="pip off"></i><i class="pip off"></i><i class="pip off"></i><i class="pip off"></i></span><span class="v">never</span></div><div class="rrow zero"><span>Halberd Beam</span><span class="pips"><i class="pip off"></i><i class="pip off"></i><i class="pip off"></i><i class="pip off"></i><i class="pip off"></i></span><span class="v">never</span></div><div class="rrow zero"><span>Glaive Beam</span><span class="pips"><i class="pip off"></i><i class="pip off"></i><i class="pip off"></i><i class="pip off"></i><i class="pip off"></i></span><span class="v">never</span></div><div class="rrow zero"><span>Pike Beam</span><span class="pips"><i class="pip off"></i><i class="pip off"></i><i class="pip off"></i><i class="pip off"></i><i class="pip off"></i></span><span class="v">never</span></div><div class="rrow zero"><span>Fire Beam</span><span class="pips"><i class="pip off"></i><i class="pip off"></i><i class="pip off"></i><i class="pip off"></i><i class="pip off"></i></span><span class="v">never</span></div><div class="rrow zero"><span>Breach Bomb Mark I</span><span class="pips"><i class="pip off"></i><i class="pip off"></i><i class="pip off"></i><i class="pip off"></i><i class="pip off"></i></span><span class="v">never</span></div><div class="rrow zero"><span>Breach Bomb Mark II</span><span class="pips"><i class="pip off"></i><i class="pip off"></i><i class="pip off"></i><i class="pip off"></i><i class="pip off"></i></span><span class="v">never</span></div><div class="rrow zero"><span>Ion Blast</span><span class="pips"><i class="pip off"></i><i class="pip off"></i><i class="pip off"></i><i class="pip off"></i><i class="pip off"></i></span><span class="v">never</span></div><div class="rrow zero"><span>Heavy Ion</span><span class="pips"><i class="pip off"></i><i class="pip off"></i><i class="pip off"></i><i class="pip off"></i><i class="pip off"></i></span><span class="v">never</span></div><div class="rrow zero"><span>Ion Blast Mark II</span><span class="pips"><i class="pip off"></i><i class="pip off"></i><i class="pip off"></i><i class="pip off"></i><i class="pip off"></i></span><span class="v">never</span></div><div class="rrow zero"><span>Small Bomb</span><span class="pips"><i class="pip off"></i><i class="pip off"></i><i class="pip off"></i><i class="pip off"></i><i class="pip off"></i></span><span class="v">never</span></div><div class="rrow zero"><span>Fire Bomb</span><span class="pips"><i class="pip off"></i><i class="pip off"></i><i class="pip off"></i><i class="pip off"></i><i class="pip off"></i></span><span class="v">never</span></div><div class="rrow zero"><span>Ion Bomb</span><span class="pips"><i class="pip off"></i><i class="pip off"></i><i class="pip off"></i><i class="pip off"></i><i class="pip off"></i></span><span class="v">never</span></div><div class="rrow zero"><span>Healing Burst</span><span class="pips"><i class="pip off"></i><i class="pip off"></i><i class="pip off"></i><i class="pip off"></i><i class="pip off"></i></span><span class="v">never</span></div><div class="rrow zero"><span>Hull Smasher Laser</span><span class="pips"><i class="pip off"></i><i class="pip off"></i><i class="pip off"></i><i class="pip off"></i><i class="pip off"></i></span><span class="v">never</span></div><div class="rrow zero"><span>Hull Smasher Laser Mark II</span><span class="pips"><i class="pip off"></i><i class="pip off"></i><i class="pip off"></i><i class="pip off"></i><i class="pip off"></i></span><span class="v">never</span></div><div class="rrow zero"><span>Hull Beam</span><span class="pips"><i class="pip off"></i><i class="pip off"></i><i class="pip off"></i><i class="pip off"></i><i class="pip off"></i></span><span class="v">never</span></div><div class="rrow zero"><span>Hull Missile</span><span class="pips"><i class="pip off"></i><i class="pip off"></i><i class="pip off"></i><i class="pip off"></i><i class="pip off"></i></span><span class="v">never</span></div><div class="rrow"><span>Crystal Lockdown Bomb</span><span class="pips"><i class="pip"></i><i class="pip"></i><i class="pip"></i><i class="pip off"></i><i class="pip off"></i></span><span class="v">3</span></div><div class="rrow"><span>Crystal Burst Mark I</span><span class="pips"><i class="pip"></i><i class="pip off"></i><i class="pip off"></i><i class="pip off"></i><i class="pip off"></i></span><span class="v">1</span></div><div class="rrow"><span>Crystal Burst Mark II</span><span class="pips"><i class="pip"></i><i class="pip"></i><i class="pip"></i><i class="pip"></i><i class="pip off"></i></span><span class="v">4</span></div><div class="rrow"><span>Heavy Crystal Mark I</span><span class="pips"><i class="pip"></i><i class="pip"></i><i class="pip off"></i><i class="pip off"></i><i class="pip off"></i></span><span class="v">2</span></div><div class="rrow"><span>Heavy Crystal Mark II</span><span class="pips"><i class="pip"></i><i class="pip"></i><i class="pip"></i><i class="pip"></i><i class="pip"></i></span><span class="v">5</span></div></div><p class="note">Lower number = more common. A crew type at 0 is not sold in this sector&#x27;s stores.</p></div></div><footer><p>Built from sector_data.xml, events*.xml, newEvents.xml, dlcEventsOverwrite.xml.</p><p>&quot;Unique&quot; is the files&#x27; own unique=&quot;true&quot;. Whether that means once per sector or once per run is not stated in any file here; the wiki&#x27;s better bet is once per sector.</p><p>The shipped event lists carry no weights, so no beacon here has stated odds. A pool entry listed twice is counted as ×2 and marked.</p></footer>
+</div>

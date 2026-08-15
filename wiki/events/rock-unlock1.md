@@ -131,7 +131,7 @@ None anywhere in the chain's first two steps.
 - [[chain-rock-cruiser-unlock]] — the chain this starts
 - [[event-rock-unlock3]] — step 3, the payoff
 - [[event-ancient-device]] — the *other* guaranteed unlock beacon in the same sector
-- [[sector-rock-homeworlds]], [[ship-rock-cruiser]], [[concept-solar-flares]]
+- [[sector-rock-homeworlds]], [[entity-rock-cruiser]], [[concept-solar-flares]]
 - [[event-rock-unlock2]] — step 2, the sun duel (`ROCK_UNLOCK2`)
 
 ## Open Questions

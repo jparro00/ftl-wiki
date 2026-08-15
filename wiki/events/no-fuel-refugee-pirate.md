@@ -10,7 +10,7 @@ chain: []
 version: both
 first_seen: 2026-08-09
 last_updated: 2026-08-09
-sources: 3
+sources: 4
 tags: [out-of-fuel, distress-beacon, refugee, pirate, trading, advanced-edition, derived-odds]
 ---
 

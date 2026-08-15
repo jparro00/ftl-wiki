@@ -3,8 +3,8 @@ id: concept-surrender-offers
 type: concept
 version: both
 first_seen: 2026-08-09
-last_updated: 2026-08-09
-sources: 4
+last_updated: 2026-08-13
+sources: 5
 related_events: []
 tags: [mechanics, resolves-contradictions]
 ---
@@ -87,8 +87,16 @@ passes before being settled:
   `PIRATE_BRIBER` (0.3 → 70%, 0.4 → 60%)
 - the Lanius batch, on `LANIUS_SHIP` (`chance="0.2"` vs Fandom's 80)
 
-Event pages carrying the old flag should be updated on the next lint; the contradiction
-is resolved in favour of *both* sources being right about different quantities.
+The contradiction is resolved in favour of *both* sources being right about different
+quantities.
+
+**Cleared (lint, 2026-08-13).** The four event pages still carrying the old flag were
+annotated: [[event-crystal-fight]] (`0.6`) and [[event-rock-fight]] (`0.7`) had additionally
+**stated the wrong percentage** — 60% and 70% — by trusting the raw attribute at face value;
+both now read 40% and 30%, matching Fandom. [[event-crystal-fight-with-surrender-offer-hull-repairs]]
+and [[event-slug-home-nebula-surrender]] (`chance="0"`) had guessed correctly but recorded it
+as unresolved, and are now closed at 100%. [[event-donor-mantis-chase2]]'s flag concerns
+`min`/`max` units, which remain genuinely open.
 
 ## A related trap: `min` / `max`
 
@@ -119,6 +127,9 @@ Every enemy-ship encounter with a `<surrender>` block — the majority of hostil
 the wiki.
 
 ## Related
+- [[event-stalemate-surrender]] — `STALEMATE_SURRENDER`, the *other* way a fight ends in a
+  stand-down: engine-invoked rather than rolled from a `<surrender>` block, in no event list,
+  and reached when a battle cannot be finished at all
 - [[concept-event-tree-grammar]] — the node grammar every event is built from
 - [[concept-rebel-fleet-advance]] — the `modifyPursuit` attribute has a similar
   raw-value-vs-Fandom-gloss problem, still unresolved

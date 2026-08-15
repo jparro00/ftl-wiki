@@ -77,6 +77,7 @@ None. Neither this event nor the ship's outcomes carry a `req` ([[source-events-
   are carrying scrap you have had nowhere to spend.
 
 ## Related
+- [[chain-settlement-mercenary-work]] — the full quest line this belongs to
 - [[event-settlement-mercenary-work]] — one of the two quest starts that place this marker
 - [[event-store-rescue]] — the other quest start, same premise
 - [[event-quest-store]] — an unreferenced hidden-space-dock store event with a similar premise

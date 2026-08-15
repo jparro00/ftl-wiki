@@ -9,7 +9,7 @@ blue_options: []
 chain: []
 version: both
 first_seen: 2026-08-09
-last_updated: 2026-08-09
+last_updated: 2026-08-13
 sources: 6
 tags: [combat, rock, default-rewards, surrender, reused-as-subevent]
 ---
@@ -50,7 +50,8 @@ project you jumped into, to a Rock vessel that objects to the contents of your c
 ### Surrender branch — `ROCK_SHIP_SURRENDER`
 The enemy ship definition carries a surrender offer:
 `<surrender chance="0.7" min="3" max="4" load="ROCK_SHIP_SURRENDER"/>`
-([[source-events-ships]]). If it fires:
+([[source-events-ships]]) — a **30%** offer, since `chance` is the probability the ship
+*keeps fighting* ([[concept-surrender-offers]]). If it fires:
 
 | # | Choice | Outcome |
 |---|--------|---------|
@@ -86,9 +87,17 @@ None. `ROCK_SHIP` has no `req` on anything — there is no talking your way out 
 > - Fandom passes `{{SurrenderEscape(alt)|surrenderofferchance|ROCK_SHIP|events_ships.xml|30|30-40|3-4}}`
 >   on [[source-fandom-disabled-rock-ship]] — a **30** where the file says `0.7`.
 >
-> We only have the unrendered wikitext, so what those template slots mean (offer chance
+> ~~We only have the unrendered wikitext, so what those template slots mean (offer chance
 > vs. hull threshold vs. scrap) cannot be settled from the raw here. Trusting the game
-> files (`high` vs `medium`): `chance="0.7"`, `min/max 3–4`. Flagged rather than resolved.
+> files (`high` vs `medium`): `chance="0.7"`, `min/max 3–4`. Flagged rather than resolved.~~
+>
+> **RESOLVED (lint, 2026-08-13) — both sources were right about different quantities.**
+> Per [[concept-surrender-offers]], `chance` is the probability the ship **keeps fighting**,
+> so `chance="0.7"` is a **30%** surrender offer — exactly Fandom's 30. `ROCK_SHIP` is in
+> fact one of the two decisive rows in that finding (the other being `CRYSTAL_SHIP` at
+> 0.6 → 40), because 0.7 reads differently under the two conventions and only `1 − chance`
+> matches. The remaining template slots parse as `30-40` = hull-percentage band and `3-4` =
+> the `min`/`max` hull points, whose units are still open.
 
 ## Related
 - [[event-rock-pirates-fight]] — the pirate-flavoured twin, uses `ROCK_PIRATE` instead
@@ -101,8 +110,9 @@ None. `ROCK_SHIP` has no `req` on anything — there is no talking your way out 
 
 ## Open Questions
 - [ ] Exact scrap/resource values of "default rewards" for `SHIPS_ROCK`.
-- [ ] What `chance="0.7"` denotes precisely (offer probability vs. hull threshold) and how
-      Fandom's `30` maps onto it.
+- [x] ~~What `chance="0.7"` denotes precisely (offer probability vs. hull threshold) and how
+      Fandom's `30` maps onto it.~~ It is the probability the ship **keeps fighting**, so the
+      offer is 30% — Fandom's number ([[concept-surrender-offers]]).
 - [ ] What `autoReward level="RANDOM"` resolves to in practice.
 
 ## Sources

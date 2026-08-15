@@ -173,6 +173,7 @@
     "chance": "1 of {n}",
     "decision": "a choice",
     "ref": "the same table again",
+    "card_ref": "a separate event",
     "sequence": "what happens next"
   },
   "block_labels": {

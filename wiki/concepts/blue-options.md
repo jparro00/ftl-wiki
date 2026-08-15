@@ -4,7 +4,7 @@ type: concept
 version: both
 first_seen: 2026-08-09
 last_updated: 2026-08-09
-sources: 9
+sources: 10
 related_events: []
 tags: [mechanics, blue-options, methodology]
 ---

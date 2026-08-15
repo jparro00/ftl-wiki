@@ -1,0 +1,213 @@
+<!--
+  FTL sector profile — shared shell.
+
+  Layout, colour and type for every sector page. Holds no sector-specific content:
+  build-sector.py replaces the <title> line and the SECTOR-CONTENT marker below.
+  Editing this file changes all 19 pages, which is the point — see tools/SECTOR-PAGE.md §8.
+-->
+<title>The Last Stand — sector profile</title>
+<style>
+  :root {
+    --void:   #070B10;
+    --panel:  #101822;
+    --sunk:   #0B1219;
+    --edge:   #1F2E3C;
+    --ink:    #D6E2EC;
+    --dim:    #7C8FA3;
+    --faint:  #55697C;
+    --cyan:   #5FD3E8;
+    --green:  #78C46B;
+    --amber:  #E8B84B;
+    --red:    #E0685C;
+    --rail:   #22384A;
+    --hex:    rgba(95,211,232,.035);
+    --barlo:  rgba(95,211,232,.22);
+    --barred: rgba(224,104,92,.28);
+
+    --sans: ui-sans-serif, system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+  }
+  @media (prefers-color-scheme: light) {
+    :root {
+      --void: #EEF1F4; --panel: #FFFFFF; --sunk: #F5F7F9; --edge: #D3DBE2;
+      --ink: #14202B; --dim: #5B6C7B; --faint: #7A8895; --cyan: #12708A;
+      --green: #3B7A31; --amber: #8A6606; --red: #AF3B2E; --rail: #C2CDD6;
+      --hex: rgba(18,112,138,.045); --barlo: rgba(18,112,138,.18);
+      --barred: rgba(175,59,46,.22);
+    }
+  }
+  :root[data-theme="dark"] {
+    --void: #070B10; --panel: #101822; --sunk: #0B1219; --edge: #1F2E3C;
+    --ink: #D6E2EC; --dim: #7C8FA3; --faint: #55697C; --cyan: #5FD3E8;
+    --green: #78C46B; --amber: #E8B84B; --red: #E0685C; --rail: #22384A;
+    --hex: rgba(95,211,232,.035); --barlo: rgba(95,211,232,.22);
+    --barred: rgba(224,104,92,.28);
+  }
+  :root[data-theme="light"] {
+    --void: #EEF1F4; --panel: #FFFFFF; --sunk: #F5F7F9; --edge: #D3DBE2;
+    --ink: #14202B; --dim: #5B6C7B; --faint: #7A8895; --cyan: #12708A;
+    --green: #3B7A31; --amber: #8A6606; --red: #AF3B2E; --rail: #C2CDD6;
+    --hex: rgba(18,112,138,.045); --barlo: rgba(18,112,138,.18);
+    --barred: rgba(175,59,46,.22);
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; padding: 2.6rem 1.15rem 4.5rem;
+    background: var(--void);
+    background-image: radial-gradient(var(--hex) 1px, transparent 1.6px);
+    background-size: 22px 22px;
+    color: var(--ink); font-family: var(--sans); line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 58rem; margin: 0 auto; display: flex; flex-direction: column; gap: 2.1rem; }
+
+  .eyebrow {
+    font-family: var(--mono); font-size: .66rem; letter-spacing: .19em;
+    text-transform: uppercase; color: var(--cyan); margin: 0 0 .55rem;
+  }
+  h1 { font-size: 2.05rem; font-weight: 600; letter-spacing: -.02em; margin: 0 0 .7rem; text-wrap: balance; }
+  .lede { margin: 0 0 1rem; max-width: 42rem; color: var(--dim); font-size: .95rem; }
+  .lede strong { color: var(--ink); font-weight: 600; }
+  .facts { display: flex; flex-wrap: wrap; gap: .4rem; }
+  .fact {
+    font-family: var(--mono); font-size: .68rem; letter-spacing: .06em;
+    color: var(--dim); border: 1px solid var(--edge); border-radius: 2px;
+    padding: .22rem .5rem; background: var(--panel);
+  }
+  .fact b { color: var(--ink); font-weight: 600; }
+
+  .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(9.2rem, 1fr)); gap: .55rem; }
+  .stat {
+    background: var(--panel); border: 1px solid var(--edge); border-radius: 3px;
+    padding: .75rem .8rem; display: flex; flex-direction: column; gap: .15rem;
+  }
+  .stat .n {
+    font-family: var(--mono); font-size: 1.5rem; font-weight: 600;
+    font-variant-numeric: tabular-nums; letter-spacing: -.02em; line-height: 1.1; color: var(--cyan);
+  }
+  .stat .k {
+    font-family: var(--mono); font-size: .62rem; letter-spacing: .14em;
+    text-transform: uppercase; color: var(--faint);
+  }
+
+  section { display: flex; flex-direction: column; gap: .8rem; }
+  h2 {
+    font-size: .74rem; font-family: var(--mono); font-weight: 600;
+    letter-spacing: .17em; text-transform: uppercase; color: var(--cyan);
+    margin: 0; padding-bottom: .45rem; border-bottom: 1px solid var(--edge);
+    display: flex; justify-content: space-between; align-items: baseline; gap: 1rem;
+  }
+  h2 .meta { color: var(--faint); font-weight: 400; letter-spacing: .08em; text-transform: none; flex: none; }
+  .note { margin: 0; font-size: .84rem; color: var(--dim); max-width: 44rem; }
+
+  .budget { display: flex; flex-direction: column; gap: .3rem; }
+  .brow {
+    display: grid; grid-template-columns: 14rem 3.4rem 1fr; align-items: center;
+    gap: .7rem; padding: .34rem .55rem; border-radius: 2px; background: var(--panel);
+    border: 1px solid var(--edge);
+  }
+  .brow .name { font-family: var(--mono); font-size: .74rem; color: var(--ink); overflow-wrap: anywhere; }
+  .brow .cnt {
+    font-family: var(--mono); font-size: .74rem; color: var(--dim);
+    font-variant-numeric: tabular-nums; text-align: right;
+  }
+  .track { display: flex; align-items: center; gap: 2px; height: .62rem; flex-wrap: wrap; }
+  .blk { width: .62rem; height: .62rem; background: var(--cyan); border-radius: 1px; flex: none; }
+  .blk.maybe { background: var(--barlo); }
+  .brow.hostile .blk { background: var(--red); }
+  .brow.hostile .blk.maybe { background: var(--barred); }
+  .brow.zero .cnt { color: var(--faint); }
+
+  .pool { display: grid; grid-template-columns: repeat(auto-fill, minmax(16.5rem, 1fr)); gap: .4rem; }
+  .ev {
+    background: var(--panel); border: 1px solid var(--edge); border-left: 2px solid var(--rail);
+    border-radius: 2px; padding: .48rem .6rem; display: flex; flex-direction: column; gap: .22rem;
+  }
+  .ev.fight { border-left-color: var(--red); }
+  .ev.may { border-left-color: var(--barred); }
+  .ev.good { border-left-color: var(--green); }
+  .ev.risk { border-left-color: var(--amber); }
+  .ev .t { font-size: .84rem; font-weight: 500; line-height: 1.25; }
+  .ev .id { font-family: var(--mono); font-size: .63rem; color: var(--faint); letter-spacing: .03em; overflow-wrap: anywhere; }
+  .tags { display: flex; flex-wrap: wrap; gap: .25rem; margin-top: .1rem; }
+  .tg {
+    font-family: var(--mono); font-size: .57rem; letter-spacing: .1em; text-transform: uppercase;
+    padding: .08rem .3rem; border-radius: 2px; border: 1px solid currentColor; color: var(--faint);
+  }
+  .tg.fight, .tg.may-fight { color: var(--red); }
+  .tg.crew, .tg.reward { color: var(--green); }
+  .tg.crew-loss, .tg.boarders, .tg.cost { color: var(--amber); }
+  .tg.quest, .tg.store { color: var(--cyan); }
+
+  .delta {
+    border: 1px dashed var(--edge); border-radius: 2px; background: var(--sunk);
+    padding: .6rem .75rem; display: flex; flex-direction: column; gap: .5rem;
+  }
+  .delta .head {
+    font-family: var(--mono); font-size: .62rem; letter-spacing: .12em;
+    text-transform: uppercase; color: var(--amber);
+  }
+
+  .cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr)); gap: .9rem; align-items: start; }
+  .panel {
+    background: var(--panel); border: 1px solid var(--edge); border-radius: 3px;
+    padding: .9rem 1rem 1rem; display: flex; flex-direction: column; gap: .55rem;
+  }
+  .panel h3 {
+    margin: 0; font-family: var(--mono); font-size: .66rem; letter-spacing: .15em;
+    text-transform: uppercase; color: var(--dim); font-weight: 600;
+  }
+  .panel ul { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: .45rem; }
+  .panel li { font-size: .82rem; line-height: 1.42; display: flex; gap: .5rem; align-items: baseline; }
+  .lead {
+    font-family: var(--mono); font-size: .72rem; color: var(--cyan); flex: none;
+    min-width: 4.6rem; font-variant-numeric: tabular-nums;
+  }
+
+  .rar { display: flex; flex-direction: column; gap: .3rem; }
+  .rrow { display: grid; grid-template-columns: 5.2rem 1fr 3rem; gap: .55rem; align-items: center; font-size: .8rem; }
+  .pips { display: flex; gap: 2px; }
+  .pip { width: .52rem; height: .52rem; border-radius: 50%; background: var(--cyan); flex: none; }
+  .pip.off { background: var(--rail); }
+  .rrow .v { font-family: var(--mono); font-size: .68rem; color: var(--dim); text-align: right; }
+  .rrow.zero .v { color: var(--red); }
+
+  .chain { display: flex; flex-direction: column; gap: 0; }
+  .step { display: grid; grid-template-columns: 1.6rem 1fr; gap: .7rem; }
+  .marker { display: flex; flex-direction: column; align-items: center; }
+  .dot {
+    width: 1.35rem; height: 1.35rem; border-radius: 50%; flex: none;
+    border: 1px solid var(--cyan); color: var(--cyan); background: var(--panel);
+    font-family: var(--mono); font-size: .68rem; display: flex; align-items: center; justify-content: center;
+    font-variant-numeric: tabular-nums;
+  }
+  .step .line { width: 1px; flex: 1; background: var(--rail); min-height: .6rem; }
+  .step .body { padding-bottom: .95rem; }
+  .step .body .t { font-size: .88rem; font-weight: 500; }
+  .step .body .d { font-size: .81rem; color: var(--dim); margin-top: .15rem; }
+  .step .body .id { font-family: var(--mono); font-size: .63rem; color: var(--faint); margin-top: .12rem; }
+  .step.end .dot { border-color: var(--green); color: var(--green); }
+
+  .callout {
+    border: 1px solid var(--edge); border-left: 2px solid var(--amber);
+    background: var(--sunk); border-radius: 2px; padding: .7rem .9rem;
+    font-size: .84rem; color: var(--dim);
+  }
+  .callout b { color: var(--ink); font-weight: 600; }
+  .ref { color: var(--ink); font-weight: 500; }
+  code { font-family: var(--mono); font-size: .92em; color: var(--ink); }
+  footer {
+    border-top: 1px solid var(--edge); padding-top: .8rem;
+    font-family: var(--mono); font-size: .66rem; color: var(--faint); line-height: 1.8;
+  }
+  footer p { margin: 0; }
+  @media (max-width: 34rem) {
+    .brow { grid-template-columns: 1fr 3.4rem; }
+    .brow .track { grid-column: 1 / -1; }
+  }
+</style>
+
+<div class="wrap">
+<header><p class="eyebrow">Sector profile · FINAL</p><h1>The Last Stand</h1><p class="lede">Eight events, seventeen to twenty beacons, and not one blue option anywhere in the pool — every allocation but the neutral list is fixed, and all six hostile beacons are the same fight. What the sector places is mostly supply: three repair stations and a store. What it is actually about is not in the table below at all — the <strong>Rebel Flagship</strong> sits at the Federation Base, put there by the endgame rather than by any entry here.</p><div class="facts"><span class="fact">minSector <b>7</b></span><span class="fact"><b>at most one per run</b></span><span class="fact">entry beacon <b>BOSS_NEUTRAL</b></span><span class="fact">tracks <b>laststand</b></span><span class="fact"><b>Advanced Edition data</b></span></div></header><div class="stats"><div class="stat"><div class="n">17–20</div><div class="k">Beacon spread</div></div><div class="stat"><div class="n">6</div><div class="k">Forced fights</div></div><div class="stat"><div class="n">3</div><div class="k">Repair stations</div></div><div class="stat"><div class="n">8</div><div class="k">Events in pool</div></div><div class="stat"><div class="n">0</div><div class="k">Blue options</div></div></div><section><h2>Beacon budget<span class="meta">what the sector is required to place</span></h2><div class="budget"><div class="brow hostile"><div class="name">BOSS_HOSTILE</div><div class="cnt">6</div><div class="track"><i class="blk"></i><i class="blk"></i><i class="blk"></i><i class="blk"></i><i class="blk"></i><i class="blk"></i></div></div><div class="brow"><div class="name">BOSS_NEUTRAL</div><div class="cnt">7–10</div><div class="track"><i class="blk"></i><i class="blk"></i><i class="blk"></i><i class="blk"></i><i class="blk"></i><i class="blk"></i><i class="blk"></i><i class="blk maybe"></i><i class="blk maybe"></i><i class="blk maybe"></i></div></div><div class="brow"><div class="name">BOSS_REPAIR_STATION</div><div class="cnt">3</div><div class="track"><i class="blk"></i><i class="blk"></i><i class="blk"></i></div></div><div class="brow"><div class="name">STORE</div><div class="cnt">1</div><div class="track"><i class="blk"></i></div></div></div><p class="note">Solid blocks are the minimum the sector must place; faded blocks are the optional extra.</p><p class="note">Entry beacon is always BOSS_NEUTRAL.</p><div class="callout"><strong>The fight that is not listed.</strong> Every row above is an allocation the sector must satisfy. The Flagship is not one of them: <code>BOSS_TEXT_1</code>, <code>BOSS_TEXT_2</code> and <code>BOSS_TEXT_3</code> sit in no event list and no sector description, and the Federation Base beacon is placed by the endgame. The entry beacon is odd in the other direction — the sector starts you on the <code>BOSS_NEUTRAL</code> list rather than on a named event, so the beacon you arrive at is a different encounter every run.</div></section><section><h2>Hostile<span class="meta">BOSS_HOSTILE · 6 beacons · combat unless the row says otherwise</span></h2><div class="pool"><div class="ev fight"><div class="t">Fight in Last Stand</div><div class="id">BOSS_SCOUT</div><div class="tags"><span class="tg fight">Fight</span><span class="tg crew">Crew</span><span class="tg">×3</span></div></div></div><p class="note">One event, written into the list three times, filling six beacons — every hostile beacon in the sector is the same encounter. Its ship is drawn from a roster of two crewed Rebel hulls and two automated ones, and it has no surrender branch and no escape branch: once <span class="ref">Fight in Last Stand</span> starts, it runs to a wreck.</p></section><section><h2>Neutral<span class="meta">BOSS_NEUTRAL · 7–10 beacons · a choice, sometimes a fight</span></h2><div class="pool"><div class="ev may"><div class="t">Rebel ship attacking civilians in Last Stand</div><div class="id">BOSS_SCOUT_RESCUE</div><div class="tags"><span class="tg may-fight">May fight</span></div></div><div class="ev fight"><div class="t">Rebel fight among Federation and Rebel fleets</div><div class="id">BOSS_FLEETS_BOTH_FIGHT</div><div class="tags"><span class="tg fight">Fight</span></div></div><div class="ev"><div class="t">Empty beacon (Last Stand)</div><div class="id">BOSS_FLEETS_FED</div></div><div class="ev may"><div class="t">Rebel ship attacking refueling outpost</div><div class="id">SQUAT_REFUEL_STATION</div><div class="tags"><span class="tg may-fight">May fight</span><span class="tg unique">Unique</span></div></div><div class="ev fight"><div class="t">Rebel fight</div><div class="id">REBEL</div><div class="tags"><span class="tg fight">Fight</span><span class="tg crew">Crew</span></div></div></div><p class="note">The only entry with any range in it, and the sector&#x27;s entry beacon draws from here too. <span class="ref">Rebel fight among Federation and Rebel fleets</span> and <span class="ref">Rebel fight</span> are fighting the moment you drop in; <span class="ref">Empty beacon (Last Stand)</span> is pure scenery; <span class="ref">Rebel ship attacking civilians in Last Stand</span> and <span class="ref">Rebel ship attacking refueling outpost</span> both let you decline.</p></section><section><h2>Stores<span class="meta">BOSS_REPAIR_STATION · 3 beacons</span></h2><div class="pool"><div class="ev good"><div class="t">Repair station in Last Stand</div><div class="id">BOSS_REPAIR_STATION</div><div class="tags"><span class="tg reward">Reward</span></div></div></div><p class="note">No choices, no risk and no fight: 15 hull, every damaged system restored, 4 missiles, 5 fuel, 5 drone parts and 22–44 scrap, three times over.</p></section><section><h2>Stores<span class="meta">STORE · 1 beacon</span></h2><div class="pool"><div class="ev good"><div class="t">Store</div><div class="id">STORE</div><div class="tags"><span class="tg store">Store</span></div></div></div><p class="note">One store, and the only beacon in the sector where scrap turns into anything.</p></section><section><h2>Quest chain<span class="meta">The Rebel Flagship · fought in three phases</span></h2><div class="chain"><div class="step"><div class="marker"><div class="dot">1</div><div class="line"></div></div><div class="body"><div class="t">Arrive at the Federation Base</div><div class="d">The entry event runs once and pays <strong>10 fuel</strong> and <strong>10 hull repaired</strong> before you jump anywhere. The base beacon itself is flavour: you hang back near the far side of the moon while the two fleets skirmish, and prepare to face the Flagship.</div><div class="id">LAST_STAND_START → FEDERATION_BASE</div></div></div><div class="step"><div class="marker"><div class="dot">2</div><div class="line"></div></div><div class="body"><div class="t">Phase 1 — four artillery mounts</div><div class="d">It carries no weapons and no drones; everything it fires comes from four artillery mounts, behind cloaking and four layers of shields. Advanced Edition adds a <strong>Hacking</strong> system and removes the Easy-difficulty shield discount.</div><div class="id">BOSS_TEXT_1 · bosses.xml BOSS_1_*</div></div></div><div class="step"><div class="marker"><div class="dot">3</div><div class="line"></div></div><div class="body"><div class="t">Phase 2 — the drone surge</div><div class="d">One artillery mount fewer, and the drone system running at power 8. The only edition difference is the lost Easy-mode shield discount; the systems are otherwise identical between vanilla and Advanced Edition.</div><div class="id">BOSS_TEXT_2 · bosses.xml BOSS_2_*</div></div></div><div class="step"><div class="marker"><div class="dot">4</div><div class="line"></div></div><div class="body"><div class="t">Phase 3 — boarders and the super weapon</div><div class="d">Two artillery mounts, engines at 6, a teleporter and an <code>invasion</code> boarding AI. Advanced Edition adds <strong>Mind Control</strong> — so in AE the last phase mind-controls your crew while it boards you, where vanilla only boards.</div><div class="id">BOSS_TEXT_3 · bosses.xml BOSS_3_*</div></div></div><div class="step end"><div class="marker"><div class="dot">✓</div></div><div class="body"><div class="t">It dies, or it jumps</div><div class="d">A phase that loses its crew but keeps shooting is the AI taking over. A phase that breaks off pays a high standard reward and sends you after it. The kill event still ends on a leftover beta message thanking you for playing.</div><div class="id">BOSS_AUTOMATED / BOSS_ESCAPED / BOSS_DESTROYED</div></div></div></div></section><div class="cols"><div class="panel"><h3>What the sector hands you</h3><ul><li><span class="lead">Repair</span><span><span class="ref">Repair station in Last Stand</span> is a fixed three beacons: 15 hull, every damaged system restored, 4 missiles, 5 fuel, 5 drone parts and 22–44 scrap, each time.</span></li><li><span class="lead">On arrival</span><span>Entering the sector pays 10 fuel and repairs 10 hull before you have jumped anywhere.</span></li><li><span class="lead">Hull</span><span><span class="ref">Rebel ship attacking civilians in Last Stand</span> can repair 8 more hull — one of three outcomes after you save the cruiser, the others being thanks and a bundle of supplies.</span></li><li><span class="lead">Fuel</span><span><span class="ref">Rebel ship attacking refueling outpost</span> pays a fuel bonus from the grateful outpost on top of the salvage, but only if you choose to intervene.</span></li><li><span class="lead">Crew</span><span>Two events can hand you a crew member, <span class="ref">Fight in Last Stand</span> and <span class="ref">Rebel fight</span>, and only through the dead-crew salvage — the prisoner is found aboard a ship whose crew you killed, not one you blew up.</span></li><li><span class="lead">Store</span><span>Exactly one, allocated 1–1, and the last place to spend scrap before the Flagship.</span></li></ul></div><div class="panel"><h3>What can bite</h3><ul><li><span class="lead">Six forced fights</span><span><span class="ref">Fight in Last Stand</span> fills every hostile beacon, and the ship it loads has no surrender and no escape branch. Every one of the six ends in a destroyed hull or a dead crew.</span></li><li><span class="lead">Thin pay</span><span><span class="ref">Rebel fight among Federation and Rebel fleets</span> is fighting on arrival and pays a low, scrap-only reward when destroyed — the text says outright there is no time to salvage the wreck.</span></li><li><span class="lead">Runners</span><span><span class="ref">Rebel fight</span> can surrender or power up its FTL and leave, so a beacon that looks like scrap can end with neither the fight nor the salvage.</span></li><li><span class="lead">Attrition, not disaster</span><span>No event in this pool puts boarders aboard and none can kill a crew member. What the sector takes is hull and ammunition, across the six guaranteed fights plus whatever the neutral pool adds.</span></li></ul></div><div class="panel"><h3>What is not here</h3><ul><li><span class="lead">Blue options</span><span>None. Not one event in the pool has a gated choice, so no system level, augment or crew species changes a single outcome in this sector.</span></li><li><span class="lead">Quests and unlocks</span><span>Nothing here plants a quest marker, unlocks a ship, or hands out a named weapon or augment.</span></li><li><span class="lead">Species</span><span>No crew type is referenced anywhere in the pool, and the sector declares no store rarity list of its own.</span></li><li><span class="lead">Unique</span><span><span class="ref">Rebel ship attacking refueling outpost</span> is the only event here carrying the files&#x27; own unique flag.</span></li></ul></div></div><footer><p>Built from sector_data.xml, events*.xml, newEvents.xml, dlcEventsOverwrite.xml.</p><p>&quot;Unique&quot; is the files&#x27; own unique=&quot;true&quot;. Whether that means once per sector or once per run is not stated in any file here; the wiki&#x27;s better bet is once per sector.</p><p>The shipped event lists carry no weights, so no beacon here has stated odds. A pool entry listed twice is counted as ×2 and marked.</p></footer>
+</div>

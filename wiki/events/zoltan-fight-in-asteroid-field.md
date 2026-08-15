@@ -76,7 +76,7 @@ None.
 - [[event-zoltan-fight]] — the same ship without the hazard
 - [[event-zoltan-ship-follows-mantis-ship]] — the other Zoltan asteroid-field encounter
 - [[entity-zoltan]], [[item-zoltan-shield]] — the opponent and its defence
-- [[concept-asteroid-field]] — the hazard
+- [[concept-asteroid-fields]] — the hazard
 - [[item-defense-drone]] — the counter
 
 ## Open Questions

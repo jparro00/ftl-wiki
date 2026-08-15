@@ -6,9 +6,9 @@ rarity: 1
 unlocks_blue: [[[event-single-life-form-on-moon]], [[event-unknown-disease-on-mining-colony]], [[event-research-station-with-no-response]], [[event-zoltan-research-facility]], [[event-plagued-station]], [[event-legendary-thief-kazaaakplethkilik]], [[event-slug-hacker-medical]], [[event-nebula-wreckage]]]
 version: both
 first_seen: 2026-08-09
-last_updated: 2026-08-09
-sources: 5
-tags: [system, crew]
+last_updated: 2026-08-14
+sources: 6
+tags: [system, crew, oxygen]
 ---
 
 # Medbay
@@ -23,6 +23,15 @@ healing speed."* ([[source-text-blueprints]]). Occupies the same slot as the AE-
 - Power: `startPower` 1, `maxPower` 3.
 - Purchase cost: **50** scrap. Upgrade costs: level 2 = 35, level 3 = 45.
 - `rarity` 1.
+
+### Undocumented in game: it negates suffocation
+A **powered level-1 Medbay fully negates suffocation damage** for crew in its room, and level 2
+heals through it ([[source-fandom-oxygen]]). Nothing in `text_blueprints.xml` mentions oxygen —
+the tooltip only promises healing — so this is invisible in the game's own description.
+
+It is the strongest suffocation mitigation in the game: not the 50% of
+[[item-emergency-respirators]] but a full **6.4 → 0 HP/sec**. See
+[[concept-oxygen-and-suffocation]].
 
 ## How To Get It
 - **Stores** — 50 scrap ([[source-blueprints]]).
@@ -50,6 +59,8 @@ healing speed."* ([[source-text-blueprints]]). Occupies the same slot as the AE-
 ## Related
 - [[item-clone-bay]] — the AE alternative in the same slot
 - [[item-engi-med-bot-dispersal]] / [[item-healing-burst]] — healing outside the Medbay room
+- [[concept-oxygen-and-suffocation]] — the suffocation immunity above
+- [[item-emergency-respirators]] — the halving this beats, but only in one room
 
 ## Open Questions
 - [ ] Whether the vanilla `STRANDED` list drops the level-3 branch entirely.
@@ -60,3 +71,4 @@ healing speed."* ([[source-text-blueprints]]). Occupies the same slot as the AE-
 - [[source-events-xml]] (per raw/gamedata/events.xml)
 - [[source-events-mantis]] (per raw/gamedata/events_mantis.xml)
 - [[source-events-slug]] (per raw/gamedata/events_slug.xml)
+- [[source-fandom-oxygen]] (per raw/wiki/oxygen.md)

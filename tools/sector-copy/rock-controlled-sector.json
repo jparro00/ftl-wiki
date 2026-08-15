@@ -1,0 +1,84 @@
+{
+  "slug": "rock-controlled-sector",
+
+  "lede": "**Everything here comes out of a pool.** Nothing in this sector is placed by name — no unlock beacon, no wormhole — so the guarantees are thin: two stores, and six to eight Rock warships already firing when you drop in. The depth is all in the neutral pool at seven to eight beacons, while the distress pool, which holds ten of the sector's twenty-two blue-option events and four of its five crew-killers, is allocated one or two.",
+
+  "stats": [
+    { "metric": "beacons_min..beacons_max", "label": "Beacon spread" },
+    { "metric": "section:hostile:min..section:hostile:max", "label": "Guaranteed fights" },
+    { "metric": "entry:STORE_ROCK:min..entry:STORE_ROCK:max", "label": "Stores" },
+    { "metric": "gated_events", "label": "Events with a blue option" },
+    { "metric": "distinct_events", "label": "Events in pool" }
+  ],
+
+  "callout": "**Versus the Rock Homeworlds:** the same eight entries, the same pools, the same numbers. The homeworlds add two beacons placed by name — the Rock Cruiser test and the Crystal wormhole — and turn up at most once, no earlier than sector 4. This one repeats, starts early, and names nothing. Its generic store entry is switched off in the data, so `STORE_ROCK` is the whole resupply: exactly two beacons, no roll.",
+
+  "section_notes": {
+    "HOSTILE_ROCK": "Five events, every one of them a Rock ship, and three arrive with the environment already against you — twice in an asteroid field, once beside a sun. Each is combat at the root: the beacon opens with weapons live.",
+    "BOARDERS_ROCK": "{{ROCK_BOARDERS_SUN}} is the odd one — no ship fight and no choice at all, two to three Rockmen aboard the instant you arrive with the sun on your hull the whole time. The other two pair a ship with the teleport, one of them inside an asteroid field.",
+    "NEUTRAL_ROCK": "Ten events, the widest pool on the table, and the only place carrying a named item: {{ASTEROID_DERELICT_SHIP}} is the **Damaged Stasis Pod**. Rock Plating collapses its three-way search into the single branch that finds the pod, so the hunt can no longer cost you 4 hull and an engine.",
+    "DISTRESS_BEACON_ROCK": "Twelve events for one or two beacons — the richest pool in the sector and the one you are least likely to see. Four of the five events that can kill a crew member live here, and so do ten of the twenty-two events with a blue option.",
+    "ITEMS": "Thirteen events of free kit, traders and stations. {{HELP_MINERS}} is the one that pays an augment, and it wants missiles for it.",
+    "STORE_ROCK": "Fixed at two, and it is one event placed twice rather than a list — the same Rock trader both times, and the whole of the sector's required resupply.",
+    "QUESTS_ROCK": "Allocated **0–1**, so the sector is not obliged to plant a quest at all. Three more quest starters sit in the distress pool regardless, and {{ROCK_QUEST_MARRIAGE_START}} is the only one that is Rock's own."
+  },
+
+  "chain": {
+    "title": "The bride of Numa V",
+    "steps": [
+      {
+        "marker": "1",
+        "title": "{{ROCK_QUEST_MARRIAGE_START}}",
+        "detail": "A stranded Rock captain asks you to carry his passenger to her arranged husband. **Accept the passenger** plants the marker; refusing ends it on the spot. She will not enter the main hold and waits in the cargo bay.",
+        "ref": "ROCK_QUEST_MARRIAGE_START"
+      },
+      {
+        "marker": "2",
+        "title": "Numa V",
+        "detail": "The tunnel network of an advanced Rock civilisation. On arrival the passenger — silent the whole trip — begs you not to hand her over, and the Grand Basilisk's Chief Aid opens the channel to demand delivery.",
+        "ref": "ROCK_QUEST_MARRIAGE"
+      },
+      {
+        "marker": "✓",
+        "title": "Two ways to end it",
+        "detail": "Hand her over and the guards drop off an exotic augment and a little scrap. Refuse and she joins you as **Ariadne**, a Rock crew member — then the Basilisk's escort opens fire and you fight a Rock warship on the way out.",
+        "ref": "ROCK_QUEST_MARRIAGE · crew \"Ariadne\""
+      }
+    ]
+  },
+
+  "panels": [
+    {
+      "title": "Blue options that pay here",
+      "items": [
+        { "lead": "Sensors ×5", "text": "The widest gate in the sector. Level 2 turns the plain appeal at {{ROCK_ATHIEST}} into a certain Rock crew member, and opens branches at {{CIVILIAN_ASTEROIDS_BEACON}}, {{REBEL_VS_FEDERATION}}, {{FEDERATION_PLANET_SIGNAL}} and {{TRADER_UPGRADES}}." },
+        { "lead": "Rockman ×3", "text": "{{ROCK_MANTIS_HUNTER}}, {{DISTRESS_STATION_FIRE}} and {{DISTRESS_STATION_DISEASE}}. A Rockman walks straight into the burning station and the scientists pay an augment for it; on the mining colony the immunity alone is worth a reward." },
+        { "lead": "Rock Plating ×3", "text": "Ram the hunter at {{ROCK_MANTIS_HUNTER}} and its engines are dead before the shooting starts; guarantee the pod at {{ASTEROID_DERELICT_SHIP}}; and a third opening at {{CIVILIAN_ASTEROIDS_BEACON}}." },
+        { "lead": "Crew Teleporter ×4", "text": "{{FRIENDLY_SLAVER}}, {{CIVILIAN_ASTEROIDS_BEACON}}, {{REBEL_VS_FEDERATION}} and {{QUEST_CREWDEAD_START}}, where it is one of only three keys in, alongside an Anti-Bio Beam and a Fire Bomb." },
+        { "lead": "System Repair Drone ×3", "text": "{{ROCK_MANTIS_FREIGHTER}}, {{CIVILIAN_ASTEROIDS_BEACON}}, and sending the drone into the flames at {{DISTRESS_STATION_FIRE}} for a drone schematic instead of a coin flip with a crew member's life." },
+        { "lead": "Slug ×2", "text": "A lookout while you strip the wreck at {{ROCK_LOOTING}} — both of its outcomes pay and neither ends in a fight — and a read on what is really down there at {{STRANDED_BEACON}}." }
+      ]
+    },
+    {
+      "title": "What you can leave with",
+      "items": [
+        { "lead": "Augment", "text": "**Damaged Stasis Pod** at {{ASTEROID_DERELICT_SHIP}} — the only named item the whole pool hands out, and it takes a run through a dense asteroid field to get." },
+        { "lead": "Crew", "text": "Rockmen two ways: talked round at {{ROCK_ATHIEST}}, where Improved Sensors makes it certain and the plain appeal is one outcome in three, or bought at {{FRIENDLY_SLAVER}}." },
+        { "lead": "Crew", "text": "{{FRIENDLY_SLAVER}} is the one beacon that can produce a Mantis, a Rockman or an Engi; {{TAVERN_HIRE}} sells outright; {{STRANDED_BEACON}} can hand you a human off a moon with a level already in something." },
+        { "lead": "Crew", "text": "26 of the 50 events in the pool can add someone — over half the sector, against five that can take someone away." },
+        { "lead": "Reactor", "text": "A free reactor bar is one of three follow-ups at {{ROCK_SLUG_ARGUMENT}} if you settle the Rock ship's debt for 10–15 scrap; another of the three sells you the same upgrade at the same price." },
+        { "lead": "Weapon", "text": "A high-tier weapon out of {{DISTRESS_STATION_DISEASE}} — but only with an upgraded Medbay **and** the Engi Med-bot Dispersal to spread the cure." }
+      ]
+    },
+    {
+      "title": "What can bite",
+      "items": [
+        { "lead": "Crew", "text": "Five events can kill a crew member outright, four of them crammed into a distress pool that only gets one or two beacons: {{DISTRESS_INFESTATION}}, {{DISTRESS_STATION_FIRE}}, {{DISTRESS_STATION_DISEASE}} and {{STRANDED_BEACON}}. The fifth is {{ROCK_STARSHIP_MINE}}." },
+        { "lead": "Environment", "text": "Weather is the sector's second weapon: five of the eight events across the hostile and boarding pools put you inside a hazard before anyone fires — three asteroid fields, two suns." },
+        { "lead": "Boarders", "text": "Four events put someone aboard. Three are Rockmen, up to three of them at {{ROCK_BOARDERS_SHIP}} and at {{ROCK_BOARDERS_SUN}}; {{FEDERATION_PLANET_SIGNAL}} sends two to three humans." },
+        { "lead": "Hull", "text": "{{QUEST_CREWDEAD_START}} is a job to take a ship **intact**. Destroy the target instead and the wreck costs you 13 hull, a random system, and one room hit with every effect at once." },
+        { "lead": "Ammo", "text": "{{ROCK_STARSHIP_MINE}} chews through the hull while you decide: a missile detonation costs 3 hull, a beam drone costs a drone part, and defusing it by hand can drop into a red-wire/blue-wire flip where the wrong end kills the volunteer, takes 5 hull and opens a breach. Engines 5 backs you out of the whole thing for nothing." }
+      ]
+    }
+  ]
+}

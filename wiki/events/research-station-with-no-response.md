@@ -145,7 +145,7 @@ Teleporter blue options — is unmarked and therefore present in both editions.
 - The Anti-Personnel Drone branch is the "I cannot afford a boarding fight" answer.
 
 ## Related
-- [[event-merchants-request]] — reuses `STATION_SICK_LIST` and `STATION_SICK_DRONE_LIST`
+- [[event-merchant-s-request]] — reuses `STATION_SICK_LIST` and `STATION_SICK_DRONE_LIST`
   in its Merchant's Delivery scenario (without the Lifeform Scanner branch)
 - [[concept-event-list-weighting]] — the assumption behind the odds above
 - [[concept-sector-event-allocation]] — how `HOSTILE_BOARDING` gets placed

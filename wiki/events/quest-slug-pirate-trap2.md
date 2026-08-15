@@ -6,7 +6,7 @@ sectors: [[[sector-slug-controlled-nebula]], [[sector-slug-home-nebula]]]
 beacon_type: quest
 hostile: true
 blue_options: []
-chain: []
+chain: [[[chain-slug-pirate-trap]]]
 version: both
 first_seen: 2026-08-09
 last_updated: 2026-08-09
@@ -98,6 +98,7 @@ None. No `req` appears anywhere in this event or either ship block.
   `LOW standard`.
 
 ## Related
+- [[chain-slug-pirate-trap]] — the full quest line this belongs to
 - [[event-slug-comm-tapping]] — the parent and only route here
 - [[entity-slugs]], [[entity-pirates]] — the parties involved
 - [[sector-slug-controlled-nebula]], [[sector-slug-home-nebula]] — where the parent appears

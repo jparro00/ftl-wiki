@@ -6,7 +6,7 @@ hostility: hostile
 version: both
 first_seen: 2026-08-09
 last_updated: 2026-08-09
-sources: 5
+sources: 7
 tags: [boss, endgame, last-stand, flagship, artillery, three-phase]
 ---
 

@@ -33,5 +33,10 @@ _None recorded at file level. Cross-source conflicts are flagged on the individu
 pages that carry them._
 
 ## Links
+- [[source-text-achievements]] — this file's string table: the achievement names and
+  descriptions. Between the two of them there is still **no machine-readable unlock
+  condition**, which is what makes Fandom's alternative ship-unlock routes uncheckable here.
+- [[source-text-blueprints]] — where the `ship_PLAYER_SHIP_*_unlock` hint strings actually
+  live, contrary to what [[source-text-achievements]] used to claim
 - [[source-text-events-xml]] - the string table every event depends on
 - [[source-sector-data-xml]] - which sectors draw on these lists

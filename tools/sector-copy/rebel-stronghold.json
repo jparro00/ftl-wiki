@@ -1,0 +1,91 @@
+{
+  "slug": "rebel-stronghold",
+
+  "lede": "A Rebel sector with **one extra beacon**, and that beacon is a second Flagship sitting half-built in its own shipyard. Killing the unfinished hull pays a weapon, 5 fuel, 5 missiles, 5 drone parts, **two jumps of breathing room** and a ship unlock, for a fight against 10 hull, shields running at 2 power of a possible 8, and no weapons at all. Everything else is the ordinary Rebel pool: six to eight beacons that open shooting, one guaranteed boarding, and seven events that can put the fleet a jump closer.",
+
+  "stats": [
+    { "metric": "beacons_min..beacons_max", "label": "Beacon spread" },
+    { "metric": "entry:FLAGSHIP_CONSTRUCTION:min..entry:FLAGSHIP_CONSTRUCTION:max", "label": "Shipyard beacons" },
+    { "metric": "section:hostile:min..section:hostile:max", "label": "Forced fights" },
+    { "metric": "section:nebula:min..section:nebula:max", "label": "Nebula beacons" },
+    { "metric": "distinct_events", "label": "Events in pool" }
+  ],
+
+  "callout": "**Versus a plain Rebel Controlled Sector: one row.** Every other entry — the same nine lists, the same minimums and maximums, the same start beacon — is identical. `FLAGSHIP_CONSTRUCTION` at 1–1 is the whole difference, and it is what makes this sector `unique` and bars it before sector 4. The nebula entry is the reason the spread is so wide: it can allocate nothing at all, or a fifth of the map.",
+
+  "section_notes": {
+    "HOSTILE_REBEL": "Five events, every one of them shooting the moment you arrive. Two are scouts that will run — and if {{AUTO_WARNING}} or {{SQUAT_WARNING}} gets its FTL charged and jumps out, Rebel pursuit doubles for a jump. Killing them is worth a low-to-medium reward; letting them go costs you the map.",
+    "BOARDERS_REBEL": "Fixed at one beacon, so a boarding is guaranteed somewhere in the sector. It resolves as either {{BOARDERS_SUN}} — 2–4 humans aboard, alongside a star, with no choice offered at all — or {{BOARDERS_REBEL_SHIP}}, which puts 2–3 aboard while a Rebel ship shoots at you.",
+    "NEUTRAL_REBEL": "Eight events, and not one opens hostile: every ship in this pool lets you decide whether to shoot. Three of them are auto-ships guarding something — sensor data at {{AUTO_DEFENSE_MAP}}, a supply cache at {{AUTO_DEFENSE_ITEM}}, a radar station at {{AUTO_DEFENSE_RADAR}} — and each has a way past the guard that does not involve the guard.",
+    "NEBULA_REBEL": "The widest entry on the page: eleven events for anywhere between none and five beacons. Three are plasma storms running your reactor at half power, {{NEBULA_REBEL_BOARDING}} is a straight ambush with no ship to shoot back at, and {{NEBULA_EMPTY}} is fog and a charging FTL.",
+    "DISTRESS_BEACON_REBEL": "One or two beacons carrying six events, and two of the sector's three routes to the hidden Federation base — {{CIVILIAN_ASTEROIDS_BEACON}} and {{REBEL_VS_FEDERATION}} — are in here rather than in the quest entry.",
+    "ITEMS": "Thirteen events for one or two beacons: refuelling, repairs, hiring, and trades in both directions. Nothing in it is dangerous and nothing in it is free.",
+    "QUESTS_REBEL": "Allocated 0–2, so a run through this sector can be handed no quest marker at all from here. {{MERCHANT_REQUEST}} pays 5 drone parts up front just for taking the delivery job."
+  },
+
+  "chain": {
+    "title": "The second Flagship · one beacon, guaranteed",
+    "steps": [
+      {
+        "marker": "1",
+        "title": "{{FLAGSHIP_CONSTRUCTION}}",
+        "detail": "Scaffolding, construction drones, and planets mined out to feed something enormous. **Leaving immediately costs nothing** — the decline branch has no effects at all, and this is the only look at the ship before the Federation base.",
+        "ref": "FLAGSHIP_CONSTRUCTION · 1–1, unique"
+      },
+      {
+        "marker": "2",
+        "title": "Look around, and it powers up",
+        "detail": "The scan identifies a **second Flagship** under construction, and the fight starts with no further choice. It is built on the Flagship's own third-phase layout with almost none of the power in it: **10 hull**, shields at 2 power of a possible 8, and two artillery mounts running at 1 power of 4. The finished third phase has 20 hull, shields at 6 or 8, and both mounts at full.",
+        "ref": "FLASHSHIP_CONSTRUCTION_SHIP · auto_blueprint BOSS_SPECIAL"
+      },
+      {
+        "marker": "3",
+        "title": "It has no weapons — it has a teleporter",
+        "detail": "The weapons block is commented out of the blueprint, so everything it fires is artillery. Three human crew, a teleporter and a `sabotage` boarding AI; hacking and mind control are installed but switched off at the start. Blowing the hull and killing the crew both reach the same salvage.",
+        "ref": "blueprints.xml BOSS_SPECIAL"
+      },
+      {
+        "marker": "✓",
+        "title": "Salvage, and a prototype sent home",
+        "detail": "A high weapon reward, 5 fuel, 5 missiles, 5 drone parts, and the Rebel fleet pushed back **two jumps**. On the way out you find the captured Federation cruiser they were reverse-engineering and program its FTL to fly itself home — which is the unlock.",
+        "ref": "FLAGSHIP_CONSTRUCTION_DONE · unlockShip id=\"4\""
+      }
+    ]
+  },
+
+  "panels": [
+    {
+      "title": "Blue options that pay here",
+      "items": [
+        { "lead": "Cloaking ×4", "text": "The sector's best key: past the guard into the cache at {{AUTO_DEFENSE_ITEM}} and, graded across two levels, at {{NEBULA_AUTO_DEFENSE_ITEM}}; out of the storm fight at {{STORM_AUTO}}; and never seen at all at {{NEBULA_REBEL_UNDETECTED}}." },
+        { "lead": "Crew Teleporter ×5", "text": "Beams onto the station at {{AUTO_DEFENSE_MAP}} for the map data with no fight, and takes the survivors straight off {{NEBULA_LOST_SHIP}} — a crew member and scrap with no roll at all. Also opens {{CIVILIAN_ASTEROIDS_BEACON}}, a combat-trained rescue at {{REBEL_VS_FEDERATION}}, and the way to pull your own people back out of {{MERCHANT_REQUEST}}." },
+        { "lead": "Sensors · Scanners", "text": "Sensors 3 reads the station remotely at {{AUTO_DEFENSE_MAP}} and scans {{BROKEN_REBEL_DRONE}} before you wake it up — the plain download can turn a derelict scout into a live one. Sensors 2 or 3 and Long-Ranged Scanners each buy a second pass at the hidden Federation base, whichever event sent you there." },
+        { "lead": "Hacking ×2", "text": "At {{AUTO_DEFENSE_RADAR}} one drone part buys the map and a jump of fleet delay outright, where the manual hack can just as easily trip the alarm and cost you one. Graded 1 and 2 into the cache at {{NEBULA_AUTO_DEFENSE_ITEM}}." },
+        { "lead": "Engines · Piloting", "text": "Engines 3 or 6 to outrun {{STORM_AUTO}}, Engines 4 to break contact once spotted at {{NEBULA_REBEL_UNDETECTED}}. Piloting 2 is the clean way through {{STORM_ITEMS}} — the gated outcomes contain no crew loss, no hull damage and no breach." },
+        { "lead": "One-offs", "text": "A Rockman or a repair drone walks into the fire at {{DISTRESS_STATION_FIRE}} — both skip the roll that kills someone, and pay an augment or a drone. Engi Med-bot Dispersal or a Healing Burst at {{REBEL_VS_FEDERATION}}; Adv. FTL Navigation at {{ESCORT_BEACON}}; a defence drone, repair drone or Rock Plating at {{CIVILIAN_ASTEROIDS_BEACON}}; any missile weapon at {{HELP_MINERS}}." }
+      ]
+    },
+    {
+      "title": "What you can leave with",
+      "items": [
+        { "lead": "Nothing named", "text": "Not one named weapon, drone or augment drops anywhere in this pool, and the sector declares no store rarity list of its own — every item here is a random draw or a store shelf." },
+        { "lead": "Crew", "text": "Twenty-three of the fifty events can end with someone new aboard, many of them through dead-crew salvage rather than a choice you make. {{TAVERN_HIRE}} is the only one that simply sells you one, and {{DISTRESS_STATION_FIRE}} is the only one that hands over a survivor with a name." },
+        { "lead": "The hidden Federation base", "text": "Three separate events plant the same marker — {{CIVILIAN_ASTEROIDS_BEACON}}, {{REBEL_VS_FEDERATION}} and {{FEDERATION_PLANET_SIGNAL}} — and one of the outcomes waiting there repairs **35 hull**. Sensors 2 or 3, or Long-Ranged Scanners, buy a second scan pass on top." },
+        { "lead": "Stores", "text": "One store guaranteed, two at most, plus the trades in the item pool: {{NEBULA_TRADER}} and {{TRADER_CIV}} swap fuel, missiles and drone parts in both directions, and {{SELL_MISSILES_STATION}} and {{SELL_DRONES_STATION}} turn ammunition back into scrap." },
+        { "lead": "Six quest starts", "text": "The most of anything this sector hands out. Besides the three Federation-base routes: {{MERCHANT_REQUEST}} (two different jobs), {{ESCORT_BEACON}}, and the defector's scrap cache at {{ALISON_DEFECTOR}}." },
+        { "lead": "Map data", "text": "{{BROKEN_REBEL_DRONE}}, {{AUTO_DEFENSE_MAP}}, {{AUTO_DEFENSE_RADAR}} and {{REBEL_TRANSPORT}} can all reveal the sector map — useful here precisely because the shipyard beacon is worth routing to." }
+      ]
+    },
+    {
+      "title": "What can bite",
+      "items": [
+        { "lead": "The fleet clock", "text": "Seven events can double pursuit for a jump; only two can push it back, {{AUTO_DEFENSE_RADAR}} by one and the shipyard by two. Note what triggers it: scouts escaping at {{AUTO_WARNING}} and {{SQUAT_WARNING}}, losing your bearings at {{NEBULA_REBEL_UNDETECTED}}, and abandoning the family in the asteroid field at {{CIVILIAN_ASTEROIDS_BEACON}}." },
+        { "lead": "Ten forced fights", "text": "Ten events in the pool start shooting on arrival, and the hostile entry alone is 6–8 beacons — the largest allocation on the page. Another nineteen events can end in combat if you push them." },
+        { "lead": "Boarders ×6", "text": "Everything that boards you here is human. {{NEBULA_REBEL_BOARDING}} puts 3–4 aboard with the nebula blinding your sensors, {{BOARDERS_SUN}} 2–4 with solar flares landing on top, and neither offers a choice before it happens." },
+        { "lead": "Crew loss ×4", "text": "{{DISTRESS_STATION_FIRE}} and {{STORM_ITEMS}} can each kill someone outright, and both have a blue option that skips the risk entirely. The other two, {{ALISON_DEFECTOR}} and {{MERCHANT_REQUEST}}, both lose the crew member to someone you took aboard on purpose." },
+        { "lead": "The defector", "text": "Six written outcomes once you take him aboard: three are the crew member you were promised, one gutted engines and a jump of pursuit, one two more boarders and a hole in the hull, one a dead crew member. Rejecting him is not free either — one of those outcomes leaves him loose on your ship as an intruder." },
+        { "lead": "The station guards", "text": "{{AUTO_DEFENSE_ITEM}}, {{AUTO_DEFENSE_MAP}} and {{AUTO_DEFENSE_RADAR}} all look optional and all turn hostile if the sneaky route rolls badly. Without the matching system the only ways in are a fight or a shrug." }
+      ]
+    }
+  ]
+}

@@ -3,10 +3,10 @@ id: concept-nebula-mechanics
 type: concept
 version: both
 first_seen: 2026-08-09
-last_updated: 2026-08-09
-sources: 10
+last_updated: 2026-08-14
+sources: 11
 related_events: []
-tags: [mechanics, nebula, environment, sensors]
+tags: [mechanics, nebula, environment, sensors, ion, power]
 ---
 
 # Nebulae, sensors, and storms
@@ -145,11 +145,17 @@ sensor blackout and fleet slowdown also apply at a storm beacon is **not stated*
 > these beacons is `map_ion_loc` — *"This section of the nebula is experiencing an **ion
 > storm**."* — while the in-beacon tooltip calls the same thing a **plasma storm**
 > (`tooltip_storm`). Same environment tag, two first-party names. The XML tag and event ids
-> use neither: `type="storm"`, `STORM_*`. Fandom uses "plasma storm" throughout, matching the
-> tooltip. ([[source-text-misc]] vs [[source-text-tooltips]])
+> use neither: `type="storm"`, `STORM_*`. ([[source-text-misc]] vs [[source-text-tooltips]])
 >
-> The `map_ion_loc` id is the older-looking of the two — "ion storm" survives only as a
-> string name — so the wiki uses **plasma storm** and notes the id.
+> **Updated 2026-08-14 — the community is split too.** The earlier note here said "Fandom uses
+> 'plasma storm' throughout, matching the tooltip". That was true of the *event* pages read at
+> the time, but [[source-fandom-ship]] uses **"ion storms"** exclusively — three times, in the
+> reactor and Zoltan sections — and never says "plasma". So both names are live in both the game
+> files and the community wiki, split roughly by page type: event pages say plasma, mechanics
+> pages say ion.
+>
+> The `map_ion_loc` id is the older-looking of the two, so the wiki continues to use **plasma
+> storm** and note the id. Expect either name in sources, and treat them as one environment.
 
 ### The seven storm events
 
@@ -191,6 +197,29 @@ Practical upshot: a plasma-storm beacon in a Slug sector is a **trap** — half 
 
 So boarding-in-a-storm is more likely in AE than in vanilla wherever the `NEBULA` list is
 used ([[source-newevents]], [[source-events-nebula]], [[source-events-pirate]]).
+
+### What the halving does *not* touch
+
+`tooltip_storm` above establishes the halved reactor from the game's own files. What it does not
+say is who else is affected, or what escapes. [[source-fandom-ship]] fills both gaps — and note
+it uses the **`map_ion_loc` name** ("ion storms") for the same environment:
+
+| Power source | In a storm |
+|---|---|
+| [[item-reactor]] | **halved** — the tooltip's "half capacity" |
+| [[entity-zoltan]] crew — 1 bar each | **unaffected** |
+| [[item-backup-battery]] — 2–4 bars | **unaffected** |
+
+- **The enemy is halved too.** Enemy ships otherwise *always* carry exactly enough reactor power
+  to run their hull; a storm is the one condition that under-powers them
+  ([[source-fandom-ship]]). It is a symmetric tax, not a player-only penalty.
+- **Both exemptions are AE content**, so this counter-play does not exist in vanilla.
+- Against a **Zoltan** enemy the symmetry breaks in their favour — their crew keep their bars
+  while your reactor is cut.
+- The **upgrade menu stays accessible** in a nebula or storm, provided there is no hostile ship
+  and no intruders ([[source-fandom-ship]]). The danger status alone does not block it.
+
+Full economy: [[concept-power-and-reactor]].
 
 ## Other beacon environments, for contrast
 `<environment>` takes six values in total ([[source-text-tooltips]] for the effects):
@@ -236,6 +265,7 @@ siblings ([[concept-rebel-fleet-advance]]).
 - Items: [[item-lifeform-scanner]] · [[item-slug-crew]] · [[item-sensors]]
 
 ## Related
+- [[concept-power-and-reactor]] — the reactor economy the storm halves
 - [[concept-rebel-fleet-advance]] — the other half of the fleet-speed question
 - [[concept-stores]] — the two nebula store variants
 - [[concept-blue-options]] — `req="sensors"` (23 gates) and `req="slug"` (11)
@@ -271,3 +301,4 @@ siblings ([[concept-rebel-fleet-advance]]).
 - [[source-sector-data-xml]] (per raw/gamedata/sector_data.xml) — allocation
 - [[source-fandom-boarders-humans-in-plasma-storm]] (per raw/wiki/boarders-humans-in-plasma-storm.md)
 - [[source-fandom-slug-fight-in-plasma-storm]] (per raw/wiki/slug-fight-in-plasma-storm.md)
+- [[source-fandom-ship]] (per raw/wiki/ship.md) — ion-storm power halving

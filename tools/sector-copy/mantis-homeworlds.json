@@ -1,0 +1,94 @@
+{
+  "slug": "mantis-homeworlds",
+
+  "lede": "The Mantis sector with a name in it. Six or seven beacons open in combat before you can choose anything, one or two more skip the ship fight entirely and drop **2–4 boarders straight onto your deck**, and one beacon is always {{MANTIS_NAMED_THIEF}} — the only ship unlock either Mantis sector can hand you. Nothing here is settled at range.",
+
+  "stats": [
+    { "metric": "beacons_min..beacons_max", "label": "Beacon spread" },
+    { "metric": "section:hostile:min..section:hostile:max", "label": "Guaranteed fights" },
+    { "metric": "section:boarders:min..section:boarders:max", "label": "Boarding beacons" },
+    { "metric": "entry:STORE_MANTIS:min..entry:STORE_MANTIS:max", "label": "Stores" },
+    { "metric": "distinct_events", "label": "Events in pool" }
+  ],
+
+  "callout": "**Versus a plain Mantis Controlled Sector:** every list is the same list and every count is the same count — 6–7 hostile, 6–7 neutral, 1–2 boarding, 1–3 distress, 1–2 items, 1–2 stores, 2–3 empty. The entire difference is the guaranteed `MANTIS_NAMED_THIEF` beacon: one more jump on the map, one more event in the pool, and with it the sector's only ship unlock, its only named augment and its third quest start.",
+
+  "section_notes": {
+    "MANTIS_NAMED_THIEF": "Always placed, exactly once. It is a fight either way — the Mantis blue option is a greeting, not a way out — and everything it is worth comes after the shooting stops.",
+    "HOSTILE_MANTIS": "{{MANTIS_FIGHT}} is listed twice, so a plain Mantis warship is the likeliest thing waiting at any of these. {{DONOR_MANTIS_CHASE}} is the one that can leave the beacon unfinished — if it escapes, chasing it plants a quest marker; {{AUTO_WARNING}} is a Rebel scout that runs to report your position rather than fight to the end.",
+    "BOARDERS_MANTIS": "{{MANTIS_BOARDERS}} is listed twice against {{BOARDERS_SUN}}'s once. Neither is a ship battle you can decline: the boarders are aboard as the event opens, 2–4 of them, and the pirate version stages it inside a star's flare range.",
+    "NEUTRAL_MANTIS": "\"Neutral\" is a filing label. Five of these six can end in combat, {{MANTIS_CREW}} can kill a crew member and leave a Mantis loose in the room, and {{ALISON_MANTIS_CREW}} opens with an intruder already on deck.",
+    "DISTRESS_BEACON_MANTIS": "The densest pool on the page and the thinnest allocation. Three of the sector's four crew-killers live here, and so do six of its eleven gated events — the Rockman, Engi, Adv. Medbay, ion and drone answers all pay out in a pool that may only get one beacon.",
+    "ITEMS": "Trades and stations rather than free loot: {{REPAIR_STATION}}, {{REFUEL_STATION}} and the two selling posts all want something back, and {{TAVERN_HIRE}} is the one place in the sector that sells you a crew member outright."
+  },
+
+  "chain": {
+    "title": "KazaaakplethKilik — the guaranteed beacon",
+    "steps": [
+      {
+        "marker": "1",
+        "title": "{{MANTIS_NAMED_THIEF}}",
+        "detail": "A Mantis ship under a century of bolted-on armour. Both choices end in the same fight — the **Mantis crew** option only buys an alien haka first, then charges the weapons anyway.",
+        "ref": "MANTIS_NAMED_THIEF · req=\"mantis\""
+      },
+      {
+        "marker": "2",
+        "title": "Kill the crew, not the ship",
+        "detail": "Blowing the hull up pays a medium reward and ends it — \"his death has left a great mystery unresolved.\" Everything below only exists on the branch where the ship survives and its crew does not.",
+        "ref": "destroyed → MED · deadCrew → MANTIS_NAMED_THIEF_DEFEAT"
+      },
+      {
+        "marker": "3",
+        "title": "Find him alive",
+        "detail": "**Crew Teleporter** boards for survivors, **Sensors 3** scans for them; without either you just strip the wreck for a high reward. Hearing him out gives up his stash and pays high — that much needs no Medbay.",
+        "ref": "req=\"teleporter\" / req=\"sensors\" lvl=\"3\""
+      },
+      {
+        "marker": "4",
+        "title": "Bring him back",
+        "detail": "**Adv. Medbay** or **Adv. Clone Bay** revives him and he joins: a Mantis with two levels in every skill, the **Mantis Pheromones** augment, high scrap, the stash marker, and coordinates for \"a custom cruiser he has been working on\" that unlock a ship.",
+        "ref": "req=\"medbay\"/\"clonebay\" lvl=\"2\" · unlockShip id=\"2\""
+      },
+      {
+        "marker": "✓",
+        "title": "The stash",
+        "detail": "The marked beacon is a cache in an asteroid field, opened with his codes. No fight, no choice — a weapon.",
+        "ref": "MANTIS_NAMED_THIEF_STASH"
+      }
+    ]
+  },
+
+  "panels": [
+    {
+      "title": "Blue options that pay here",
+      "items": [
+        { "lead": "Adv. Medbay / Adv. Clone Bay", "text": "The only two keys to the whole thief payout. Medbay 2 also opens the safe answer on {{DISTRESS_STATION_DISEASE}}." },
+        { "lead": "Sensors ×3", "text": "Level 3 throughout: it finds the dying thief without boarding, reads {{BROKEN_REBEL_DRONE}} before you wake it, and adds a line at {{TRADER_UPGRADES}}." },
+        { "lead": "Cloaking ×2", "text": "Slips past the sleeping warship in {{MANTIS_FIGHT_CHOICE}} without a fight, and is graded at levels 1–3 on {{DISTRESS_SATELLITE_DEFENSE}}." },
+        { "lead": "Rockman ×2 · Engi ×2", "text": "All four sit in the distress pool — {{DISTRESS_STATION_FIRE}}, {{DISTRESS_STATION_DISEASE}} and {{DISTRESS_SATELLITE_DEFENSE}}. The crew that pays in the Mantis homeworlds is not Mantis." },
+        { "lead": "Drones ×4", "text": "Anti-Personnel, Boarding and Anti-Bio Beam each answer {{DISTRESS_INFESTATION}}; a System Repair Drone answers {{DISTRESS_STATION_FIRE}}." },
+        { "lead": "Mantis ×1", "text": "One blue option in the entire sector needs a Mantis crew member, and it changes only the flavour text on {{MANTIS_NAMED_THIEF}}." }
+      ]
+    },
+    {
+      "title": "Named things you can leave with",
+      "items": [
+        { "lead": "Augment", "text": "**Mantis Pheromones** — the only named item anywhere in the pool, and it comes off the thief." },
+        { "lead": "Crew", "text": "**KazaaakplethKilik**, a Mantis with two levels in every skill, on the revive branch." },
+        { "lead": "Ship", "text": "`unlockShip id=\"2\"`, transmitted with the same handshake that hands you the crew and the augment." },
+        { "lead": "Crew", "text": "Mantis from {{MANTIS_CREW}} and {{ALISON_MANTIS_CREW}}; the same escape pod can hold a human instead; {{TAVERN_HIRE}} sells one for scrap." },
+        { "lead": "Weapons", "text": "Two of the sector's three quest starts pay a weapon at the beacon they mark: the thief's `MANTIS_NAMED_THIEF_STASH`, and `DONOR_MANTIS_CHASE2` if you chase the collectors down." }
+      ]
+    },
+    {
+      "title": "What can bite",
+      "items": [
+        { "lead": "Boarders", "text": "Four events put hostiles inside your hull, and the map guarantees at least one boarding beacon. {{MANTIS_BOARDERS}} and {{BOARDERS_SUN}} arrive 2–4 strong with no ship fight attached." },
+        { "lead": "Crew", "text": "Four events can kill a crew member outright: {{DISTRESS_INFESTATION}}, {{DISTRESS_STATION_FIRE}}, {{DISTRESS_STATION_DISEASE}}, and {{MANTIS_CREW}}, which kills **and** leaves the killer aboard." },
+        { "lead": "Fights", "text": "Seven events in the pool open in combat and nine more can turn into it from a choice — and that is before the boarding pool, which never involves an enemy ship at all." },
+        { "lead": "Stars", "text": "{{MANTIS_SUN_FIGHT}} and {{BOARDERS_SUN}} both stage next to a star, with the solar hazard running on your ship while you fight or repel." },
+        { "lead": "Traps", "text": "{{TRAP_BEACON}} is a distress call that opens hostile, and siding with the fugitive in {{ALISON_MANTIS_CREW}} can cost hull and a system before the Engi ship even opens fire." }
+      ]
+    }
+  ]
+}

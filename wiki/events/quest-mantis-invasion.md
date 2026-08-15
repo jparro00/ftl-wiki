@@ -96,6 +96,7 @@ mostly Mantis, so boarding it is dangerous even though `deadCrew` pays a tier mo
   in a straight fight — the crew table is 80% Mantis.
 
 ## Related
+- [[chain-mantis-war-camp]] — the full quest line this belongs to
 - [[event-mantis-war-camp]] — the quest start that places this marker
 - [[event-mantis-fight]] — the ordinary Mantis encounter
 - [[item-fire-bomb]], [[item-missile-weapon]]

@@ -10,7 +10,7 @@ chain: []
 version: both
 first_seen: 2026-08-09
 last_updated: 2026-08-09
-sources: 5
+sources: 7
 tags: [nebula, pirate, no-choice, combat, unreachable, name-collision, shipped-but-dead]
 ---
 

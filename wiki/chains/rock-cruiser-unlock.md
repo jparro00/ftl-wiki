@@ -7,7 +7,7 @@ sectors: [[[sector-rock-homeworlds]]]
 reward: Rock Cruiser unlock + Rock Plating augment + 29 hull repairs
 version: both
 first_seen: 2026-08-09
-last_updated: 2026-08-09
+last_updated: 2026-08-13
 sources: 8
 tags: [ship-unlock, rock-cruiser, sun-hazard, survive-dont-win, guaranteed-start]
 ---
@@ -149,14 +149,22 @@ chain and no other.
 - [ ] Which sector the `ROCK_UNLOCK3` marker is placed in — the files do not pin it, so
       [[event-rock-unlock3]] carries `sectors: []`.
 - [ ] Does ignoring at step 1 lock the unlock for the run, or only for that sector?
-- [ ] Both step pages record `version: ae`; this page records `both` — the events sit in
-      the base `events_rock.xml` with no DLC markers and are not overridden in
-      `dlcEvents*.xml`. Needs a lint decision.
+- [x] ~~Both step pages record `version: ae`; this page records `both`.~~ **Closed (lint,
+      2026-08-13):** all three step pages and this page now read `both`. The reasoning stated
+      here was right — base `events_rock.xml`, no `<!--DLC-->` markers, no override in
+      `dlcEvents*.xml` — and the 2026-08-09 `version:` retrofit applied it; only the question
+      was left open. See [[event-rock-unlock2]].
 - [ ] [[source-fandom-rock-war-vessel-encounter]] covers the chain but adds no odds and no
       routing advice; in-play timings beyond the 32-second escape countdown remain unsourced.
 - [ ] Fandom claims the Rock Cruiser is also unlocked by winning a run with the Slug
       Cruiser. `achievements.xml` records no unlock conditions at all
       ([[source-achievements]]), so this raw set cannot check it — see [[event-rock-unlock1]].
+      The nearest thing to a statement is the in-game hint string
+      `ship_PLAYER_SHIP_ROCK_unlock` — *"Prove yourself to the Rockmen to earn this powerful
+      cruiser"* ([[source-text-blueprints]], per `raw/gamedata/text_blueprints.xml`) — which
+      describes **this chain and no other route**. That is suggestive, not decisive: the hint
+      strings are one-line marketing copy and the Lanius hint is the only one that spells out
+      a second condition, so silence about a Slug-Cruiser route is not evidence of absence.
 
 ## Sources
 - [[source-events-rock]] (per raw/gamedata/events_rock.xml)

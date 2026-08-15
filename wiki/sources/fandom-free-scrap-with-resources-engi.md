@@ -25,7 +25,7 @@ scrap-with-resources payout.
 - [[event-free-scrap-with-resources-engi]] — `ENGI_GIFT`
 
 ## Other Pages Touched
-- [[concept-auto-rewards]]
+- [[concept-autoreward-tiers]]
 
 ## Contradictions Flagged
 None.

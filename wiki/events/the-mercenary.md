@@ -10,7 +10,7 @@ chain: []
 version: ae
 first_seen: 2026-08-09
 last_updated: 2026-08-09
-sources: 5
+sources: 6
 tags: [scrap-cost, fleet-delay, map-reveal, filler, pirate-fight]
 ---
 
@@ -76,7 +76,7 @@ None. No choice in this event carries a `req` ([[source-events-xml]]).
 ## Rewards & Risks
 - **Buying**: you pay scrap and get a non-material benefit. No risk, no combat.
 - Choice 1 is one of the few purchasable `modifyPursuit` effects in the game.
-  [[source-fandom-the-mercenary]] notes it has **no effect in [[sector-last-stand]]**,
+  [[source-fandom-the-mercenary]] notes it has **no effect in [[sector-the-last-stand]]**,
   where the fleet mechanic is different — the game files do not state this, so it is a
   Fandom-only claim.
 - Choice 3 risks an ordinary pirate fight for ordinary pirate rewards.

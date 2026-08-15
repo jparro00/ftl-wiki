@@ -37,12 +37,21 @@ bookkeeping — summarizing, filing, cross-linking, and keeping everything consi
 ├── raw/                   ← IMMUTABLE source layer (user drops files here)
 │   ├── gamedata/          ← datamined game files (events.xml, sector_data.xml, blueprints.xml, …)
 │   ├── wiki/              ← community wiki pages, guides, forum/reddit posts
+│   ├── modding/          ← research syntheses about the file format and modding (`source_kind: research`)
 │   └── runs/              ← the user's own playthrough notes and observations
 ├── cards/                 ← generated card output — a sibling of `wiki/`, never inside it, so
 │   │                        wiki searches never scan machine output
 │   ├── card-<slug>.html   ← the built cards
 │   └── trees/             ← `<slug>.tree.json`, the extracted event trees
-├── tools/                 ← scripts + their contracts (`EVENT-CARD.md` is the card pipeline)
+├── sectors/               ← generated sector-profile output — same sibling rule as `cards/`
+│   ├── sector-<slug>.html ← the built pages, one per sector
+│   └── data/              ← `<slug>.sector.json`, the extracted sector profiles
+├── mods/                  ← generated game mods — another sibling of `wiki/`, same reasoning
+│   └── <mod-name>/        ← `src/` is the tree that ships; `<mod-name>.ftl` is it zipped
+├── tools/                 ← scripts + their contracts (`EVENT-CARD.md` is the card pipeline,
+│                            `SECTOR-PAGE.md` the sector-profile pipeline, `EVENT-LABELS.md`
+│                            the event-labels mod, `SAVE-WATCH.md` the save watcher that
+│                            opens cards by itself); `sector-copy/` is hand-written page copy
 └── wiki/                  ← YOUR layer, everything below is maintained by you
     ├── events/            ← one page per event (markdown only; trees live in `cards/trees/`)
     ├── chains/            ← one page per multi-jump event chain / quest
@@ -92,7 +101,7 @@ id: event-giant-alien-spiders
 type: event
 event_name: GIANT_ALIEN_SPIDERS    # in-game event id from events.xml, if known
 sectors: [[[sector-rock-homeworlds]]]  # where it can appear ([] if unknown)
-beacon_type: distress              # distress | store | nebula | quest | exit | hostile | empty | any
+beacon_type: distress              # distress | store | nebula | quest | exit | hostile | empty | any | unknown
 hostile: false                     # does it start or lead to combat?
 blue_options: []                   # equipment/crew that unlocks extra choices
 chain: []                          # [[chain-...]] if part of a multi-jump quest
@@ -103,6 +112,10 @@ sources: 0                         # count of raw sources referencing it
 tags: [crew-risk]
 ---
 ```
+
+`beacon_type: unknown` is for events that occupy **no beacon at all** — tutorials, engine-invoked
+combat resolutions, surrender/escape aftermaths loaded from a `<ship>` block, and cut content.
+It means "this event does not sit on the map", not "we didn't look".
 
 Body sections (omit a section only if you truly have nothing for it):
 
@@ -227,7 +240,7 @@ the things blue options require.
 ---
 id: item-crystal-vengeance
 type: item
-item_kind: augment                 # weapon | drone | augment | system | crew
+item_kind: augment                 # weapon | drone | augment | system | crew | unknown
 rarity: unknown                    # 0–5 as in blueprints.xml, or unknown
 unlocks_blue: []                   # [[event-...]] where it grants a blue option
 version: unknown
@@ -272,7 +285,7 @@ through here to the raw file.
 ---
 id: source-events-xml-dump
 type: source
-source_kind: gamedata              # gamedata | wiki | run
+source_kind: gamedata              # gamedata | wiki | run | research
 raw: raw/gamedata/events.xml
 game_version: unknown              # what version the source describes
 ingested: 2026-08-09               # date you processed it
@@ -283,6 +296,11 @@ tags: []
 
 Body: Summary (2–3 sentences) · Key Takeaways (bullets) · Events Covered
 (`[[event-...]]`) · Other Pages Touched · Contradictions Flagged (or "none") · Links.
+
+**`source_kind: research`** is for a synthesis written *into* `raw/` by instruction rather than
+captured from somewhere — external documentation gathered and summarised into one file. It is
+never `high`: it cites sources this repo does not hold, so it inherits their uncertainty. Filing
+one as `wiki` would overstate its provenance.
 
 **Reliability convention:** datamined game files outrank the community wiki, which
 outranks a single observed run. When they disagree, record all of them (§4) — but say
@@ -408,6 +426,57 @@ What stays true regardless, and is why this section exists at all:
    bulk run builds and verifies only and publishes on request. A raw HTML file sent with
    SendUserFile does not render — the card is a fragment the publisher wraps.
 4. No citations, ids, version notes or recommendations — on the card or in chat.
+
+### 5.2b-2 Sector page — "what am I flying into?", "show me the Rock homeworlds"
+
+The sector-scale companion to the event card: what a sector must place, its whole event pool
+with derived tags, the blue options that pay there, and what can bite. One page per sector,
+19 of them, in `sectors/sector-<slug>.html`.
+
+```
+raw/gamedata/*.xml  →  sectors/data/<slug>.sector.json  →  sectors/sector-<slug>.html → Artifact
+   + cards/trees/*  ▲                                    ▲
+              extract-sector.py            build-sector.py + sector-page-render.html
+                                                         + tools/sector-copy/<slug>.json
+```
+
+**Read `tools/SECTOR-PAGE.md` and follow it** — same reasoning as the card spec: this file is
+injected at session start and can lag the working tree, so the spec is authoritative.
+
+What stays true regardless:
+
+1. **Numbers come from the data, never from prose.** A stat tile names a metric id and the
+   build fills in the number. Prose names events as `{{EVENT_ID}}` and the build fails if the
+   sector cannot produce that event.
+2. **Only the copy file is hand-written.** `tools/sector-copy/<slug>.json` holds the words and
+   nothing else; the pool, the counts and the tags are all generated.
+3. **Open questions stay open on the page.** Whether `OVERRIDE_X` replaces `X`, and whether
+   `unique="true"` is per sector or per run, are unresolved in this wiki — the page shows the
+   delta and the caveat rather than picking a side.
+
+### 5.2c Save watcher — "start the watcher", "open cards automatically"
+
+The same cards as §5.2b, but the user never has to ask. `tools/save-watch.py` reads the
+game's save file, works out which event is on screen, and serves one page that swaps
+itself to that event's card. The user parks it on the second monitor; a screenshot request
+becomes unnecessary while it runs.
+
+**Read `tools/SAVE-WATCH.md` and follow it** — the commands, the resolution rules and the
+failure modes live there, kept out of this file for the same reason as the card spec: this
+file is injected at session start and can lag the working tree.
+
+Three things that are easy to get wrong and cost a wasted turn:
+
+1. **It is a server that never returns.** Launch it with Bash `run_in_background: true`.
+   A foreground call blocks until timeout and tells you nothing.
+2. **Check with `--once` first.** It parses the current save, prints one JSON object and
+   exits — that is how you verify the pipeline without starting anything.
+3. **Nothing here modifies the game.** It reads `continue.sav` and the installed `ftl.dat`.
+   If a question needs a *mod*, that is a different job — and note FTL cannot display HTML
+   at all, so no mod can open a card in game.
+
+`status: nosave` means no run is in progress; `ambiguous` and `nocard` are normal, defined
+outcomes, not faults. Only a persistent `error` is worth investigating.
 
 ### 5.3 Lint — "lint the wiki" (run periodically, e.g. every 5–10 ingests)
 

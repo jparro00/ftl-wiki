@@ -4,7 +4,7 @@ type: concept
 version: both
 first_seen: 2026-08-09
 last_updated: 2026-08-13
-sources: 8
+sources: 10
 related_events: [[[event-auto-ship-attacking-civilian]], [[event-single-life-form-on-moon]], [[event-crushed-pirate]], [[event-escape-pod]]]
 tags: [schema, datamining, tooling, decision-tree]
 ---
@@ -21,7 +21,8 @@ which is what `tools/extract-event.py` does to build the event cards.
 An `<event>` element carries:
 
 1. **Presentation** — `<text>` (inline, `id=` into the string table, or `load=` a
-   `<textList>`), `<img>` / `<imageList>`
+   `<textList>`), `<img>` / `<imageList>` — the art pools those resolve into are in
+   [[source-events-imagelist]], and are the one presentation channel the cards ignore
 2. **Effects** — a closed set of ~20 tags, listed below
 3. **Continuation** — any of:
    - nothing → **terminal**
@@ -90,7 +91,8 @@ Counted across `raw/gamedata/events*.xml`, `newEvents.xml` and `dlcEvents*.xml`
 | `<unlockShip>` | 12 | effect |
 | `<secretSector>` / `<remove>` / `<repair>` | 2 / 2 / 1 | effect |
 
-`<event>` takes only `name` (473), `load` (1016), `unique` (206), `min` / `max` (37 each).
+`<event>` takes only `name` (473), `load` (1016), `unique` (**216** — 194 `true`, 22 `false`),
+`min` / `max` (37 each).
 `<choice>` takes only gating attributes:
 
 | Attribute | Count | Meaning |
@@ -131,7 +133,7 @@ The numeric scrap behind each pair is **not** in the event files — see Open Qu
   two different choices, and `ROCK_UNLOCK3` from both `ROCK_UNLOCK1`'s `gotaway` branch and
   from `ROCK_UNLOCK2` — so the chain is a graph, and needs a visited set.
 - **A marker is not an outcome.** It costs nothing and resolves nowhere near the beacon
-  that granted it, which is why the wiki treats chains as [[chain-...]] pages rather than
+  that granted it, which is why the wiki treats chains as `chain-*` pages rather than
   as branches of the triggering event.
 
 ## Where It Applies
@@ -160,16 +162,23 @@ The numeric scrap behind each pair is **not** in the event files — see Open Qu
   variance is in the tier, not in whether you profit.
 - A `<removeCrew>` with a `<clone>` child is a **different event** with a Clone Bay
   installed — the file encodes that rescue directly, with no choice presented.
-- `unique="true"` (206 events) means the encounter cannot repeat in a run; there is no
-  grinding a good table.
+- `unique="true"` (**194** events) means the encounter cannot repeat; there is no grinding a
+  good table.
 
   > ⚠️ **CONTRADICTION:** [[source-fandom-random-events]] scopes `unique="true"` to **one
   > sector**, not one run — *"Events that can occur only once per current sector (unique)"* —
   > and singles out ship-unlock events as the once-per-run exception. [[concept-stores]]
   > independently argues the per-sector reading from the multi-store sectors. Neither reading
-  > is datamined; the files carry the flag without documenting its scope. Both sides, the
-  > argument, and a re-count of the attribute (**195** on `<event>`, not 206) are at
-  > [[concept-event-uniqueness]].
+  > is datamined; the files carry the flag without documenting its scope. Both sides and the
+  > argument are at [[concept-event-uniqueness]].
+
+  > **Count corrected (lint, 2026-08-13).** This page said 206 and the contradiction block
+  > said 195; neither reproduces. A comment-stripped census of every `.xml` in
+  > `raw/gamedata/` gives **242** `unique=` attributes in total, and they partition exactly:
+  > 216 on `<event>` (194 `true` + 22 `false`), 5 on `<textList>` (all `false`), 21 on
+  > `<sectorDescription>` (8 `true` + 13 `false`). 194 is therefore the event count and 216
+  > the attribute count — the figures the two sentences above now carry. The earlier numbers'
+  > derivations were never recorded, so they are corrected rather than reconciled.
 
 ## How This Wiki Uses It
 

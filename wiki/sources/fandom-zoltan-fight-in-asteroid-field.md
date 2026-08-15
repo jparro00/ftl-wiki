@@ -31,7 +31,7 @@ little else.
 - [[event-zoltan-fight-in-asteroid-field]]
 
 ## Other Pages Touched
-- [[entity-zoltan]], [[concept-asteroid-field]]
+- [[entity-zoltan]], [[concept-asteroid-fields]]
 
 ## Reliability Notes
 `medium`. States no game version. Gives no `ZOLTAN_SHIP` loadout or surrender/escape

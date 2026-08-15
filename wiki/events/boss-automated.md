@@ -10,7 +10,7 @@ chain: [[[chain-the-flagship]]]
 version: both
 first_seen: 2026-08-09
 last_updated: 2026-08-09
-sources: 3
+sources: 4
 tags: [endgame, last-stand, orphan, scripted, flagship, boss, text-only]
 ---
 

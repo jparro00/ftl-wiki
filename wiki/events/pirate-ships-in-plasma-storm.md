@@ -88,7 +88,7 @@ None. No `req` attribute on any choice.
   shields.
 
 ## Related
-- [[concept-plasma-storm]] — the halved-reactor hazard governing this fight
+- [[concept-nebula-mechanics]] — the halved-reactor hazard governing this fight
 - [[event-zoltan-great-eye]], [[event-rock-fight-in-nebula]] — the other unique
   `NEBULA_ZOLTAN` members
 - [[entity-pirates]] — the opponents

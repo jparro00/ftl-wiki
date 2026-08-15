@@ -35,7 +35,7 @@ template.
 
 ## Other Pages Touched
 - [[entity-mantis]], [[sector-mantis-controlled-sector]], [[sector-mantis-homeworlds]],
-  [[concept-environmental-hazards]]
+  [[concept-hazards]]
 
 ## Reliability Notes
 `medium`. Version unstated. Thin but fully consistent with the game files.

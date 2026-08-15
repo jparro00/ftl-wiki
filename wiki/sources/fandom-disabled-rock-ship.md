@@ -39,7 +39,7 @@ two claims about game *behaviour* that the XML alone cannot show.
 - Referenced in passing (enemy ship only): [[event-rock-fight]]
 
 ## Other Pages Touched
-- [[item-slug-crew]], [[concept-auto-rewards]]
+- [[item-slug-crew]], [[concept-autoreward-tiers]]
 
 ## Reliability Notes
 `medium`. No version stated. Its two behavioural claims (reward-level fallback, surrender

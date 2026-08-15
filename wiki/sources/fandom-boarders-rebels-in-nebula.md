@@ -34,7 +34,7 @@ in the game files.
 
 ## Other Pages Touched
 - [[event-rebel-fight-with-boarders]], [[sector-uncharted-nebula]],
-  [[concept-nebula-beacons]], [[concept-rebel-fleet-advance]]
+  [[concept-nebula-mechanics]], [[concept-rebel-fleet-advance]]
 
 ## Reliability Notes
 `medium`. Version unstated. Fully consistent with the game files — there is very little

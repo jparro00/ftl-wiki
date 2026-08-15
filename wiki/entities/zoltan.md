@@ -5,8 +5,8 @@ entity_kind: species
 hostility: neutral
 version: both
 first_seen: 2026-08-09
-last_updated: 2026-08-09
-sources: 6
+last_updated: 2026-08-14
+sources: 10
 tags: [species, faction, crew, energy, super-shield, federation-allied]
 ---
 
@@ -42,6 +42,21 @@ hull layouts `energy_fighter` / `energy_bomber`, display class names "Energy Fig
 
 70 is the lowest stated max health in the game ([[entity-rock-men]] 150,
 [[entity-crystal-men]] 125).
+
+**"Provides power to occupied system" = exactly 1 bar**, to the room they stand in, displayed
+yellow against the reactor's green ([[source-fandom-ship]]). The game files state the power but
+never the amount. What makes it more than a free bar:
+
+- **Immune to ion storms**, which halve reactor power.
+- **Cannot be stripped by ion weapons** — a Zoltan keeps a fully ionised system running
+  ("ion shielding"), including a Medbay or Clone Bay.
+- Contributes up to 8 of the game's 37-bar power maximum (the 8-crew cap).
+
+Two costs worth knowing ([[source-fandom-ship]]): moving a Zoltan out of a powered room with no
+spare reactor power **de-powers that system** — possibly Shields or Weapons mid-fight — and
+walking one *through* an active Cloaking, Hacking or Mind Control room cuts its power in
+passing. Zoltan power also fills weapon and drone slots strictly left-to-right, so a weapon in
+slot 2–4 may be unusable until moved leftmost. See [[concept-power-and-reactor]].
 
 ### As ships
 
@@ -164,10 +179,16 @@ Only 2 occurrences of `req="energy"` in the whole data set — the rarest specie
 - [ ] Whether `rarity` 5 means Zoltan are the *most* or *least* commonly offered crew — the
       scale is undefined in `raw/gamedata/`.
 - [ ] Whether `ZOLTAN_BOMBER_P`'s absence from the live `SHIPS_PIRATE` list is a bug.
-- [ ] How much power a Zoltan actually supplies (the string says only "provides power").
+- [x] ~~How much power a Zoltan actually supplies (the string says only "provides power").~~
+      **Answered 2026-08-14: exactly 1 bar**, to the occupied room, ion-immune
+      ([[source-fandom-ship]]). Community-sourced — the game files still say only "provides
+      power".
+- [ ] Whether the 8-Zoltan figure behind the "37 maximum" is practically reachable or a
+      theoretical all-Zoltan-crew cap.
 
 ## Sources
 - [[source-blueprints]] (per raw/gamedata/blueprints.xml)
+- [[source-fandom-ship]] (per raw/wiki/ship.md)
 - [[source-dlcblueprints]] (per raw/gamedata/dlcBlueprints.xml)
 - [[source-text-blueprints]] (per raw/gamedata/text_blueprints.xml)
 - [[source-autoblueprints]] (per raw/gamedata/autoBlueprints.xml)

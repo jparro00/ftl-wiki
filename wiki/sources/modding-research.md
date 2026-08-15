@@ -94,7 +94,24 @@ beyond `CLAUDE.md` §2.7 (`gamedata | wiki | run`) and §1's layout. Flagged for
 silently absorbed into `wiki`.
 
 ## Contradictions Flagged
-None with anything in the wiki. It corroborates three existing findings and contradicts none.
+
+> ⚠️ **CONTRADICTION — which archive 1.6.x uses.** This document says *"`ftl.dat` in older
+> builds, `data.dat` + `resource.dat` in 1.6.x"*. A local FTL 1.6.x install has a **single
+> `ftl.dat`** with `PKG\n` magic bytes, matching `tools/ftlpkg.py`'s own description of the
+> 1.6.x format. The eras are reversed here. Trusting the install and the extractor; see
+> [[concept-modding-and-the-append-convention]] for the full record. Found 2026-08-13.
+
+Otherwise none. It corroborates three existing findings and contradicts nothing else.
+
+## Superseded by the primary source
+[[source-slipstream-readme-modders]] is `readme_modders.txt` itself, obtained from the
+Slipstream 1.9.1 distribution rather than summarized. Its account of the append convention and
+the `mod:` namespace **holds up**, but it is necessarily lossy — it omits that `<mod:findName>`
+defaults to searching backwards, that `panic` defaults to false so a typoed find is silent,
+that `--patch`/`--validate` accept directories, and the second statement of last-wins
+(*"FTL honors the last it sees"*) that attributes the resolution to the game rather than the
+patcher. For modding mechanics, cite the readme; this page remains the source for Hyperspace,
+Superluminal2, and the distribution landscape, which the readme does not cover.
 
 ## Links
 - [Subset Games — official mods page](https://subsetgames.com/ftl_mods.html)

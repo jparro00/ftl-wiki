@@ -1,0 +1,78 @@
+{
+  "slug": "civilian-sector",
+
+  "lede": "Nobody's territory, and the friendliest allocation a run is likely to get: **two to three stores**, two to three item beacons, and an item list in which not one event can hurt you. The fixed cost is six to eight hostile beacons — two of them Rebel scouts you arrive already shooting at — and the shape of the map is not fixed at all, because the nebula entry is allocated anywhere from zero to eight beacons and nothing else in the sector swings that far.",
+
+  "stats": [
+    { "metric": "beacons_min..beacons_max", "label": "Beacon spread" },
+    { "metric": "entry:STORE:min..entry:STORE:max", "label": "Stores" },
+    { "metric": "section:hostile:min..section:hostile:max", "label": "Hostile beacons" },
+    { "metric": "section:nebula:min..section:nebula:max", "label": "Nebula beacons" },
+    { "metric": "distinct_events", "label": "Events in pool" }
+  ],
+
+  "callout": "**Versus Federation Space:** the same lists under the same names, with the counts turned up — stores 1–2 becomes 2–3, items 1–1 becomes 2–3, nebula 0–4 becomes 0–8, and the guaranteed quest beacon becomes 0–2. The hostile allocation is identical in both, so what grows here is the shopping and the nebula, not the danger. The one list Federation Space carries that this sector does not is `HOSTILE_BOARDING` — allocated 0–0 there, and commented out entirely here, so neither sector places a boarding beacon by this table.",
+
+  "section_notes": {
+    "HOSTILE1": "Two beacons, no range — the only entry in the sector with no slack in it. {{SQUAT_WARNING}} and {{AUTO_WARNING}} are both Rebel scouts you arrive already in combat with, and both hand the fleet an extra jump if the scout gets away.",
+    "HOSTILE_CIVILIAN": "The standing tax, four to six times over: pirates, Rebels and auto-ships. {{PIRATE_SLAVER}} is the one that can cost a crew member without a shot being fired — Engines 6 is the only way past the demand — and clearing its crew instead is where a Mantis, Rockman or Engi can come from.",
+    "NEUTRAL_CIVILIAN": "This list loads the whole distress pool inside itself, so a neutral beacon here can turn out to be any distress beacon. Its own additions are the ones worth stopping for: {{MERCENARY}} sells two jumps of fleet delay for scrap, and {{PIRATE_BRIBER}} pays you to stay out of someone else's fight.",
+    "NEBULA": "Zero to eight — the widest entry on the page, and the one that decides how big the sector feels. Three of the sector's five boarding events sit here, and none of the three has a ship attached: the boarders arrive, and that is the whole event.",
+    "DISTRESS_BEACON": "One or two beacons carrying five of the eight events in the sector that can kill a crew member. {{STRANDED_BEACON}} alone offers four ways to buy a better outcome — Medbay 2, Medbay 3, Clone Bay 2, or a Slug to assess the man before you touch him.",
+    "ITEMS": "Two to three beacons of pure economy: a free weapon, a free drone schematic, free scrap, and stations that trade one resource for another. Not one event in this list carries a fight, boarders or crew loss — the AE delta below is what would add the exception.",
+    "STORE": "These resolve to the single generic store event rather than to a list, so there is no sector flavour attached to them — just the shop.",
+    "QUESTS": "Zero to two markers, and zero is allowed: Federation Space guarantees a quest beacon, this sector does not. {{MERCHANT_REQUEST}} hands over five drone parts up front just for taking the job; {{QUEST_CREWDEAD_START}} cannot be started at all without a Crew Teleporter, an Anti-Bio Beam or a Fire Bomb — take the plain option and you are told you are not properly equipped."
+  },
+
+  "chain": {
+    "title": "The hidden Federation base",
+    "steps": [
+      {
+        "marker": "1",
+        "title": "Three different beacons plant the same marker",
+        "detail": "{{CIVILIAN_ASTEROIDS_BEACON}} on either drone branch, {{REBEL_VS_FEDERATION}} once the Rebel scout is dealt with and you contact the transport, and {{FEDERATION_PLANET_SIGNAL}} on one of its away-party outcomes. All three point at the same list.",
+        "ref": "quest event=\"HIDDEN_FEDERATION_BASE_LIST\""
+      },
+      {
+        "marker": "✓",
+        "title": "What is waiting at the marked beacon",
+        "detail": "Five branches, no weights given: a high drone reward, a friendly face who joins the crew, a dock that repairs **35 hull** outright, a search that finds nothing, and one that rolls again.",
+        "ref": "HIDDEN_FEDERATION_BASE_LIST · 5 outcomes"
+      }
+    ]
+  },
+
+  "panels": [
+    {
+      "title": "Blue options that pay here",
+      "items": [
+        { "lead": "Coverage", "text": "Thirty-one of the seventy-seven events in the pool carry at least one gated option, across thirty-four distinct requirements. Most of those requirements are one-offs; the ones below are what repeats." },
+        { "lead": "Crew Teleporter ×7", "text": "The most-wanted gate in the sector. It lifts the survivors out of {{CIVILIAN_ASTEROIDS_BEACON}}, rescues the loyalists in {{REBEL_VS_FEDERATION}}, frees slaves at {{FRIENDLY_SLAVER}} at level 2, and is one of three keys to {{QUEST_CREWDEAD_START}}." },
+        { "lead": "Cloaking ×5", "text": "{{AUTO_DEFENSE_ITEM}}, {{NEBULA_AUTO_DEFENSE_ITEM}}, {{STORM_AUTO}}, {{NEBULA_REBEL_UNDETECTED}} and {{DISTRESS_SATELLITE_DEFENSE}} — which is graded, and pays differently at cloak level 1, 2 and 3." },
+        { "lead": "Hacking ×3 · Engines ×3", "text": "Hacking answers {{AUTO_HACKER}}, {{PIRATE_NO_ESCAPE}} and {{NEBULA_AUTO_DEFENSE_ITEM}}. Engines 6 is the escape from {{PIRATE_SLAVER}}, and 4 is enough to outrun the scout in {{NEBULA_REBEL_UNDETECTED}}." },
+        { "lead": "Rockman · Engi", "text": "Two distress events apiece. Both species answer {{DISTRESS_STATION_DISEASE}}; a Rockman also walks into {{DISTRESS_STATION_FIRE}}, an Engi into {{DISTRESS_SATELLITE_DEFENSE}}." },
+        { "lead": "Medbay · Clone Bay", "text": "{{STRANDED_BEACON}} pays on Medbay 2, Medbay 3 or Clone Bay 2. {{DISTRESS_STATION_DISEASE}} takes Medbay 2 or the Engi Med-bot Dispersal augment." }
+      ]
+    },
+    {
+      "title": "What you can leave with",
+      "items": [
+        { "lead": "Crew, 42 ways", "text": "Forty-two of the seventy-seven events in the pool have a branch that adds a crew member — more than half the sector. This is where a short-handed ship goes to fill up." },
+        { "lead": "Crew, for sale", "text": "{{TAVERN_HIRE}} runs two listings, 25–45 and 25–55 scrap. {{FRIENDLY_SLAVER}} sells a freed slave for 25–45; a level-2 teleporter takes one instead of paying and starts a fight." },
+        { "lead": "Crew, by species", "text": "Mantis, Rockman or Engi — your pick of the three — if you clear the crew off either slaver ship. A Human from {{STRANDED_BEACON}}, on the branch a Slug opens." },
+        { "lead": "Drone parts", "text": "{{MERCHANT_REQUEST}} hands over five before you have done anything for them." },
+        { "lead": "Hull", "text": "35 points in one stop at the hidden Federation base. {{STRANDED_BEACON}} and {{CIVILIAN_ASTEROIDS_BEACON}} both repair 10 on the take-them-home branch." },
+        { "lead": "No named gear", "text": "Nothing in this pool names a specific weapon, drone or augment. Equipment arrives as an untyped reward roll, or through the stores." }
+      ]
+    },
+    {
+      "title": "What can bite",
+      "items": [
+        { "lead": "Crew, eight ways", "text": "Eight events can kill a crew member. {{DISTRESS_INFESTATION}} is the sharpest of them — sending people in is a straight roll between a dead crew member and a high reward, unless you are carrying an Anti-Personnel Drone, a Boarding Drone or an Anti-Bio Beam." },
+        { "lead": "Boarders ×5", "text": "{{REFUGEE_GHOST}} is the trap: a drifting refugee ship with its comms down, and two to four humans aboard. {{NEBULA_REBEL_BOARDING}} and {{STORM_BOARDING}} are three to four, with no ship to shoot at." },
+        { "lead": "The fleet", "text": "Five events can hand the Rebels a jump: {{SQUAT_WARNING}}, {{AUTO_WARNING}} and {{NEBULA_AUTO_WARNING}} if the scout escapes, {{NEBULA_REBEL_UNDETECTED}} if hiding goes wrong, and {{CIVILIAN_ASTEROIDS_BEACON}} for walking away from the rescue." },
+        { "lead": "Tolls", "text": "{{PIRATE_CHOICE}} wants 15–25 scrap to let you through, and refusing starts the fight it was threatening anyway." }
+      ]
+    }
+  ]
+}

@@ -7,7 +7,7 @@ unlocks_blue: [[[event-rebel-pds]], [[event-rebel-auto-pds]], [[event-boarders-h
 version: ae
 first_seen: 2026-08-09
 last_updated: 2026-08-09
-sources: 11
+sources: 12
 tags: [system, advanced-edition]
 ---
 

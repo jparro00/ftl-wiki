@@ -118,6 +118,7 @@ common to both editions, which is why `version: both`.
   is the plague station instead.
 
 ## Related
+- [[chain-merchant-s-request]] — the full quest line this belongs to
 - [[event-merchant-s-request]] — the quest start that places this marker
 - [[event-research-station-with-no-response]] — the sub-tree entry 1 loads
 - [[event-merchant-investigate]] — the other errand from the same quest start

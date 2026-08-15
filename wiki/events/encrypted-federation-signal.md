@@ -6,7 +6,7 @@ sectors: [[[sector-abandoned-sector]], [[sector-civilian-sector]], [[sector-engi
 beacon_type: quest
 hostile: false
 blue_options: []
-chain: []
+chain: [[[chain-hidden-federation-base]]]
 version: both
 first_seen: 2026-08-09
 last_updated: 2026-08-09
@@ -119,11 +119,13 @@ inside `HIDDEN_FEDERATION_BASE_LIST`.
   reward, and one member repairs 35 hull.
 
 ## Related
-- [[event-hidden-federation-base]] — the first quest destination, if it is split out
+- [[chain-hidden-federation-base]] — the quest this plants, and its five-outcome destination
+  table. Filed as a chain rather than an event page: `HIDDEN_FEDERATION_BASE_LIST` is an
+  `eventList`, not an `<event name>`, and four separate beacons feed it.
 - [[entity-rebels]] — the ambush ship
 - [[entity-federation]] — whose outposts these are
 - [[item-adv-scanners]] — gates a downstream option
-- [[concept-quest-beacons]], [[concept-surrender-offers]]
+- [[concept-quest-beacon-placement]], [[concept-surrender-offers]]
 
 ## Open Questions
 - [ ] The actual distribution across `FEDERATION_PLANET_SIGNAL_LIST` — the 1/5 figures

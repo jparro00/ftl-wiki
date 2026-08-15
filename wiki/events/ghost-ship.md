@@ -10,7 +10,7 @@ chain: []
 version: ae
 first_seen: 2026-08-09
 last_updated: 2026-08-09
-sources: 5
+sources: 6
 tags: [unreachable, cut-content, unique, blue-option, crew-risk, boarders, weapon-reward]
 ---
 

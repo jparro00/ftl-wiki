@@ -22,6 +22,12 @@ hull damage (hit systems will still be damaged)."* ([[source-text-blueprints]]).
 - Cost: **80** scrap. `bp` 8, `rarity` **0**. `<stackable>false</stackable>`.
 - `<value>0.15</value>` — matches the 15 percent in the description.
 
+**What the 15% does *not* cover.** [[source-fandom-ship]] gives an exclusion list absent from
+the game-file description: the roll applies to **weapons and asteroids only**, and *"cannot
+prevent damage from fires and sabotage, solar flares, or events"*. That last exclusion is the
+consequential one — event hull damage is unmitigable, and [[concept-solar-flares]] is a hazard
+this augment does not answer despite the thematic fit with [[entity-rock-men]].
+
 ## How To Get It
 - **[[event-rock-unlock3]]** — `ROCK_UNLOCK3` awards `<augment name="ROCK_ARMOR"/>` ([[source-events-rock]]), the final step of [[chain-rock-cruiser-unlock]].
 - Starting augment on the Rock Cruiser layouts.
@@ -42,6 +48,7 @@ hull damage (hit systems will still be damaged)."* ([[source-text-blueprints]]).
 - [[item-rock-crew]] — accepted on the same choice list at `ROCK_MANTIS_HUNTER`
 - [[item-titanium-system-casing]] — the same 15 percent trick applied to systems instead of hull
 - [[chain-rock-cruiser-unlock]] — where it is awarded
+- [[concept-solar-flares]] — a hazard the 15% explicitly does **not** cover
 
 ## Open Questions
 - [ ] What `rarity` 0 means for store/reward generation — the blueprint files state the number but never define the scale.
@@ -51,3 +58,4 @@ hull damage (hit systems will still be damaged)."* ([[source-text-blueprints]]).
 - [[source-text-blueprints]] (per raw/gamedata/text_blueprints.xml)
 - [[source-events-xml]] (per raw/gamedata/events.xml)
 - [[source-events-rock]] (per raw/gamedata/events_rock.xml)
+- [[source-fandom-ship]] (per raw/wiki/ship.md) — the exclusion list

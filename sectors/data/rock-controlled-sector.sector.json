@@ -1,0 +1,1955 @@
+{
+  "schema": "ftl-sector-profile/1",
+  "id": "ROCK_SECTOR",
+  "slug": "rock-controlled-sector",
+  "title": "Rock Controlled Sector",
+  "display_name": "Rock Controlled Sector",
+  "short_name": "Rock Controlled",
+  "extracted_from": "raw/gamedata/sector_data.xml",
+  "min_sector": 1,
+  "unique": false,
+  "tracks": [
+    "rock",
+    "wasteland"
+  ],
+  "crew_rarity": [
+    {
+      "id": "engi",
+      "label": "Engi",
+      "rarity": 0
+    },
+    {
+      "id": "mantis",
+      "label": "Mantis",
+      "rarity": 0
+    },
+    {
+      "id": "energy",
+      "label": "Zoltan",
+      "rarity": 3
+    },
+    {
+      "id": "slug",
+      "label": "Slug",
+      "rarity": 0
+    },
+    {
+      "id": "rock",
+      "label": "Rockman",
+      "rarity": 1
+    },
+    {
+      "id": "human",
+      "label": "Human",
+      "rarity": 2
+    },
+    {
+      "id": "BOMB_LOCK",
+      "label": "Crystal Lockdown Bomb",
+      "rarity": 4
+    }
+  ],
+  "start_event": {
+    "id": "START_BEACON_ROCK",
+    "slug": "start-beacon-rock",
+    "title": "Start beacon (Rock)",
+    "card": true,
+    "tags": [],
+    "gates": [],
+    "items": [],
+    "crew_classes": [],
+    "quests": [],
+    "boarders": [],
+    "unlock_ship": [],
+    "fleet_delay": []
+  },
+  "entries": [
+    {
+      "name": "HOSTILE_ROCK",
+      "min": 6,
+      "max": 8,
+      "kind": "list",
+      "section": "hostile",
+      "events": [
+        {
+          "id": "ROCK_SHIP",
+          "slug": "rock-fight",
+          "title": "Rock fight",
+          "card": true,
+          "tags": [
+            "fight",
+            "crew"
+          ],
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "ROCK_PIRATE",
+          "slug": "rock-pirates-fight",
+          "title": "Rock pirates fight",
+          "card": true,
+          "tags": [
+            "fight",
+            "crew"
+          ],
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "ROCK_FIGHT_ASTEROID",
+          "slug": "rock-fight-in-asteroid-field",
+          "title": "Rock fight in asteroid field",
+          "card": true,
+          "tags": [
+            "fight",
+            "crew",
+            "unique"
+          ],
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "ROCK_PIRATE_ASTEROID",
+          "slug": "rock-pirates-fight-in-asteroid-field",
+          "title": "Rock pirates fight in asteroid field",
+          "card": true,
+          "tags": [
+            "fight",
+            "crew",
+            "unique"
+          ],
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "ROCK_PIRATE_SUN",
+          "slug": "rock-pirates-fight-near-sun",
+          "title": "Rock pirates fight near sun",
+          "card": true,
+          "tags": [
+            "fight",
+            "crew",
+            "unique"
+          ],
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        }
+      ]
+    },
+    {
+      "name": "BOARDERS_ROCK",
+      "min": 1,
+      "max": 2,
+      "kind": "list",
+      "section": "boarders",
+      "events": [
+        {
+          "id": "ROCK_BOARDERS_SHIP",
+          "slug": "rock-fight-with-boarders",
+          "title": "Rock fight with boarders",
+          "card": true,
+          "tags": [
+            "fight",
+            "boarders",
+            "crew",
+            "unique"
+          ],
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [
+            {
+              "class": "rock",
+              "min": 1,
+              "max": 3
+            }
+          ],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "ROCK_BOARDERS_ASTEROID",
+          "slug": "rock-fight-with-boarders-in-asteroid-field",
+          "title": "Rock fight with boarders in asteroid field",
+          "card": true,
+          "tags": [
+            "fight",
+            "boarders",
+            "crew",
+            "unique"
+          ],
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [
+            {
+              "class": "rock",
+              "min": 1,
+              "max": 2
+            }
+          ],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "ROCK_BOARDERS_SUN",
+          "slug": "boarders-rockmen-near-sun",
+          "title": "Boarders: Rockmen near sun",
+          "card": true,
+          "tags": [
+            "boarders",
+            "unique"
+          ],
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [
+            {
+              "class": "rock",
+              "min": 2,
+              "max": 3
+            }
+          ],
+          "unlock_ship": [],
+          "fleet_delay": []
+        }
+      ]
+    },
+    {
+      "name": "NEUTRAL_ROCK",
+      "min": 7,
+      "max": 8,
+      "kind": "list",
+      "section": "neutral",
+      "events": [
+        {
+          "id": "ROCK_MANTIS_HUNTER",
+          "slug": "mantis-ship-with-rock-body-parts",
+          "title": "Mantis ship with Rock body parts",
+          "card": true,
+          "tags": [
+            "may-fight",
+            "crew",
+            "unique"
+          ],
+          "gates": [
+            {
+              "req": "ROCK_ARMOR",
+              "label": "Rock Plating"
+            },
+            {
+              "req": "rock",
+              "label": "Rockman"
+            }
+          ],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "ROCK_MANTIS_FREIGHTER",
+          "slug": "mantis-ships-battle-for-rock-freighter",
+          "title": "Mantis ships battle for Rock freighter",
+          "card": true,
+          "tags": [
+            "may-fight",
+            "cost",
+            "unique"
+          ],
+          "gates": [
+            {
+              "req": "REPAIR",
+              "label": "System Repair Drone"
+            },
+            {
+              "req": "SHIP_REPAIR",
+              "label": "Hull Repair"
+            }
+          ],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "ROCK_ATHIEST",
+          "slug": "rock-atheists",
+          "title": "Rock atheists",
+          "card": true,
+          "tags": [
+            "may-fight",
+            "crew",
+            "unique"
+          ],
+          "gates": [
+            {
+              "req": "sensors",
+              "label": "Sensors",
+              "lvl": "2"
+            }
+          ],
+          "items": [],
+          "crew_classes": [
+            "rock"
+          ],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "ROCK_LOOTING",
+          "slug": "disabled-rock-ship",
+          "title": "Disabled Rock ship",
+          "card": true,
+          "tags": [
+            "may-fight",
+            "crew",
+            "unique"
+          ],
+          "gates": [
+            {
+              "req": "slug",
+              "label": "Slug"
+            }
+          ],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "ROCK_STARSHIP_MINE",
+          "slug": "rock-live-mine",
+          "title": "Rock live mine",
+          "card": true,
+          "tags": [
+            "crew-loss",
+            "reward",
+            "cost",
+            "unique"
+          ],
+          "gates": [
+            {
+              "req": "WEAPONS_MISSILES",
+              "label": "WEAPONS_MISSILES"
+            },
+            {
+              "req": "COMBAT_BEAM_DRONE_LIST",
+              "label": "COMBAT_BEAM_DRONE_LIST"
+            },
+            {
+              "req": "engines",
+              "label": "Engines",
+              "lvl": "5"
+            }
+          ],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "PIRATE_CIVILIAN",
+          "slug": "pirate-ship-attacking-civilian",
+          "title": "Pirate ship attacking civilian",
+          "card": true,
+          "tags": [
+            "may-fight",
+            "crew"
+          ],
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "MERCENARY",
+          "slug": "the-mercenary",
+          "title": "The mercenary",
+          "card": true,
+          "tags": [
+            "may-fight",
+            "crew",
+            "cost"
+          ],
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": [
+            -2
+          ]
+        },
+        {
+          "id": "FRIENDLY_SLAVER",
+          "slug": "slaver-friendly",
+          "title": "Slaver (friendly)",
+          "card": true,
+          "tags": [
+            "may-fight",
+            "crew",
+            "cost",
+            "unique"
+          ],
+          "gates": [
+            {
+              "req": "teleporter",
+              "label": "Crew Teleporter",
+              "lvl": "2"
+            }
+          ],
+          "items": [],
+          "crew_classes": [
+            "mantis",
+            "rock",
+            "engi"
+          ],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "ASTEROID_DERELICT_SHIP",
+          "slug": "dense-asteroid-field-distress",
+          "title": "Dense asteroid field distress",
+          "card": true,
+          "tags": [
+            "reward",
+            "unique"
+          ],
+          "gates": [
+            {
+              "req": "ROCK_ARMOR",
+              "label": "Rock Plating"
+            }
+          ],
+          "items": [
+            {
+              "id": "STASIS_POD",
+              "kind": "augment",
+              "label": "Damaged Stasis Pod"
+            }
+          ],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "ROCK_SLUG_ARGUMENT",
+          "slug": "rock-and-slug-standoff",
+          "title": "Rock and Slug standoff",
+          "card": true,
+          "tags": [
+            "may-fight",
+            "cost",
+            "unique"
+          ],
+          "gates": [
+            {
+              "req": "reactor",
+              "label": "reactor"
+            }
+          ],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        }
+      ]
+    },
+    {
+      "name": "DISTRESS_BEACON_ROCK",
+      "min": 1,
+      "max": 2,
+      "kind": "list",
+      "section": "distress",
+      "events": [
+        {
+          "id": "FRIENDLY_BEACON",
+          "slug": "friendly-ship-out-of-fuel",
+          "title": "Friendly ship out of fuel",
+          "card": true,
+          "tags": [
+            "crew",
+            "reward",
+            "cost"
+          ],
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "TRAP_BEACON",
+          "slug": "pirate-ship-distress-trap",
+          "title": "Pirate ship distress trap",
+          "card": true,
+          "tags": [
+            "fight",
+            "crew",
+            "unique"
+          ],
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "STRANDED_BEACON",
+          "slug": "single-life-form-on-moon",
+          "title": "Single life form on moon",
+          "card": true,
+          "tags": [
+            "crew-loss",
+            "crew",
+            "reward",
+            "unique"
+          ],
+          "gates": [
+            {
+              "req": "medbay",
+              "label": "Medbay",
+              "lvl": "2"
+            },
+            {
+              "req": "clonebay",
+              "label": "Clone Bay",
+              "lvl": "2"
+            },
+            {
+              "req": "medbay",
+              "label": "Medbay",
+              "lvl": "3"
+            },
+            {
+              "req": "slug",
+              "label": "Slug"
+            }
+          ],
+          "items": [],
+          "crew_classes": [
+            "human"
+          ],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "PIRATE_CIVILIAN_BEACON",
+          "slug": "pirate-ship-attacking-civilian-distress",
+          "title": "Pirate ship attacking civilian distress",
+          "card": true,
+          "tags": [
+            "may-fight",
+            "crew"
+          ],
+          "gates": [
+            {
+              "req": "weapons",
+              "label": "Weapon Control",
+              "lvl": "6"
+            }
+          ],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "CIVILIAN_ASTEROIDS_BEACON",
+          "slug": "asteroid-belt-distress",
+          "title": "Asteroid belt distress",
+          "card": true,
+          "tags": [
+            "may-fight",
+            "crew",
+            "quest",
+            "cost",
+            "unique"
+          ],
+          "gates": [
+            {
+              "req": "DRONES_DEFENSE_LIST",
+              "label": "DRONES_DEFENSE_LIST"
+            },
+            {
+              "req": "REPAIR",
+              "label": "System Repair Drone"
+            },
+            {
+              "req": "teleporter",
+              "label": "Crew Teleporter"
+            },
+            {
+              "req": "ROCK_ARMOR",
+              "label": "Rock Plating"
+            },
+            {
+              "req": "sensors",
+              "label": "Sensors",
+              "lvl": "2"
+            },
+            {
+              "req": "sensors",
+              "label": "Sensors",
+              "lvl": "3"
+            },
+            {
+              "req": "ADV_SCANNERS",
+              "label": "Long-Ranged Scanners"
+            }
+          ],
+          "items": [],
+          "crew_classes": [],
+          "quests": [
+            "HIDDEN_FEDERATION_BASE_LIST"
+          ],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": [
+            1
+          ]
+        },
+        {
+          "id": "REBEL_VS_FEDERATION",
+          "slug": "rebel-ship-attacking-federation-loyalists",
+          "title": "Rebel ship attacking Federation loyalists",
+          "card": true,
+          "tags": [
+            "may-fight",
+            "crew",
+            "quest",
+            "cost",
+            "unique"
+          ],
+          "gates": [
+            {
+              "req": "NANO_MEDBAY",
+              "label": "Engi Med-bot Dispersal"
+            },
+            {
+              "req": "teleporter",
+              "label": "Crew Teleporter"
+            },
+            {
+              "req": "BOMB_HEAL",
+              "label": "Healing Burst"
+            },
+            {
+              "req": "sensors",
+              "label": "Sensors",
+              "lvl": "2"
+            },
+            {
+              "req": "sensors",
+              "label": "Sensors",
+              "lvl": "3"
+            },
+            {
+              "req": "ADV_SCANNERS",
+              "label": "Long-Ranged Scanners"
+            }
+          ],
+          "items": [],
+          "crew_classes": [],
+          "quests": [
+            "HIDDEN_FEDERATION_BASE_LIST"
+          ],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "ESCORT_BEACON",
+          "slug": "escort-civilians-ftl-haywire",
+          "title": "Escort civilians FTL haywire",
+          "card": true,
+          "tags": [
+            "may-fight",
+            "crew",
+            "store",
+            "quest",
+            "unique"
+          ],
+          "gates": [
+            {
+              "req": "FTL_JUMPER",
+              "label": "Adv. FTL Navigation"
+            }
+          ],
+          "items": [],
+          "crew_classes": [],
+          "quests": [
+            "QUEST_ESCORT_ARRIVE"
+          ],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "DISTRESS_TRAPPED_MINER",
+          "slug": "crushed-pirate",
+          "title": "Crushed pirate",
+          "card": true,
+          "tags": [
+            "may-fight",
+            "crew",
+            "cost",
+            "unique"
+          ],
+          "gates": [
+            {
+              "req": "WEAPONS_BEAM_DAMAGE",
+              "label": "WEAPONS_BEAM_DAMAGE"
+            },
+            {
+              "req": "COMBAT_BEAM_DRONE_LIST",
+              "label": "COMBAT_BEAM_DRONE_LIST"
+            }
+          ],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "DISTRESS_INFESTATION",
+          "slug": "giant-alien-spiders",
+          "title": "Giant alien spiders",
+          "card": true,
+          "tags": [
+            "crew-loss",
+            "reward",
+            "cost",
+            "unique"
+          ],
+          "gates": [
+            {
+              "req": "BATTLE",
+              "label": "Anti-Personnel Drone"
+            },
+            {
+              "req": "BOARDER",
+              "label": "Boarding Drone"
+            },
+            {
+              "req": "BEAM_BIO",
+              "label": "Anti-Bio Beam"
+            }
+          ],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "DISTRESS_SATELLITE_DEFENSE",
+          "slug": "malfunctioning-defense-system",
+          "title": "Malfunctioning defense system",
+          "card": true,
+          "tags": [
+            "reward",
+            "unique"
+          ],
+          "gates": [
+            {
+              "req": "WEAPONS_ION",
+              "label": "WEAPONS_ION"
+            },
+            {
+              "req": "cloaking",
+              "label": "Cloaking",
+              "lvl": "1"
+            },
+            {
+              "req": "cloaking",
+              "label": "Cloaking",
+              "lvl": "2"
+            },
+            {
+              "req": "cloaking",
+              "label": "Cloaking",
+              "lvl": "3"
+            },
+            {
+              "req": "engi",
+              "label": "Engi"
+            }
+          ],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "DISTRESS_STATION_FIRE",
+          "slug": "fire-on-research-station",
+          "title": "Fire on research station",
+          "card": true,
+          "tags": [
+            "crew-loss",
+            "crew",
+            "reward",
+            "unique"
+          ],
+          "gates": [
+            {
+              "req": "rock",
+              "label": "Rockman"
+            },
+            {
+              "req": "REPAIR",
+              "label": "System Repair Drone"
+            }
+          ],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "DISTRESS_STATION_DISEASE",
+          "slug": "unknown-disease-on-mining-colony",
+          "title": "Unknown disease on mining colony",
+          "card": true,
+          "tags": [
+            "crew-loss",
+            "reward",
+            "unique"
+          ],
+          "gates": [
+            {
+              "req": "rock",
+              "label": "Rockman"
+            },
+            {
+              "req": "engi",
+              "label": "Engi"
+            },
+            {
+              "req": "medbay",
+              "label": "Medbay",
+              "lvl": "2"
+            },
+            {
+              "req": "NANO_MEDBAY",
+              "label": "Engi Med-bot Dispersal"
+            }
+          ],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        }
+      ]
+    },
+    {
+      "name": "ITEMS",
+      "min": 1,
+      "max": 2,
+      "kind": "list",
+      "section": "items",
+      "events": [
+        {
+          "id": "FIND_DRONE",
+          "slug": "free-drone-schematic",
+          "title": "Free drone schematic",
+          "card": true,
+          "tags": [
+            "reward"
+          ],
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "FIND_WEAPON",
+          "slug": "free-weapon",
+          "title": "Free weapon",
+          "card": true,
+          "tags": [
+            "reward"
+          ],
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "FREE_ITEMS",
+          "slug": "free-scrap-with-resources",
+          "title": "Free scrap with resources",
+          "card": true,
+          "tags": [
+            "reward"
+          ],
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "FUEL_FOR_DRONE",
+          "slug": "trade-fuel-for-drone-parts",
+          "title": "Trade fuel for drone parts",
+          "card": true,
+          "tags": [
+            "reward",
+            "cost"
+          ],
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "REFUEL_STATION",
+          "slug": "refueling-station",
+          "title": "Refueling station",
+          "card": true,
+          "tags": [
+            "reward",
+            "cost",
+            "unique"
+          ],
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "REPAIR_STATION",
+          "slug": "repair-station",
+          "title": "Repair station",
+          "card": true,
+          "tags": [
+            "cost",
+            "unique"
+          ],
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "SELL_DRONES_STATION",
+          "slug": "sell-drone-parts-for-scrap",
+          "title": "Sell drone parts for scrap",
+          "card": true,
+          "tags": [
+            "reward",
+            "cost",
+            "unique"
+          ],
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "SELL_MISSILES_STATION",
+          "slug": "sell-missiles-for-scrap",
+          "title": "Sell missiles for scrap",
+          "card": true,
+          "tags": [
+            "reward",
+            "cost",
+            "unique"
+          ],
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "TRADER_CIV",
+          "slug": "trade-resources",
+          "title": "Trade resources",
+          "card": true,
+          "tags": [
+            "reward",
+            "cost"
+          ],
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "TAVERN_HIRE",
+          "slug": "crew-hiring-station",
+          "title": "Crew hiring station",
+          "card": true,
+          "tags": [
+            "crew",
+            "cost",
+            "unique"
+          ],
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "TRADER_UPGRADES",
+          "slug": "trade-scrap-for-upgrades",
+          "title": "Trade scrap for upgrades",
+          "card": true,
+          "tags": [
+            "cost",
+            "unique"
+          ],
+          "gates": [
+            {
+              "req": "oxygen",
+              "label": "Oxygen"
+            },
+            {
+              "req": "pilot",
+              "label": "Piloting"
+            },
+            {
+              "req": "doors",
+              "label": "Door System"
+            },
+            {
+              "req": "sensors",
+              "label": "Sensors"
+            },
+            {
+              "req": "reactor",
+              "label": "reactor"
+            }
+          ],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "TRADER_UPGRADES_EXCHANGE",
+          "slug": "improve-reactor-for-supplies",
+          "title": "Improve reactor for supplies",
+          "card": true,
+          "tags": [
+            "cost",
+            "unique"
+          ],
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "HELP_MINERS",
+          "slug": "asteroid-mining-colony",
+          "title": "Asteroid mining colony",
+          "card": true,
+          "tags": [
+            "reward",
+            "cost",
+            "unique"
+          ],
+          "gates": [
+            {
+              "req": "WEAPONS_MISSILES_EVENTS",
+              "label": "WEAPONS_MISSILES_EVENTS"
+            }
+          ],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        }
+      ],
+      "override": {
+        "list": "OVERRIDE_ITEMS",
+        "added": [
+          {
+            "id": "STORE_REBELSIDE",
+            "slug": "large-trade-station",
+            "title": "Large trade station",
+            "card": true,
+            "tags": [
+              "may-fight",
+              "crew",
+              "store",
+              "unique"
+            ],
+            "gates": [
+              {
+                "req": "mind",
+                "label": "Mind Control",
+                "lvl": "1"
+              },
+              {
+                "req": "mind",
+                "label": "Mind Control",
+                "lvl": "2"
+              },
+              {
+                "req": "mind",
+                "label": "Mind Control",
+                "lvl": "3"
+              }
+            ],
+            "items": [],
+            "crew_classes": [],
+            "quests": [],
+            "boarders": [],
+            "unlock_ship": [],
+            "fleet_delay": []
+          }
+        ],
+        "removed": [],
+        "applies": "unconfirmed"
+      }
+    },
+    {
+      "name": "STORE_ROCK",
+      "min": 2,
+      "max": 2,
+      "kind": "event",
+      "section": "store",
+      "events": [
+        {
+          "id": "STORE_ROCK",
+          "slug": "store-rock",
+          "title": "Store (Rock)",
+          "card": true,
+          "tags": [
+            "store"
+          ],
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        }
+      ]
+    },
+    {
+      "name": "QUESTS_ROCK",
+      "min": 0,
+      "max": 1,
+      "kind": "list",
+      "section": "quests",
+      "events": [
+        {
+          "id": "ROCK_QUEST_MARRIAGE_START",
+          "slug": "rock-bride",
+          "title": "Rock bride",
+          "card": true,
+          "tags": [
+            "may-fight",
+            "crew",
+            "quest",
+            "unique"
+          ],
+          "gates": [],
+          "items": [],
+          "crew_classes": [
+            "rock"
+          ],
+          "quests": [
+            "ROCK_QUEST_MARRIAGE"
+          ],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "QUEST_ESCORT",
+          "slug": "escort-civilians",
+          "title": "Escort civilians",
+          "card": true,
+          "tags": [
+            "may-fight",
+            "crew",
+            "store",
+            "quest"
+          ],
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [
+            "QUEST_ESCORT_ARRIVE"
+          ],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "FEDERATION_PLANET_SIGNAL",
+          "slug": "encrypted-federation-signal",
+          "title": "Encrypted federation signal",
+          "card": true,
+          "tags": [
+            "may-fight",
+            "boarders",
+            "crew",
+            "quest",
+            "unique"
+          ],
+          "gates": [
+            {
+              "req": "sensors",
+              "label": "Sensors",
+              "lvl": "2"
+            },
+            {
+              "req": "sensors",
+              "label": "Sensors",
+              "lvl": "3"
+            },
+            {
+              "req": "ADV_SCANNERS",
+              "label": "Long-Ranged Scanners"
+            }
+          ],
+          "items": [],
+          "crew_classes": [],
+          "quests": [
+            "HIDDEN_FEDERATION_BASE_LIST",
+            "FEDERATION_BASE_ASSIST"
+          ],
+          "boarders": [
+            {
+              "class": "human",
+              "min": 2,
+              "max": 3
+            }
+          ],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "MERCENARY_WORK_START",
+          "slug": "settlement-mercenary-work",
+          "title": "Settlement mercenary work",
+          "card": true,
+          "tags": [
+            "may-fight",
+            "store",
+            "quest",
+            "unique"
+          ],
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [
+            "QUEST_STORE_RESCUE"
+          ],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "QUEST_CREWDEAD_START",
+          "slug": "capture-the-ship",
+          "title": "Capture the ship",
+          "card": true,
+          "tags": [
+            "may-fight",
+            "quest",
+            "unique"
+          ],
+          "gates": [
+            {
+              "req": "teleporter",
+              "label": "Crew Teleporter",
+              "lvl": "1"
+            },
+            {
+              "req": "BEAM_BIO",
+              "label": "Anti-Bio Beam"
+            },
+            {
+              "req": "BOMB_FIRE",
+              "label": "Fire Bomb"
+            }
+          ],
+          "items": [],
+          "crew_classes": [],
+          "quests": [
+            "QUEST_CREWDEAD"
+          ],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        }
+      ]
+    },
+    {
+      "name": "NOTHING_ROCK",
+      "min": 2,
+      "max": 3,
+      "kind": "event",
+      "section": "empty",
+      "events": [
+        {
+          "id": "NOTHING_ROCK",
+          "slug": "empty-beacon-rock",
+          "title": "Empty beacon (Rock)",
+          "card": true,
+          "tags": [],
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        }
+      ]
+    }
+  ],
+  "rollup": {
+    "distinct_events": 50,
+    "no_card": [],
+    "always_fight": [
+      "ROCK_BOARDERS_ASTEROID",
+      "ROCK_BOARDERS_SHIP",
+      "ROCK_FIGHT_ASTEROID",
+      "ROCK_PIRATE",
+      "ROCK_PIRATE_ASTEROID",
+      "ROCK_PIRATE_SUN",
+      "ROCK_SHIP",
+      "TRAP_BEACON"
+    ],
+    "may_fight": [
+      "CIVILIAN_ASTEROIDS_BEACON",
+      "DISTRESS_TRAPPED_MINER",
+      "ESCORT_BEACON",
+      "FEDERATION_PLANET_SIGNAL",
+      "FRIENDLY_SLAVER",
+      "MERCENARY",
+      "MERCENARY_WORK_START",
+      "PIRATE_CIVILIAN",
+      "PIRATE_CIVILIAN_BEACON",
+      "QUEST_CREWDEAD_START",
+      "QUEST_ESCORT",
+      "REBEL_VS_FEDERATION",
+      "ROCK_ATHIEST",
+      "ROCK_LOOTING",
+      "ROCK_MANTIS_FREIGHTER",
+      "ROCK_MANTIS_HUNTER",
+      "ROCK_QUEST_MARRIAGE_START",
+      "ROCK_SLUG_ARGUMENT"
+    ],
+    "crew_loss": [
+      "DISTRESS_INFESTATION",
+      "DISTRESS_STATION_DISEASE",
+      "DISTRESS_STATION_FIRE",
+      "ROCK_STARSHIP_MINE",
+      "STRANDED_BEACON"
+    ],
+    "crew_gain": [
+      "CIVILIAN_ASTEROIDS_BEACON",
+      "DISTRESS_STATION_FIRE",
+      "DISTRESS_TRAPPED_MINER",
+      "ESCORT_BEACON",
+      "FEDERATION_PLANET_SIGNAL",
+      "FRIENDLY_BEACON",
+      "FRIENDLY_SLAVER",
+      "MERCENARY",
+      "PIRATE_CIVILIAN",
+      "PIRATE_CIVILIAN_BEACON",
+      "QUEST_ESCORT",
+      "REBEL_VS_FEDERATION",
+      "ROCK_ATHIEST",
+      "ROCK_BOARDERS_ASTEROID",
+      "ROCK_BOARDERS_SHIP",
+      "ROCK_FIGHT_ASTEROID",
+      "ROCK_LOOTING",
+      "ROCK_MANTIS_HUNTER",
+      "ROCK_PIRATE",
+      "ROCK_PIRATE_ASTEROID",
+      "ROCK_PIRATE_SUN",
+      "ROCK_QUEST_MARRIAGE_START",
+      "ROCK_SHIP",
+      "STRANDED_BEACON",
+      "TAVERN_HIRE",
+      "TRAP_BEACON"
+    ],
+    "boarders": [
+      "FEDERATION_PLANET_SIGNAL",
+      "ROCK_BOARDERS_ASTEROID",
+      "ROCK_BOARDERS_SHIP",
+      "ROCK_BOARDERS_SUN"
+    ],
+    "unique": [
+      "ASTEROID_DERELICT_SHIP",
+      "CIVILIAN_ASTEROIDS_BEACON",
+      "DISTRESS_INFESTATION",
+      "DISTRESS_SATELLITE_DEFENSE",
+      "DISTRESS_STATION_DISEASE",
+      "DISTRESS_STATION_FIRE",
+      "DISTRESS_TRAPPED_MINER",
+      "ESCORT_BEACON",
+      "FEDERATION_PLANET_SIGNAL",
+      "FRIENDLY_SLAVER",
+      "HELP_MINERS",
+      "MERCENARY_WORK_START",
+      "QUEST_CREWDEAD_START",
+      "REBEL_VS_FEDERATION",
+      "REFUEL_STATION",
+      "REPAIR_STATION",
+      "ROCK_ATHIEST",
+      "ROCK_BOARDERS_ASTEROID",
+      "ROCK_BOARDERS_SHIP",
+      "ROCK_BOARDERS_SUN",
+      "ROCK_FIGHT_ASTEROID",
+      "ROCK_LOOTING",
+      "ROCK_MANTIS_FREIGHTER",
+      "ROCK_MANTIS_HUNTER",
+      "ROCK_PIRATE_ASTEROID",
+      "ROCK_PIRATE_SUN",
+      "ROCK_QUEST_MARRIAGE_START",
+      "ROCK_SLUG_ARGUMENT",
+      "ROCK_STARSHIP_MINE",
+      "SELL_DRONES_STATION",
+      "SELL_MISSILES_STATION",
+      "STRANDED_BEACON",
+      "TAVERN_HIRE",
+      "TRADER_UPGRADES",
+      "TRADER_UPGRADES_EXCHANGE",
+      "TRAP_BEACON"
+    ],
+    "quest_starts": [
+      "CIVILIAN_ASTEROIDS_BEACON",
+      "ESCORT_BEACON",
+      "FEDERATION_PLANET_SIGNAL",
+      "MERCENARY_WORK_START",
+      "QUEST_CREWDEAD_START",
+      "QUEST_ESCORT",
+      "REBEL_VS_FEDERATION",
+      "ROCK_QUEST_MARRIAGE_START"
+    ],
+    "gates": [
+      {
+        "req": "sensors",
+        "label": "Sensors",
+        "levels": [
+          "2",
+          "3"
+        ],
+        "events": [
+          "ROCK_ATHIEST",
+          "CIVILIAN_ASTEROIDS_BEACON",
+          "REBEL_VS_FEDERATION",
+          "TRADER_UPGRADES",
+          "FEDERATION_PLANET_SIGNAL"
+        ]
+      },
+      {
+        "req": "teleporter",
+        "label": "Crew Teleporter",
+        "levels": [
+          "2",
+          "1"
+        ],
+        "events": [
+          "FRIENDLY_SLAVER",
+          "CIVILIAN_ASTEROIDS_BEACON",
+          "REBEL_VS_FEDERATION",
+          "QUEST_CREWDEAD_START"
+        ]
+      },
+      {
+        "req": "ADV_SCANNERS",
+        "label": "Long-Ranged Scanners",
+        "levels": [],
+        "events": [
+          "CIVILIAN_ASTEROIDS_BEACON",
+          "REBEL_VS_FEDERATION",
+          "FEDERATION_PLANET_SIGNAL"
+        ]
+      },
+      {
+        "req": "REPAIR",
+        "label": "System Repair Drone",
+        "levels": [],
+        "events": [
+          "ROCK_MANTIS_FREIGHTER",
+          "CIVILIAN_ASTEROIDS_BEACON",
+          "DISTRESS_STATION_FIRE"
+        ]
+      },
+      {
+        "req": "ROCK_ARMOR",
+        "label": "Rock Plating",
+        "levels": [],
+        "events": [
+          "ROCK_MANTIS_HUNTER",
+          "ASTEROID_DERELICT_SHIP",
+          "CIVILIAN_ASTEROIDS_BEACON"
+        ]
+      },
+      {
+        "req": "rock",
+        "label": "Rockman",
+        "levels": [],
+        "events": [
+          "ROCK_MANTIS_HUNTER",
+          "DISTRESS_STATION_FIRE",
+          "DISTRESS_STATION_DISEASE"
+        ]
+      },
+      {
+        "req": "BEAM_BIO",
+        "label": "Anti-Bio Beam",
+        "levels": [],
+        "events": [
+          "DISTRESS_INFESTATION",
+          "QUEST_CREWDEAD_START"
+        ]
+      },
+      {
+        "req": "COMBAT_BEAM_DRONE_LIST",
+        "label": "COMBAT_BEAM_DRONE_LIST",
+        "levels": [],
+        "events": [
+          "ROCK_STARSHIP_MINE",
+          "DISTRESS_TRAPPED_MINER"
+        ]
+      },
+      {
+        "req": "NANO_MEDBAY",
+        "label": "Engi Med-bot Dispersal",
+        "levels": [],
+        "events": [
+          "REBEL_VS_FEDERATION",
+          "DISTRESS_STATION_DISEASE"
+        ]
+      },
+      {
+        "req": "engi",
+        "label": "Engi",
+        "levels": [],
+        "events": [
+          "DISTRESS_SATELLITE_DEFENSE",
+          "DISTRESS_STATION_DISEASE"
+        ]
+      },
+      {
+        "req": "medbay",
+        "label": "Medbay",
+        "levels": [
+          "2",
+          "3"
+        ],
+        "events": [
+          "STRANDED_BEACON",
+          "DISTRESS_STATION_DISEASE"
+        ]
+      },
+      {
+        "req": "reactor",
+        "label": "reactor",
+        "levels": [],
+        "events": [
+          "ROCK_SLUG_ARGUMENT",
+          "TRADER_UPGRADES"
+        ]
+      },
+      {
+        "req": "slug",
+        "label": "Slug",
+        "levels": [],
+        "events": [
+          "ROCK_LOOTING",
+          "STRANDED_BEACON"
+        ]
+      },
+      {
+        "req": "BATTLE",
+        "label": "Anti-Personnel Drone",
+        "levels": [],
+        "events": [
+          "DISTRESS_INFESTATION"
+        ]
+      },
+      {
+        "req": "BOARDER",
+        "label": "Boarding Drone",
+        "levels": [],
+        "events": [
+          "DISTRESS_INFESTATION"
+        ]
+      },
+      {
+        "req": "BOMB_FIRE",
+        "label": "Fire Bomb",
+        "levels": [],
+        "events": [
+          "QUEST_CREWDEAD_START"
+        ]
+      },
+      {
+        "req": "BOMB_HEAL",
+        "label": "Healing Burst",
+        "levels": [],
+        "events": [
+          "REBEL_VS_FEDERATION"
+        ]
+      },
+      {
+        "req": "DRONES_DEFENSE_LIST",
+        "label": "DRONES_DEFENSE_LIST",
+        "levels": [],
+        "events": [
+          "CIVILIAN_ASTEROIDS_BEACON"
+        ]
+      },
+      {
+        "req": "FTL_JUMPER",
+        "label": "Adv. FTL Navigation",
+        "levels": [],
+        "events": [
+          "ESCORT_BEACON"
+        ]
+      },
+      {
+        "req": "SHIP_REPAIR",
+        "label": "Hull Repair",
+        "levels": [],
+        "events": [
+          "ROCK_MANTIS_FREIGHTER"
+        ]
+      },
+      {
+        "req": "WEAPONS_BEAM_DAMAGE",
+        "label": "WEAPONS_BEAM_DAMAGE",
+        "levels": [],
+        "events": [
+          "DISTRESS_TRAPPED_MINER"
+        ]
+      },
+      {
+        "req": "WEAPONS_ION",
+        "label": "WEAPONS_ION",
+        "levels": [],
+        "events": [
+          "DISTRESS_SATELLITE_DEFENSE"
+        ]
+      },
+      {
+        "req": "WEAPONS_MISSILES",
+        "label": "WEAPONS_MISSILES",
+        "levels": [],
+        "events": [
+          "ROCK_STARSHIP_MINE"
+        ]
+      },
+      {
+        "req": "WEAPONS_MISSILES_EVENTS",
+        "label": "WEAPONS_MISSILES_EVENTS",
+        "levels": [],
+        "events": [
+          "HELP_MINERS"
+        ]
+      },
+      {
+        "req": "cloaking",
+        "label": "Cloaking",
+        "levels": [
+          "1",
+          "2",
+          "3"
+        ],
+        "events": [
+          "DISTRESS_SATELLITE_DEFENSE"
+        ]
+      },
+      {
+        "req": "clonebay",
+        "label": "Clone Bay",
+        "levels": [
+          "2"
+        ],
+        "events": [
+          "STRANDED_BEACON"
+        ]
+      },
+      {
+        "req": "doors",
+        "label": "Door System",
+        "levels": [],
+        "events": [
+          "TRADER_UPGRADES"
+        ]
+      },
+      {
+        "req": "engines",
+        "label": "Engines",
+        "levels": [
+          "5"
+        ],
+        "events": [
+          "ROCK_STARSHIP_MINE"
+        ]
+      },
+      {
+        "req": "oxygen",
+        "label": "Oxygen",
+        "levels": [],
+        "events": [
+          "TRADER_UPGRADES"
+        ]
+      },
+      {
+        "req": "pilot",
+        "label": "Piloting",
+        "levels": [],
+        "events": [
+          "TRADER_UPGRADES"
+        ]
+      },
+      {
+        "req": "weapons",
+        "label": "Weapon Control",
+        "levels": [
+          "6"
+        ],
+        "events": [
+          "PIRATE_CIVILIAN_BEACON"
+        ]
+      }
+    ],
+    "named_items": [
+      {
+        "value": {
+          "id": "STASIS_POD",
+          "kind": "augment",
+          "label": "Damaged Stasis Pod"
+        },
+        "events": [
+          "ASTEROID_DERELICT_SHIP"
+        ]
+      }
+    ],
+    "crew_classes": [
+      {
+        "value": "rock",
+        "events": [
+          "ROCK_ATHIEST",
+          "FRIENDLY_SLAVER",
+          "ROCK_QUEST_MARRIAGE_START"
+        ]
+      },
+      {
+        "value": "engi",
+        "events": [
+          "FRIENDLY_SLAVER"
+        ]
+      },
+      {
+        "value": "human",
+        "events": [
+          "STRANDED_BEACON"
+        ]
+      },
+      {
+        "value": "mantis",
+        "events": [
+          "FRIENDLY_SLAVER"
+        ]
+      }
+    ],
+    "unlock_ships": [],
+    "quest_targets": [
+      {
+        "value": "HIDDEN_FEDERATION_BASE_LIST",
+        "events": [
+          "CIVILIAN_ASTEROIDS_BEACON",
+          "REBEL_VS_FEDERATION",
+          "FEDERATION_PLANET_SIGNAL"
+        ]
+      },
+      {
+        "value": "QUEST_ESCORT_ARRIVE",
+        "events": [
+          "ESCORT_BEACON",
+          "QUEST_ESCORT"
+        ]
+      },
+      {
+        "value": "FEDERATION_BASE_ASSIST",
+        "events": [
+          "FEDERATION_PLANET_SIGNAL"
+        ]
+      },
+      {
+        "value": "QUEST_CREWDEAD",
+        "events": [
+          "QUEST_CREWDEAD_START"
+        ]
+      },
+      {
+        "value": "QUEST_STORE_RESCUE",
+        "events": [
+          "MERCENARY_WORK_START"
+        ]
+      },
+      {
+        "value": "ROCK_QUEST_MARRIAGE",
+        "events": [
+          "ROCK_QUEST_MARRIAGE_START"
+        ]
+      }
+    ]
+  },
+  "metrics": {
+    "beacons_min": 20,
+    "beacons_max": 28,
+    "distinct_events": 50,
+    "always_fight_events": 8,
+    "may_fight_events": 18,
+    "crew_loss_events": 5,
+    "crew_gain_events": 26,
+    "boarder_events": 4,
+    "unique_events": 36,
+    "gated_events": 22,
+    "quest_start_events": 8,
+    "section:hostile:min": 6,
+    "section:hostile:max": 8,
+    "section:boarders:min": 1,
+    "section:boarders:max": 2,
+    "section:neutral:min": 7,
+    "section:neutral:max": 8,
+    "section:distress:min": 1,
+    "section:distress:max": 2,
+    "section:items:min": 1,
+    "section:items:max": 2,
+    "section:store:min": 2,
+    "section:store:max": 2,
+    "section:quests:min": 0,
+    "section:quests:max": 1,
+    "section:empty:min": 2,
+    "section:empty:max": 3,
+    "entry:HOSTILE_ROCK:min": 6,
+    "entry:HOSTILE_ROCK:max": 8,
+    "entry:BOARDERS_ROCK:min": 1,
+    "entry:BOARDERS_ROCK:max": 2,
+    "entry:NEUTRAL_ROCK:min": 7,
+    "entry:NEUTRAL_ROCK:max": 8,
+    "entry:DISTRESS_BEACON_ROCK:min": 1,
+    "entry:DISTRESS_BEACON_ROCK:max": 2,
+    "entry:ITEMS:min": 1,
+    "entry:ITEMS:max": 2,
+    "entry:STORE_ROCK:min": 2,
+    "entry:STORE_ROCK:max": 2,
+    "entry:QUESTS_ROCK:min": 0,
+    "entry:QUESTS_ROCK:max": 1,
+    "entry:NOTHING_ROCK:min": 2,
+    "entry:NOTHING_ROCK:max": 3
+  }
+}

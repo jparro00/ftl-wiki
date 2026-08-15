@@ -6,7 +6,7 @@ sectors: [[[sector-mantis-controlled-sector]], [[sector-mantis-homeworlds]]]
 beacon_type: quest
 hostile: true
 blue_options: []
-chain: []
+chain: [[[chain-mantis-collectors-chase]]]
 version: both
 first_seen: 2026-08-09
 last_updated: 2026-08-09
@@ -117,6 +117,7 @@ None. No `req` appears anywhere in the event or the ship block.
 
 ## Related
 - [[event-mantis-ship-collectors]] — the parent fight and the only route here
+- [[chain-mantis-collectors-chase]] — both beacons as one quest
 - [[entity-mantis]] — the faction
 - [[sector-mantis-controlled-sector]], [[sector-mantis-homeworlds]] — where the parent
   appears

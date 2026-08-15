@@ -1,0 +1,89 @@
+{
+  "slug": "rebel-controlled-sector",
+
+  "lede": "Rebel space, held by the fleet that is already chasing you — and the only place where that pursuit stops being background weather and becomes something events touch. **Seven of the 49 events here move the fleet clock, and six of them can only move it the wrong way**: a scout that lives long enough to charge its FTL reports your position. Against that there is a hostile floor of six beacons and a boarding you cannot decline, which makes this a sector you cross rather than one you farm.",
+
+  "stats": [
+    { "metric": "beacons_min..beacons_max", "label": "Beacon spread" },
+    { "metric": "section:hostile:min..section:hostile:max", "label": "Guaranteed fights" },
+    { "metric": "section:boarders:min..section:boarders:max", "label": "Boarding beacons" },
+    { "metric": "section:nebula:min..section:nebula:max", "label": "Nebula beacons" },
+    { "metric": "distinct_events", "label": "Events in pool" }
+  ],
+
+  "callout": "**The map is not one map.** The sector must place 16 beacons and may place 30, and `NEBULA_REBEL` alone accounts for five of that fourteen-beacon swing — the same list that carries all three plasma-storm beacons and the three-to-four-strong boarding party. A nebula-heavy roll is a meaner sector than a nebula-free one, and nothing in the allocation stops either.",
+
+  "section_notes": {
+    "HOSTILE_REBEL": "Two of these five are scouts rather than warships. {{AUTO_WARNING}} and {{SQUAT_WARNING}} are ordinary fights right up until they start charging FTL — let either get away and the fleet moves a jump closer, which is the one thing killing them fast actually buys.",
+    "BOARDERS_REBEL": "Allocated one and exactly one, with no way to decline it. {{BOARDERS_SUN}} puts two to four humans aboard while you are sitting next to a star; {{BOARDERS_REBEL_SHIP}} sends two to three while a Rebel ship keeps firing.",
+    "NEUTRAL_REBEL": "Three of these are the same shape — a Rebel installation with an automated guard parked on it — and each has a way in that is not the fight: Sensors or a Teleporter at {{AUTO_DEFENSE_MAP}}, Cloaking at {{AUTO_DEFENSE_ITEM}}, a combat drone or Hacking at {{AUTO_DEFENSE_RADAR}}.",
+    "NEBULA_REBEL": "Eleven events, and Sensors gets a branch in none of them; Cloaking appears in three and Engines in two. {{STORM_AUTO}} shows how the sector grades an escape — Engines 3 is a coin flip, Engines 6 and Cloaking are certainties — and {{NEBULA_AUTO_DEFENSE_ITEM}} does the same with Cloaking 1 against Cloaking 2.",
+    "DISTRESS_BEACON_REBEL": "Half of this list plants a marker somewhere else on the map: {{CIVILIAN_ASTEROIDS_BEACON}} and {{REBEL_VS_FEDERATION}} both point at the hidden Federation base, {{ESCORT_BEACON}} hands you an escort job. The other half is where the risk is — {{TRAP_BEACON}} is a distress call that is really an ambush, and {{DISTRESS_STATION_FIRE}} is one of the four events here that can kill a crew member.",
+    "ITEMS": "Mostly a shop floor: stations, trades and sales, with {{FIND_WEAPON}}, {{FIND_DRONE}} and {{FREE_ITEMS}} the only outright gifts. {{HELP_MINERS}} is the only event in this list that can produce an augment, and the branch that does it wants fifteen missiles.",
+    "QUESTS_REBEL": "Allocated zero to two, so a run can pass through offered neither. Both reach well past this sector: two of the five outcomes at {{FEDERATION_PLANET_SIGNAL}} advance the Federation-base thread, and {{MERCHANT_REQUEST}}'s delivery job ends at a research station whose survivors are infected — three to four boarders, and a crew member who turns on you."
+  },
+
+  "chain": {
+    "title": "The hidden Federation base",
+    "steps": [
+      {
+        "marker": "1",
+        "title": "Three ways the marker gets planted",
+        "detail": "{{CIVILIAN_ASTEROIDS_BEACON}} and {{REBEL_VS_FEDERATION}} in the distress pool, {{FEDERATION_PLANET_SIGNAL}} in the quest pool. On the loyalist transport it is the rescue branches that pay — the survivors are the ones who give you the coordinates.",
+        "ref": "HIDDEN_FEDERATION_BASE_LIST"
+      },
+      {
+        "marker": "2",
+        "title": "One roll at the marked beacon",
+        "detail": "Five outcomes: a drone from a barren planet, an outpost that gives you a crew member, a space-dock that repairs 35 hull and resupplies you, an apparently empty site, or the base already under attack.",
+        "ref": "HIDDEN_FEDERATION_BASE_LIST"
+      },
+      {
+        "marker": "3",
+        "title": "The empty site is not always empty",
+        "detail": "The dead-end outcome offers a second scan pass to **Sensors 2**, **Sensors 3** or **Long-Ranged Scanners**. The higher two turn nothing into a weapon.",
+        "ref": "sensors lvl=2/3 · ADV_SCANNERS"
+      },
+      {
+        "marker": "✓",
+        "title": "The base under attack",
+        "detail": "An auto-ship bombarding the outpost. Destroy it and a survivor joins you, with a weapon or a high standard reward on top. {{FEDERATION_PLANET_SIGNAL}} can plant this stage directly and skip the search entirely.",
+        "ref": "FEDERATION_BASE_ASSIST · AUTO_FEDERATION_BASE"
+      }
+    ]
+  },
+
+  "panels": [
+    {
+      "title": "Blue options that pay here",
+      "items": [
+        { "lead": "Cloaking ×4", "text": "The default way out: past the storage-cache guard in clear space and in nebula, out of the plasma storm, and clean past the Rebel in {{NEBULA_REBEL_UNDETECTED}}. Only {{AUTO_DEFENSE_ITEM}} rolls for detection no matter what level you are carrying." },
+        { "lead": "Crew Teleporter ×5", "text": "Boards the sensor station without provoking its guard, pulls the lost Federation crew out of the nebula, and is one of four ways to save the loyalists at {{REBEL_VS_FEDERATION}} — the one that gets you a crew member **and** the base coordinates." },
+        { "lead": "Hacking ×2", "text": "{{AUTO_DEFENSE_RADAR}} is the only reliable brake on the pursuit in the whole pool: the Hacking branch delays the fleet a jump and reveals the map for one drone part, where the plain hack is a four-way roll that can trip an alarm instead." },
+        { "lead": "Engines ×2", "text": "Pure escape, and graded — level 3 is a coin flip out of the plasma storm, level 6 is certain, level 4 loses the Rebel inside the cloud at {{NEBULA_REBEL_UNDETECTED}}." },
+        { "lead": "Sensors ×6", "text": "The widest gate in the sector once the quest stages are counted. Level 3 reads the sensor station's map from a distance and scans {{BROKEN_REBEL_DRONE}} instead of waking it; level 2 and Long-Ranged Scanners both salvage the Federation base's dead end." },
+        { "lead": "Rock crew / Repair drone", "text": "{{DISTRESS_STATION_FIRE}} kills a crew member on anyone who walks in unaided. A Rockman walks through the fire for a high augment reward; a System Repair Drone does the same job for a drone schematic." }
+      ]
+    },
+    {
+      "title": "What you can leave with",
+      "items": [
+        { "lead": "Crew ×23", "text": "Twenty-three of the forty-nine events can hand you someone — by a distance the most common thing this sector gives, and mostly prisoners and survivors pulled out of ships you have just beaten." },
+        { "lead": "Weapons & drones", "text": "{{REBEL_TRANSPORT}} is the richest single roll in the pool — eleven destroyed-outcomes covering military weaponry, a drone schematic, drone parts, a map reveal and a prisoner." },
+        { "lead": "Augments ×2", "text": "Only {{DISTRESS_STATION_FIRE}} behind Rock crew and {{HELP_MINERS}} for fifteen missiles produce one, and neither names it — both roll a random augment." },
+        { "lead": "Hull", "text": "The hidden Federation base's space-dock outcome repairs 35, the largest patch anything in reach of this sector offers. Short of that it is {{REPAIR_STATION}} at 5, 10 or 20 for scrap and {{HELP_MINERS}} at 5 to 15 for missiles." },
+        { "lead": "A Rebel", "text": "{{ALISON_DEFECTOR}} is the only event in the pool that names the species it gives you — a human, three times out of six, sometimes with a scrap cache attached." }
+      ]
+    },
+    {
+      "title": "What can bite",
+      "items": [
+        { "lead": "The pursuit ×6", "text": "{{AUTO_WARNING}}, {{SQUAT_WARNING}} and {{NEBULA_AUTO_WARNING}} if the scout escapes; {{NEBULA_REBEL_UNDETECTED}} if it spots you and lives; {{ALISON_DEFECTOR}} if the defector was lying; {{CIVILIAN_ASTEROIDS_BEACON}} if you leave the civilians to die and they survive to report you." },
+        { "lead": "Boarders ×6", "text": "One beacon of them is guaranteed, but six events can put people aboard: up to four humans at {{BOARDERS_SUN}}, {{NEBULA_REBEL_BOARDING}} and the infected station on {{MERCHANT_REQUEST}}, two to three at {{BOARDERS_REBEL_SHIP}} and {{FEDERATION_PLANET_SIGNAL}}, one or two at {{ALISON_DEFECTOR}}." },
+        { "lead": "Crew loss ×4", "text": "{{STORM_ITEMS}}, {{DISTRESS_STATION_FIRE}}, {{ALISON_DEFECTOR}} and {{MERCHANT_REQUEST}} are the only events that can take someone off the roster, and every one of them is a branch you opt into — nothing here costs crew on arrival." },
+        { "lead": "Drone parts", "text": "{{AUTO_DEFENSE_RADAR}} charges a drone part for the approach whether or not it works, including the outcome where the drone is shot down and the auto-ship comes for you anyway." },
+        { "lead": "Bait", "text": "{{TRAP_BEACON}} is a distress call with a pirate behind it, and one of the five outcomes at {{FEDERATION_PLANET_SIGNAL}} is a Rebel signal broadcast specifically to catch ships like yours." }
+      ]
+    }
+  ]
+}

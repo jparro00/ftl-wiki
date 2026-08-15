@@ -1,0 +1,81 @@
+{
+  "slug": "mantis-controlled-sector",
+
+  "lede": "The sector that comes at you through the airlock. Six to seven hostile beacons and another one to two that are boarding parties — and the boarding list holds only two events, one of which, {{MANTIS_BOARDERS}}, is listed twice and offers **no choice at all**: two to four Mantis are simply aboard. There is no quest allocation of any kind here; the two quests that do start are buried in the hostile and distress pools.",
+
+  "stats": [
+    { "metric": "beacons_min..beacons_max", "label": "Beacon spread" },
+    { "metric": "section:hostile:min..section:hostile:max", "label": "Guaranteed fights" },
+    { "metric": "entry:BOARDERS_MANTIS:min..entry:BOARDERS_MANTIS:max", "label": "Boarding beacons" },
+    { "metric": "entry:STORE_MANTIS:min..entry:STORE_MANTIS:max", "label": "Stores" },
+    { "metric": "distinct_events", "label": "Events in pool" }
+  ],
+
+  "callout": "**Versus the Mantis Homeworlds:** identical, entry for entry — the same seven lists at the same minimums and the same maximums. The Homeworlds add exactly one thing, the guaranteed `MANTIS_NAMED_THIEF` beacon and the ship unlock behind it. This sector is that sector with the named quest cut out.",
+
+  "section_notes": {
+    "HOSTILE_MANTIS": "Only three of these are Mantis ships. The rest is a Rebel warship and two automated scouts — and {{AUTO_WARNING}} is the one with a consequence past the fight: let it charge its FTL and jump, and it reports your position to the fleet.",
+    "BOARDERS_MANTIS": "Two events, both of which start with hostiles already on your deck — no hail, no choice, no chance to run. {{BOARDERS_SUN}} stacks a star on top: two to four humans to clear while the hull cooks.",
+    "NEUTRAL_MANTIS": "Neutral only in the sense of deferred. Five of the six can end in combat, and two of them — {{MANTIS_CREW}} and {{ALISON_MANTIS_CREW}} — put a Mantis inside your ship before you get a say.",
+    "DISTRESS_BEACON_MANTIS": "Three of the four events in the whole sector that can kill a crew member sit in this one list. It is also where the sector's second quest hides: {{ESCORT_BEACON}}."
+  },
+
+  "chain": {
+    "title": "Mantis ship-collectors",
+    "steps": [
+      {
+        "marker": "1",
+        "title": "{{DONOR_MANTIS_CHASE}}",
+        "detail": "\"Your ship would make a mighty fine prize.\" A Mantis Fighter, straight into combat with no screen to read. The chain only exists if it survives long enough to run.",
+        "ref": "DONOR_MANTIS_CHASE1 · Mantis Fighter"
+      },
+      {
+        "marker": "2",
+        "title": "They forget to mask the jump",
+        "detail": "Beaten but not dead, they FTL out and leave a readable signature. **After them!** plants the marker; **Forget it** ends the chain right there.",
+        "ref": "gotaway → quest DONOR_MANTIS_CHASE2"
+      },
+      {
+        "marker": "✓",
+        "title": "The rematch, in a bigger ship",
+        "detail": "The same crew, now in a Mantis Bomber. Every ending in your favour pays a weapon — destroyed and cleared both drop a random one, and if they surrender, letting them live is the largest weapon reward of the three.",
+        "ref": "DONOR_MANTIS_CHASE2 · Mantis Bomber"
+      }
+    ]
+  },
+
+  "panels": [
+    {
+      "title": "What can bite",
+      "items": [
+        { "lead": "Boarders", "text": "{{MANTIS_BOARDERS}} is a derelict that beams its survivors across — two to four Mantis, no decision offered. It is the only event listed twice in a two-event pool that must fill one to two beacons." },
+        { "lead": "Boarders + sun", "text": "{{BOARDERS_SUN}} is the other half of that pool: two to four human pirates aboard, fought inside a solar flare, with fires starting behind you." },
+        { "lead": "Crew", "text": "Four events can kill a crew member. {{MANTIS_CREW}} does it fastest — one of three outcomes has the Mantis inside cut the nearest person in half and then fight on as a boarder." },
+        { "lead": "Traps", "text": "Both halves of {{ALISON_MANTIS_CREW}} can turn. Siding with the fugitive can cost 3 hull and two systems before the Engi ship even fires; selling him out can spring a Mantis on your deck instead." },
+        { "lead": "Distress", "text": "The distress pool is where the crew dies: giant spiders, a station fire and a quarantine riot each have an outcome that takes someone off the roster." },
+        { "lead": "Fleet", "text": "If {{AUTO_WARNING}} completes its jump rather than dying, the Rebel fleet learns where you are — the only beacon here whose failure follows you into the next sector." }
+      ]
+    },
+    {
+      "title": "Blue options that pay here",
+      "items": [
+        { "lead": "Cloaking", "text": "The most useful thing to own in this sector. It skips the fight outright at {{MANTIS_FIGHT_CHOICE}}, and grades the payout three ways at {{DISTRESS_SATELLITE_DEFENSE}} — level 1 is a poor deal, level 3 the best on offer." },
+        { "lead": "No Mantis gate", "text": "The sector named after them contains **not one blue option that asks for Mantis crew**. The only species gates in the pool are Rockman and Engi." },
+        { "lead": "Rockman / Engi", "text": "Both land on the station distress calls: a Rock walks into the fire at {{DISTRESS_STATION_FIRE}} and is paid in an augment, and either a Rock or an Engi settles the riot at {{DISTRESS_STATION_DISEASE}} with nobody exposed." },
+        { "lead": "Anti-bio kit", "text": "{{DISTRESS_INFESTATION}} has three separate outs. The Anti-Bio Beam is the clean one — best payout, nothing spent; the Anti-Personnel and Boarding drones each burn a drone part." },
+        { "lead": "Adv. FTL Navigation", "text": "Turns {{ESCORT_BEACON}} from an escort job into an upload: a high reward on the spot, and no quest beacon to fly to." },
+        { "lead": "Weapon types", "text": "An ion weapon is the free win at {{DISTRESS_SATELLITE_DEFENSE}}; a beam or combat beam drone opens {{DISTRESS_TRAPPED_MINER}}; missiles open {{HELP_MINERS}}." }
+      ]
+    },
+    {
+      "title": "What you can leave with",
+      "items": [
+        { "lead": "Nothing named", "text": "**No named augment, weapon or drone exists anywhere in this pool.** Every payout is a generic reward tier, which makes the store the only place your loadout actually changes." },
+        { "lead": "Crew", "text": "Sixteen events can end with someone joining, but only two name a species — {{MANTIS_CREW}} and {{ALISON_MANTIS_CREW}} both hand over a Mantis, and the escape pod can instead hold a human survivor of Mantis captivity." },
+        { "lead": "Crew", "text": "{{DISTRESS_STATION_FIRE}} pays a scientist if you dock and cut in, at a cost of 3 hull and a random system. {{TAVERN_HIRE}} is the reliable version of the same idea." },
+        { "lead": "Repairs", "text": "{{MANTIS_CIVILIAN}} is the one place a saved civilian pays back in kind: 5 hull repaired, a free weapon installed, or a crew member, depending on who you rescued." },
+        { "lead": "The best gated payouts", "text": "An augment from the Rock at the fire, a weapon from Engi Med-bot Dispersal at the disease colony, a drone from a Repair drone at the fire. All three need the kit before you arrive." }
+      ]
+    }
+  ]
+}

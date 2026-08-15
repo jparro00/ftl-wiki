@@ -6,7 +6,7 @@ sectors: [[[sector-slug-controlled-nebula]], [[sector-slug-home-nebula]]]
 beacon_type: nebula
 hostile: false
 blue_options: ["medbay level 2", clonebay]
-chain: []
+chain: [[[chain-secret-word-abadoth]]]
 version: both
 first_seen: 2026-08-09
 last_updated: 2026-08-09
@@ -80,6 +80,7 @@ default — the data does not specify one ([[source-events-slug]]).
 - Clone Bay ships get the crew member for free at level 1; there is no reason to pass.
 
 ## Related
+- [[chain-secret-word-abadoth]] — the full quest line this belongs to
 - [[event-nebula-wreckage]] — the parent, both routes into this event
 - [[event-secret-word-abadoth]] — where choice 1's quest marker leads
 - [[sector-slug-controlled-nebula]], [[sector-slug-home-nebula]] — where the parent appears

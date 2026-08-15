@@ -121,7 +121,7 @@ None at any step. Neither Rock crew, nor Sensors, nor any augment opens an extra
 - [[chain-rock-bride]] — the two-step chain this begins
 - [[event-rock-atheists]] — the other free-Rockman source in Rock space
 - [[entity-rock-men]], [[item-rock-crew]]
-- [[concept-quest-markers]] — how `<quest event="…"/>` places a beacon
+- [[concept-quest-beacon-placement]] — how `<quest event="…"/>` places a beacon
 - [[event-rock-quest-marriage]] — step 2, the Numa V quest beacon (`ROCK_QUEST_MARRIAGE`)
 
 ## Open Questions

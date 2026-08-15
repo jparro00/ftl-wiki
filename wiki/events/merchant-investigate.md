@@ -119,6 +119,7 @@ unavoidable**. The ship definition has **no `<surrender>` and no `<escape>`**
   [[event-merchant-investigate-deliver]].
 
 ## Related
+- [[chain-merchant-s-request]] — the full quest line this belongs to
 - [[event-merchant-s-request]] — the quest start
 - [[event-merchant-investigate-deliver]] — the follow-on marker
 - [[event-merchant-deliver]] — the other errand from the same start

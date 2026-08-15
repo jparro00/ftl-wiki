@@ -10,7 +10,7 @@ chain: []
 version: both
 first_seen: 2026-08-09
 last_updated: 2026-08-09
-sources: 5
+sources: 8
 tags: [plasma-storm, rebel, auto-ship, blue-option, engines, cloaking, optional-fight, unique]
 ---
 

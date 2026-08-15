@@ -134,7 +134,7 @@ the Clone Bay to revive them. Sheepish and apologetic, they rejoin the crew."*
 ## Related
 - [[event-disabled-rock-ship]] — the other `NEUTRAL_ROCK` salvage-vs-risk beacon
 - [[item-engines]], [[item-beam-drone]], [[item-missile-weapon]], [[item-clone-bay]]
-- [[concept-crew-loss-risk]], [[concept-auto-rewards]]
+- [[concept-crew-loss-risk]], [[concept-autoreward-tiers]]
 
 ## Open Questions
 - [ ] Which weapons are in the `WEAPONS_MISSILES` list and which drones are in

@@ -1,0 +1,213 @@
+<!--
+  FTL sector profile — shared shell.
+
+  Layout, colour and type for every sector page. Holds no sector-specific content:
+  build-sector.py replaces the <title> line and the SECTOR-CONTENT marker below.
+  Editing this file changes all 19 pages, which is the point — see tools/SECTOR-PAGE.md §8.
+-->
+<title>Abandoned Sector — sector profile</title>
+<style>
+  :root {
+    --void:   #070B10;
+    --panel:  #101822;
+    --sunk:   #0B1219;
+    --edge:   #1F2E3C;
+    --ink:    #D6E2EC;
+    --dim:    #7C8FA3;
+    --faint:  #55697C;
+    --cyan:   #5FD3E8;
+    --green:  #78C46B;
+    --amber:  #E8B84B;
+    --red:    #E0685C;
+    --rail:   #22384A;
+    --hex:    rgba(95,211,232,.035);
+    --barlo:  rgba(95,211,232,.22);
+    --barred: rgba(224,104,92,.28);
+
+    --sans: ui-sans-serif, system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+  }
+  @media (prefers-color-scheme: light) {
+    :root {
+      --void: #EEF1F4; --panel: #FFFFFF; --sunk: #F5F7F9; --edge: #D3DBE2;
+      --ink: #14202B; --dim: #5B6C7B; --faint: #7A8895; --cyan: #12708A;
+      --green: #3B7A31; --amber: #8A6606; --red: #AF3B2E; --rail: #C2CDD6;
+      --hex: rgba(18,112,138,.045); --barlo: rgba(18,112,138,.18);
+      --barred: rgba(175,59,46,.22);
+    }
+  }
+  :root[data-theme="dark"] {
+    --void: #070B10; --panel: #101822; --sunk: #0B1219; --edge: #1F2E3C;
+    --ink: #D6E2EC; --dim: #7C8FA3; --faint: #55697C; --cyan: #5FD3E8;
+    --green: #78C46B; --amber: #E8B84B; --red: #E0685C; --rail: #22384A;
+    --hex: rgba(95,211,232,.035); --barlo: rgba(95,211,232,.22);
+    --barred: rgba(224,104,92,.28);
+  }
+  :root[data-theme="light"] {
+    --void: #EEF1F4; --panel: #FFFFFF; --sunk: #F5F7F9; --edge: #D3DBE2;
+    --ink: #14202B; --dim: #5B6C7B; --faint: #7A8895; --cyan: #12708A;
+    --green: #3B7A31; --amber: #8A6606; --red: #AF3B2E; --rail: #C2CDD6;
+    --hex: rgba(18,112,138,.045); --barlo: rgba(18,112,138,.18);
+    --barred: rgba(175,59,46,.22);
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; padding: 2.6rem 1.15rem 4.5rem;
+    background: var(--void);
+    background-image: radial-gradient(var(--hex) 1px, transparent 1.6px);
+    background-size: 22px 22px;
+    color: var(--ink); font-family: var(--sans); line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 58rem; margin: 0 auto; display: flex; flex-direction: column; gap: 2.1rem; }
+
+  .eyebrow {
+    font-family: var(--mono); font-size: .66rem; letter-spacing: .19em;
+    text-transform: uppercase; color: var(--cyan); margin: 0 0 .55rem;
+  }
+  h1 { font-size: 2.05rem; font-weight: 600; letter-spacing: -.02em; margin: 0 0 .7rem; text-wrap: balance; }
+  .lede { margin: 0 0 1rem; max-width: 42rem; color: var(--dim); font-size: .95rem; }
+  .lede strong { color: var(--ink); font-weight: 600; }
+  .facts { display: flex; flex-wrap: wrap; gap: .4rem; }
+  .fact {
+    font-family: var(--mono); font-size: .68rem; letter-spacing: .06em;
+    color: var(--dim); border: 1px solid var(--edge); border-radius: 2px;
+    padding: .22rem .5rem; background: var(--panel);
+  }
+  .fact b { color: var(--ink); font-weight: 600; }
+
+  .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(9.2rem, 1fr)); gap: .55rem; }
+  .stat {
+    background: var(--panel); border: 1px solid var(--edge); border-radius: 3px;
+    padding: .75rem .8rem; display: flex; flex-direction: column; gap: .15rem;
+  }
+  .stat .n {
+    font-family: var(--mono); font-size: 1.5rem; font-weight: 600;
+    font-variant-numeric: tabular-nums; letter-spacing: -.02em; line-height: 1.1; color: var(--cyan);
+  }
+  .stat .k {
+    font-family: var(--mono); font-size: .62rem; letter-spacing: .14em;
+    text-transform: uppercase; color: var(--faint);
+  }
+
+  section { display: flex; flex-direction: column; gap: .8rem; }
+  h2 {
+    font-size: .74rem; font-family: var(--mono); font-weight: 600;
+    letter-spacing: .17em; text-transform: uppercase; color: var(--cyan);
+    margin: 0; padding-bottom: .45rem; border-bottom: 1px solid var(--edge);
+    display: flex; justify-content: space-between; align-items: baseline; gap: 1rem;
+  }
+  h2 .meta { color: var(--faint); font-weight: 400; letter-spacing: .08em; text-transform: none; flex: none; }
+  .note { margin: 0; font-size: .84rem; color: var(--dim); max-width: 44rem; }
+
+  .budget { display: flex; flex-direction: column; gap: .3rem; }
+  .brow {
+    display: grid; grid-template-columns: 14rem 3.4rem 1fr; align-items: center;
+    gap: .7rem; padding: .34rem .55rem; border-radius: 2px; background: var(--panel);
+    border: 1px solid var(--edge);
+  }
+  .brow .name { font-family: var(--mono); font-size: .74rem; color: var(--ink); overflow-wrap: anywhere; }
+  .brow .cnt {
+    font-family: var(--mono); font-size: .74rem; color: var(--dim);
+    font-variant-numeric: tabular-nums; text-align: right;
+  }
+  .track { display: flex; align-items: center; gap: 2px; height: .62rem; flex-wrap: wrap; }
+  .blk { width: .62rem; height: .62rem; background: var(--cyan); border-radius: 1px; flex: none; }
+  .blk.maybe { background: var(--barlo); }
+  .brow.hostile .blk { background: var(--red); }
+  .brow.hostile .blk.maybe { background: var(--barred); }
+  .brow.zero .cnt { color: var(--faint); }
+
+  .pool { display: grid; grid-template-columns: repeat(auto-fill, minmax(16.5rem, 1fr)); gap: .4rem; }
+  .ev {
+    background: var(--panel); border: 1px solid var(--edge); border-left: 2px solid var(--rail);
+    border-radius: 2px; padding: .48rem .6rem; display: flex; flex-direction: column; gap: .22rem;
+  }
+  .ev.fight { border-left-color: var(--red); }
+  .ev.may { border-left-color: var(--barred); }
+  .ev.good { border-left-color: var(--green); }
+  .ev.risk { border-left-color: var(--amber); }
+  .ev .t { font-size: .84rem; font-weight: 500; line-height: 1.25; }
+  .ev .id { font-family: var(--mono); font-size: .63rem; color: var(--faint); letter-spacing: .03em; overflow-wrap: anywhere; }
+  .tags { display: flex; flex-wrap: wrap; gap: .25rem; margin-top: .1rem; }
+  .tg {
+    font-family: var(--mono); font-size: .57rem; letter-spacing: .1em; text-transform: uppercase;
+    padding: .08rem .3rem; border-radius: 2px; border: 1px solid currentColor; color: var(--faint);
+  }
+  .tg.fight, .tg.may-fight { color: var(--red); }
+  .tg.crew, .tg.reward { color: var(--green); }
+  .tg.crew-loss, .tg.boarders, .tg.cost { color: var(--amber); }
+  .tg.quest, .tg.store { color: var(--cyan); }
+
+  .delta {
+    border: 1px dashed var(--edge); border-radius: 2px; background: var(--sunk);
+    padding: .6rem .75rem; display: flex; flex-direction: column; gap: .5rem;
+  }
+  .delta .head {
+    font-family: var(--mono); font-size: .62rem; letter-spacing: .12em;
+    text-transform: uppercase; color: var(--amber);
+  }
+
+  .cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr)); gap: .9rem; align-items: start; }
+  .panel {
+    background: var(--panel); border: 1px solid var(--edge); border-radius: 3px;
+    padding: .9rem 1rem 1rem; display: flex; flex-direction: column; gap: .55rem;
+  }
+  .panel h3 {
+    margin: 0; font-family: var(--mono); font-size: .66rem; letter-spacing: .15em;
+    text-transform: uppercase; color: var(--dim); font-weight: 600;
+  }
+  .panel ul { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: .45rem; }
+  .panel li { font-size: .82rem; line-height: 1.42; display: flex; gap: .5rem; align-items: baseline; }
+  .lead {
+    font-family: var(--mono); font-size: .72rem; color: var(--cyan); flex: none;
+    min-width: 4.6rem; font-variant-numeric: tabular-nums;
+  }
+
+  .rar { display: flex; flex-direction: column; gap: .3rem; }
+  .rrow { display: grid; grid-template-columns: 5.2rem 1fr 3rem; gap: .55rem; align-items: center; font-size: .8rem; }
+  .pips { display: flex; gap: 2px; }
+  .pip { width: .52rem; height: .52rem; border-radius: 50%; background: var(--cyan); flex: none; }
+  .pip.off { background: var(--rail); }
+  .rrow .v { font-family: var(--mono); font-size: .68rem; color: var(--dim); text-align: right; }
+  .rrow.zero .v { color: var(--red); }
+
+  .chain { display: flex; flex-direction: column; gap: 0; }
+  .step { display: grid; grid-template-columns: 1.6rem 1fr; gap: .7rem; }
+  .marker { display: flex; flex-direction: column; align-items: center; }
+  .dot {
+    width: 1.35rem; height: 1.35rem; border-radius: 50%; flex: none;
+    border: 1px solid var(--cyan); color: var(--cyan); background: var(--panel);
+    font-family: var(--mono); font-size: .68rem; display: flex; align-items: center; justify-content: center;
+    font-variant-numeric: tabular-nums;
+  }
+  .step .line { width: 1px; flex: 1; background: var(--rail); min-height: .6rem; }
+  .step .body { padding-bottom: .95rem; }
+  .step .body .t { font-size: .88rem; font-weight: 500; }
+  .step .body .d { font-size: .81rem; color: var(--dim); margin-top: .15rem; }
+  .step .body .id { font-family: var(--mono); font-size: .63rem; color: var(--faint); margin-top: .12rem; }
+  .step.end .dot { border-color: var(--green); color: var(--green); }
+
+  .callout {
+    border: 1px solid var(--edge); border-left: 2px solid var(--amber);
+    background: var(--sunk); border-radius: 2px; padding: .7rem .9rem;
+    font-size: .84rem; color: var(--dim);
+  }
+  .callout b { color: var(--ink); font-weight: 600; }
+  .ref { color: var(--ink); font-weight: 500; }
+  code { font-family: var(--mono); font-size: .92em; color: var(--ink); }
+  footer {
+    border-top: 1px solid var(--edge); padding-top: .8rem;
+    font-family: var(--mono); font-size: .66rem; color: var(--faint); line-height: 1.8;
+  }
+  footer p { margin: 0; }
+  @media (max-width: 34rem) {
+    .brow { grid-template-columns: 1fr 3.4rem; }
+    .brow .track { grid-column: 1 / -1; }
+  }
+</style>
+
+<div class="wrap">
+<header><p class="eyebrow">Sector profile · LANIUS_SECTOR</p><h1>Abandoned Sector</h1><p class="lede">The only sector in the game that allocates a hazard pool of its own: <code>HOSTILE_ENVIRONMENT_LANIUS</code> puts one to two of your beacons inside an asteroid field, next to a pulsar, or under a planetary Anti-Ship Battery — and that last one is firing at the Lanius, not at you. The Lanius want <strong>metal</strong>, not your ship, so most of what looks neutral here is a negotiation that a bad roll turns into a fight. The prize for talking instead of shooting is the crew nobody else stocks: a Lanius drains the air out of the room it stands in the same way a hull breach does, which is free labour behind good doors and a slow leak everywhere else.</p><div class="facts"><span class="fact">minSector <b>1</b></span><span class="fact"><b>can repeat in a run</b></span><span class="fact">entry beacon <b>START_BEACON_LANIUS</b></span><span class="fact">tracks <b>shrike · deepspace · wasteland</b></span><span class="fact"><b>Advanced Edition data</b></span></div></header><div class="stats"><div class="stat"><div class="n">18–27</div><div class="k">Beacon spread</div></div><div class="stat"><div class="n">6–8</div><div class="k">Guaranteed fights</div></div><div class="stat"><div class="n">2–4</div><div class="k">Item beacons</div></div><div class="stat"><div class="n">18</div><div class="k">Events with blue options</div></div><div class="stat"><div class="n">43</div><div class="k">Events in pool</div></div></div><section><h2>Beacon budget<span class="meta">what the sector is required to place</span></h2><div class="budget"><div class="brow hostile"><div class="name">HOSTILE_ENVIRONMENT_LANIUS</div><div class="cnt">1–2</div><div class="track"><i class="blk"></i><i class="blk maybe"></i></div></div><div class="brow hostile"><div class="name">HOSTILE_LANIUS</div><div class="cnt">5–6</div><div class="track"><i class="blk"></i><i class="blk"></i><i class="blk"></i><i class="blk"></i><i class="blk"></i><i class="blk maybe"></i></div></div><div class="brow hostile"><div class="name">BOARDERS_LANIUS</div><div class="cnt">1–2</div><div class="track"><i class="blk"></i><i class="blk maybe"></i></div></div><div class="brow"><div class="name">NEUTRAL_LANIUS</div><div class="cnt">5–6</div><div class="track"><i class="blk"></i><i class="blk"></i><i class="blk"></i><i class="blk"></i><i class="blk"></i><i class="blk maybe"></i></div></div><div class="brow"><div class="name">DISTRESS_BEACON_LANIUS</div><div class="cnt">1–2</div><div class="track"><i class="blk"></i><i class="blk maybe"></i></div></div><div class="brow"><div class="name">ITEM_LANIUS</div><div class="cnt">2–4</div><div class="track"><i class="blk"></i><i class="blk"></i><i class="blk maybe"></i><i class="blk maybe"></i></div></div><div class="brow"><div class="name">STORE_LANIUS</div><div class="cnt">2</div><div class="track"><i class="blk"></i><i class="blk"></i></div></div><div class="brow"><div class="name">QUESTS_LANIUS</div><div class="cnt">0–1</div><div class="track"><i class="blk maybe"></i></div></div><div class="brow"><div class="name">NOTHING_LANIUS</div><div class="cnt">1–2</div><div class="track"><i class="blk"></i><i class="blk maybe"></i></div></div></div><p class="note">Solid blocks are the minimum the sector must place; faded blocks are the optional extra.</p><p class="note">Entry beacon is always START_BEACON_LANIUS.</p><div class="callout"><strong>Nothing is guaranteed here except the fighting.</strong> Stores are pinned at exactly two with no variance, the quest entry is allocated 0–1 so a run can cross the whole sector and never see one, and no ship unlocks here. Only the Engi sectors place more item beacons than this one.</div></section><section><h2>Hostile<span class="meta">HOSTILE_ENVIRONMENT_LANIUS · 1–2 beacons · combat unless the row says otherwise</span></h2><div class="pool"><div class="ev fight"><div class="t">Lanius fight in asteroid field</div><div class="id">LANIUS_FIGHT_ASTEROID</div><div class="tags"><span class="tg fight">Fight</span><span class="tg crew">Crew</span><span class="tg unique">Unique</span></div></div><div class="ev fight"><div class="t">Lanius fight near pulsar</div><div class="id">LANIUS_FIGHT_PULSAR</div><div class="tags"><span class="tg fight">Fight</span><span class="tg crew">Crew</span><span class="tg unique">Unique</span></div></div><div class="ev fight"><div class="t">Lanius fight with friendly ASB support</div><div class="id">LANIUS_NOBOARDERS_PDS</div><div class="tags"><span class="tg fight">Fight</span><span class="tg unique">Unique</span></div></div></div><p class="note">The list no other sector carries — and it is hazards, not oxygen: an asteroid field, a pulsar, and at <span class="ref">Lanius fight with friendly ASB support</span> an Anti-Ship Battery pointed at the enemy for once, which can repair 8 hull when the shooting stops.</p></section><section><h2>Hostile<span class="meta">HOSTILE_LANIUS · 5–6 beacons · combat unless the row says otherwise</span></h2><div class="pool"><div class="ev fight"><div class="t">Lanius fight</div><div class="id">LANIUS_FIGHT</div><div class="tags"><span class="tg fight">Fight</span><span class="tg crew">Crew</span></div></div><div class="ev fight"><div class="t">Rebel fight (Lanius)</div><div class="id">LANIUS_REBEL_FIGHT</div><div class="tags"><span class="tg fight">Fight</span><span class="tg crew">Crew</span></div></div><div class="ev fight"><div class="t">Pirate fight (Lanius)</div><div class="id">LANIUS_PIRATE_FIGHT</div><div class="tags"><span class="tg fight">Fight</span><span class="tg crew">Crew</span></div></div><div class="ev may"><div class="t">Lanius ship in rich debris field</div><div class="id">LANIUS_HARVESTER</div><div class="tags"><span class="tg may-fight">May fight</span><span class="tg unique">Unique</span></div></div><div class="ev fight"><div class="t">Rebel fight</div><div class="id">REBEL</div><div class="tags"><span class="tg fight">Fight</span><span class="tg crew">Crew</span></div></div><div class="ev fight"><div class="t">Auto-ship fight</div><div class="id">REBEL_AUTO</div><div class="tags"><span class="tg fight">Fight</span><span class="tg crew">Crew</span></div></div></div><p class="note">Only <span class="ref">Lanius fight</span> and <span class="ref">Lanius ship in rich debris field</span> put you against a Lanius hull; the other four are the Rebel, pirate and auto-ship fights you would meet in any sector. <span class="ref">Lanius ship in rich debris field</span> is only a fight if you choose to make it one.</p></section><section><h2>Boarders<span class="meta">BOARDERS_LANIUS · 1–2 beacons · something comes aboard</span></h2><div class="pool"><div class="ev risk"><div class="t">Boarders: Humans (Abandoned)</div><div class="id">LANIUS_PIRATE_BOARDERS</div><div class="tags"><span class="tg boarders">Boarders</span></div></div></div><p class="note">One event, and the boarders are not Lanius — three to four starving humans off a ship the Lanius already ate the engines out of.</p></section><section><h2>Neutral<span class="meta">NEUTRAL_LANIUS · 5–6 beacons · a choice, sometimes a fight</span></h2><div class="pool"><div class="ev may"><div class="t">Lanius ship attacking civilian</div><div class="id">LANIUS_CIVILIAN</div><div class="tags"><span class="tg may-fight">May fight</span><span class="tg crew">Crew</span><span class="tg unique">Unique</span></div></div><div class="ev may"><div class="t">Pirate ship attacking civilian (Lanius)</div><div class="id">LANIUS_PIRATE_CIVILIAN</div><div class="tags"><span class="tg may-fight">May fight</span><span class="tg crew">Crew</span></div></div><div class="ev may"><div class="t">Lanius ship salvager</div><div class="id">LANIUS_SOLO_SALVAGE</div><div class="tags"><span class="tg may-fight">May fight</span><span class="tg crew">Crew</span></div></div><div class="ev may"><div class="t">Lanius lone ship</div><div class="id">LANIUS_SCARED_CIVILIAN</div><div class="tags"><span class="tg may-fight">May fight</span><span class="tg crew">Crew</span><span class="tg store">Store</span></div></div><div class="ev may"><div class="t">Lanius ship absorbing automated scout</div><div class="id">LANIUS_AUTO_REBEL</div><div class="tags"><span class="tg may-fight">May fight</span><span class="tg unique">Unique</span></div></div><div class="ev may"><div class="t">Lanius ship absorbing rebel base</div><div class="id">LANIUS_GROUP_AUTO</div><div class="tags"><span class="tg may-fight">May fight</span><span class="tg crew">Crew</span><span class="tg unique">Unique</span></div></div><div class="ev may"><div class="t">Lanius ship absorbing jump beacon</div><div class="id">LANIUS_BEACON_EATER</div><div class="tags"><span class="tg may-fight">May fight</span><span class="tg crew">Crew</span><span class="tg cost">Cost</span></div></div><div class="ev may"><div class="t">Lanius powered-down ship</div><div class="id">LANIUS_DORMANT_EVENT</div><div class="tags"><span class="tg may-fight">May fight</span><span class="tg crew">Crew</span><span class="tg unique">Unique</span></div></div><div class="ev may"><div class="t">Refueling platform garbled broadcast</div><div class="id">LANIUS_FUELING_STATION</div><div class="tags"><span class="tg may-fight">May fight</span><span class="tg boarders">Boarders</span><span class="tg unique">Unique</span></div></div><div class="ev may"><div class="t">Slaver (friendly)</div><div class="id">FRIENDLY_SLAVER</div><div class="tags"><span class="tg may-fight">May fight</span><span class="tg crew">Crew</span><span class="tg cost">Cost</span></div></div><div class="ev may"><div class="t">Pirate briber</div><div class="id">PIRATE_BRIBER</div><div class="tags"><span class="tg may-fight">May fight</span><span class="tg store">Store</span><span class="tg unique">Unique</span></div></div><div class="ev may"><div class="t">Large asteroid field</div><div class="id">ASTEROID_EXPLORE</div><div class="tags"><span class="tg may-fight">May fight</span><span class="tg crew">Crew</span><span class="tg unique">Unique</span></div></div><div class="ev may"><div class="t">Deactivated Auto-ship</div><div class="id">BROKEN_REBEL_DRONE</div><div class="tags"><span class="tg may-fight">May fight</span><span class="tg crew">Crew</span><span class="tg unique">Unique</span></div></div></div><p class="note">Thirteen events for five or six beacons, and the heart of the sector: five of the nine Lanius-crew options live here, and so do all three paths that push the Rebel fleet back a jump.</p></section><section><h2>Distress<span class="meta">DISTRESS_BEACON_LANIUS · 1–2 beacons · someone is calling for help</span></h2><div class="pool"><div class="ev may"><div class="t">Lanius ship attacking civilian distress</div><div class="id">LANIUS_DISTRESS_FIGHT</div><div class="tags"><span class="tg may-fight">May fight</span><span class="tg crew">Crew</span><span class="tg unique">Unique</span></div></div><div class="ev"><div class="t">Lanius empty distress beacon 1</div><div class="id">LANIUS_DISTRESS_EMPTY</div><div class="tags"><span class="tg unique">Unique</span></div></div><div class="ev"><div class="t">Lanius empty distress beacon 2</div><div class="id">LANIUS_DISTRESS_TOOLATE</div><div class="tags"><span class="tg unique">Unique</span></div></div><div class="ev fight"><div class="t">Lanius fight distress</div><div class="id">LANIUS_DISTRESS_TRAP</div><div class="tags"><span class="tg fight">Fight</span><span class="tg crew">Crew</span><span class="tg unique">Unique</span></div></div><div class="ev may"><div class="t">Lanius ship attacking Slug</div><div class="id">LANIUS_SLUG_DISTRESS</div><div class="tags"><span class="tg may-fight">May fight</span><span class="tg unique">Unique</span></div></div><div class="ev may"><div class="t">Lanius ship attacking Mantis</div><div class="id">LANIUS_MANTIS_DISTRESS</div><div class="tags"><span class="tg may-fight">May fight</span><span class="tg unique">Unique</span></div></div><div class="ev may"><div class="t">Lanius ship attacking Rock</div><div class="id">LANIUS_ROCK_DISTRESS</div><div class="tags"><span class="tg may-fight">May fight</span><span class="tg unique">Unique</span></div></div><div class="ev good"><div class="t">Malfunctioning defense system</div><div class="id">DISTRESS_SATELLITE_DEFENSE</div><div class="tags"><span class="tg reward">Reward</span><span class="tg unique">Unique</span></div></div><div class="ev risk"><div class="t">Fire on research station</div><div class="id">DISTRESS_STATION_FIRE</div><div class="tags"><span class="tg crew-loss">Crew loss</span><span class="tg crew">Crew</span><span class="tg reward">Reward</span></div></div><div class="ev good"><div class="t">Friendly ship out of fuel</div><div class="id">FRIENDLY_BEACON</div><div class="tags"><span class="tg crew">Crew</span><span class="tg reward">Reward</span><span class="tg cost">Cost</span></div></div><div class="ev fight"><div class="t">Pirate ship distress trap</div><div class="id">TRAP_BEACON</div><div class="tags"><span class="tg fight">Fight</span><span class="tg crew">Crew</span><span class="tg unique">Unique</span></div></div><div class="ev risk"><div class="t">Single life form on moon</div><div class="id">STRANDED_BEACON</div><div class="tags"><span class="tg crew-loss">Crew loss</span><span class="tg crew">Crew</span><span class="tg reward">Reward</span></div></div></div><p class="note">Twelve events competing for one or two beacons, so most of this pool never runs. Two of them — <span class="ref">Lanius empty distress beacon 1</span> and <span class="ref">Lanius empty distress beacon 2</span> — are flavour with no choice at all, and both of the sector&#x27;s crew-killers are in here.</p></section><section><h2>Items<span class="meta">ITEM_LANIUS · 2–4 beacons · free kit, trades and stations</span></h2><div class="pool"><div class="ev good"><div class="t">Free scrap with resources (Lanius)</div><div class="id">LANIUS_FREE_STUFF</div><div class="tags"><span class="tg reward">Reward</span><span class="tg unique">Unique</span></div></div><div class="ev good"><div class="t">Lanius trader with translator</div><div class="id">LANIUS_TRADER_TRANSLATOR</div><div class="tags"><span class="tg crew">Crew</span><span class="tg reward">Reward</span><span class="tg cost">Cost</span></div></div><div class="ev good"><div class="t">Lanius trader</div><div class="id">LANIUS_TRADER</div><div class="tags"><span class="tg reward">Reward</span><span class="tg cost">Cost</span><span class="tg unique">Unique</span></div></div><div class="ev"><div class="t">Lanius craftsmen</div><div class="id">LANIUS_RESEARCHER_CRAFT</div><div class="tags"><span class="tg cost">Cost</span><span class="tg unique">Unique</span></div></div><div class="ev good"><div class="t">Lanius with Federation science craft</div><div class="id">LANIUS_RESEARCHER_CONTACT</div><div class="tags"><span class="tg reward">Reward</span><span class="tg unique">Unique</span></div></div></div><p class="note">One free haul at <span class="ref">Free scrap with resources (Lanius)</span>, one gift at <span class="ref">Lanius with Federation science craft</span>, and three beacons that want scrap or resources in exchange for gear. A Lanius aboard improves all three.</p></section><section><h2>Stores<span class="meta">STORE_LANIUS · 2 beacons</span></h2><div class="pool"><div class="ev good"><div class="t">Store (Lanius)</div><div class="id">STORE_LANIUS</div><div class="tags"><span class="tg store">Store</span></div></div></div><p class="note">Two stores, never three — and this is the only sector whose store rarity list names Lanius crew at all.</p></section><section><h2>Quest starts<span class="meta">QUESTS_LANIUS · 0–1 beacons · marks a beacon elsewhere on the map</span></h2><div class="pool"><div class="ev may"><div class="t">Encrypted federation signal</div><div class="id">FEDERATION_PLANET_SIGNAL</div><div class="tags"><span class="tg may-fight">May fight</span><span class="tg boarders">Boarders</span><span class="tg crew">Crew</span></div></div></div><p class="note">Allocated 0–1, so the sector may place no quest beacon whatsoever. When it does, it is Federation business rather than Lanius business.</p></section><section><h2>Empty<span class="meta">NOTHING_LANIUS · 1–2 beacons · flavour text, nothing happens</span></h2><div class="pool"><div class="ev"><div class="t">Empty beacon (Lanius)</div><div class="id">NOTHING_LANIUS</div></div></div><p class="note">One or two beacons that do nothing, which in a sector this dense is a cheap jump rather than a wasted one.</p></section><section><h2>Quest chain<span class="meta">Hidden Federation Base · the only quest that starts here</span></h2><div class="chain"><div class="step"><div class="marker"><div class="dot">1</div><div class="line"></div></div><div class="body"><div class="t"><span class="ref">Encrypted federation signal</span></div><div class="d">An encrypted signal off a planet. Sending an away party rolls five ways: two plant a quest marker, one is a cache of supplies, one is an outpost the Rebels got to first, and one is bait — two to three human boarders and a Rebel ship.</div><div class="id">QUESTS_LANIUS · allocated 0–1</div></div></div><div class="step"><div class="marker"><div class="dot">2</div><div class="line"></div></div><div class="body"><div class="t">A marker appears on another beacon</div><div class="d">Either coordinates for a second hidden base, or a sister outpost under attack — the second one also pays out on the spot before you go anywhere.</div><div class="id">HIDDEN_FEDERATION_BASE_LIST / FEDERATION_BASE_ASSIST</div></div></div><div class="step end"><div class="marker"><div class="dot">✓</div></div><div class="body"><div class="t">Fly to the marker</div><div class="d">The hidden base pays a drone, or supplies and a crew member, or supplies and <strong>35 hull repaired</strong> — or the coordinates turn up nothing, and only Sensors 2–3 or Long-Ranged Scanners find the cache buried under the rock. The outpost under attack is instead a fight against the drone bombarding it.</div><div class="id">HIDDEN_FEDERATION_BASE_LIST · 5 outcomes</div></div></div></div></section><div class="cols"><div class="panel"><h3>Blue options that pay here</h3><ul><li><span class="lead">Lanius ×9</span><span>Five in the neutral pool, three at the item beacons, one distress. They are the difference between <span class="ref">Lanius lone ship</span> opening a store outright and rolling for a fight, and between 45 scrap and 35 for an augment at <span class="ref">Lanius craftsmen</span>.</span></li><li><span class="lead">Piloting ×2</span><span>Level 2 auto-pilots the debris at <span class="ref">Lanius ship in rich debris field</span> and level 3 does it for a bigger haul, no fight either way; level 2 also strips <span class="ref">Lanius powered-down ship</span> without waking the crew inside.</span></li><li><span class="lead">Sensors ×3</span><span>Level 2 or 3 finds the fuel and drone parts left behind on the abandoned platform at <span class="ref">Refueling platform garbled broadcast</span>, level 3 also opens <span class="ref">Deactivated Auto-ship</span>, and either level salvages the dead-end roll on the <span class="ref">Encrypted federation signal</span> chain.</span></li><li><span class="lead">Blast Doors ×1</span><span>Door System 2 turns the <span class="ref">Refueling platform garbled broadcast</span> ambush into 5 fuel and no boarders at all.</span></li><li><span class="lead">Hull Repair Drone ×1</span><span>The one branch at <span class="ref">Lanius ship absorbing jump beacon</span> that ends with a Lanius joining you instead of scrap leaving you.</span></li><li><span class="lead">Everything else ×1 each</span><span>Cloaking, Medbay, Clone Bay, an ion weapon, Slug, Rockman, Engi, a Crew Teleporter, Long-Ranged Scanners, a Scrap Recovery Arm and a System Repair Drone each appear on exactly one event.</span></li></ul></div><div class="panel"><h3>What you can leave with</h3><ul><li><span class="lead">Gear</span><span><span class="ref">Lanius craftsmen</span> is a forge: 45 scrap for an augment, 50 for a weapon, 40 for a drone schematic — 35/40/30 with a Lanius helping. It is the sector&#x27;s only named-item source.</span></li><li><span class="lead">Augment</span><span><span class="ref">Lanius ship absorbing jump beacon</span> trades a random augment for 30 scrap, or — with a Lanius aboard — for 6 missiles or 6 drone parts instead.</span></li><li><span class="lead">Crew</span><span>Two ways to buy a Lanius outside a store: 40 scrap for the &quot;translation device&quot; at <span class="ref">Lanius trader with translator</span>, or the drone option at <span class="ref">Lanius ship absorbing jump beacon</span>.</span></li><li><span class="lead">Scrap</span><span>Both traders swap 3–7 of a resource for 15–50 scrap; the Lanius option at <span class="ref">Lanius trader</span> lifts both ends of every band.</span></li><li><span class="lead">Fuel</span><span><span class="ref">Refueling platform garbled broadcast</span> is the fuel beacon — 3–5 for taking the station, a flat 5 behind Blast Doors, and 1–3 more on top with Sensors.</span></li><li><span class="lead">Hull</span><span><span class="ref">Lanius fight with friendly ASB support</span> can hand back 8 hull once the battery finishes the job, and the quest chain can repair 35.</span></li></ul></div><div class="panel"><h3>What can bite</h3><ul><li><span class="lead">Crew</span><span>Only two events in the whole pool can kill a crew member — <span class="ref">Fire on research station</span> and <span class="ref">Single life form on moon</span> — and neither of them is a Lanius event. The Lanius take metal, not people.</span></li><li><span class="lead">Boarders</span><span>Three events put someone aboard: 3–4 humans at <span class="ref">Boarders: Humans (Abandoned)</span>, 2–3 at <span class="ref">Encrypted federation signal</span>, and one Lanius at <span class="ref">Refueling platform garbled broadcast</span> that vents every room it walks through while you fight it.</span></li><li><span class="lead">Ambush</span><span>Twenty events can end in combat without starting there. <span class="ref">Lanius powered-down ship</span> wakes up if you scan it, <span class="ref">Lanius ship absorbing jump beacon</span> can chase you as you leave, and <span class="ref">Lanius lone ship</span> goes either way on a roll.</span></li><li><span class="lead">Systems</span><span>Docking at <span class="ref">Refueling platform garbled broadcast</span> can cost 3 damage to Engines before the Lanius ship even shows on sensors.</span></li><li><span class="lead">Fleet delay</span><span>Three events can push the fleet back a jump — <span class="ref">Lanius ship absorbing rebel base</span>, <span class="ref">Lanius ship absorbing automated scout</span> and <span class="ref">Pirate briber</span> — but only the first offers it without a fight, and only reliably with a Lanius to explain the idea.</span></li></ul></div><div class="panel"><h3>Crew in stores</h3><div class="rar"><div class="rrow"><span>Engi</span><span class="pips"><i class="pip"></i><i class="pip"></i><i class="pip"></i><i class="pip off"></i><i class="pip off"></i></span><span class="v">3</span></div><div class="rrow"><span>Mantis</span><span class="pips"><i class="pip"></i><i class="pip"></i><i class="pip"></i><i class="pip off"></i><i class="pip off"></i></span><span class="v">3</span></div><div class="rrow"><span>Zoltan</span><span class="pips"><i class="pip"></i><i class="pip"></i><i class="pip"></i><i class="pip"></i><i class="pip off"></i></span><span class="v">4</span></div><div class="rrow"><span>Slug</span><span class="pips"><i class="pip"></i><i class="pip"></i><i class="pip"></i><i class="pip"></i><i class="pip off"></i></span><span class="v">4</span></div><div class="rrow"><span>Rockman</span><span class="pips"><i class="pip"></i><i class="pip"></i><i class="pip"></i><i class="pip off"></i><i class="pip off"></i></span><span class="v">3</span></div><div class="rrow"><span>Human</span><span class="pips"><i class="pip"></i><i class="pip"></i><i class="pip off"></i><i class="pip off"></i><i class="pip off"></i></span><span class="v">2</span></div><div class="rrow"><span>Lanius</span><span class="pips"><i class="pip"></i><i class="pip"></i><i class="pip off"></i><i class="pip off"></i><i class="pip off"></i></span><span class="v">2</span></div></div><p class="note">Lower number = more common. A crew type at 0 is not sold in this sector&#x27;s stores.</p></div></div><footer><p>Built from sector_data.xml, events*.xml, newEvents.xml, dlcEventsOverwrite.xml.</p><p>&quot;Unique&quot; is the files&#x27; own unique=&quot;true&quot;. Whether that means once per sector or once per run is not stated in any file here; the wiki&#x27;s better bet is once per sector.</p><p>The shipped event lists carry no weights, so no beacon here has stated odds. A pool entry listed twice is counted as ×2 and marked.</p></footer>
+</div>

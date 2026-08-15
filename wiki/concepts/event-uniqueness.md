@@ -88,6 +88,15 @@ one of which is commented out. `dlcEventsOverwrite.xml` carries none.
 > recorded, so the number is flagged rather than overwritten. Worth resolving on the next
 > lint; the likeliest reading is that 206 was an **attribute** count (true + false) taken
 > before a later re-scan, not a count of unique events.
+>
+> **Resolved (lint, 2026-08-13).** Recounted independently with a left-to-right comment
+> scanner over every `.xml` in `raw/gamedata/`: **242** `unique=` attributes exist in total,
+> and they partition without remainder — 216 on `<event>` (194 `true`, 22 `false`), 5 on
+> `<textList>` (all `false`), 21 on `<sectorDescription>` (8 `true`, 13 `false`). The
+> partition closing exactly is what makes 194/216 safe to adopt. Neither 206 nor 195 can be
+> produced from any subset, so both were corrected on [[concept-event-tree-grammar]] rather
+> than reconciled, with the derivation now recorded on both pages. **This is an arithmetic
+> correction only — the sources contradiction above (per sector vs per run) remains open.**
 
 ## Implications For Play
 

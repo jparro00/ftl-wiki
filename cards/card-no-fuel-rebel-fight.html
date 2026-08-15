@@ -456,6 +456,7 @@
     "chance": "1 of {n}",
     "decision": "a choice",
     "ref": "the same table again",
+    "card_ref": "a separate event",
     "sequence": "what happens next"
   },
   "block_labels": {
@@ -812,7 +813,10 @@
     if (node.kind === "chance") return fill(L.chance, { n: (node.options || []).length });
     if (node.kind === "decision") return L.decision || "";
     if (node.kind === "sequence") return L.sequence || "";
-    if (node.kind === "ref") return fill(L.ref, { target: node.target });
+    /* Two different refusals to expand. A plain ref is the recursion guard —
+       the same table, reached again. A ref with a card is a dispatch: a whole
+       event that stands on its own and is not this event's business. */
+    if (node.kind === "ref") return fill(node.card ? L.card_ref : L.ref, { target: node.target });
     return "";
   }
 

@@ -6,7 +6,7 @@ sectors: [[[sector-civilian-sector]], [[sector-engi-controlled-sector]], [[secto
 beacon_type: distress
 hostile: false
 blue_options: [[[item-defense-drone]], [[item-repair-drone]], [[item-teleporter]], [[item-rock-plating]]]
-chain: []
+chain: [[[chain-hidden-federation-base]]]
 version: both
 first_seen: 2026-08-09
 last_updated: 2026-08-09
@@ -157,6 +157,7 @@ Advanced Edition only ([[source-events-xml]]):
 - Choice 2 is never strictly free: half the time it advances the fleet.
 
 ## Related
+- [[chain-hidden-federation-base]] — the full quest line this belongs to
 - [[event-dense-asteroid-field-distress]], [[event-large-asteroid-field]] — the other
   asteroid-field events in this batch
 - [[event-crushed-pirate]] — the other asteroid-belt distress call, with a pirate on the

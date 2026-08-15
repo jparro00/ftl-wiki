@@ -6,11 +6,11 @@ sectors: [[[sector-slug-controlled-nebula]], [[sector-slug-home-nebula]]]
 beacon_type: nebula
 hostile: false
 blue_options: []
-chain: []
+chain: [[[chain-slug-pirate-trap]]]
 version: both
 first_seen: 2026-08-09
 last_updated: 2026-08-09
-sources: 4
+sources: 5
 tags: [unique, nebula, quest-marker, pirate, free-quest]
 ---
 
@@ -100,6 +100,7 @@ i.e. always ([[source-fandom-slug-comm-tapping]]) — the same reading it applie
   save the jump.
 
 ## Related
+- [[chain-slug-pirate-trap]] — the full quest line this belongs to
 - [[event-slug-home-nebula-surrender]] — the other Slug quest marker, and the same
   `chance="0"` reading
 - [[entity-pirates]], [[entity-slugs]]

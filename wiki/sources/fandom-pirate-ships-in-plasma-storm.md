@@ -39,7 +39,7 @@ figure here comes from Fandom.
 - [[event-pirate-ships-in-plasma-storm]]
 
 ## Other Pages Touched
-- [[entity-pirates]], [[concept-plasma-storm]]
+- [[entity-pirates]], [[concept-nebula-mechanics]]
 
 ## Reliability Notes
 `medium`. States no game version. The bracketed numeric ranges (1–3, 3–6, 1–2, 4–8) are

@@ -5,8 +5,8 @@ entity_kind: species
 hostility: varies
 version: ae
 first_seen: 2026-08-09
-last_updated: 2026-08-09
-sources: 6
+last_updated: 2026-08-14
+sources: 11
 tags: [species, faction, crew, oxygen, advanced-edition, scavenger]
 ---
 
@@ -161,10 +161,17 @@ i.e. Lanius crew are mostly a key to Lanius content.
   [[event-lanius-ship-absorbing-automated-scout]]
 - [[entity-federation]] — [[event-lanius-with-federation-science-craft]]
 - [[sector-abandoned-sector]], [[sector-vestigial-definitions]]
+- [[concept-oxygen-and-suffocation]] — their 8%/sec drain among every other O₂ rate
+- [[item-lanius-crew]] — the crew blueprint page
 
 ## Open Questions
 - [ ] Whether the omission of Lanius from the live `SHIPS_PIRATE` list is deliberate.
-- [ ] The rate at which Lanius crew drain oxygen, and whether it scales with crew count.
+- [x] ~~The rate at which Lanius crew drain oxygen, and whether it scales with crew count.~~
+      **Answered 2026-08-14: 8% O₂/sec each — the engine runs anaerobic crew through the same
+      `OxygenSystem::ComputeAirLoss` path as a hull breach, calling them "equivalent"**
+      ([[source-xftl-oxygen-mechanics]]). It **does** scale: that source notes level-3 Oxygen
+      sustains one Lanius room but breaks if two such rooms are connected by an open door,
+      *"since they both vent each other's rooms"*. See [[concept-oxygen-and-suffocation]].
 - [ ] Whether `HOSTILE_ENVIRONMENT_LANIUS` is a hazard category unique to this sector or a
       general mechanism used only here.
 
@@ -175,3 +182,5 @@ i.e. Lanius crew are mostly a key to Lanius content.
 - [[source-dlcpirateblueprints]] (per raw/gamedata/dlcPirateBlueprints.xml)
 - [[source-dlcevents-anaerobic]] (per raw/gamedata/dlcEvents_anaerobic.xml)
 - [[source-sector-data-xml]] (per raw/gamedata/sector_data.xml)
+- [[source-xftl-oxygen-mechanics]] (per raw/modding/2026-08-14-xftl-oxygen-mechanics.txt)
+- [[source-fandom-oxygen]] (per raw/wiki/oxygen.md)

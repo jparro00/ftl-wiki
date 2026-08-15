@@ -10,7 +10,7 @@ chain: []
 version: both
 first_seen: 2026-08-09
 last_updated: 2026-08-09
-sources: 12
+sources: 13
 tags: [unique, filler, blue-option, asteroid-field, fuel-reward-chance, missiles-reward-chance, drone-parts-reward-chance, hull-damage-risk]
 ---
 

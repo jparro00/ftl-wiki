@@ -49,7 +49,7 @@ There is no branch that declines. ([[source-events-xml]], per `raw/gamedata/even
 None.
 
 ## Rewards & Risks
-- **[[ship-stealth-cruiser]]** unlocked (`<unlockShip id="1"/>`). Fandom identifies this as
+- **[[entity-stealth-cruiser]]** unlocked (`<unlockShip id="1"/>`). Fandom identifies this as
   the Stealth Cruiser Layout A, and notes the ship can alternatively be unlocked by winning
   the game with the Rock Cruiser ([[source-fandom-engi-fleet-discussion]]).
 - **[[item-titanium-system-casing]]** (`SYSTEM_CASING`).
@@ -87,7 +87,7 @@ None.
 - [[chain-stealth-cruiser-unlock]] — this is step 4 of 4
 - [[event-engi-unlock-3]] — the fight immediately before this
 - [[event-engi-fleet-discussion]] — where the chain starts
-- [[ship-stealth-cruiser]], [[item-titanium-system-casing]]
+- [[entity-stealth-cruiser]], [[item-titanium-system-casing]]
 - [[entity-engi]]
 
 ## Open Questions

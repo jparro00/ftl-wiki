@@ -10,7 +10,7 @@ chain: []
 version: both
 first_seen: 2026-08-09
 last_updated: 2026-08-09
-sources: 4
+sources: 5
 tags: [out-of-fuel, trading, pirate, boarding-risk, blue-option, derived-odds]
 ---
 

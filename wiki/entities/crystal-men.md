@@ -5,9 +5,9 @@ entity_kind: species
 hostility: varies
 version: both
 first_seen: 2026-08-09
-last_updated: 2026-08-09
-sources: 6
-tags: [species, faction, crew, lockdown, hidden-sector, unlock]
+last_updated: 2026-08-14
+sources: 9
+tags: [species, faction, crew, lockdown, hidden-sector, unlock, oxygen]
 ---
 
 # Crystal Men
@@ -39,6 +39,15 @@ description:
 Four powers — more than any other species. Lockdown is the only power in any crew blueprint
 described as *activated* rather than passive. Note the movement penalty is stated precisely
 (−20%) where [[entity-rock-men]]'s is only "halved".
+
+**"Reduced suffocation damage" = 50%**, per [[source-fandom-oxygen]] — 3.2 HP/sec against the
+standard 6.4. The game files state the power but never the amount. It **stacks with
+[[item-emergency-respirators]]**, taking a Crystal crew member to 25% (1.6 HP/sec) — the lowest
+non-zero suffocation rate available to any crew. Full table:
+[[concept-oxygen-and-suffocation]].
+
+Combined with the 125 max health above, a vented Crystal survives roughly four times as long as
+a standard crew member — though see that page's open question on the unconfirmed base rate.
 
 ### As ships
 
@@ -132,6 +141,7 @@ entry point to the chain that gets you Crystal crew in the first place.
 - [[chain-crystal-cruiser-unlock]] — how you reach them
 - [[item-crystal-vengeance]] — the augment named for them
 - [[sector-hidden-crystal-worlds]]
+- [[concept-oxygen-and-suffocation]] — where their 50% suffocation reduction sits
 
 ## Open Questions
 - [ ] Whether `CRYSTAL_BURST_*` / `CRYSTAL_HEAVY_*` pierce shields — not stated in the
@@ -139,10 +149,13 @@ entry point to the chain that gets you Crystal crew in the first place.
 - [ ] Whether Crystal Men can ever be hired at a store (`rarity` 0, and they are excluded
       from `CREW_RANDOM`).
 - [ ] Why `CRYSTAL_SCOUT` starts at weapon power 4.
-- [ ] What "reduced suffocation damage" is as a number.
+- [x] ~~What "reduced suffocation damage" is as a number.~~ **Answered 2026-08-14: 50%**, i.e.
+      3.2 HP/sec of the standard 6.4 ([[source-fandom-oxygen]]). Community-sourced, not from the
+      game files — see [[concept-oxygen-and-suffocation]] for the caveat on the base rate.
 
 ## Sources
 - [[source-blueprints]] (per raw/gamedata/blueprints.xml)
+- [[source-fandom-oxygen]] (per raw/wiki/oxygen.md)
 - [[source-text-blueprints]] (per raw/gamedata/text_blueprints.xml)
 - [[source-autoblueprints]] (per raw/gamedata/autoBlueprints.xml)
 - [[source-dlcblueprintsoverwrite]] (per raw/gamedata/dlcBlueprintsOverwrite.xml)

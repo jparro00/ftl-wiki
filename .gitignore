@@ -2,6 +2,9 @@
 __pycache__/
 *.py[cod]
 
+# Built mod archives — regenerate with `python tools/build-mod.py --pack`
+mods/*/*.ftl
+
 # OS cruft
 .DS_Store
 Thumbs.db

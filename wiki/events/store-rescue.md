@@ -6,7 +6,7 @@ sectors: []
 beacon_type: quest
 hostile: false
 blue_options: []
-chain: []
+chain: [[[chain-settlement-mercenary-work]]]
 version: both
 first_seen: 2026-08-09
 last_updated: 2026-08-09
@@ -103,6 +103,7 @@ see the *"Rebel scout assaulting a compound"* beacon in a run, it came from
 [[event-settlement-mercenary-work]], not from this event.
 
 ## Related
+- [[chain-settlement-mercenary-work]] — the full quest line this belongs to
 - [[event-quest-store-rescue]] — the destination beacon (reachable; needs its own page)
 - [[event-settlement-mercenary-work]] — `MERCENARY_WORK_START`, the live source of the same
   quest

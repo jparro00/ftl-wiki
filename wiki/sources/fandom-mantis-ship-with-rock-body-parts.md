@@ -38,7 +38,7 @@ in-game label on the ramming option.
 - [[event-mantis-ship-with-rock-body-parts]]
 
 ## Other Pages Touched
-- [[item-rock-plating]], [[item-rock-crew]], [[ship-rock-cruiser]], [[entity-mantis]]
+- [[item-rock-plating]], [[item-rock-crew]], [[entity-rock-cruiser]], [[entity-mantis]]
 
 ## Reliability Notes
 `medium`. No version stated. On the one point where it disagrees with a literal reading of

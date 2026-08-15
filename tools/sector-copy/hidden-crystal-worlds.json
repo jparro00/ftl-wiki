@@ -1,0 +1,77 @@
+{
+  "slug": "hidden-crystal-worlds",
+
+  "lede": "The sector you cannot fly to. Nothing on the map routes here — a Crystal crewmember brings you, and the arrival beacon plants the ship-unlock marker before you have made a single choice. Its floor of 25 beacons is the highest of any sector in the game and its pool is the smallest outside the flagship's, so the map is filled by fighting, a fixed block of twelve neutral beacons, and Crystalline hospitality that keeps turning back into fighting.",
+
+  "stats": [
+    { "metric": "beacons_min..beacons_max", "label": "Beacon spread" },
+    { "metric": "distinct_events", "label": "Events in pool" },
+    { "metric": "section:hostile:min..section:hostile:max", "label": "Guaranteed fights" },
+    { "metric": "entry:NEUTRAL_CRYSTAL:min..entry:NEUTRAL_CRYSTAL:max", "label": "Neutral beacons" },
+    { "metric": "unique_events", "label": "Once-only events" }
+  ],
+
+  "callout": "**The pool is smaller than the map.** Twelve beacons come off a ten-event neutral list where six events are once-only, and six to ten more off a five-event hostile list where three are — leaving four neutral events and two hostile ones to cover everything that repeats. Repetition here is not bad luck, it is arithmetic. And nothing in this sector calls for help: it is the only sector outside the flagship's with no distress list and no quest list at all.",
+
+  "section_notes": {
+    "HOSTILE_CRYSTAL": "Six to ten beacons off five events, three of them once-only, so most of the shooting is {{CRYSTAL_FIGHT}} — which the list names three times — and {{CRYSTAL_REBEL}}. Four of the five will take a surrender; the Rebel auto-scout at {{CRYSTAL_AUTO}} has no crew to offer one.",
+    "BOARDERS_CRYSTAL": "A prison escort rounding up intruders. Two to three Crystalline boarders, no choice offered and nothing to read — they are aboard before the text finishes. Allocated once or twice.",
+    "NEUTRAL_CRYSTAL": "Pinned at exactly twelve — the only allocation in the game with no range at all above single digits. Three of the ten are a third party shooting at a Crystal ship ({{CRYSTAL_REBEL_CRYSTAL}}, {{CRYSTAL_MANTIS_CRYSTAL}}, {{CRYSTAL_PIRATE_CRYSTAL}}), where stepping in can be paid off with a Crystal weapon. {{CRYSTAL_FED_DESERTER}} is the outlier: 15–25 scrap and 1–3 fuel to a Federation ship that ran, in exchange for the map.",
+    "ITEMS_CRYSTAL": "Two beacons off six events, and four of the six are the generic free weapon, free drone, refuelling station and repair station. The two that are actually Crystalline — {{CRYSTAL_CACHE}} and {{CRYSTAL_SCRAP_EXCITED}} — are both once-only, so there is no guarantee either one shows up.",
+    "STORE_CRYSTAL": "Two to three stores, and the only rarity table in the game that carries the Crystal weapons — both Crystal Bursts and both Heavy Crystals (the Lockdown Bomb also turns up in Rock space). The only crew type on sale is Crystal; every other species is set to never.",
+    "NOTHING_CRYSTAL": "Two guaranteed dead beacons. The docked ships scatter and the station itself cloaks rather than deal with an outsider."
+  },
+
+  "chain": {
+    "title": "Crystal Cruiser · the ship at the end of the route",
+    "steps": [
+      {
+        "marker": "1",
+        "title": "{{START_BEACON_CRYSTAL}}",
+        "detail": "\"Here we are, my home sector.\" Your Crystal companion makes good on the deal and forwards the coordinates of their old ship. One option, no way to miss it — the marker is planted on arrival.",
+        "ref": "START_BEACON_CRYSTAL → quest CRYSTAL_UNLOCK"
+      },
+      {
+        "marker": "✓",
+        "title": "The cruiser at the repair station",
+        "detail": "The marked beacon has no fight and no choice in it: the cruiser is shipped back to the Federation base, the station repairs **10 hull**, and you leave with a mid-tier reward and the **Crystal Vengeance** augment.",
+        "ref": "CRYSTAL_UNLOCK · unlockShip id=\"8\""
+      }
+    ]
+  },
+
+  "panels": [
+    {
+      "title": "Blue options that pay here",
+      "items": [
+        { "lead": "Crystal ×2", "text": "Your own Crystalline Being retunes the ship's weapons and opens {{CRYSTAL_CACHE}} with no roll at all, and turns {{CRYSTAL_CHATTY}} into free supplies." },
+        { "lead": "Breach Missiles ×1", "text": "The other clean way into the cache — one missile spent, instead of firing everything you have and mostly bouncing off." },
+        { "lead": "Engines 7 · Teleporter 2", "text": "Both pull your crewmember back out of the cache's singularity trap. Engines keep the cargo as well; the teleporter saves the person only." },
+        { "lead": "Rockman · Backup DNA Bank", "text": "Two ways through {{CRYSTAL_HUMAN_TESTS}} without putting a body on the table — the Rockman is an evolutionary cousin, the DNA bank is data they have never seen." },
+        { "lead": "Distraction Buoys ×1", "text": "At {{CRYSTAL_REQUEST}}, takes the scrap and the jump of fleet delay with none of the chance of being caught faking it." },
+        { "lead": "Four events, seven gates", "text": "Only four events in the whole pool gate anything, and {{CRYSTAL_CACHE}} carries four of the seven gates by itself." }
+      ]
+    },
+    {
+      "title": "Named things you can leave with",
+      "items": [
+        { "lead": "Weapon", "text": "**Heavy Crystal Mark II** from {{CRYSTAL_HELP_DIG}} — but only by sending a crewmember down to the dig and then waiting out two full cycles." },
+        { "lead": "Weapon", "text": "**Crystal Lockdown Bomb** or **Crystal Burst Mark II** from {{CRYSTAL_SCRAP_EXCITED}}: pay the collector 35 scrap, then ask for payment in kind rather than taking him aboard." },
+        { "lead": "Crew", "text": "A **Crystal crewmember** two ways — that same collector, or accepting the surrender at {{CRYSTAL_FIGHT}} and agreeing to take one of the survivors." },
+        { "lead": "Crew", "text": "A **Human**, out of the cargo hold of the ship that was hunting them, if {{CRYSTAL_HUNTER}} surrenders." },
+        { "lead": "Weapon", "text": "A Crystal weapon off the cache at {{CRYSTAL_CACHE}}, and off rescuing the ship under fire at {{CRYSTAL_REBEL_CRYSTAL}}, {{CRYSTAL_MANTIS_CRYSTAL}} or {{CRYSTAL_PIRATE_CRYSTAL}}." },
+        { "lead": "Hull", "text": "{{CRYSTAL_CONVOY}} repairs 8 if you stop the fight once the escort falters; {{CRYSTAL_CHATTY}} repairs 6 on one of the three ways the conversation can go." }
+      ]
+    },
+    {
+      "title": "What can bite",
+      "items": [
+        { "lead": "Crew", "text": "Three events can cost a crewmember and all three are your own choice: the singularity in {{CRYSTAL_CACHE}}, the dig at {{CRYSTAL_HELP_DIG}}, and letting the scientists at {{CRYSTAL_HUMAN_TESTS}} run their tests." },
+        { "lead": "Boarders", "text": "Three events put Crystalline crew on your ship — two to three at {{BOARDERS_CRYSTAL}} and again if the cache's owners are home, one or two at {{CRYSTAL_REQUEST}} if they catch you lying." },
+        { "lead": "Fleet", "text": "{{CRYSTAL_HELP_DIG}} advances the Rebel fleet a jump for every cycle you wait, and the Heavy Crystal is behind two of them. {{CRYSTAL_REBEL_CRYSTAL}} advances it one if you shoot the Crystal ship rather than the Rebel." },
+        { "lead": "Fuel", "text": "The cache escape that saves both the crewmember and the cargo detonates **your entire fuel reserve** to do it. Advanced Engines do the same job for nothing." },
+        { "lead": "Refusals", "text": "{{CRYSTAL_HUMAN_TESTS}} can answer a flat no by undocking a warship that will not accept surrender. {{CRYSTAL_HELP_DIG}} is safe to decline outright — it only turns hostile if you promise help and then pull your crewmember back out." }
+      ]
+    }
+  ]
+}

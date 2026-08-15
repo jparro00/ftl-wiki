@@ -9,7 +9,7 @@ blue_options: []
 chain: [[[chain-rock-cruiser-unlock]]]
 version: both
 first_seen: 2026-08-09
-last_updated: 2026-08-09
+last_updated: 2026-08-13
 sources: 5
 tags: [rock, ship-unlock, quest, combat, sun-hazard, ship-escape, chain-breaker]
 ---
@@ -37,11 +37,17 @@ It is the single most common way the chain is lost.
 - **Version:** `both`. `events_rock.xml` is a base file, the definition carries no
   `<!--DLC-->` markers, and the `sector_data.xml` allocation of step 1 is unmarked.
 
-> ⚠️ **CONTRADICTION (internal to this wiki, not the sources):** [[event-rock-unlock1]] and
+> ~~⚠️ **CONTRADICTION (internal to this wiki, not the sources):** [[event-rock-unlock1]] and
 > [[event-rock-unlock3]] are both tagged `version: ae` and state that *no Fandom page covers
 > them*. Neither holds up: the chain is base-file content with no DLC markers, and
-> [[source-fandom-rock-war-vessel-encounter]] documents all three stages. Flagged for a
-> human to reconcile the sibling pages rather than edited here.
+> [[source-fandom-rock-war-vessel-encounter]] documents all three stages.~~
+>
+> **RESOLVED (lint, 2026-08-13)** — in this page's favour, on both counts. Both sibling pages
+> now read `version: both`, and both cite [[source-fandom-rock-war-vessel-encounter]] for
+> their coverage. The `version` half was fixed by the 2026-08-09 retrofit and the Fandom half
+> by the same lint's correction pass; the flag itself was simply never cleared. Kept struck
+> through rather than deleted, per §4 — but note this was a bookkeeping disagreement between
+> three of our own pages, never a disagreement between sources.
 
 ## Text
 > You arrive at the coordinates given and find yourself dangerously close to an M-class

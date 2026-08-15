@@ -6,7 +6,7 @@ sectors: [[[sector-civilian-sector]], [[sector-federation-space]]]
 beacon_type: quest
 hostile: false
 blue_options: [lanius crew]
-chain: []
+chain: [[[chain-construction-yard]]]
 version: ae
 first_seen: 2026-08-09
 last_updated: 2026-08-09
@@ -135,6 +135,7 @@ Three distinct entries. **Assuming uniform selection across list entries**, each
   so a Lanius crew makes choice 2 obsolete.
 
 ## Related
+- [[chain-construction-yard]] — the full quest line this belongs to
 - [[event-abandoned-station]] — the `EMPTY_STATION2_LIST` pool reused by quest outcome 2
 - [[entity-lanius]] — the blue-option requirement (`req="anaerobic"`)
 - [[entity-rebels]] — the quest fight

@@ -6,7 +6,7 @@ sectors: [[[sector-rebel-controlled-sector]], [[sector-rebel-stronghold]]]
 beacon_type: hostile
 hostile: true
 blue_options: []
-chain: []
+chain: [[[chain-rebel-defector]]]
 version: both
 first_seen: 2026-08-09
 last_updated: 2026-08-09
@@ -139,6 +139,7 @@ In vanilla the deception outcome is therefore **2 hull and no system damage**; i
 outcome is also AE-only, since the Clone Bay itself is.
 
 ## Related
+- [[chain-rebel-defector]] — the full quest line this belongs to
 - [[event-rebel-fight]] — the same `REBEL` ship, without the defector
 - [[event-rebel-fight-with-boarders]] — the other Rebel event that mixes a fight with intruders
 - [[event-mantis-fugitive]] — the sister "defector aboard, pick a side" event, `ALISON_MANTIS_CREW`

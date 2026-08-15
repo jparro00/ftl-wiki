@@ -6,7 +6,7 @@ sectors: []
 beacon_type: quest
 hostile: false
 blue_options: [slug crew, engi crew]
-chain: []
+chain: [[[chain-secret-word-abadoth]]]
 version: both
 first_seen: 2026-08-09
 last_updated: 2026-08-09
@@ -95,6 +95,7 @@ extract — see [[source-events-slug]].)
 - "ANODYNE" and "ABATODH" are deliberate near-misses. There is no partial credit.
 
 ## Related
+- [[chain-secret-word-abadoth]] — the full quest line this belongs to
 - [[event-nebula-wreckage]] — the only way to reach this beacon
 - [[entity-zoltan]] — the enemy on a wrong answer
 - [[sector-slug-controlled-nebula]], [[sector-slug-home-nebula]]

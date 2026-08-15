@@ -10,7 +10,7 @@ chain: []
 version: ae
 first_seen: 2026-08-09
 last_updated: 2026-08-09
-sources: 6
+sources: 8
 tags: [nebula, pirate, trading, blue-option, mind-control, scrap-risk, weapon-reward, unique]
 ---
 

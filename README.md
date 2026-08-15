@@ -66,6 +66,25 @@ string table, and no odds appear unless the files publish them. The pipeline and
 schema are documented in [`tools/EVENT-CARD.md`](./tools/EVENT-CARD.md); the grammar it
 relies on is [[concept-event-tree-grammar]].
 
+### Let the cards open themselves
+Or skip the screenshot entirely:
+> **"Start the watcher."**
+
+```bash
+python tools/save-watch.py --open
+```
+
+A page opens at `http://127.0.0.1:8787`. Put it on your other monitor and forget about it —
+whenever you arrive at a beacon, it shows that event's card by itself. Nothing to click.
+
+It works by reading the game's own save file, which FTL rewrites as an encounter plays
+out. **Nothing is modified** — no Slipstream patch, no Hyperspace, nothing to uninstall.
+It is just a reader, and it runs happily alongside the `event-labels` mod.
+
+When it can't be certain — a couple of dozen outcome texts are shared by many events — it
+says so instead of showing you the wrong card, and sorts itself out at the next beacon.
+Details in [`tools/SAVE-WATCH.md`](./tools/SAVE-WATCH.md).
+
 ### Lint it
 Every so often (say, every handful of ingests):
 > **"Lint the wiki."**
@@ -99,7 +118,8 @@ CLAUDE.md            ← the schema (how Claude operates this wiki)
 README.md            ← you are here
 raw/{gamedata,wiki,runs}/   ← your sources go here
 cards/               ← generated: card-<slug>.html, plus trees/<slug>.tree.json
-tools/               ← scripts: event extraction, card building, source pulls
+tools/               ← scripts: event extraction, card building, save watcher, source pulls
+mods/                ← generated game mods (event-labels, fullscreen-no-minimize)
 wiki/events/         ← one page per beacon encounter (markdown only)
 wiki/chains/         ← multi-jump quest lines
 wiki/sectors/        ← sector types and their event pools

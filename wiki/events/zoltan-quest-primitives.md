@@ -6,7 +6,7 @@ sectors: [[[sector-zoltan-controlled-sector]], [[sector-zoltan-homeworlds]]]
 beacon_type: quest
 hostile: false
 blue_options: []
-chain: []
+chain: [[[chain-zoltan-primitives]]]
 version: both
 first_seen: 2026-08-09
 last_updated: 2026-08-09
@@ -93,6 +93,7 @@ None. No `req` attribute on any choice.
   paths, so boarding or an anti-personnel approach is worth more here than usual.
 
 ## Related
+- [[chain-zoltan-primitives]] — the full quest line this belongs to
 - [[event-zoltan-trade-hub]] — the other way to reach this beacon
 - [[entity-zoltan]], [[entity-rebels]] — the two possible opponents
 - [[concept-rebel-fleet-advance]] — what path 1 accelerates
