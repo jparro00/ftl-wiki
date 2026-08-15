@@ -172,16 +172,37 @@ def blocks(low, high, extra_class=""):
     return "".join(out) or '<i class="blk maybe"></i>'
 
 
+def placement_order(data):
+    """Entries in the order the game fills them — nebula lists first, then file order."""
+    return sorted(data["entries"], key=lambda e: e["placement"]["position"])
+
+
 def budget_html(data):
     rows = []
-    for entry in data["entries"]:
-        hostile = " hostile" if entry["section"] in ("hostile", "boarders") else ""
-        zero = " zero" if entry["max"] == 0 else ""
+    for entry in placement_order(data):
+        place = entry["placement"]
+        classes = ""
+        if entry["section"] in ("hostile", "boarders"):
+            classes += " hostile"
+        if entry["max"] == 0:
+            classes += " zero"
+        if place["at_risk"]:
+            classes += " risk"
+        if place.get("always_short"):
+            classes += " short"
         count = str(entry["min"]) if entry["min"] == entry["max"] else \
             f'{entry["min"]}{VOC["format"]["range_join"]}{entry["max"]}'
+        marks = ""
+        if place["nebula_first"]:
+            marks += f'<span class="mark first">{html.escape(VOC["budget"]["nebula_mark"])}</span>'
+        if place["at_risk"]:
+            marks += f'<span class="mark risk">{html.escape(VOC["budget"]["risk_mark"])}</span>'
+        if place.get("always_short"):
+            marks += f'<span class="mark short">{html.escape(VOC["budget"]["short_mark"])}</span>'
         rows.append(
-            f'<div class="brow{hostile}{zero}">'
-            f'<div class="name">{html.escape(entry["name"])}</div>'
+            f'<div class="brow{classes}">'
+            f'<div class="rank">{place["position"] + 1}</div>'
+            f'<div class="name">{html.escape(entry["name"])}{marks}</div>'
             f'<div class="cnt">{count}</div>'
             f'<div class="track">{blocks(entry["min"], entry["max"])}</div>'
             "</div>"
@@ -189,10 +210,93 @@ def budget_html(data):
     return f'<div class="budget">{"".join(rows)}</div>'
 
 
+def generation_html(data):
+    """The rules that turn this table into an actual map — none of them in the game files."""
+    gen = data["generation"]
+    notes = [VOC["generation"]["order"].format(
+        grid=gen["grid_beacons"], grid_min=gen.get("grid_beacons_min", "?"))]
+    if gen["can_exhaust_map"]:
+        notes.append(VOC["generation"]["exhaust"].format(
+            max=gen["allocated_max"], grid=gen["grid_beacons"]))
+    if gen.get("cannot_meet_minimum"):
+        notes.append(VOC["generation"]["cannot_meet_minimum"].format(
+            min=gen["allocated_min"], grid=gen["grid_beacons"]))
+    if gen.get("always_short_entries"):
+        notes.append(VOC["generation"]["always_short"].format(
+            names=", ".join(gen["always_short_entries"])))
+    if gen["at_risk_entries"]:
+        notes.append(VOC["generation"]["at_risk"].format(
+            names=", ".join(gen["at_risk_entries"])))
+    if gen["nebula_first"]:
+        notes.append(VOC["generation"]["nebula"].format(
+            names=", ".join(gen["nebula_first"])))
+    notes.append(VOC["generation"]["fallback"].format(
+        list=gen["fallback_list"], ae=gen["fallback_list_ae"]))
+    notes.append(VOC["generation"]["exit"].format(list=gen["exit_list"]))
+    return "".join(f'<p class="note">{html.escape(n)}</p>' for n in notes)
+
+
+def markers_html(data):
+    """What the map can mark a beacon with here — and where the marking disagrees
+    with the allocation table, which is the question the table cannot answer."""
+    markers = data["rollup"].get("markers") or {}
+    distress = markers.get("distress") or {}
+    if not distress.get("events") and not markers.get("store"):
+        return ""
+
+    titles = {}
+    for entry in data["entries"]:
+        for record in entry["events"]:
+            titles[record["id"]] = record
+
+    def rows(ids):
+        return "".join(event_html(titles[i]) for i in ids if i in titles)
+
+    body = [
+        f'<h2>{html.escape(VOC["headings"]["markers"])}'
+        f'<span class="meta">{html.escape(VOC["headings"]["markers_meta"])}</span></h2>'
+    ]
+    if distress.get("events"):
+        body.append(f'<p class="note">{html.escape(VOC["markers"]["distress"])}</p>')
+        body.append(f'<div class="pool">{rows(distress["events"])}</div>')
+        if distress.get("marked_outside_allocation"):
+            outside = [i for i in distress["marked_outside_allocation"] if i in titles]
+            names = ", ".join(titles[i]["title"] for i in outside)
+            # Whether these are placed before or after the distress line is per-sector:
+            # in Engi space NEUTRAL_ENGI comes first (Fandom's own example), in Rock space
+            # DISTRESS_BEACON_ROCK does. Asserting one for both was wrong.
+            distress_at = min((e["placement"]["position"] for e in data["entries"]
+                               if e["name"].startswith("DISTRESS_BEACON")), default=None)
+            holding = min((e["placement"]["position"] for e in data["entries"]
+                           for r in e["events"] if r["id"] in outside), default=None)
+            clause = ""
+            if distress_at is not None and holding is not None:
+                clause = " " + (VOC["markers"]["outside_earlier"] if holding < distress_at
+                                else VOC["markers"]["outside_later"])
+            body.append('<div class="callout">'
+                        + html.escape(VOC["markers"]["outside"].format(names=names) + clause)
+                        + "</div>")
+        if distress.get("allocated_but_unmarked"):
+            names = ", ".join(titles[i]["title"] for i in distress["allocated_but_unmarked"]
+                              if i in titles)
+            body.append(f'<p class="note">{html.escape(VOC["markers"]["unmarked"].format(names=names))}</p>')
+    if markers.get("store"):
+        body.append(f'<p class="note">{html.escape(VOC["markers"]["store"])}</p>')
+        body.append(f'<div class="pool">{rows(markers["store"])}</div>')
+    body.append(f'<p class="note">{html.escape(VOC["markers"]["scanners"])}</p>')
+    return f"<section>{''.join(body)}</section>"
+
+
 def pool_sections(data, copy, titles, slug):
     out = []
     notes = copy.get("section_notes") or {}
-    for entry in data["entries"]:
+    # Pools read best grouped by what they do to you; the budget above already carries
+    # placement order, so this ordering costs nothing.
+    order = list(VOC["sections"].keys())
+    reading = sorted(data["entries"],
+                     key=lambda e: (order.index(e["section"]) if e["section"] in order else 99,
+                                    e["placement"]["position"]))
+    for entry in reading:
         section = VOC["sections"].get(entry["section"], {"label": entry["section"], "hint": ""})
         if entry["min"] != entry["max"]:
             count = VOC["format"]["beacons"].format(min=entry["min"], max=entry["max"])
@@ -300,6 +404,11 @@ def chain_html(copy, titles, slug):
 
 def footnotes(data):
     notes = [VOC["footnotes"]["sources"].format(files=", ".join(SOURCE_FILES))]
+    # The generation and marker rules are not in the game files — they come from the
+    # community's reverse-engineering, and the page should not imply otherwise.
+    notes.append(VOC["generation"]["source"])
+    notes.append(VOC["footnotes"]["min_sector"])
+    notes.append(VOC["footnotes"]["floor"])
     if data["rollup"]["unique"]:
         notes.append(VOC["footnotes"]["unique"])
     notes.append(VOC["footnotes"]["unweighted"])
@@ -316,7 +425,7 @@ def footnotes(data):
 
 def header_html(data, copy, titles, slug):
     facts = [
-        (VOC["facts"]["min_sector"], str(data["min_sector"])),
+        (VOC["facts"]["earliest"], str(data.get("earliest_sector", data["min_sector"] + 1))),
         ("", VOC["facts"]["unique"] if data["unique"] else VOC["facts"]["repeatable"]),
     ]
     if data.get("start_event"):
@@ -368,6 +477,7 @@ def render(data, copy):
         f'<span class="meta">{html.escape(VOC["headings"]["budget_meta"])}</span></h2>',
         budget_html(data),
         f'<p class="note">{html.escape(VOC["budget"]["legend"])}</p>',
+        generation_html(data),
     ]
     if data.get("start_event"):
         entry_note = VOC["budget"]["entry"].format(event=data["start_event"]["id"])
@@ -376,6 +486,7 @@ def render(data, copy):
         budget.append(f'<div class="callout">{inline(copy["callout"], titles, slug, "callout")}</div>')
     parts.append(f"<section>{''.join(budget)}</section>")
 
+    parts.append(markers_html(data))
     parts.append(pool_sections(data, copy, titles, slug))
     parts.append(chain_html(copy, titles, slug))
     parts.append(panels_html(data, copy, titles, slug))

@@ -1,7 +1,7 @@
 {
   "slug": "zoltan-homeworlds",
 
-  "lede": "Two beacons here are placed by name before anything is rolled: a **Zoltan peace envoy** that opens a ship unlock with no crew, system or equipment requirement anywhere in it, and a **research facility** that turns a Damaged Stasis Pod into a Crystal crew member. Everything else is Zoltan bureaucracy with guns — customs checks, crew profiling, and border police who beam aboard before they negotiate. Two stores are guaranteed, and Zoltan is the most common crew type on sale in them.",
+  "lede": "Both named beacons sit at the head of the queue and are placed before anything is rolled: a **Zoltan peace envoy** that opens a ship unlock with no crew, system or equipment requirement anywhere in it, and a **research facility** that turns a Damaged Stasis Pod into a Crystal crew member. What the sector cannot promise is everything underneath them — it asks for more slots than any sector except the two Slug nebulas, and the three lines it can lose whole are its items, its quests and its neutral pool. Two stores are guaranteed, Zoltan is the most common crew on their shelves, and the rest is bureaucracy with guns.",
 
   "stats": [
     { "metric": "beacons_min..beacons_max", "label": "Beacon spread" },
@@ -11,19 +11,19 @@
     { "metric": "distinct_events", "label": "Events in pool" }
   ],
 
-  "callout": "**Versus a plain Zoltan Controlled Sector:** the allocation tables are otherwise identical — every other entry appears in both at the same min and the same max. `ZOLTAN_HOME` adds exactly one thing, the guaranteed {{ZOLTAN_PEACE_QUEST}} beacon, and is `unique=\"true\"` with `minSector=\"2\"` where the plain sector is neither. {{ZOLTAN_CREW_STUDY}} is guaranteed in both, so the Crystal step is not what makes this sector special — the envoy is.",
+  "callout": "**Versus a plain Zoltan Controlled Sector:** the allocation tables are otherwise identical — every other entry appears in both at the same min and the same max. `ZOLTAN_HOME` adds exactly one thing, the guaranteed {{ZOLTAN_PEACE_QUEST}} beacon, and is `unique=\"true\"` with `minSector=\"2\"` where the plain sector is neither. {{ZOLTAN_CREW_STUDY}} is guaranteed in both, so the Crystal step is not what makes this sector special — the envoy is. That one extra beacon is also what costs the bottom of the table: the plain sector puts only its quests and its neutral pool at risk, this one puts its item line there too.",
 
   "section_notes": {
     "ZOLTAN_CREW_STUDY": "The **Damaged Stasis Pod** blue option consumes the augment and a Crystal crew member steps out of the pod. Without it, one of the three entries in its list is a pirate ambush with two boarders already aboard; an Advanced Medbay just pays a drone for your medical records.",
-    "ZOLTAN_PEACE_QUEST": "Free, gate-free, and the whole reason to route here — see the chain below. Attacking the envoy or leaving both end it for the run.",
+    "ZOLTAN_PEACE_QUEST": "Free, gate-free, and the whole reason to route here — see the chain below. Attacking the envoy or leaving both end it for the run. The marker it plants is placed by a different rule than the beacons in this table: never on a nebula beacon, a store, a distress beacon or one you have already visited, so a cloud-heavy map can push it into the next sector instead.",
     "HOSTILE_ZOLTAN": "Only two of these seven actually load a Zoltan ship — {{ZOLTAN_FIGHT}} and {{ZOLTAN_ASTEROID}}; the rest are pirates, Mantis, Rebels, and the Engi escort at {{ZOLTAN_ENGI}} that has mistaken you for whoever killed the cruiser it was guarding.",
     "BOARDERS_ZOLTAN": "{{ZOLTAN_BOARDERS}} is the worst of the three: a customs dispute that puts three to four Zoltan aboard **and** starts a ship fight at the same moment, with no choice offered first.",
-    "NEUTRAL_ZOLTAN": "The deepest non-nebula pool, and where two of the three hireable Zoltan sit. {{ZOLTAN_SCIENCE_DOCK}} pays one out if you push the ambush to a surrender; {{ZOLTAN_LIFERAFT}} sells you one for 40 scrap — but only on the branch where you wrecked his ship, since clearing its crew instead pays a high augment reward and no hire offer.",
-    "NEBULA_ZOLTAN": "Fourteen events competing for two to six beacons, and ten of them arrive through `NEBULA_REBEL` rather than being written for Zoltan space. {{NEBULA_EMPTY}} is listed three times, so nothing at all is the single most repeated outcome in here.",
-    "DISTRESS_BEACON_ZOLTAN": "{{ZOLTAN_DISTRESS_SHELL}} is a reward with no choice attached at all; {{TRAP_BEACON}} is a fight the moment you arrive. One or two beacons decide which of the eight you meet.",
-    "ITEM_ZOLTAN": "{{ZOLTAN_FREE_AUGMENT}} is one screen with a free augment on it. {{ZOLTAN_FREE_MAP}} is tagged as a fight only because a ship is present — it loads non-hostile and reveals the map for nothing.",
-    "STORE_ZOLTAN": "Fixed at two, and {{ZOLTAN_TRADE_HUB}} and {{PIRATE_BRIBER}} can each open a third.",
-    "QUESTS_ZOLTAN": "At most one of these five is placed, and it may be none. {{ZOLTAN_TRADE_HUB}} is the richest — a possible store, and the marker for {{ZOLTAN_QUEST_PRIMITIVES}}."
+    "NEUTRAL_ZOLTAN": "The deepest non-nebula pool, and where two of the three hireable Zoltan sit. {{ZOLTAN_SCIENCE_DOCK}} pays one out if you push the ambush to a surrender; {{ZOLTAN_LIFERAFT}} sells you one for 40 scrap — but only on the branch where you wrecked his ship, since clearing its crew instead pays a high augment reward and no hire offer. It is also the first thing the sector gives up when the map fills, and the hires and {{PIRATE_BRIBER}}'s shop go with it.",
+    "NEBULA_ZOLTAN": "Fourteen events competing for two to six beacons, and ten of them arrive through `NEBULA_REBEL` rather than being written for Zoltan space. {{NEBULA_EMPTY}} is listed three times, so nothing at all is the single most repeated outcome in here. Every beacon in the cloud halves the Rebel advance for the jump that reaches it and blinds your sensors while you sit in it — a Slug aboard or a Lifeform Scanner still sees the enemy crew.",
+    "DISTRESS_BEACON_ZOLTAN": "{{ZOLTAN_DISTRESS_SHELL}} is a reward with no choice attached at all; {{TRAP_BEACON}} is a fight the moment you arrive. One or two beacons decide which of the eight you meet — and nothing outside this line carries the distress tag here, so a distress marker on the map really is one of these eight and no more.",
+    "ITEM_ZOLTAN": "{{ZOLTAN_FREE_AUGMENT}} is one screen with a free augment on it. {{ZOLTAN_FREE_MAP}} is tagged as a fight only because a ship is present — it loads non-hostile and reveals the map for nothing. This line is the least likely of the three to be squeezed out, since it fills ahead of quests and neutral; if it does go, the sector's only free handouts go with it.",
+    "STORE_ZOLTAN": "Fixed at two and filled early, so both always exist. The two events that can open a third — {{ZOLTAN_TRADE_HUB}} and {{PIRATE_BRIBER}} — both sit on lines that may never be placed, which makes the third store the least reliable thing in the sector.",
+    "QUESTS_ZOLTAN": "At most one of these five is placed, it can be none on the roll alone, and the line can also be skipped entirely when the map fills first. {{ZOLTAN_TRADE_HUB}} is what you lose then — the richest of the five, a possible store and the marker for {{ZOLTAN_QUEST_PRIMITIVES}}."
   },
 
   "chain": {
@@ -38,7 +38,7 @@
       {
         "marker": "2",
         "title": "The marker looks like a Rebel ambush",
-        "detail": "It is not one. The Rebel ship loads `hostile=\"false\"`, so the fight is entirely opt-in — that flag is the tell that this beacon is a scripted test rather than a battle.",
+        "detail": "It is not one. The Rebel ship loads `hostile=\"false\"`, so the fight is entirely opt-in — that flag is the tell that this beacon is a scripted test rather than a battle. The marker itself may land in the next sector if this one has no eligible beacon left.",
         "ref": "ZOLTAN_PEACE_QUEST2"
       },
       {
@@ -62,7 +62,7 @@
       "items": [
         { "lead": "Crew Teleporter ×4", "text": "Beams you into {{ZOLTAN_TRADE_HUB}} past the ID check entirely, and opens branches at {{FRIENDLY_SLAVER}}, {{NEBULA_LOST_SHIP}} and {{QUEST_CREWDEAD_START}}." },
         { "lead": "Cloaking ×4", "text": "Graded one through three at {{DISTRESS_SATELLITE_DEFENSE}}, and a way out of {{STORM_AUTO}}, {{NEBULA_REBEL_UNDETECTED}} and {{NEBULA_AUTO_DEFENSE_ITEM}}." },
-        { "lead": "Slug ×2", "text": "Whatever your Slug says to the guards at {{ZOLTAN_CREW_SCAN}}, it ends with them handing over fuel and waving you through. Also opens {{STRANDED_BEACON}}." },
+        { "lead": "Slug ×2", "text": "Whatever your Slug says to the guards at {{ZOLTAN_CREW_SCAN}}, it ends with them handing over fuel and waving you through. Also opens {{STRANDED_BEACON}}, and sees enemy crew inside the cloud." },
         { "lead": "Mind Control ×1", "text": "The other clean pass at {{ZOLTAN_CREW_SCAN}} — the guards believe they already checked you, and pay fuel for wasting your time." },
         { "lead": "Zoltan ×1", "text": "One Zoltan aboard turns entry to {{ZOLTAN_TRADE_HUB}} into a 10-scrap citizen's fee instead of a forged ID card and a countdown." },
         { "lead": "Damaged Stasis Pod ×1", "text": "The augment is consumed at {{ZOLTAN_CREW_STUDY}} and a Crystal crew member walks out of it." }
@@ -71,21 +71,30 @@
     {
       "title": "What you can leave with",
       "items": [
-        { "lead": "Crew", "text": "Three separate routes to a Zoltan: {{ZOLTAN_SCIENCE_DOCK}} on a surrender, {{ZOLTAN_LIFERAFT}} for 40 scrap, {{ZOLTAN_ODD_MOON}} for one drone part." },
-        { "lead": "Crew", "text": "A Crystal crew member at {{ZOLTAN_CREW_STUDY}} — but only if you arrive already carrying the pod." },
+        { "lead": "Crew", "text": "Three separate routes to a Zoltan: {{ZOLTAN_SCIENCE_DOCK}} on a surrender, {{ZOLTAN_LIFERAFT}} for 40 scrap, {{ZOLTAN_ODD_MOON}} for one drone part — all three on lines that may not be placed." },
+        { "lead": "Crew", "text": "A Crystal crew member at {{ZOLTAN_CREW_STUDY}} — but only if you arrive already carrying the pod. It is the one beacon outside the Crystal sector that hands one over." },
         { "lead": "Augment", "text": "{{ZOLTAN_FREE_AUGMENT}} hands one over with no choice and no cost, and {{ZOLTAN_LIFERAFT}} pays a high augment reward for taking the ship back without destroying it." },
         { "lead": "Weapon", "text": "**Healing Burst** is one of the four things {{NEBULA_ZOLTAN_EYE}} can do to you." },
         { "lead": "Map", "text": "{{ZOLTAN_FREE_MAP}} reveals the sector for nothing, and {{PIRATE_BRIBER}} can push the fleet back a jump." },
-        { "lead": "Stores", "text": "Two are guaranteed, {{ZOLTAN_TRADE_HUB}} and {{PIRATE_BRIBER}} can each add a third, and Zoltan is the most common crew type on the shelf here." }
+        { "lead": "Stores", "text": "Two are guaranteed, and Zoltan is the most common crew type on the shelf here — the only sector besides the plain Zoltan one where that is true." }
       ]
     },
     {
       "title": "What can bite",
       "items": [
-        { "lead": "Fights", "text": "Fifteen events open fire on arrival and another twenty-two can turn into a fight below a choice — most of the pool ends in combat if you engage with it." },
+        { "lead": "Fights", "text": "Fourteen events open fire on arrival and another twenty-three can turn into a fight below a choice — most of the pool ends in combat if you engage with it." },
         { "lead": "Crew", "text": "Five events can cost a crew member. {{ZOLTAN_CREW_SCAN}} asks you to hand one to Zoltan law and {{NEBULA_ZOLTAN_EYE}} simply unmakes one; both losses are flagged `clone=\"false\"`." },
         { "lead": "Boarders", "text": "Eight events put someone aboard — three to four Zoltan at {{ZOLTAN_BOARDERS}} alongside a warship, up to five humans at {{BOARDERS_HACKING}}." },
         { "lead": "Systems", "text": "Refusing to surrender the flagged crew member at {{ZOLTAN_CREW_SCAN}} halves your weapon system and beams two to four Zoltan aboard in the same breath." }
+      ]
+    },
+    {
+      "title": "Reading the map here",
+      "items": [
+        { "lead": "Distress", "text": "Honest for once: nothing outside the distress line carries the tag in this sector, so a distress marker is one of exactly eight events — and the line is filled early enough that at least one always exists." },
+        { "lead": "Stores", "text": "Two are labelled from the start and cannot be squeezed out. A third can come from {{ZOLTAN_TRADE_HUB}} or {{PIRATE_BRIBER}}, both on lines that may never be placed, or from a trade station at the exit, which is drawn from a list shared with every sector." },
+        { "lead": "Nebula", "text": "Two to six beacons of cloud, and this is not a nebula sector — so each one halves the Rebel advance for the jump into it, the full slowdown rather than the reduced one. The price is blind sensors, and an ion storm on any cloud beacon the fleet takes." },
+        { "lead": "Quest markers", "text": "A marker can never be planted on a nebula beacon, a store, a distress beacon or one you have already visited. With cloud, two stores and a distress beacon all spoken for, a marker planted late — the envoy's included — can run out of candidates and surface in the next sector instead." }
       ]
     }
   ]

@@ -1,7 +1,7 @@
 {
   "slug": "abandoned-sector",
 
-  "lede": "The only sector in the game that allocates a hazard pool of its own: `HOSTILE_ENVIRONMENT_LANIUS` puts one to two of your beacons inside an asteroid field, next to a pulsar, or under a planetary Anti-Ship Battery — and that last one is firing at the Lanius, not at you. The Lanius want **metal**, not your ship, so most of what looks neutral here is a negotiation that a bad roll turns into a fight. The prize for talking instead of shooting is the crew nobody else stocks: a Lanius drains the air out of the room it stands in the same way a hull breach does, which is free labour behind good doors and a slow leak everywhere else.",
+  "lede": "The only sector outside the nebulas that reserves beacons for weather: `HOSTILE_ENVIRONMENT_LANIUS` drops one or two of your stops into an asteroid field, beside a pulsar, or under a planetary Anti-Ship Battery — and that last one is firing at the Lanius, not at you. Everything else is negotiation. The Lanius want **metal**, not your ship, so most of what reads as neutral is a trade that a bad roll turns into a fight, and the prize for talking instead of shooting is the crew nobody else stocks: a Lanius drains the air out of the room it stands in, which is free labour behind good doors and a slow leak everywhere else.",
 
   "stats": [
     { "metric": "beacons_min..beacons_max", "label": "Beacon spread" },
@@ -11,16 +11,16 @@
     { "metric": "distinct_events", "label": "Events in pool" }
   ],
 
-  "callout": "**Nothing is guaranteed here except the fighting.** Stores are pinned at exactly two with no variance, the quest entry is allocated 0–1 so a run can cross the whole sector and never see one, and no ship unlocks here. Only the Engi sectors place more item beacons than this one.",
+  "callout": "**Nothing is guaranteed here except the fighting.** Stores are pinned at exactly two with no variance, the quest entry is allocated 0–1 so a run can cross the sector and never see one, and no ship unlocks here. The overrun is mild and lands in exactly one place: everything above the neutral line fits the map even at its maximum, so a crowded map can only shave the tail of `NEUTRAL_LANIUS` — nothing here is ever cut outright. Only the Engi sectors place more item beacons than this one.",
 
   "section_notes": {
-    "HOSTILE_ENVIRONMENT_LANIUS": "The list no other sector carries — and it is hazards, not oxygen: an asteroid field, a pulsar, and at {{LANIUS_NOBOARDERS_PDS}} an Anti-Ship Battery pointed at the enemy for once, which can repair 8 hull when the shooting stops.",
+    "HOSTILE_ENVIRONMENT_LANIUS": "The list no other sector carries outside a nebula — and it is weather, not oxygen. The asteroid field's rocks arrive faster the more **your own** shields are upgraded; the pulsar ionises two of your systems every 11–18 seconds and is the one hazard in the game that needs Advanced Edition switched on; and at {{LANIUS_NOBOARDERS_PDS}} the battery is pointed at the enemy for once, which can repair 8 hull when the shooting stops. The asteroids and the pulsar also hold you at IN DANGER for as long as you stay — no upgrades, no cargo bay, no crew management until you jump out.",
     "HOSTILE_LANIUS": "Only {{LANIUS_FIGHT}} and {{LANIUS_HARVESTER}} put you against a Lanius hull; the other four are the Rebel, pirate and auto-ship fights you would meet in any sector. {{LANIUS_HARVESTER}} is only a fight if you choose to make it one.",
     "BOARDERS_LANIUS": "One event, and the boarders are not Lanius — three to four starving humans off a ship the Lanius already ate the engines out of.",
-    "NEUTRAL_LANIUS": "Thirteen events for five or six beacons, and the heart of the sector: five of the nine Lanius-crew options live here, and so do all three paths that push the Rebel fleet back a jump.",
+    "NEUTRAL_LANIUS": "Thirteen events for five or six beacons, and the heart of the sector: five of the nine Lanius-crew options live here, and so do all three paths that push the Rebel fleet back a jump. It is also the tail that a full map trims, so the deepest pool is the one least certain to run.",
     "DISTRESS_BEACON_LANIUS": "Twelve events competing for one or two beacons, so most of this pool never runs. Two of them — {{LANIUS_DISTRESS_EMPTY}} and {{LANIUS_DISTRESS_TOOLATE}} — are flavour with no choice at all, and both of the sector's crew-killers are in here.",
     "ITEM_LANIUS": "One free haul at {{LANIUS_FREE_STUFF}}, one gift at {{LANIUS_RESEARCHER_CONTACT}}, and three beacons that want scrap or resources in exchange for gear. A Lanius aboard improves all three.",
-    "STORE_LANIUS": "Two stores, never three — and this is the only sector whose store rarity list names Lanius crew at all.",
+    "STORE_LANIUS": "Two stores, never three, and the first line the sector fills — so they are the one thing on this table a crowded map can never take away. This is also the only place in the game whose store shelves carry **Lanius** crew.",
     "QUESTS_LANIUS": "Allocated 0–1, so the sector may place no quest beacon whatsoever. When it does, it is Federation business rather than Lanius business.",
     "NOTHING_LANIUS": "One or two beacons that do nothing, which in a sector this dense is a cheap jump rather than a wasted one."
   },
@@ -37,7 +37,7 @@
       {
         "marker": "2",
         "title": "A marker appears on another beacon",
-        "detail": "Either coordinates for a second hidden base, or a sister outpost under attack — the second one also pays out on the spot before you go anywhere.",
+        "detail": "Either coordinates for a second hidden base, or a sister outpost under attack — the second one also pays out on the spot before you go anywhere. The marker lands on an ordinary unvisited beacon: never a store, never the exit, never one of the distress beacons.",
         "ref": "HIDDEN_FEDERATION_BASE_LIST / FEDERATION_BASE_ASSIST"
       },
       {
@@ -66,7 +66,7 @@
       "items": [
         { "lead": "Gear", "text": "{{LANIUS_RESEARCHER_CRAFT}} is a forge: 45 scrap for an augment, 50 for a weapon, 40 for a drone schematic — 35/40/30 with a Lanius helping. It is the sector's only named-item source." },
         { "lead": "Augment", "text": "{{LANIUS_BEACON_EATER}} trades a random augment for 30 scrap, or — with a Lanius aboard — for 6 missiles or 6 drone parts instead." },
-        { "lead": "Crew", "text": "Two ways to buy a Lanius outside a store: 40 scrap for the \"translation device\" at {{LANIUS_TRADER_TRANSLATOR}}, or the drone option at {{LANIUS_BEACON_EATER}}." },
+        { "lead": "Crew", "text": "Two ways to buy a Lanius outside a store: 40 scrap for the \"translation device\" at {{LANIUS_TRADER_TRANSLATOR}}, or the drone option at {{LANIUS_BEACON_EATER}}. No other sector will offer you one, in a store or out of it." },
         { "lead": "Scrap", "text": "Both traders swap 3–7 of a resource for 15–50 scrap; the Lanius option at {{LANIUS_TRADER}} lifts both ends of every band." },
         { "lead": "Fuel", "text": "{{LANIUS_FUELING_STATION}} is the fuel beacon — 3–5 for taking the station, a flat 5 behind Blast Doors, and 1–3 more on top with Sensors." },
         { "lead": "Hull", "text": "{{LANIUS_NOBOARDERS_PDS}} can hand back 8 hull once the battery finishes the job, and the quest chain can repair 35." }
@@ -77,9 +77,18 @@
       "items": [
         { "lead": "Crew", "text": "Only two events in the whole pool can kill a crew member — {{DISTRESS_STATION_FIRE}} and {{STRANDED_BEACON}} — and neither of them is a Lanius event. The Lanius take metal, not people." },
         { "lead": "Boarders", "text": "Three events put someone aboard: 3–4 humans at {{LANIUS_PIRATE_BOARDERS}}, 2–3 at {{FEDERATION_PLANET_SIGNAL}}, and one Lanius at {{LANIUS_FUELING_STATION}} that vents every room it walks through while you fight it." },
-        { "lead": "Ambush", "text": "Twenty events can end in combat without starting there. {{LANIUS_DORMANT_EVENT}} wakes up if you scan it, {{LANIUS_BEACON_EATER}} can chase you as you leave, and {{LANIUS_SCARED_CIVILIAN}} goes either way on a roll." },
+        { "lead": "Ambush", "text": "Nineteen events can end in combat without starting there. {{LANIUS_DORMANT_EVENT}} wakes up if you scan it, {{LANIUS_BEACON_EATER}} can chase you as you leave, and {{LANIUS_SCARED_CIVILIAN}} goes either way on a roll." },
         { "lead": "Systems", "text": "Docking at {{LANIUS_FUELING_STATION}} can cost 3 damage to Engines before the Lanius ship even shows on sensors." },
         { "lead": "Fleet delay", "text": "Three events can push the fleet back a jump — {{LANIUS_GROUP_AUTO}}, {{LANIUS_AUTO_REBEL}} and {{PIRATE_BRIBER}} — but only the first offers it without a fight, and only reliably with a Lanius to explain the idea." }
+      ]
+    },
+    {
+      "title": "Reading the map here",
+      "items": [
+        { "lead": "No clouds", "text": "The sector allocates no nebula line at all, so sensors work at every beacon, no cloud can hide a beacon from a quest marker, and nothing on this map slows the fleet by standing still in it. The only brake is the three events that offer one." },
+        { "lead": "Hazards", "text": "Long-Ranged Scanners is the only thing that will name the asteroid field or the pulsar before you commit the jump. Without it, the first warning you get is arriving, and arriving is already too late to move a crew member." },
+        { "lead": "Distress", "text": "Rare sector: what the table allocates is exactly what the map shows. No event outside the distress line carries the tag, and none inside it is missing one, so a distress marker here is one of one or two, not a leak from a pool placed earlier." },
+        { "lead": "A ship on scanners", "text": "Four of the twelve distress events read as a possible ship rather than a plain location: the Lanius attacking a civilian, the Lanius trap, the pirate trap, and the friendly out of fuel. Two of those four open in combat." }
       ]
     }
   ]

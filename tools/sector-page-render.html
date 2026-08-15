@@ -103,11 +103,27 @@
 
   .budget { display: flex; flex-direction: column; gap: .3rem; }
   .brow {
-    display: grid; grid-template-columns: 14rem 3.4rem 1fr; align-items: center;
+    display: grid; grid-template-columns: 1.4rem 17rem 3.4rem 1fr; align-items: center;
     gap: .7rem; padding: .34rem .55rem; border-radius: 2px; background: var(--panel);
     border: 1px solid var(--edge);
   }
-  .brow .name { font-family: var(--mono); font-size: .74rem; color: var(--ink); overflow-wrap: anywhere; }
+  .brow .rank {
+    font-family: var(--mono); font-size: .66rem; color: var(--faint);
+    font-variant-numeric: tabular-nums; text-align: right;
+  }
+  .brow .name {
+    font-family: var(--mono); font-size: .74rem; color: var(--ink); overflow-wrap: anywhere;
+    display: flex; flex-wrap: wrap; align-items: baseline; gap: .35rem;
+  }
+  .brow.risk { border-left: 2px solid var(--amber); }
+  .mark {
+    font-family: var(--sans); font-size: .58rem; letter-spacing: .09em; text-transform: uppercase;
+    padding: .06rem .3rem; border-radius: 2px; border: 1px solid currentColor;
+  }
+  .mark.first { color: var(--cyan); }
+  .mark.risk { color: var(--amber); }
+  .mark.short { color: var(--red); }
+  .brow.short { border-left: 2px solid var(--red); }
   .brow .cnt {
     font-family: var(--mono); font-size: .74rem; color: var(--dim);
     font-variant-numeric: tabular-nums; text-align: right;
@@ -202,8 +218,8 @@
     font-family: var(--mono); font-size: .66rem; color: var(--faint); line-height: 1.8;
   }
   footer p { margin: 0; }
-  @media (max-width: 34rem) {
-    .brow { grid-template-columns: 1fr 3.4rem; }
+  @media (max-width: 40rem) {
+    .brow { grid-template-columns: 1.4rem 1fr 3.4rem; }
     .brow .track { grid-column: 1 / -1; }
   }
 </style>

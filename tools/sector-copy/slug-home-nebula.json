@@ -1,7 +1,7 @@
 {
   "slug": "slug-home-nebula",
 
-  "lede": "The longest allocation table in the game — twelve entries, and the nebula lists carry almost all of the weight. The Slugs here do not open a fight by shooting; they open it by switching one of your systems off first, and then shooting. One beacon is placed every single time, and it is the only way into a ship unlock.",
+  "lede": "Purple usually means a breather. Here a cloud beacon shaves only about a fifth off the Rebel advance instead of halving it, your sensors are dead across most of the map, and the Slugs open a fight by switching one of your systems off before they shoot. The table asks for more than the map can hold, and what goes hungry is the clear-space half of it — the straight fights, the distress calls, the storms — while the clouds and the one guaranteed unlock beacon are placed regardless.",
 
   "stats": [
     { "metric": "beacons_min..beacons_max", "label": "Beacon spread" },
@@ -11,15 +11,17 @@
     { "metric": "distinct_events", "label": "Events in pool" }
   ],
 
-  "callout": "**Versus a plain Slug Controlled Nebula:** every other entry is identical — same lists, same minimums, same maximums, same rarity table, same start beacon. The only difference in the whole table is the guaranteed `NEBULA_SLUG_FIGHT_UNLOCK` beacon, which is why this sector is worth routing to and the other one is not.",
+  "callout": "**Versus a plain Slug Controlled Nebula:** the two definitions are identical apart from the unlock beacon — same lists, same minimums, same maximums, same rarity table, same start beacon. That one extra beacon is spent before the rest of the table gets a look in, so the sibling sector is this one with a beacon more of slack at the bottom: whatever gets squeezed out here is squeezed a little later there. Both are gated to **sector 4 at the earliest** — the file's `minSector=\"3\"` counts from zero — and only this one is once per run.",
 
   "section_notes": {
-    "NEBULA_SLUG_FIGHT_UNLOCK": "Placed exactly once, and it is a fight from the moment you arrive — the ambusher is invisible to your sensors until it fires. Everything downstream of it hangs on the ship offering to surrender, because the quest marker only exists inside that offer.",
-    "HOSTILE_SLUG": "The non-nebula half of the split, and the small half: one to two beacons here against the nebula list's five to seven. These are ordinary Slug, Mantis, pirate and Rebel ships that shoot straight, plus {{DONOR_BLACK_RAVEN}}, who wants to introduce himself first.",
+    "NEBULA_SLUG_FIGHT_UNLOCK": "Placed exactly once, and it is a fight from the moment you arrive — the ambusher is invisible to your sensors until it fires. Everything downstream of it hangs on the ship offering to surrender, because the quest marker only exists inside that offer. That marker lands on ordinary clear space and turns out to be cloud when you get there; the nebula comes from the event, not the beacon.",
+    "HOSTILE_SLUG": "The clear-space half of the split, and the small half: one to two beacons against the nebula list's five to seven. Ordinary Slug, Mantis, pirate and Rebel ships that shoot straight — and the only fights in the sector where your sensors are working and you can see what is happening inside the enemy hull. Plus {{DONOR_BLACK_RAVEN}}, who wants to introduce himself first.",
     "NEBULA_HOSTILE_SLUG": "The sector's signature, and its biggest single entry. Three of its six events are the remote-hacker family — your doors, your oxygen or your medbay is already dead when the fight starts — and a fourth variant, {{NEBULA_SLUG_CHOOSE_DEATH}}, waits in the neutral list and lets the Slug ask which system you would miss least. A Hacking system counters all four.",
     "NEBULA_NEUTRAL_SLUG": "The deepest pool in the sector and the least predictable. It holds both of the sector's non-unlock quest starts — {{QUEST_SLUG_PIRATE_TRAP}} and {{NEBULA_BATTLEFIELD}} — alongside {{NEBULA_SLUG_FAKE_STORE}} and {{NEBULA_SLUG_HULLFIX}}, which are a shop and a repair yard right up until they are not.",
-    "STORM_SLUG": "The ion-storm entry, and the one part of the table with no non-nebula twin. The storm suppresses your systems and leaves the Slug ships largely unaffected, so {{STORM_SLUG_FIGHT}} and {{STORM_REBEL}} start with you down a reactor while they are not. {{STORM_BOARDING}} skips the ship fight and sends the boarders straight over.",
-    "DISTRESS_BEACON_SLUG": "The best odds of picking up a Slug crew member in the game sit here, in {{SLUG_DISTRESS_RESCUE}} and {{SLUG_DISTRESS_QUESTION}}. The same list also holds {{SLUG_DISTRESS_TRICK}}, which is a distress call that exists only to get your crew aboard their ship."
+    "STORM_SLUG": "A storm beacon is not a cloud beacon: these sit in clear space with a storm laid over them, so they cost you half your reactor and hand back none of the nebula's fleet discount. {{STORM_SLUG_FIGHT}} and {{STORM_REBEL}} start with you down a reactor while the enemy re-allocates power around theirs, and {{STORM_BOARDING}} skips the ship fight entirely and sends the boarders straight over. This is the one line whose loss to the squeeze is worth wanting.",
+    "DISTRESS_BEACON_SLUG": "The best odds of picking up a Slug crew member in the game sit here, in {{SLUG_DISTRESS_RESCUE}} and {{SLUG_DISTRESS_QUESTION}}. The same list also holds {{SLUG_DISTRESS_TRICK}}, which is a distress call that exists only to get your crew aboard their ship.",
+    "STORE": "The third store, and the only one that is not a fixture — a straight coin flip in the roll rather than a casualty of the squeeze. The community's store table counts this sector the same way: nought-to-one ordinary store, plus the two in the clouds.",
+    "NEUTRAL": "The sector's one window onto ordinary space, and the only line that doubles as the game's filler list — leftover beacons draw from it too. The two cases never meet: there are leftovers only when the map has room, and this line is only starved when it has none. {{MERCENARY}} is the pick of it, buying two jumps of distance from the fleet."
   },
 
   "chain": {
@@ -57,8 +59,8 @@
       "title": "Blue options that pay here",
       "items": [
         { "lead": "Hacking ×6", "text": "The single best system to fly in with. It cancels the remote hack in {{NEBULA_SLUG_DOORS}}, {{NEBULA_SLUG_OXYGEN}}, {{NEBULA_SLUG_MEDBAY}} and {{NEBULA_SLUG_CHOOSE_DEATH}} — four fights that otherwise open with a system already at zero — and sweetens {{NEBULA_AUTO_DEFENSE_ITEM}} and {{PIRATE_SALESMAN}} on top." },
-        { "lead": "Slug ×6", "text": "A telepathic duel that can end {{DONOR_BLACK_RAVEN}} without a shot, the ambush spotted early in {{NEBULA_SLUG_FAKE_STORE}}, the dying survivor located in {{NEBULA_BATTLEFIELD}}, an Engi out of {{DONOR_PONY}} with no dice roll attached — and the quiet route through the unlock chain." },
-        { "lead": "Sensors ×7", "text": "Level 2 or 3 opens a branch in six events, {{NEBULA_REBEL_CHASE}}, {{BROKEN_REBEL_DRONE}}, {{WRECKAGE_EVENT}} and {{TERRAFORMING_SCAN}} among them — and level 2 is the non-Slug way through the unlock chain." },
+        { "lead": "Slug ×6", "text": "The crewman who cancels the sector's own blackout, and the game says so in his description. A telepathic duel that can end {{DONOR_BLACK_RAVEN}} without a shot, the ambush spotted early in {{NEBULA_SLUG_FAKE_STORE}}, the dying survivor located in {{NEBULA_BATTLEFIELD}}, an Engi out of {{DONOR_PONY}} with no dice roll attached — and the quiet route through the unlock chain." },
+        { "lead": "Sensors ×7", "text": "Level 2 or 3 opens a branch in six events, {{NEBULA_REBEL_CHASE}}, {{BROKEN_REBEL_DRONE}}, {{WRECKAGE_EVENT}} and {{TERRAFORMING_SCAN}} among them — and level 2 is the non-Slug way through the unlock chain, where the text has you overclocking the system to punch through the clouds." },
         { "lead": "Medbay 2 ×3", "text": "Keeps the system half-alive under the hack in {{NEBULA_SLUG_MEDBAY}}, saves the dying survivor in {{NEBULA_BATTLEFIELD}} for a crew member, and cures the infected crewman in {{DONOR_PLAGUE}}." },
         { "lead": "Cloaking ×3", "text": "Clean exits from {{NEBULA_REBEL_UNDETECTED}}, {{NEBULA_AUTO_DEFENSE_ITEM}} and {{AUTO_DEFENSE_ITEM}}. Hiding from that Rebel patrol without it can instead lose you a jump to the fleet." },
         { "lead": "Mantis / Rockman", "text": "One crew member each turns a Slug trap around: the Mantis walks into {{SLUG_DISTRESS_TRICK}} expecting it, and the Rockman drinks whatever is in the flask at {{SLUG_DRINK}} on your behalf." }
@@ -71,7 +73,6 @@
         { "lead": "Crew", "text": "A named Slug crew member from {{SLUG_DISTRESS_RESCUE}} — he asks 55 scrap, and sometimes waives it if you start powering up the FTL instead." },
         { "lead": "Crew", "text": "A Slug at {{SLUG_DISTRESS_QUESTION}}: the arrival text tells you how many moons the planet has, and that is the answer. Guessing costs scrap, fuel and drone parts." },
         { "lead": "Crew", "text": "An Engi at {{DONOR_PONY}}, a human at {{DONOR_PLAGUE}}, and a Mantis, Rockman or Engi at {{FRIENDLY_SLAVER}}." },
-        { "lead": "Stores", "text": "Two are guaranteed and both are {{NEBULA_STORE_SLUG}} — a Slug who teleports onto your bridge and lays his stock out on the helm. A conventional {{STORE}} may or may not be placed." },
         { "lead": "Weapon", "text": "An unnamed weapon for 45 scrap from {{NEBULA_WEAPONS_TRADER}}, who may also take the scrap and hand over nothing. Mind Control gets him talking about what it actually is." }
       ]
     },
@@ -82,7 +83,17 @@
         { "lead": "Boarders", "text": "Six events put someone on your ship. {{NEBULA_SLUG_MEDBAY}} lands two Slugs while your medbay is off, and {{STORM_BOARDING}} drops three to four humans on you with no ship fight attached." },
         { "lead": "Scrap", "text": "{{NEBULA_SLUG_HULLFIX}} patches your hull and then clamps you to the station: 15 fuel or 50 scrap. Refusing means a planted bomb, damage and a fight anyway." },
         { "lead": "Crew", "text": "Only three events in the pool can kill a crew member — {{SLUG_DISTRESS_TRICK}}, {{DONOR_PONY}} and {{DONOR_PLAGUE}}. This sector takes systems and scrap far more often than it takes people." },
-        { "lead": "Fuel", "text": "The empty entries can take up a lot of the map between them, and {{NEBULA_NOTHING_SLUG}} is the larger of the two. Every one of those is a jump spent for nothing, in a sector with only two guaranteed stores to restock at." }
+        { "lead": "Fuel", "text": "The empty entries can take up a lot of the map between them, and {{NEBULA_NOTHING_SLUG}} is the larger of the two. Every one of those is a jump spent for nothing, in a sector with two stores you can rely on." }
+      ]
+    },
+    {
+      "title": "Reading the map here",
+      "items": [
+        { "lead": "Stores", "text": "Two of the three are the pair inside the clouds, and they are rolled before the table can run dry — the only stores here you can plan a route around. Of the counters that open out of an event instead, {{NEBULA_SLUG_FAKE_STORE}} is an ambush wearing a shopfront and {{PIRATE_BRIBER}} is a toll booth that happens to sell things." },
+        { "lead": "Distress", "text": "Every distress call this sector can advertise comes from the one line at the bottom that the map is most likely to starve — nothing else in the pool leaks a distress-tagged event in to pad the count. Three of that line's own events carry no tag either, so a quiet map is not evidence of a quiet sector." },
+        { "lead": "Flying blind", "text": "Sensors do nothing at a cloud beacon, and most of this map is cloud: no enemy rooms, no enemy crew, no weapon charge bars. A Slug in the crew or a Lifeform Scanner is what puts the enemy back on your screen — both are written specifically to work where sensors do not." },
+        { "lead": "Quest markers", "text": "A marker can never be planted on a cloud beacon, a store, a distress beacon or the exit, so this sector has far fewer legal spots for one than it has beacons. A quest that finds nowhere to land waits for the next sector instead, and from sector 7 there is no next sector willing to take it." },
+        { "lead": "The fleet behind you", "text": "A cloud beacon the Rebels take always turns into an ion storm, so backtracking behind the front costs half your reactor as well as the jump. The compensation is that cloud beacons never carry anti-ship batteries, unless you are sitting at one out of fuel." }
       ]
     }
   ]

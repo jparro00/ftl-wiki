@@ -1,24 +1,25 @@
 {
   "slug": "engi-controlled-sector",
 
-  "lede": "The Engi sector you actually meet — no depth requirement, no once-per-run limit, so a run can fly through two of them. The pools are generous: three beacons of Engi hand-outs, two to three stores, and a hostile list with no Engi ship anywhere in it. What it does not have is a **named beacon** — nothing here is placed by id, so there is no ship unlock and no guaranteed quest start.",
+  "lede": "The Engi sector you actually meet — no depth requirement, no once-per-run limit, so a run can fly through two of them. It is the best-supplied sector in the game: as many guaranteed stores as anywhere, more item beacons than any other sector, and a hostile list with no Engi ship in it. The catch is arithmetic. Even the sector's minimum ask is as large as the smallest map the game builds, so everything below the store line is competing for whatever the map happens to have.",
 
   "stats": [
-    { "metric": "beacons_min..beacons_max", "label": "Beacon spread" },
-    { "metric": "section:hostile:min..section:hostile:max", "label": "Guaranteed fights" },
+    { "metric": "beacons_min..beacons_max", "label": "Slots the table asks for" },
+    { "metric": "grid_beacons", "label": "Beacons the map can hold" },
     { "metric": "entry:STORE_ENGI:min..entry:STORE_ENGI:max", "label": "Stores" },
     { "metric": "section:items:min..section:items:max", "label": "Item beacons" },
-    { "metric": "unique_events", "label": "Once-only events" }
+    { "metric": "section:hostile:min..section:hostile:max", "label": "Fights asked for" }
   ],
 
-  "callout": "**Versus Engi Homeworlds:** the same eight lists, two differences — Homeworlds bolts a named `ENGI_UNLOCK_1` beacon on the front, and gives `NEUTRAL_ENGI` 5–7 beacons instead of 4–6. Strip those and you have this sector. Every beacon here is drawn from a pool, and with the sector repeatable, the once-only tag on more than half the pool is worth reading twice.",
+  "callout": "**Versus Engi Homeworlds:** the same eight lists in the same order, two differences — Homeworlds bolts a named `ENGI_UNLOCK_1` beacon onto the front, where nothing can crowd it out, and gives `NEUTRAL_ENGI` 5–7 instead of 4–6. That makes its table two slots hungrier against the same ceiling, so the squeeze at the bottom is worse there and the Stealth Cruiser start is still safe. Here nothing is placed by name at all: no ship unlock, no set-piece, every beacon drawn from a pool.",
 
   "section_notes": {
-    "HOSTILE_ENGI": "Ten events for five to seven beacons, and not one of them is an Engi ship — Mantis, Rebel and pirate hulls only. {{PIRATE_NO_ESCAPE}} pins your engines at a single bar so running is off the table, and if the scout in {{SQUAT_WARNING}} gets its FTL up, the Rebel fleet gains a jump on you.",
-    "NEUTRAL_ENGI": "Sixteen events competing for four to six beacons, so most of this list never shows. It holds both halves of the Crystal route — {{ASTEROID_DERELICT_SHIP}} hands over the Damaged Stasis Pod, {{ZOLTAN_CREW_STUDY}} turns it into a Crystal crew member — and the only two Engi ships in the sector that ever shoot at you, in {{ENGI_VIRUS}} and {{ENGI_SEX}}.",
-    "DISTRESS_BEACON_ENGI": "The thinnest allocation on the page: nine events, and the sector is only obliged to place one of them. {{ENGI_STATION_DISTRESS}} is the one event that sits in two of this sector's pools, so it can turn up here or on a neutral beacon.",
-    "ITEMS_ENGI": "Three beacons of Engi generosity off a six-event list. {{ENGI_GIFT}} is a reward with no choice attached at all, {{ENGI_SURRENDER}} is an Engi ship handing over goods because you looked armed, and {{ENGI_FLEET_DELAY}} sells two missiles for two jumps of fleet delay.",
-    "QUESTS_ENGI": "Exactly one beacon from four candidates — but six events in the sector can plant a quest marker, {{CIVILIAN_ASTEROIDS_BEACON}} and {{ENGI_STATION_DISTRESS}} doing it from outside this list. {{MERCHANT_REQUEST}} is the widest event on the page: it pays five drone parts up front, and its other half can leave you with a traitor aboard and three to four boarders."
+    "STORE_ENGI": "First line in the table, so these are the one thing in the sector that cannot be crowded out — whatever else the map does or does not fit, the stores are already placed. Three events elsewhere in the pool can open one more on top: {{PIRATE_BRIBER}}, {{MERCENARY_WORK_START}} and {{QUEST_ESCORT}}.",
+    "ITEMS_ENGI": "Three beacons of Engi generosity off a six-event list, and high enough in the table to be safe. {{ENGI_GIFT}} is a reward with no choice attached at all, {{ENGI_SURRENDER}} is an Engi ship handing over goods because you looked armed, and {{ENGI_FLEET_DELAY}} sells two missiles for two jumps of fleet delay.",
+    "DISTRESS_BEACON_ENGI": "Nine events, and the sector is only obliged to place one of them. What the map shows you and what this line rolls are two different numbers — so treat a distress marker here as an invitation, not a promise: only {{DISTRESS_ENGI_REBEL}} and {{TRAP_BEACON}} start shooting on arrival, and with **Long-Ranged Scanners** a **possible ship detected** reading narrows the beacon to those two plus {{FRIENDLY_BEACON}}. {{ENGI_STATION_DISTRESS}} is the one event that sits in two of this sector's pools, so it can turn up here or on a neutral beacon.",
+    "QUESTS_ENGI": "Exactly one beacon from four candidates — but six events in the sector can plant a quest marker, {{CIVILIAN_ASTEROIDS_BEACON}} and {{ENGI_STATION_DISTRESS}} doing it from outside this list. {{MERCHANT_REQUEST}} is the widest event on the page: it pays five drone parts up front, and its other half can leave you with a traitor aboard and three to four boarders.",
+    "NEUTRAL_ENGI": "Sixteen events competing for four to six beacons, so most of this list never shows — and sitting second from the bottom, it is the first deep pool to thin out on a small map. It holds both halves of the Crystal route: {{ASTEROID_DERELICT_SHIP}} hands over the Damaged Stasis Pod, {{ZOLTAN_CREW_STUDY}} turns it into a Crystal crew member. It also holds the only two Engi ships in the sector that ever shoot at you, in {{ENGI_VIRUS}} and {{ENGI_SEX}}.",
+    "HOSTILE_ENGI": "Ten events for five to seven beacons, and not one of them is an Engi ship — Mantis, Rebel and pirate hulls only. It is also the line that pays for everything above it: the table's floor already matches the smallest map the game builds, so the low end of 5–7 is the normal outcome and the high end needs a big map and quiet rolls. {{PIRATE_NO_ESCAPE}} pins your engines at a single bar so running is off the table, and if the scout in {{SQUAT_WARNING}} gets its FTL up, the Rebel fleet gains a jump on you."
   },
 
   "chain": {
@@ -49,12 +50,12 @@
     {
       "title": "Blue options that pay here",
       "items": [
-        { "lead": "Engi crew · 4 events", "text": "The virus, the smashed ships, the Mantis-held station and the defence satellite. It is the only way to get the base marker out of {{ENGI_STATION_DISTRESS}}, and on {{ENGI_VIRUS}} it is the branch that gets a crewman killed." },
-        { "lead": "Hacking · 2 events", "text": "Three graded outs inside {{ENGI_VIRUS}} — quarantine it, or reprogram it for 15 hull and a reactor bar, or 30 hull at level 3, all three ending with the augment. Also the only alternative to crippled engines in {{PIRATE_NO_ESCAPE}}." },
-        { "lead": "Sensors · 7 events", "text": "The widest gate in the sector. Level 2 tells you what is aboard the burning station in {{DISTRESS_ENGI_REACTOR}} before you commit, which turns its coin-flip into a clean crew pickup; level 2 or 3 also opens {{WRECKAGE_EVENT}}, {{BROKEN_REBEL_DRONE}} and {{ENGI_STATION_DISTRESS}}." },
-        { "lead": "Long-Ranged Scanners · 4 events", "text": "All three events that can plant the hidden-base marker — {{FEDERATION_PLANET_SIGNAL}}, {{CIVILIAN_ASTEROIDS_BEACON}} and {{ENGI_STATION_DISTRESS}} — plus {{DISTRESS_ENGI_REACTOR}}." },
-        { "lead": "Cloaking · 3 events", "text": "Ways out of {{MANTIS_FIGHT_CHOICE}}, the storage station in {{AUTO_DEFENSE_ITEM}} and the satellite in {{DISTRESS_SATELLITE_DEFENSE}}, which grades its payoff by cloak level." },
-        { "lead": "Lanius crew · 1 event", "text": "One clean solve on {{ENGI_VIRUS}} — scrap and the augment, no fight and nobody lost." }
+        { "lead": "Engi ×4", "text": "The virus, the smashed ships, the Mantis-held station and the defence satellite. It is the only way to get the base marker out of {{ENGI_STATION_DISTRESS}}, and on {{ENGI_VIRUS}} it is the branch that gets a crewman killed." },
+        { "lead": "Hacking ×2", "text": "Three graded outs inside {{ENGI_VIRUS}} — quarantine it, or reprogram it for 15 hull and a reactor bar, or 30 hull at level 3, all three ending with the augment. Also the only alternative to crippled engines in {{PIRATE_NO_ESCAPE}}." },
+        { "lead": "Sensors ×7", "text": "The widest gate in the sector. Level 2 tells you what is aboard the burning station in {{DISTRESS_ENGI_REACTOR}} before you commit, which turns its coin-flip into a clean crew pickup; level 2 or 3 also opens {{WRECKAGE_EVENT}}, {{BROKEN_REBEL_DRONE}} and {{ENGI_STATION_DISTRESS}}." },
+        { "lead": "Long-Ranged Scanners ×4", "text": "Earns twice over: it reads the distress beacons before you spend the jump, and it opens all three events that can plant the hidden-base marker — {{FEDERATION_PLANET_SIGNAL}}, {{CIVILIAN_ASTEROIDS_BEACON}} and {{ENGI_STATION_DISTRESS}} — plus {{DISTRESS_ENGI_REACTOR}}." },
+        { "lead": "Cloaking ×3", "text": "Ways out of {{MANTIS_FIGHT_CHOICE}}, the storage station in {{AUTO_DEFENSE_ITEM}} and the satellite in {{DISTRESS_SATELLITE_DEFENSE}}, which grades its payoff by cloak level." },
+        { "lead": "Lanius ×1", "text": "One clean solve on {{ENGI_VIRUS}} — scrap and the augment, no fight and nobody lost." }
       ]
     },
     {
@@ -75,6 +76,15 @@
         { "lead": "Boarders", "text": "Six events put someone aboard — up to four at {{FUELING_STATION}}, three to four at {{MERCHANT_REQUEST}}, two at {{ZOLTAN_CREW_STUDY}}, Mantis from {{ENGI_STATION_DISTRESS}} and {{ALISON_MANTIS_CREW}}, two to three humans on one draw of {{FEDERATION_PLANET_SIGNAL}}." },
         { "lead": "Systems", "text": "{{ENGI_VIRUS}} halves your shields **and** engines before the fight if you try to purge it yourself, and {{PIRATE_NO_ESCAPE}} holds engines at one bar until the pirate is dead." },
         { "lead": "The fleet", "text": "{{SQUAT_WARNING}} is a fight with no choice attached, and letting the scout jump away costs a jump of your lead. {{PIRATE_BRIBER}} can buy one back, but only on the branch where you fight the pirate and the victim turns out to be a Rebel scout." }
+      ]
+    },
+    {
+      "title": "Reading the map here",
+      "items": [
+        { "lead": "No nebula", "text": "This sector allocates no nebula line, so no purple cloud is ever drawn on it. Sensors work at every beacon, nothing on the map halves the fleet's advance for you, and the exit always draws a real event instead of the empty one a cloud would force." },
+        { "lead": "Quest markers", "text": "A marker cannot be dropped on a store, the exit, a nebula beacon, a distress beacon, a beacon you have already visited, one the fleet has taken, or the one you are sitting on — and it has to be closer to you than the Rebels are to it. When nothing qualifies, the quest is pushed into the next sector instead." },
+        { "lead": "Markers appear late", "text": "Distress and store beacons only light up once you are one jump from them, so the map fills in as you go rather than up front. A distress marker then stays put until the fleet reaches it — there is no timer on it beyond the one chasing you." },
+        { "lead": "Two of these in a run", "text": "Nothing stops the sector repeating, and a second Engi sector re-rolls the whole table from scratch — another two to three stores, another five item beacons, another shot at the stasis pod." }
       ]
     }
   ]

@@ -95,6 +95,65 @@ An entry name resolves to an `eventList` or to a single `<event>`. Three names
 files. The extractor reads them as the list and marks the entry `ambiguous`; the page carries
 a footnote saying so.
 
+### 4.1b Placement order — the table is a queue, not a shopping list
+
+The allocation table does not describe the map; it describes a *filling process*, and the
+order of its lines is load-bearing. Per `raw/wiki/sectors.md` (which cites the community's
+reverse-engineering of the generator, not the game files):
+
+- Beacons are placed **first** — a 6×4 grid, each cell 80% likely to hold one, so **at most
+  24**. The community wiki states a floor of 19; nothing else here derives it, so `at_risk`
+  is computed against the ceiling only and the floor is carried as data.
+- Lines are then filled **in sector-definition order**. Each line rolls its own min–max
+  inclusive and is filled completely before the next begins.
+- **When the beacons run out, generation stops.** A line near the bottom of the table can
+  receive nothing at all. This is why stores and named set-pieces sit at the top of every
+  definition, and why bottom-of-list uniques are rare.
+- **Every nebula list is processed first**, out of file order, because the cloud graphics have
+  to be drawn before anything else. A cloud drawn over an ordinary beacon converts it, and
+  that beacon draws from the shared `NEBULA` list. Fandom words the rule as "starts with
+  `NEBULA_`", but the reason it gives applies equally to the bare `NEBULA` line, and its own
+  ordered listing for the starting sector puts that line first — seventh in `sector_data.xml`,
+  first in the listing. The extractor therefore treats bare `NEBULA` as nebula-first too,
+  which affects Federation Space and the Civilian Sector.
+- Beacons still empty at the end are filled from `NEUTRAL` (`OVERRIDE_NEUTRAL` under AE).
+- The **exit beacon is not in the table** — it draws from a shared `EXIT_LIST`, and an exit
+  inside a cloud is always empty.
+
+So `entries` is kept in **file order** and carries `placement` (`position`, `nebula_first`,
+`before_min`, `before_max`, `at_risk`). An entry is `at_risk` when the lines placed before it
+could, at their maxima, consume all 24 beacons — a possibility, not a prediction. The
+`generation` block carries the totals and `can_exhaust_map`.
+
+Sorting entries into reading order — which this extractor originally did — throws that away.
+The budget section renders placement order; only the pool sections re-sort for reading.
+
+> Worth knowing: the Fandom page states outright that it does **not** reflect the real file
+> order. `sector_data.xml` does, so these pages can show a placement order the community wiki
+> cannot.
+
+### 4.1c Beacon markers — what the map shows before you jump
+
+`<distressBeacon/>` on an event is what puts a distress marker on the sector map, and
+`<store/>` marks a store. **Neither set matches the allocation entry of the same name**, which
+is the single most useful thing this pipeline can tell a player:
+
+- Events carrying the distress tag that are allocated from *other* lists still show the
+  marker. `ASTEROID_DERELICT_SHIP` — the Damaged Stasis Pod — is allocated from `NEUTRAL_*`
+  and shows as distress, so a sector can show more distress beacons than its distress count.
+  Fandom names this exact event as its example.
+
+  > ⚠️ Fandom explains it by saying the neutral line is filled *before* the distress line.
+  > That is wrong for the sectors it applies to: in `ENGI_HOME`, `ENGI_SECTOR` and both Rock
+  > sectors, `sector_data.xml` places the distress line first. The *outcome* holds — the tag
+  > shows the marker wherever the event lands — but the mechanism does not, so the renderer
+  > derives the before/after clause per sector rather than asserting Fandom's version.
+- The reverse also happens: events allocated from a `DISTRESS_BEACON_*` list that carry no
+  distress tag, and so never show the marker. Fandom calls these a mistake in the data.
+
+`rollup.markers` carries both directions (`events`, `marked_outside_allocation`,
+`allocated_but_unmarked`), plus store-marked events and an environment breakdown.
+
 ### 4.2 Sections
 
 A section is read off the entry name, which is highly regular across all 19 sectors:
@@ -154,7 +213,8 @@ why `DEEP_SPACE_SECTOR` and `ABANDONED_SECTOR` get no page.
 
 Every number a stat tile may show is precomputed under `metrics`:
 
-- `beacons_min`, `beacons_max`
+- `beacons_min`, `beacons_max` — the allocation totals, **not** the map size
+- `grid_beacons` (24, the map ceiling), `at_risk_entries`
 - `distinct_events`, `always_fight_events`, `may_fight_events`, `crew_loss_events`,
   `crew_gain_events`, `boarder_events`, `unique_events`, `gated_events`, `quest_start_events`
 - `section:<name>:min` / `:max` — e.g. `section:hostile:min`
@@ -224,6 +284,13 @@ else is escaped. `{{EVENT_ID}}` must name an event in this sector's pool (S2).
    blackout than on boarders.
 6. **The lede carries the page.** Lead with the thing a player would want to know before
    jumping in, not with a restatement of the sector's name.
+7. **Do not restate what the page already renders.** The budget carries placement order and
+   the at-risk chips; the markers section carries the distress mismatch. Copy earns its place
+   by saying what those mean *here* — "the distress line is last, so the guaranteed distress
+   beacon is the first thing this sector drops" — not by repeating them.
+8. **The beacon totals are allocation, not map size.** A sector allocating 19–35 slots does
+   not have 35 beacons; it has at most 24 and discards the rest. Never write the allocation
+   range as though it were the number of stops.
 
 ---
 
@@ -238,14 +305,19 @@ Page order, all of it derived except where marked:
 
 1. **Header** — eyebrow (`Sector profile · <ID>`), title, *lede (copy)*, fact chips
 2. **Stat tiles** — *labels from copy*, numbers from metrics
-3. **Beacon budget** — one row per entry, solid blocks for `min`, faded for `max − min`;
-   hostile and boarder rows are red. Then the legend, the entry beacon, and the *callout (copy)*
-4. **Pool sections** — one per entry, in section order, each row a card-derived title, id and
+3. **Beacon budget** — one row per entry **in placement order**, numbered, solid blocks for
+   `min` and faded for `max − min`; hostile and boarder rows are red; `placed first` and
+   `may be cut` chips from `placement`. Then the legend, the generation notes (§4.1b), the
+   entry beacon, and the *callout (copy)*
+4. **Beacon markers** (§4.1c) — the distress-marked pool, the two mismatch cases, the
+   store-marked pool. Fully derived; no copy hook, because it is a data finding
+5. **Pool sections** — one per entry, in section order, each row a card-derived title, id and
    tags; *section note (copy)*; the AE delta block where one exists (§4.4)
-5. **Quest chain** *(copy, optional)*
-6. **Panels** — *copy*, plus the generated crew-rarity panel
-7. **Footnotes** — sources, and one clause per condition that applies: the `unique` scope
-   question, the no-weights rule, ambiguous entries, inline outcomes with no id, missing trees
+6. **Quest chain** *(copy, optional)*
+7. **Panels** — *copy*, plus the generated crew-rarity panel
+8. **Footnotes** — sources, the note that generation rules are community-derived, and one
+   clause per condition that applies: the `unique` scope question, the no-weights rule,
+   ambiguous entries, inline outcomes with no id, missing trees
 
 ---
 
@@ -339,3 +411,13 @@ stable. A raw HTML file sent with SendUserFile does not render.
 - Two allocation systems exist in the data and this pipeline reads only the first
   (`sector_data.xml`). If `<eventCounts>` in `newEvents.xml` is live, some sectors draw from
   lists no page here shows. See `wiki/concepts/sector-event-allocation.md`.
+- **The generation rules in §4.1b are not from the game files.** They come from the community's
+  reverse-engineering (`raw/wiki/sectors.md`, citing an xftl teardown this repo does not hold).
+  The 24-beacon ceiling, the 80%-per-cell grid and the stop-when-full rule are all inherited
+  uncertainty, and the pages say so in a footnote. `at_risk` is derived from that ceiling, so
+  it inherits it too.
+- The map's **beacon floor is unknown**, so nothing on these pages claims a minimum number of
+  stops — only the allocation minimum, which is a different quantity.
+- Whether a marker is drawn from `<distressBeacon/>` alone is Fandom's account, not something
+  `raw/gamedata/` states. The *membership* data behind the markers section is exact; the claim
+  about what the map draws is medium-reliability.

@@ -14,8 +14,8 @@
   "callout": "**Versus a plain Engi Controlled Sector:** the same pools, two differences — the guaranteed `ENGI_UNLOCK_1` beacon, and `NEUTRAL_ENGI` rising from 4–6 to 5–7. Slightly more content, the same danger.",
 
   "section_notes": {
-    "HOSTILE_ENGI": "The Engi hold a non-aggression pact with the Rebels, so none of these are Engi ships.",
-    "NEUTRAL_ENGI": "The deepest pool in the sector, and where both halves of the Crystal route sit: {{ASTEROID_DERELICT_SHIP}} hands out the Damaged Stasis Pod, and {{ZOLTAN_CREW_STUDY}} is where the pod becomes a Crystal crew member.",
+    "HOSTILE_ENGI": "The Engi hold a non-aggression pact with the Rebels, so none of these are Engi ships. This line is filled last, so it is also where the shortfall lands: the sector asks for up to 29 beacons on a map that holds 24, and everything above this has already taken its share. Expect the low end of 5–7 more often than the high end.",
+    "NEUTRAL_ENGI": "The deepest pool in the sector, filled second-to-last, and where both halves of the Crystal route sit: {{ASTEROID_DERELICT_SHIP}} hands out the Damaged Stasis Pod, and {{ZOLTAN_CREW_STUDY}} is where the pod becomes a Crystal crew member.",
     "QUESTS_ENGI": "Two events outside this list can also plant the Hidden Federation Base marker: {{CIVILIAN_ASTEROIDS_BEACON}}, and {{ENGI_STATION_DISTRESS}} if you have Engi crew."
   },
 
@@ -79,6 +79,15 @@
         { "lead": "Systems", "text": "{{ENGI_VIRUS}} can halve your shields **and** your engines before the fight even starts." },
         { "lead": "Boarders", "text": "Six events put someone aboard — up to four at {{FUELING_STATION}}, two to three humans on {{FEDERATION_PLANET_SIGNAL}}." },
         { "lead": "Missiles", "text": "{{ENGI_FLEET_DELAY}} trades two missiles for two jumps of fleet delay. Cheap if you are not flying missiles." }
+      ]
+    },
+    {
+      "title": "Reading the map here",
+      "items": [
+        { "lead": "Stores", "text": "Two are guaranteed and the line is filled second, so they always survive the squeeze. Three more events can open a shop on top of that — {{PIRATE_BRIBER}}, {{MERCENARY_WORK_START}} and {{QUEST_ESCORT}}." },
+        { "lead": "Distress", "text": "More distress markers appear than the one-to-three the table promises, because {{ASTEROID_DERELICT_SHIP}} carries the tag from the neutral line as well. A distress beacon here is a live candidate for the stasis pod." },
+        { "lead": "No nebula", "text": "This sector allocates no nebula line at all, so sensors work everywhere and nothing slows the fleet for you. What you see on the map is what you get." },
+        { "lead": "The exit", "text": "Never one of the beacons below — exits draw from a list shared by every sector, so nothing here tells you what is waiting at it." }
       ]
     }
   ]

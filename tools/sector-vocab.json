@@ -6,40 +6,104 @@
     "min_sector": "minSector",
     "tracks": "tracks",
     "data": "Advanced Edition data",
-    "start": "entry beacon"
+    "start": "entry beacon",
+    "earliest": "earliest sector"
   },
   "headings": {
     "budget": "Beacon budget",
     "budget_meta": "what the sector is required to place",
     "chain": "Quest chain",
     "rarity": "Crew in stores",
-    "panels": "Notes"
+    "panels": "Notes",
+    "markers": "Beacon markers",
+    "markers_meta": "what the map can tell you before you jump"
+  },
+  "generation": {
+    "order": "Lines are filled in this order, and the map holds at most {grid} beacons ({grid_min}–{grid} by the community wiki's count). When they run out, generation stops — a line near the bottom can receive nothing at all.",
+    "exhaust": "This sector allocates up to {max} slots against {grid} beacons, so the bottom of the table is a wish list rather than a promise.",
+    "at_risk": "Could be cut entirely if everything above rolls high: {names}.",
+    "nebula": "Placed before everything else, whatever the file order, because the cloud graphics come first: {names}. A cloud drawn over an ordinary beacon converts it, and that beacon draws from the shared NEBULA list instead.",
+    "fallback": "Beacons still empty at the end of the table are filled from the shared {list} list ({ae} under Advanced Edition).",
+    "exit": "The exit beacon is not in this table at all — it draws from the shared {list}, and an exit inside a cloud is always empty.",
+    "source": "Generation rules per the community's reverse-engineering of the map generator; the game files state none of them.",
+    "always_short": "Cannot be filled even in the best case — the minima above it already use up the map: {names}.",
+    "cannot_meet_minimum": "This sector's minimum allocation is {min} against {grid} beacons, so it can never place everything it asks for."
+  },
+  "markers": {
+    "distress": "Events here that carry the distress tag, so the beacon shows a distress marker. The map only draws distress and store markers on beacons adjacent to you, so this is a next-jump signal, not a plan for the sector:",
+    "outside": "Drawn from other lists but still carrying the distress tag, so they show the marker too — which is how a sector can show more distress beacons than its distress count: {names}.",
+    "unmarked": "The reverse case: allocated from the distress list but carrying no distress tag, so they do not show the marker — {names}.",
+    "store": "Events that open a store. A store beacon is marked only once you are within one jump of it, and an event that opens a shop as a reward is not marked at all until you arrive:",
+    "scanners": "Long-Ranged Scanners add a hazard reading and a possible-ship reading, still only for adjacent beacons. They never name the event, and a no-ship reading can still be a fight.",
+    "outside_earlier": "They are also filled before the distress line, so they take their beacons first. This is the case Fandom uses as its worked example.",
+    "outside_later": "They are filled after the distress line, so they add markers on top of it rather than competing with it for beacons."
   },
   "sections": {
-    "special":  { "label": "Named beacons",  "hint": "placed by name, not drawn from a pool" },
-    "hostile":  { "label": "Hostile",        "hint": "combat unless the row says otherwise" },
-    "boarders": { "label": "Boarders",       "hint": "something comes aboard" },
-    "neutral":  { "label": "Neutral",        "hint": "a choice, sometimes a fight" },
-    "nebula":   { "label": "Nebula",         "hint": "inside the cloud" },
-    "distress": { "label": "Distress",       "hint": "someone is calling for help" },
-    "items":    { "label": "Items",          "hint": "free kit, trades and stations" },
-    "store":    { "label": "Stores",         "hint": "" },
-    "quests":   { "label": "Quest starts",   "hint": "marks a beacon elsewhere on the map" },
-    "empty":    { "label": "Empty",          "hint": "flavour text, nothing happens" }
+    "special": {
+      "label": "Named beacons",
+      "hint": "placed by name, not drawn from a pool"
+    },
+    "hostile": {
+      "label": "Hostile",
+      "hint": "combat unless the row says otherwise"
+    },
+    "boarders": {
+      "label": "Boarders",
+      "hint": "something comes aboard"
+    },
+    "neutral": {
+      "label": "Neutral",
+      "hint": "a choice, sometimes a fight"
+    },
+    "nebula": {
+      "label": "Nebula",
+      "hint": "inside the cloud"
+    },
+    "distress": {
+      "label": "Distress",
+      "hint": "someone is calling for help"
+    },
+    "items": {
+      "label": "Items",
+      "hint": "free kit, trades and stations"
+    },
+    "store": {
+      "label": "Stores",
+      "hint": ""
+    },
+    "quests": {
+      "label": "Quest starts",
+      "hint": "marks a beacon elsewhere on the map"
+    },
+    "empty": {
+      "label": "Empty",
+      "hint": "flavour text, nothing happens"
+    }
   },
   "tags": {
-    "fight":     "Fight",
+    "fight": "Fight",
     "may-fight": "May fight",
-    "boarders":  "Boarders",
-    "crew":      "Crew",
+    "boarders": "Boarders",
+    "crew": "Crew",
     "crew-loss": "Crew loss",
-    "store":     "Store",
-    "quest":     "Quest",
-    "reward":    "Reward",
-    "cost":      "Cost",
-    "unique":    "Unique"
+    "store": "Store",
+    "quest": "Quest",
+    "reward": "Reward",
+    "cost": "Cost",
+    "unique": "Unique"
   },
-  "tag_order": ["fight", "may-fight", "boarders", "crew-loss", "crew", "quest", "store", "reward", "cost", "unique"],
+  "tag_order": [
+    "fight",
+    "may-fight",
+    "boarders",
+    "crew-loss",
+    "crew",
+    "quest",
+    "store",
+    "reward",
+    "cost",
+    "unique"
+  ],
   "tag_limit": 3,
   "rail": {
     "fight": "fight",
@@ -62,8 +126,11 @@
   },
   "budget": {
     "legend": "Solid blocks are the minimum the sector must place; faded blocks are the optional extra.",
+    "nebula_mark": "placed first",
+    "risk_mark": "may be cut",
     "entry": "entry beacon is always {event}.",
-    "zero": "allocated 0–0 — the sector reserves the list but places none."
+    "zero": "allocated 0–0 — the sector reserves the list but places none.",
+    "short_mark": "always short"
   },
   "footnotes": {
     "sources": "Built from {files}.",
@@ -71,7 +138,9 @@
     "unweighted": "The shipped event lists carry no weights, so no beacon here has stated odds. A pool entry listed twice is counted as ×2 and marked.",
     "ambiguous": "Defined in the files both as an event list and as a single event, and read here as the list: {names}.",
     "anonymous": "{count} outcome(s) in these lists are written inline with no event id of their own, so they have no row here.",
-    "no_card": "No event tree was found for {names}, so those rows carry no tags."
+    "no_card": "No event tree was found for {names}, so those rows carry no tags.",
+    "min_sector": "minSector in the files is zero-indexed, so the \"earliest sector\" chip is that value plus one — the number a player counts from the start of a run. The community wiki states the same offset.",
+    "floor": "The 24-beacon ceiling follows from the 6×4 grid; the 19-beacon floor is stated by the community wiki alone and is not derivable from anything else here, so the at-risk marks use the ceiling."
   },
   "format": {
     "range_join": "–",

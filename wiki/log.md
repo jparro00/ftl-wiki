@@ -1732,3 +1732,220 @@ Reported by the authoring agents, **not yet filed** — each needs a wiki edit:
   `MANTIS_NAMED_THIEF` ([[sector-mantis-homeworlds]]), `FLAGSHIP_CONSTRUCTION`
   ([[sector-rebel-stronghold]]), `ZOLTAN_CREW_STUDY` without the pod
   ([[sector-zoltan-controlled-sector]]).
+
+---
+
+## [2026-08-15] ingest | Sectors as a system — 12 Fandom pages on map generation, fleet pursuit and the store economy
+
+**Acquisition pass only.** Fetched via the MediaWiki API (`api.php`, same user-agent and
+throttle as `tools/pull-fandom.ps1`, which was not modified). Filed to `raw/wiki/`, appended
+to `raw/wiki/_manifest.csv`, one `wiki/sources/` page each. **No `wiki/sectors/` page was
+touched** — putting these facts onto the per-sector pages is a follow-up.
+
+### The structural finding
+Every individual sector title on Fandom — `Civilian Sector`, `Rock Homeworlds`,
+`Uncharted Nebula`, `The Last Stand`, all 20 of them — is a **redirect to the single
+`Sectors` page**. There are no per-sector pages to ingest. `Sector Map`, `Federation Space`
+and `Standard Space` do not exist at all.
+
+### New raw files (all Retrieved: 2026-08-15)
+
+| File | Title | Rev |
+|---|---|---|
+| `raw/wiki/sectors.md` | Sectors | 74796 |
+| `raw/wiki/beacons.md` | Beacons | 71696 |
+| `raw/wiki/rebel-fleet.md` | Rebel Fleet | 73264 |
+| `raw/wiki/environmental-hazards.md` | Environmental Hazards | 74893 |
+| `raw/wiki/stores-and-resources.md` | Stores and resources | 74856 |
+| `raw/wiki/template-stores-number-of-stores-by-sectors.md` | Template: Stores: number of stores, by sectors | 73433 |
+| `raw/wiki/template-stores-additional-stores-from-events-by-sectors.md` | Template: Stores: additional stores from events, by sectors | 73435 |
+| `raw/wiki/scrap.md` | Scrap | 73343 |
+| `raw/wiki/sensors.md` | Sensors | 73457 |
+| `raw/wiki/ftl-advanced-edition.md` | FTL: Advanced Edition | 74567 |
+| `raw/wiki/the-rebellion.md` | The Rebellion | 68216 |
+| `raw/wiki/guides-and-tips.md` | Guides and tips | 74605 |
+
+`raw/wiki/random-events.md` was already present from an earlier pull and was not re-fetched
+(`raw/` is immutable).
+
+### New source pages
+[[source-fandom-sectors]], [[source-fandom-beacons]], [[source-fandom-rebel-fleet]],
+[[source-fandom-environmental-hazards]], [[source-fandom-stores-and-resources]],
+[[source-fandom-template-stores-number-of-stores-by-sectors]],
+[[source-fandom-template-stores-additional-stores-from-events-by-sectors]],
+[[source-fandom-scrap]], [[source-fandom-sensors]], [[source-fandom-ftl-advanced-edition]],
+[[source-fandom-the-rebellion]], [[source-fandom-guides-and-tips]].
+
+### What this adds that `sector_data.xml` cannot
+- The **allocation-vs-realisation gap**: sectors hold 19–24 beacons, events are placed in
+  file order, and placement stops when beacons run out. Several sector definitions allocate
+  more slots than 24 beacons — so bottom-of-list entries are frequently never placed.
+- `NEBULA_*` lists are processed **first**, out of file order, and cloud graphics convert
+  overlapped non-nebula beacons into extra nebula beacons.
+- Leftover beacons fall back to `NEUTRAL` (`OVERRIDE_NEUTRAL` under AE); exit events come
+  from a shared `EXIT_LIST` outside the sector definition.
+- **Rebel fleet advance modifiers**, quantified for the first time in this wiki.
+- **Quest-marker placement rules** — overwrite exclusions, the nebula ban, the push into the
+  next sector, the sector-7 cancellation.
+- **Guaranteed store counts for all 13 sector types** in one table, plus which store-spawning
+  events reach which sector.
+
+### Contradictions flagged
+- **Nebula pursuit reduction in nebula sectors.** [[source-fandom-rebel-fleet]] says the
+  advance is reduced "by 1/5 of regular beacon advance rate"; [[source-fandom-sectors]] and
+  [[source-fandom-environmental-hazards]] say "by 20%". Reduce-*to*-20% vs reduce-*by*-20%
+  are very different. No file in `raw/gamedata/` carries pursuit rates. Unresolved.
+- **The `Sectors` page contradicts its own tables by design.** Its NOTE 1 warns that the
+  per-sector store/distress/quest counts it prints — the same numbers already in
+  `wiki/sectors/` — describe allocation, not what a player sees. Both readings stand.
+- **Unverifiable, not contradicted**: "19–24 beacons", the 6×4 / 80% grid, the 165-pixel
+  connection radius and the 48/32/20 sector-colour split are all sourced to the xftl
+  reverse-engineering notes, which this repo does not hold.
+- No contradiction found against `sector_data.xml` on any value both state. Store counts,
+  `minSector` (read 1-indexed) and `unique` all match across every sector.
+
+### Gap
+The Fandom wiki has **no content of its own on sector choice** — how many next-sector
+options appear, which sectors connect, any depth rule beyond `minSector` — and **no sourced
+sector danger ranking**. Its entire routing guidance is three outbound links (Crow Revell's
+2019 sector guide and 2022 sector tier list, mekloz's sector-profit Reddit dataset), none of
+which this repo holds. Fetching those is the obvious next acquisition.
+
+---
+
+## [2026-08-15] ingest | Beacon generation and map markers — the engine algorithm, and what the icon actually follows
+
+Second acquisition pass on the same brief, prompted by two follow-up questions from the repo
+owner. **Still acquisition only — no `wiki/sectors/` page was touched.** The headline: the
+authoritative answers were not on Fandom at all. They were in the xftl reverse-engineering
+notes (which Fandom merely *cites*) and in `raw/gamedata/text_misc.xml`, which we already held.
+
+### New raw files (Retrieved: 2026-08-15)
+
+| File | Title | Rev |
+|---|---|---|
+| `raw/wiki/augmentations.md` | Augmentations | 74810 |
+| `raw/wiki/game-bugs.md` | Game bugs | 74618 |
+| `raw/wiki/template-distress-events-by-sectors.md` | Template: Distress events by sectors | 74574 |
+| `raw/modding/2026-08-15-xftl-sector-map.txt` | xftl `doc/sector-map` | no upstream rev |
+| `raw/modding/2026-08-15-xftl-stores.txt` | xftl `doc/stores` | no upstream rev |
+
+New source pages: [[source-fandom-augmentations]], [[source-fandom-game-bugs]],
+[[source-fandom-template-distress-events-by-sectors]], [[source-xftl-sector-map]],
+[[source-xftl-stores]].
+
+### 1. Beacon generation — layout first, allocation second
+`raw/modding/2026-08-15-xftl-sector-map.txt` names the engine methods. Summary in
+[[source-xftl-sector-map]]. The load-bearing correction: **`PopulateGrid` builds and connects
+the beacon graph with no reference to events; the `sector_data.xml` min/max counts are then
+poured into whatever beacons exist.** So the counts are *satisfied in file order until the
+beacons run out* — not satisfied exactly, and not describing the map. Also captured: the
+sector-column graph (2–4 per column, first column always 2, six middle columns), the exit
+beacon's ≥5-jump constraint with 16 retries, the 20%-empty-cell rule with its anti-clustering
+guard, the 110×110 cell / 165px connection radius, and the Last Stand base/flagship placement
+constants.
+
+### 2. Beacon markers — the icon follows the `<distressBeacon/>` tag, not the allocation list
+Settled, and from two independent directions:
+
+- `raw/gamedata/text_misc.xml` (already held, [[source-text-misc]]) carries the **complete
+  marker vocabulary** as `map_*_loc` strings — `map_distress_loc`, `map_merchant_loc`,
+  `map_store_loc`, `map_quest_loc`, `map_exit_loc`, `map_repair_loc`, `map_ship_loc`,
+  `map_unvisited_loc`, `map_nothing_loc`, `map_hostile_loc`, `map_fleet_loc`,
+  `map_rebels_loc`, `map_nebula_loc`, `map_nebula_fleet_loc`, `map_ion_loc`,
+  `map_asteroid_loc`, `map_sun_loc`, `map_pulsar_loc`, `map_pds_loc`, `map_pds_fleet`,
+  `map_base_loc`, `map_boss_loc`, `map_current_loc`.
+- Fandom's `Distress events by sectors` template has **exactly 30 rows**, and
+  `raw/gamedata/` has **exactly 30 `<distressBeacon/>` tags** — a one-for-one match.
+  `ASTEROID_DERELICT_SHIP` is tagged and in the table despite being allocated from
+  `NEUTRAL_ENGI`/`NEUTRAL_ROCK`; `ENGI_STATION_DISTRESS`, `PIRATE_CIVILIAN_BEACON` and
+  `REBEL_VS_FEDERATION` are untagged and absent despite sitting in distress allocation.
+  Fandom states the reason verbatim: *"some other events were meant to occur at a distress
+  beacon, but they won't due to coding errors."*
+- Same pattern for stores: `<store/>` marks the store beacons — `STORE*`, `NEBULA_STORE*`,
+  plus the event stores `QUEST_STORE`, `QUEST_ESCORT`, `PIRATE_BRIBER`, `SLUG_DRINK`,
+  `ZOLTAN_TRADE_HUB`, `LANIUS_SCARED_CIVILIAN`, `STORE_REBELSIDE`, and the deliberately
+  deceptive `NEBULA_SLUG_FAKE_STORE`. **Repair is a separate tag, `<repair/>`, on
+  `BOSS_REPAIR_STATION`** — not a store.
+
+### Contradictions flagged
+- **Nebula pursuit — RESOLVED, all sides kept.** xftl gives the advance in px/jump: 64 normal,
+  32 nebula-in-normal-sector, 51 nebula-in-nebula-sector. That is −50% and −20%, so
+  [[source-fandom-environmental-hazards]]'s "by 20%" is right and
+  [[source-fandom-rebel-fleet]]'s "by 1/5 of regular advance rate" is misleading wording.
+- **Quest marker filter — Fandom is incomplete.** `StarMap::AddQuest` also excludes visited
+  beacons, fleet-overtaken beacons, **distress** beacons and the player's current beacon, and
+  the nebula exclusion is per beacon, not per area. [[concept-quest-beacon-placement]] cites
+  only the Fandom version and should be revised.
+- **"Not many jumps left" — now defined.** The candidate must be fewer jumps away than the
+  number of jumps before the Rebels reach it. This closes an open question on
+  [[concept-quest-beacon-placement]].
+- **Sector-7 quests — same outcome, different mechanism.** Fandom says cancelled because
+  sector 8 forbids quests; the engine simply never applies the delay from sector 7 on.
+
+### Reads like inference, not datamining
+Flagged on the source pages, repeated here: the xftl author's own hedges — the grey fourth
+sector-colour value "seems to involve… might be somehow related to the crystal homeworlds? Or
+maybe just something cut", the exclusive/inclusive ambiguity in the Last Stand path constants,
+"at least in the build I'm looking at", and the note that `AddSectorColumn` is "annoying to
+read due to inlining". Fandom's own inference: the NOTE 1 distress caveat reasons from event
+ordering rather than from testing, and its quest-overwrite exclusion list carries two
+`@to-do: test and verify` comments. None of the xftl document is versioned or dated.
+
+## [2026-08-15] tooling | Sector pages rebuilt on the generation research — placement order and beacon markers
+
+The Fandom/xftl ingest above changed what a sector page should say, so the pipeline and all 19
+pages were reworked around it. Spec: `tools/SECTOR-PAGE.md` §4.1b and §4.1c, both new.
+
+**Two findings drove it.**
+
+1. **The allocation table is a queue, not a shopping list.** Lines are filled in
+   sector-definition order and generation *stops* when the map runs out of beacons, so file
+   order is placement priority and a line near the bottom can receive nothing. The extractor
+   had been sorting entries into reading order — throwing away the most useful thing the table
+   says. `entries` now keeps file order and carries `placement`; the budget section renders it
+   numbered, with `placed first` and `may be cut` chips. Nebula lists jump the queue.
+2. **The on-map marker and the allocation entry are different sets.** `<distressBeacon/>` is
+   what draws a distress marker, and it does not follow the `DISTRESS_BEACON_*` list.
+   `ASTEROID_DERELICT_SHIP` — the Damaged Stasis Pod — is allocated from `NEUTRAL_*` and shows
+   as distress; several events inside distress lists carry no tag and never show one. A new
+   generated **Beacon markers** section renders both directions. This answers "what can a
+   distress-tagged beacon be *here*", which the pool sections could not.
+
+**Corroboration.** The 30 `<distressBeacon/>` tags in `raw/gamedata/` map one-for-one onto the
+30 rows of Fandom's distress-by-sector template — the derived set is exact, independently of
+Fandom's prose.
+
+**New derived data:** `generation` (grid ceiling, allocation totals, `can_exhaust_map`,
+`at_risk_entries`, `always_short_entries`, `cannot_meet_minimum`), `rollup.markers`, and
+`earliest_sector`.
+
+**Findings worth keeping:**
+- **Hidden Crystal Worlds cannot satisfy its own table.** Minimum allocation 25 against a
+  24-beacon ceiling, so `NEUTRAL_CRYSTAL` is always short — the only such line in the game.
+- **`minSector` is zero-indexed.** The fact chip now reads "earliest sector 3" where the file
+  says `2`; Fandom states the same offset for all six gated sectors.
+- Slug Home Nebula and Zoltan Homeworlds are the most squeezed (35 and 33 slots against 24).
+
+**Five errors corrected during the run**, four of them found by the authoring agents:
+1. The nebula-first rule matched `NEBULA_` only, so a bare `NEBULA` line did not jump the
+   queue — wrong for Federation Space and the Civilian Sector.
+2. The markers callout asserted the tagged-elsewhere event is placed *before* the distress
+   line. That is Fandom's explanation and it is wrong for every sector it applies to; the
+   clause is now derived per sector. **Fandom's outcome holds, its mechanism does not.**
+3. The store-marker string claimed fixed stores are "labelled on the map from the start".
+   `raw/wiki/beacons.md` is explicit: store and distress markers show only within one jump.
+4. `[[source-fandom-template-stores-additional-stores-from-events-by-sectors]]` misread two
+   cells of its own table; corrected there, with both readings kept.
+5. A beacon floor of 19 is stated by the community wiki alone, so it is carried as data and
+   reported, but `at_risk` is computed against the 24 ceiling only.
+
+All 19 pages rebuilt, smoke-tested and determinism-checked; `check-sector-numbers.py` reports
+no gate mismatches and 37 subset-claim candidates, each verified by hand.
+
+### Deferred
+Backlinks are one-directional: the 19 sector pages now link concept, chain and entity pages
+that do not yet point back. `wiki/concepts/quest-beacon-placement.md` needs revising against
+`StarMap::AddQuest` (its exclusion list is incomplete and its open question is now answered),
+and `wiki/concepts/sector-event-allocation.md` should record that the `OVERRIDE_` substitution
+question now has weak community evidence on both sides.

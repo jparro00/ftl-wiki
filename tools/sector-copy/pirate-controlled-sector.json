@@ -1,23 +1,23 @@
 {
   "slug": "pirate-controlled-sector",
 
-  "lede": "The hostile list is the single biggest entry on the budget — **6 to 8 of a 16-beacon minimum are a fight**, before anything else is rolled — and exactly one more beacon puts boarders on your ship, every run, no exceptions. Everything friendly is rationed to the same 1–2 the map gives anyone: one to two stores, one to two item beacons, and a neutral pool that is mostly other people's distress calls.",
+  "lede": "Six to eight beacons here are a fight — the biggest single line the sector asks for — and exactly one more puts boarders on your ship, every run, no exceptions. The rest of the table is a wish list: it asks for more events than the map has room for, and because the neutral line is filled **last**, the deepest and most interesting pool in the sector is the one that gets cut. What is guaranteed is the shooting.",
 
   "stats": [
-    { "metric": "beacons_min..beacons_max", "label": "Beacon spread" },
+    { "metric": "beacons_min..beacons_max", "label": "Event slots asked for" },
+    { "metric": "grid_beacons", "label": "Beacons the map can hold" },
     { "metric": "section:hostile:min..section:hostile:max", "label": "Hostile beacons" },
     { "metric": "entry:BOARDERS_PIRATE:min..entry:BOARDERS_PIRATE:max", "label": "Boarding beacons" },
-    { "metric": "section:nebula:min..section:nebula:max", "label": "Nebula beacons" },
-    { "metric": "distinct_events", "label": "Events in pool" }
+    { "metric": "section:nebula:min..section:nebula:max", "label": "Nebula beacons" }
   ],
 
-  "callout": "**This is not a nebula sector, and it still allocates a nebula entry 0–5.** The same map generator can give you none of them or nearly a third of the sector inside the cloud, where the empty beacon's own text is \"you can't see anything through the thick gases surrounding your ship\". Ten of those 13 events arrive through the shared `NEBULA_REBEL` list, which is why several of them are drawn twice or three times over.",
+  "callout": "**Versus Rebel Controlled space:** the same nine lines, in the same order, with the same numbers — one difference, Rebel space allocates 0–2 quests against this sector's 0–1. What changes between them is which lists those lines point at, not how many beacons anything gets.",
 
   "section_notes": {
     "HOSTILE_PIRATE": "Four of the seven open with weapons already hot, and the three marked may-fight are not really escapes: {{PIRATE_ASTEROID}} offers one button, \"Turn and fight\"; {{PIRATE_NO_ESCAPE}} fights either way and the **Hacking** option only chooses whether your engines sit pinned at 1 for the whole fight or your Hacking system goes dark instead; {{PIRATE_SLAVER}} takes a crew member, or an **Engines 6** run that fails back into the fight one time in three.",
-    "BOARDERS_PIRATE": "Not a risk — a certainty. `min=1 max=1` means one of these five happens every run, with 2 to 5 humans on board. Only {{STATION_SICK}} and {{FLOATING_CARGO}} let you find out before you commit. This entry name is also defined elsewhere as a single event — 2–4 random-species boarders whose text is an unfinished placeholder string, which is a strong hint the list is the reading that ships.",
-    "NEUTRAL_PIRATE": "The deepest pool here, but only nine names in the file: one of them is the generic distress list, which is why 14 of these 22 events are somebody calling for help. {{ASTEROID_DERELICT_SHIP}} is the one named item in the whole sector — the **Damaged Stasis Pod**, and the file's own comment on that line reads \"CRYSTAL UNLOCK\". {{TRAP_BEACON}} is the reason to read the rest of them twice.",
-    "NEBULA_PIRATE": "`NEBULA_PIRATE` is also the name of a single event: a plain hostile pirate with five text variants and nothing else in it. If the engine resolves the name that way instead, this entire 13-event pool collapses into one repeated fight — which is a large difference for up to five beacons.",
+    "BOARDERS_PIRATE": "Not a risk — a certainty. `min=1 max=1` means one of these five happens every run, with 2 to 5 humans on board, and at most 17 slots are placed ahead of it, so it is never the line that gets cut. Only {{STATION_SICK}} and {{FLOATING_CARGO}} let you find out before you commit. This entry name is also defined elsewhere as a single event — 2–4 random-species boarders whose text is an unfinished placeholder string, which is a strong hint the list is the reading that ships.",
+    "NEUTRAL_PIRATE": "The deepest pool here, but only nine names in the file: one of them is the generic distress list, which is why 14 of these 22 events are somebody calling for help. It is also the line filled last, so this is where the shortfall lands — including {{ASTEROID_DERELICT_SHIP}}, the one named item in the whole sector, the **Damaged Stasis Pod**, whose line in the file carries the comment \"CRYSTAL UNLOCK\". {{TRAP_BEACON}} is the reason to read the rest of them twice.",
+    "NEBULA_PIRATE": "`NEBULA_PIRATE` is also the name of a single event: a plain hostile pirate with five text variants, and — unlike every event in the list — no nebula environment on it at all. If the engine resolves the name that way instead, this 13-event pool collapses into one repeated fight and the clouds these beacons are drawn for are not there. That is a large difference for up to five beacons, and it is decided before any other line is placed.",
     "DISTRESS_BEACON_PIRATE": "Nine of these ten also sit in the neutral pool, so this entry mostly raises how often you get a distress beacon rather than what one can be. The exception is {{REFUGEE_DISTRESS_PIRATE}}, the pirate-sector swap for the generic refugee — refugees here trade fuel, missiles and drone parts instead of asking for charity.",
     "QUESTS_PIRATE": "Allocated 0–1, so the sector can hand out no quest at all. Two events outside this entry plant a marker anyway: {{CIVILIAN_ASTEROIDS_BEACON}} and {{REBEL_VS_FEDERATION}} both point at the hidden Federation base.",
     "NOTHING_PIRATE": "Even the empty beacon is pirate-flavoured: a ship de-cloaks behind you, you power up shields and weapons, and it flies past unimpressed."
@@ -61,17 +61,17 @@
         { "lead": "Cloaking ×4", "text": "Graded outs across the malfunctioning defense system, the plasma storm and the undetected Rebel — level 1 gambles, level 2 is clean, level 3 is better again." },
         { "lead": "Hacking ×3", "text": "Both events that hack **you** have a Hacking counter: the engine lockdown in {{PIRATE_NO_ESCAPE}}, and the sensor jam in {{BOARDERS_HACKING}} that otherwise leaves you at zero sensors with boarders already aboard." },
         { "lead": "Medbay ×4", "text": "Levels 2 and 3 both matter — {{STRANDED_BEACON}}, {{DISTRESS_STATION_DISEASE}}, and the advanced-Medbay cure inside {{STATION_SICK}} that turns a boarding party into a recruit." },
-        { "lead": "Sensors 2 / Long-Ranged Scanners", "text": "Scans the crates in {{FLOATING_CARGO}} before you bring them aboard — the same event that, unscanned, is a 2-in-4 chance of boarders." },
+        { "lead": "Sensors 2 / Long-Ranged Scanners", "text": "Scans the crates in {{FLOATING_CARGO}} before you bring them aboard — the same event that, unscanned, is a 2-in-4 chance of boarders. Neither reads anything inside the cloud." },
         { "lead": "Weapon Control 6", "text": "Turns {{NEBULA_PIRATE_SMUGGLE}} into a bribe you can pocket, and buys a warning shot at {{PIRATE_CIVILIAN_BEACON}} that half the time scares the pirate off the civilian entirely." }
       ]
     },
     {
       "title": "What you can leave with",
       "items": [
-        { "lead": "Augment", "text": "**Damaged Stasis Pod** at {{ASTEROID_DERELICT_SHIP}} — the only named item in the entire pool." },
+        { "lead": "Augment", "text": "**Damaged Stasis Pod** at {{ASTEROID_DERELICT_SHIP}} — the only named item in the entire pool, and it sits in the line the map cuts first." },
         { "lead": "Crew", "text": "34 events in this sector can put someone new on your ship. The slavers are the reliable ones: {{PIRATE_SLAVER}} and {{FRIENDLY_SLAVER}} both offer a **Mantis, Rockman or Engi**, one by buying, one by killing." },
         { "lead": "Crew", "text": "A **human** from {{STRANDED_BEACON}}, and paid hires at {{TAVERN_HIRE}}." },
-        { "lead": "Stores", "text": "1–2 guaranteed, plus two that are not on the budget at all: {{PIRATE_BRIBER}} can end with an arms dealer who normally only sells to Rebels, and {{MERCENARY_WORK_START}}'s dock rescue opens a shop and repairs 5 hull." },
+        { "lead": "Stores", "text": "1–2 guaranteed reads thin. It is not: four more events in the pool can open a shop on top of them, and the Advanced Edition item list adds a fifth. This is not the sector that starves you of places to spend." },
         { "lead": "Quests", "text": "6 events plant a marker. Beyond the merchant chain, {{ESCORT_BEACON}} and {{QUEST_ESCORT}} both feed the same escort target, and two more point at the hidden Federation base." },
         { "lead": "Scrap", "text": "41 of the 66 events are flagged unique, so the sector rewards jumping wide — repeats are far more likely to be the fights, which have no such flag." }
       ]
@@ -86,11 +86,14 @@
       ]
     },
     {
-      "title": "The fleet clock",
+      "title": "Reading the map here",
       "items": [
-        { "lead": "Buy time", "text": "{{MERCENARY}} sells 2 jumps of delay for 10–25 scrap, or a revealed map for 10–20. {{PIRATE_BRIBER}} can talk the Rebel scout you rescued into delaying the pursuit by 1." },
-        { "lead": "Lose time", "text": "{{CIVILIAN_ASTEROIDS_BEACON}} costs a jump to take, and both {{NEBULA_AUTO_WARNING}} and {{NEBULA_REBEL_UNDETECTED}} advance the fleet if the scout gets its message out." },
-        { "lead": "Net", "text": "Only two events in 66 move the clock in your favour, and both want scrap or a won fight first." }
+        { "lead": "The squeeze", "text": "On a map that fills all 24 cells, every line above the neutral pool rolling its maximum still leaves one beacon for a line that wants five or six. The stores, the fights and the boarding beacon are never the ones cut; the variance in this sector lives in its last two lines." },
+        { "lead": "Distress", "text": "The surplus distress markers all ride on the neutral line, which is filled after the distress line rather than before it — so here the extras are exactly what gets cut when the map fills. What you can see from one jump away is most often one of the ten drawn from the distress list itself, and {{TRAP_BEACON}} sits in both." },
+        { "lead": "The cloud", "text": "0–5 beacons are drawn into nebula before any other line is placed. In a sector that is not itself a nebula, sitting in one halves the Rebel advance for that jump — a cloud-heavy roll is free time on the clock, paid for with dead sensors while you are in it." },
+        { "lead": "Quest markers", "text": "A marker has to land on a beacon that is not a store, not a distress beacon, not already visited and not inside the cloud. Roll the nebula line high and that shortlist can come up empty, at which point the quest is handed to the next sector instead of this one." },
+        { "lead": "Buying time", "text": "{{MERCENARY}} sells 2 jumps of delay for 10–25 scrap, or a revealed map for 10–20; {{PIRATE_BRIBER}} can talk a rescued Rebel scout into 1. Against them, {{NEBULA_AUTO_WARNING}} and {{NEBULA_REBEL_UNDETECTED}} advance the fleet if the scout gets its message out, and {{CIVILIAN_ASTEROIDS_BEACON}} costs a jump to take." },
+        { "lead": "Hazards", "text": "Four beacons in the pool sit in an asteroid field or beside a sun, three more in a plasma storm that halves your reactor, and Advanced Edition adds a pulsar. While any of those is live the ship menu is locked — no upgrades, no weapon swaps, no moving crew — so the power you jumped in with is the power you fight with." }
       ]
     }
   ]

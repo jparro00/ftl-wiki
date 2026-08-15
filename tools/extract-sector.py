@@ -28,6 +28,14 @@ SCHEMA = "ftl-sector-profile/1"
 
 MAX_LIST_DEPTH = 4  # a sector list nesting deeper than this is a data bug, not a pool
 
+# The sector map is a 6x4 grid with an 80% chance of a beacon per cell, so 24 is the
+# ceiling. No source here states the floor, so nothing infers one.
+# (raw/wiki/sectors.md, "Technical details of sector generation and events")
+GRID_BEACONS = 24
+# The community wiki states a floor of 19 ("between 19 and 24 beacons"). Nothing else here
+# derives it, so it is carried as data and reported, but never used to mark a line at risk.
+GRID_BEACONS_MIN = 19
+
 
 def _load_extractor():
     """Reuse extract-event.py's XML index; its module name is not importable."""
@@ -243,11 +251,24 @@ class Trees:
                     out.append(x)
             return out
 
+        # Root flags describe the beacon itself rather than an outcome: <distressBeacon/>,
+        # <store/> and <environment/> are properties of the stop, not of a branch. They are
+        # what the map can mark a beacon with, so they are kept separate from `tags`.
+        root_flags = doc.get("flags") or {}
+        marker = {}
+        if root_flags.get("beacon"):
+            marker["beacon"] = root_flags["beacon"]
+        if root_flags.get("store") or flags["store"]:
+            marker["store"] = True
+        if root_flags.get("environment"):
+            marker["environment"] = root_flags["environment"]
+
         return {
             "card": True,
             "slug": doc.get("slug"),
             "title": doc.get("title"),
             "tags": tags,
+            **({"marker": marker} if marker else {}),
             "gates": uniq(found["gates"]),
             "items": uniq(found["items"]),
             "crew_classes": uniq(found["crew_classes"]),
@@ -386,6 +407,53 @@ class SectorExtractor:
             }
         return entry
 
+    # -- placement ---------------------------------------------------------
+
+    def rank(self, entries):
+        """Work out the order the game actually fills these lines in, and what that costs.
+
+        Two rules from the community's reverse-engineering of the generator, both
+        recorded in raw/wiki/sectors.md:
+
+        - Every list whose name starts with NEBULA_ is processed **first**, out of file
+          order, because the cloud graphics have to be drawn before anything else.
+        - Everything else is processed in file order. A line is filled completely before
+          the next begins, and when the map runs out of beacons the process simply stops —
+          so a line near the bottom may receive nothing at all.
+
+        The map holds at most 24 beacons (a 6x4 grid, each cell 80% likely to hold one).
+        The floor is not stated by any source here, so only the ceiling is used: an entry
+        is flagged at risk when the lines placed before it could, at their maxima, consume
+        the whole map. That is a possibility, not a prediction.
+        """
+        def nebula_first(entry):
+            # Fandom words the rule as "any event list that starts with NEBULA_", but the
+            # reason it gives is that the cloud graphics must be drawn before anything
+            # else — which applies just as much to the bare NEBULA list. Its own ordered
+            # listing for the starting sector confirms it: STANDARD_SPACE's NEBULA line is
+            # seventh in sector_data.xml and first in the "proper order" listing.
+            return entry["name"] == "NEBULA" or entry["name"].startswith("NEBULA_")
+
+        ordered = ([e for e in entries if nebula_first(e)]
+                   + [e for e in entries if not nebula_first(e)])
+        before_min = before_max = 0
+        for position, entry in enumerate(ordered):
+            entry["placement"] = {
+                "position": position,
+                "nebula_first": nebula_first(entry),
+                "before_min": before_min,
+                "before_max": before_max,
+                # Could get nothing: everything above it, at maxima, fills the map.
+                "at_risk": before_max >= GRID_BEACONS,
+                # Cannot be satisfied even in the best case: the minima above it plus its
+                # own minimum already exceed the map. Hidden Crystal Worlds asks for 25
+                # beacons at minimum, so its last line is always short.
+                "always_short": before_min + entry["min"] > GRID_BEACONS,
+            }
+            before_min += entry["min"]
+            before_max += entry["max"]
+        return ordered
+
     # -- rollups -----------------------------------------------------------
 
     def rollup(self, entries):
@@ -418,7 +486,36 @@ class SectorExtractor:
         def tagged(tag):
             return sorted(r["id"] for r in events.values() if tag in (r.get("tags") or []))
 
+        # What the sector's beacons can be marked as, and — the part the allocation table
+        # cannot answer — whether the marker agrees with the list an event was allocated from.
+        # It does not: ASTEROID_DERELICT_SHIP carries <distressBeacon/> but is allocated from
+        # NEUTRAL_*, so a distress beacon in a Rock or Engi sector can be the stasis pod;
+        # and several events inside a DISTRESS_BEACON_* list carry no <distressBeacon/> at all.
+        distress = sorted(r["id"] for r in events.values()
+                          if (r.get("marker") or {}).get("beacon") == "distress")
+        allocated = sorted({r["id"] for entry in entries
+                            if entry["name"].startswith("DISTRESS_BEACON")
+                            for r in entry["events"]})
+        environments = {}
+        for record in events.values():
+            kind = (record.get("marker") or {}).get("environment")
+            if kind:
+                environments.setdefault(kind, []).append(record["id"])
+        markers = {
+            "distress": {
+                "events": distress,
+                "allocation_entries": sorted({e["name"] for e in entries
+                                              if e["name"].startswith("DISTRESS_BEACON")}),
+                "marked_outside_allocation": [i for i in distress if i not in allocated],
+                "allocated_but_unmarked": [i for i in allocated if i not in set(distress)],
+            },
+            "store": sorted(r["id"] for r in events.values()
+                            if (r.get("marker") or {}).get("store")),
+            "environment": {k: sorted(v) for k, v in sorted(environments.items())},
+        }
+
         return {
+            "markers": markers,
             "distinct_events": len(events),
             "no_card": sorted(r["id"] for r in events.values() if not r.get("card")),
             "always_fight": tagged("fight"),
@@ -442,6 +539,8 @@ class SectorExtractor:
         number on a sector page can never be typed by hand.
         """
         out = {
+            "grid_beacons": GRID_BEACONS,
+            "at_risk_entries": sum(1 for e in entries if e["placement"]["at_risk"]),
             "beacons_min": sum(e["min"] for e in entries),
             "beacons_max": sum(e["max"] for e in entries),
             "distinct_events": rollup["distinct_events"],
@@ -476,9 +575,17 @@ class SectorExtractor:
         slug = page_slug or sector_id.lower().replace("_", "-")
         title = page_title or display or slug.replace("-", " ").title()
 
-        entries = [self.entry(child) for child in el
-                   if isinstance(child.tag, str) and child.tag == "event" and child.get("name")]
-        entries.sort(key=lambda e: (SECTION_ORDER.index(e["section"]), e["name"]))
+        # File order is kept, because it IS the placement order: the game fills a line
+        # completely, moves to the next, and stops the moment the map runs out of beacons.
+        # Sorting these into reading order — which this extractor used to do — throws away
+        # the single most useful thing the table says. See SECTOR-PAGE.md §4.2.
+        entries = []
+        for index, child in enumerate(el):
+            if isinstance(child.tag, str) and child.tag == "event" and child.get("name"):
+                entry = self.entry(child)
+                entry["order"] = len(entries)
+                entries.append(entry)
+        self.rank(entries)
 
         tracks = [t.text.strip() for t in el.findall("trackList/track") if t.text]
         rarity = []
@@ -503,11 +610,33 @@ class SectorExtractor:
             "short_name": short,
             "extracted_from": "raw/gamedata/sector_data.xml",
             "min_sector": int(el.get("minSector", 0) or 0),
+            # minSector is zero-indexed: ENGI_HOME's 2 is Fandom's "sector 3 or higher",
+            # and the +1 offset holds for every unique sector both sources describe.
+            # The raw value is kept above; this is the number a player counts in.
+            "earliest_sector": int(el.get("minSector", 0) or 0) + 1,
             "unique": el.get("unique") == "true",
             "tracks": tracks,
             "crew_rarity": rarity,
             "start_event": self.event_record(start) if start else None,
             "entries": entries,
+            "generation": {
+                "grid_beacons": GRID_BEACONS,
+                "grid_beacons_min": GRID_BEACONS_MIN,
+                "allocated_min": sum(e["min"] for e in entries),
+                "allocated_max": sum(e["max"] for e in entries),
+                # More slots than the map can hold means the bottom of the table is a
+                # wish list, not a guarantee.
+                "can_exhaust_map": sum(e["max"] for e in entries) > GRID_BEACONS,
+                "at_risk_entries": [e["name"] for e in entries if e["placement"]["at_risk"]],
+                "always_short_entries": [e["name"] for e in entries
+                                         if e["placement"]["always_short"]],
+                "cannot_meet_minimum": sum(e["min"] for e in entries) > GRID_BEACONS,
+                "nebula_first": [e["name"] for e in entries if e["placement"]["nebula_first"]],
+                "fallback_list": "NEUTRAL",
+                "fallback_list_ae": "OVERRIDE_NEUTRAL",
+                "exit_list": "EXIT_LIST",
+                "source": "raw/wiki/sectors.md",
+            },
             "rollup": rollup,
             "metrics": self.metrics(entries, rollup),
         }

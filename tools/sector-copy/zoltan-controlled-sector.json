@@ -11,16 +11,16 @@
     { "metric": "distinct_events", "label": "Events in pool" }
   ],
 
-  "callout": "**Zoltan crew buys you almost nothing here.** Of the 16 gated events in the pool, exactly one blue option asks for a Zoltan — the {{ZOLTAN_TRADE_HUB}} entry fee, and it still costs 10 scrap. What this sector actually rewards is a **Crew Teleporter** and **Cloaking**, four events each.",
+  "callout": "**The two lines at risk are the two that make this sector Zoltan.** `NEUTRAL_ZOLTAN` is the checkpoints, the wise man, the docking requests and the briber; `QUESTS_ZOLTAN` is every quest that can start here. Roll high on clouds and hostiles and what is left is a shooting sector with two stores. Roll low instead — the table's floor is 20 slots — and the beacons nobody claimed do not come back to this list; they take generic filler.",
 
   "section_notes": {
-    "ZOLTAN_CREW_STUDY": "The one beacon the sector must place. Two of the three ways the scan goes are a polite thank-you and a little scrap; the third is pirates holding the station hostage — two boarders aboard and a pirate ship on the radar. An **Advanced Medbay** trades your medical records for a drone. The **Damaged Stasis Pod** option consumes the pod: they repair it, the crystal inside reassembles, and Ruwen steps out asking to be taken to a hidden wormhole near the Rock home-worlds.",
-    "HOSTILE_ZOLTAN": "Only {{ZOLTAN_FIGHT}} and {{ZOLTAN_ASTEROID}} put an Energy Fighter in front of you — a crew driven mad by deep space, and a guard enforcing mining rights. {{ZOLTAN_PIRATE}}, {{ZOLTAN_MANTIS}} and {{ZOLTAN_ENGI}} are pirate, Mantis and Engi hulls; the last two are the Rebel fleet.",
-    "NEUTRAL_ZOLTAN": "Where the sector's character actually lives — a security checkpoint, a docking request, a wise man offering you a fight of your choosing in {{ZOLTAN_RIFT_FIGHT}}. Read {{ZOLTAN_CREW_SCAN}} carefully: submitting can cost a crew member outright, and refusing puts 2–4 Zoltan aboard with your weapons already cut in half.",
+    "ZOLTAN_CREW_STUDY": "The one beacon the sector must place, and nothing above it can crowd it out. Two of the three ways the scan goes are a polite thank-you and a little scrap; the third is pirates holding the station hostage — two boarders aboard and a pirate ship on the radar. An **Advanced Medbay** trades your medical records for a drone. The **Damaged Stasis Pod** option consumes the pod: they repair it, the crystal inside reassembles, and Ruwen steps out asking to be taken to a hidden wormhole near the Rock home-worlds.",
+    "HOSTILE_ZOLTAN": "Only {{ZOLTAN_FIGHT}} and {{ZOLTAN_ASTEROID}} put an Energy Fighter in front of you — a crew driven mad by deep space, and a guard enforcing mining rights. {{ZOLTAN_PIRATE}}, {{ZOLTAN_MANTIS}} and {{ZOLTAN_ENGI}} are pirate, Mantis and Engi hulls; the last two are the Rebel fleet. Six to eight is also the largest single claim on the map, and it is settled before the three lines under it get a look in.",
+    "NEUTRAL_ZOLTAN": "Where the sector's character actually lives — a security checkpoint, a docking request, a wise man offering you a fight of your choosing in {{ZOLTAN_RIFT_FIGHT}} — and the last line to be filled, so it is the one that pays for a high roll anywhere above. Read {{ZOLTAN_CREW_SCAN}} carefully: submitting can cost a crew member outright, and refusing puts 2–4 Zoltan aboard with your weapons already cut in half.",
     "BOARDERS_ZOLTAN": "{{ZOLTAN_BOARDERS}} is a customs check that escalates — 3–4 Zoltan aboard and a ship outside. {{ZOLTAN_BOARDERS_MANTIS}} sends 2–3 Mantis with a scout in support. {{BOARDERS_HACKING}} drops 3–5 humans and no ship at all.",
-    "NEBULA_ZOLTAN": "Ten of the fourteen events here arrive through `NEBULA_REBEL`, so most of this block is the generic Rebel nebula pool rather than anything Zoltan. The standout is {{NEBULA_ZOLTAN_EYE}}: approaching the monolith gives you the **Healing Burst**, a heap of scrap, nothing at all, a fight, or one crew member aged backwards out of existence.",
+    "NEBULA_ZOLTAN": "Ten of the fourteen events here arrive through `NEBULA_REBEL`, so most of this block is the generic Rebel nebula pool rather than anything Zoltan. Two to six is a floor rather than a total — the clouds are painted before any other line is filled, and ordinary beacons they cover become nebula beacons drawing from a pool this sector never lists. The standout is {{NEBULA_ZOLTAN_EYE}}: approaching the monolith gives you the **Healing Burst**, a heap of scrap, nothing at all, a fight, or one crew member aged backwards out of existence.",
     "ITEM_ZOLTAN": "{{ZOLTAN_FREE_MAP}} carries a **Fight** tag it does not earn — the map reveal is free and the Zoltan ship parked at the beacon is loaded non-hostile. It only becomes a fight if you start one.",
-    "QUESTS_ZOLTAN": "Zero to one beacons from a list of five, and four of the five plant a marker somewhere else on the map — a Mantis war camp, a Federation signal, a derelict worth capturing, and the trade hub below."
+    "QUESTS_ZOLTAN": "Every quest that can begin in this sector begins in this one line, and four of its five entries plant a marker elsewhere on the map — a Mantis war camp, a Federation signal, a derelict worth capturing, and the trade hub. It can also roll zero on its own, before the queue gets a chance to drop it, so there are two independent ways to fly a whole Zoltan sector and never see a quest. A marker you carried in from the last sector is not affected by any of this."
   },
 
   "chain": {
@@ -51,11 +51,11 @@
     {
       "title": "Blue options that pay here",
       "items": [
+        { "lead": "Zoltan crew ×1", "text": "Of the 18 gated events in the pool, exactly one blue option asks for a Zoltan — the {{ZOLTAN_TRADE_HUB}} entry fee, and it still costs 10 scrap. Flying Zoltan buys you nothing in Zoltan space." },
         { "lead": "Crew Teleporter ×4", "text": "Clean entry to {{ZOLTAN_TRADE_HUB}}, freed slaves at {{FRIENDLY_SLAVER}} at level 2, plus branches in {{NEBULA_LOST_SHIP}} and {{QUEST_CREWDEAD_START}}." },
         { "lead": "Cloaking ×4", "text": "Three graded payoffs inside {{DISTRESS_SATELLITE_DEFENSE}}, and a way out of {{STORM_AUTO}}, {{NEBULA_REBEL_UNDETECTED}} and {{NEBULA_AUTO_DEFENSE_ITEM}}." },
         { "lead": "Medbay ×2", "text": "Level 3 turns {{ZOLTAN_CREW_STUDY}} into a free drone; level 2 or 3 saves the man dying on the moon in {{STRANDED_BEACON}}." },
         { "lead": "Slug ×2", "text": "Talks the {{ZOLTAN_CREW_SCAN}} guards out of searching you, and reads the madman's intentions in {{STRANDED_BEACON}}." },
-        { "lead": "Mind Control ×1", "text": "Convinces the {{ZOLTAN_CREW_SCAN}} checkpoint it already cleared you today, for the same fuel the Slug gets." },
         { "lead": "Boarding Drone ×1", "text": "One drone part digs a Zoltan scientist out of the caves under {{ZOLTAN_ODD_MOON}}." }
       ]
     },
@@ -76,7 +76,16 @@
         { "lead": "Crew", "text": "Five events in the pool can take a crew member. Two of them — {{ZOLTAN_CREW_SCAN}} and {{NEBULA_ZOLTAN_EYE}} — do it in a way a Clone Bay cannot undo." },
         { "lead": "Boarders", "text": "Eight events put someone aboard, and three are Zoltan: 3–4 at {{ZOLTAN_BOARDERS}}, 2–4 at both {{ZOLTAN_CREW_SCAN}} and {{ZOLTAN_TRADE_HUB}}." },
         { "lead": "Systems", "text": "Refusing to hand over a crew member at {{ZOLTAN_CREW_SCAN}} costs you half your weapons before the shooting starts." },
-        { "lead": "Fleet", "text": "{{PIRATE_BRIBER}} is the only event here that can buy a jump back from the pursuit. {{NEBULA_AUTO_WARNING}} and {{NEBULA_REBEL_UNDETECTED}} each cost you one." }
+        { "lead": "Fleet", "text": "{{PIRATE_BRIBER}} is the only event here that can buy a jump back from the pursuit — and it sits in the line most likely to be cut. {{NEBULA_AUTO_WARNING}} and {{NEBULA_REBEL_UNDETECTED}} each cost you one." }
+      ]
+    },
+    {
+      "title": "Reading the map here",
+      "items": [
+        { "lead": "Stores", "text": "Both fixed stores are settled early enough that nothing can squeeze them out. The two events that can open a shop on top of them — {{PIRATE_BRIBER}} and {{ZOLTAN_TRADE_HUB}} — are in the two lines that get cut, and neither is marked in advance." },
+        { "lead": "Distress", "text": "Nothing leaks a distress marker in from another line here, so the markers you see are the distress line and nothing else. Eight events can be behind one, two of which can cost a crew member and one of which is {{TRAP_BEACON}}." },
+        { "lead": "Clouds", "text": "Sensors go dark inside one, but this is not a nebula sector, so a cloud beacon halves the fleet's advance for that jump. It is the cheapest delay on the map — and the clouds are drawn before the sector is populated, so their footprint is set before anything else is." },
+        { "lead": "The exit", "text": "Never one of the beacons below — exits draw from a list shared by every sector. If the clouds happen to cover it, the exit is simply empty." }
       ]
     }
   ]

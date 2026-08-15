@@ -1,7 +1,7 @@
 {
   "slug": "rock-controlled-sector",
 
-  "lede": "**Everything here comes out of a pool.** Nothing in this sector is placed by name — no unlock beacon, no wormhole — so the guarantees are thin: two stores, and six to eight Rock warships already firing when you drop in. The depth is all in the neutral pool at seven to eight beacons, while the distress pool, which holds ten of the sector's twenty-two blue-option events and four of its five crew-killers, is allocated one or two.",
+  "lede": "**Nothing here is placed by name** — no unlock beacon, no wormhole — so what you get is decided entirely by the order the lines are filled. The stores and the distress beacons land before a single fight is placed and are effectively certain; the deep neutral pool at the bottom, the one carrying the **Damaged Stasis Pod**, is where a full map runs out of room. Rock space is generous at the top of the table and thin at the bottom.",
 
   "stats": [
     { "metric": "beacons_min..beacons_max", "label": "Beacon spread" },
@@ -11,16 +11,16 @@
     { "metric": "distinct_events", "label": "Events in pool" }
   ],
 
-  "callout": "**Versus the Rock Homeworlds:** the same eight entries, the same pools, the same numbers. The homeworlds add two beacons placed by name — the Rock Cruiser test and the Crystal wormhole — and turn up at most once, no earlier than sector 4. This one repeats, starts early, and names nothing. Its generic store entry is switched off in the data, so `STORE_ROCK` is the whole resupply: exactly two beacons, no roll.",
+  "callout": "**Versus the Rock Homeworlds:** the same eight entries in the same order, the same pools, the same numbers. The homeworlds bolt two named beacons on top — the Rock Cruiser test and the Crystal wormhole — and because those sit above everything else in the definition, they are the two things that sector can never fail to place. This one repeats and names nothing; the homeworlds arrive at most once a run and no earlier than sector 5.",
 
   "section_notes": {
-    "HOSTILE_ROCK": "Five events, every one of them a Rock ship, and three arrive with the environment already against you — twice in an asteroid field, once beside a sun. Each is combat at the root: the beacon opens with weapons live.",
+    "STORE_ROCK": "First in the queue, so this is the one line nothing can squeeze out: whatever else the sector fails to place, the resupply happens. Three other events can open a shop on top of it — {{ESCORT_BEACON}} from the distress line, {{QUEST_ESCORT}} and {{MERCENARY_WORK_START}} from the 0–1 quest line near the bottom.",
+    "DISTRESS_BEACON_ROCK": "Filled third, before a single fight is placed, so these beacons are as reliable as the stores — and they are the best line in the sector: twelve events, ten of them carrying a blue option, four of the five that can kill a crew member outright. Two of the twelve, {{PIRATE_CIVILIAN_BEACON}} and {{REBEL_VS_FEDERATION}}, carry no distress tag, so a slot from this line does not always put a marker on the map.",
+    "HOSTILE_ROCK": "Five events, every one of them a Rock ship, and three arrive with the environment already against you — twice in an asteroid field, once beside a sun. Each is combat at the root: the beacon opens with weapons live. This line is filled fourth, so the fights are as certain as the stores.",
     "BOARDERS_ROCK": "{{ROCK_BOARDERS_SUN}} is the odd one — no ship fight and no choice at all, two to three Rockmen aboard the instant you arrive with the sun on your hull the whole time. The other two pair a ship with the teleport, one of them inside an asteroid field.",
-    "NEUTRAL_ROCK": "Ten events, the widest pool on the table, and the only place carrying a named item: {{ASTEROID_DERELICT_SHIP}} is the **Damaged Stasis Pod**. Rock Plating collapses its three-way search into the single branch that finds the pod, so the hunt can no longer cost you 4 hull and an engine.",
-    "DISTRESS_BEACON_ROCK": "Twelve events for one or two beacons — the richest pool in the sector and the one you are least likely to see. Four of the five events that can kill a crew member live here, and so do ten of the twenty-two events with a blue option.",
-    "ITEMS": "Thirteen events of free kit, traders and stations. {{HELP_MINERS}} is the one that pays an augment, and it wants missiles for it.",
-    "STORE_ROCK": "Fixed at two, and it is one event placed twice rather than a list — the same Rock trader both times, and the whole of the sector's required resupply.",
-    "QUESTS_ROCK": "Allocated **0–1**, so the sector is not obliged to plant a quest at all. Three more quest starters sit in the distress pool regardless, and {{ROCK_QUEST_MARRIAGE_START}} is the only one that is Rock's own."
+    "ITEMS": "Thirteen events of free kit, traders and stations, and none of them are marked on the map — unlike a store or a distress call, you cannot route towards one. {{HELP_MINERS}} is the one that pays an augment, and it wants missiles for it.",
+    "QUESTS_ROCK": "Zero is a legal roll **and** this line is second-to-last, so it is the least reliable thing on the table twice over. The distress line above it plants markers regardless — {{CIVILIAN_ASTEROIDS_BEACON}}, {{REBEL_VS_FEDERATION}} and {{ESCORT_BEACON}} all start quests — while {{ROCK_QUEST_MARRIAGE_START}} is the only starter that is Rock's own.",
+    "NEUTRAL_ROCK": "Ten events, the deepest pool in the sector, and the last line filled — everything above it can claim up to twenty of the map's twenty-four beacons, so this is where a full map runs out. It is also the only line carrying a named item: {{ASTEROID_DERELICT_SHIP}} is the **Damaged Stasis Pod**, and Rock Plating collapses its three-way search into the single branch that finds it. The start of the Crystal route is therefore the first thing this sector will drop."
   },
 
   "chain": {
@@ -52,7 +52,7 @@
       "title": "Blue options that pay here",
       "items": [
         { "lead": "Sensors ×5", "text": "The widest gate in the sector. Level 2 turns the plain appeal at {{ROCK_ATHIEST}} into a certain Rock crew member, and opens branches at {{CIVILIAN_ASTEROIDS_BEACON}}, {{REBEL_VS_FEDERATION}}, {{FEDERATION_PLANET_SIGNAL}} and {{TRADER_UPGRADES}}." },
-        { "lead": "Rockman ×3", "text": "{{ROCK_MANTIS_HUNTER}}, {{DISTRESS_STATION_FIRE}} and {{DISTRESS_STATION_DISEASE}}. A Rockman walks straight into the burning station and the scientists pay an augment for it; on the mining colony the immunity alone is worth a reward." },
+        { "lead": "Rockman ×3", "text": "{{ROCK_MANTIS_HUNTER}}, {{DISTRESS_STATION_FIRE}} and {{DISTRESS_STATION_DISEASE}}. A Rockman walks straight into the burning station and the scientists pay an augment for it; on the mining colony the immunity alone is worth a reward. Rockmen are also the crew most likely to be on the shelf in this sector's stores." },
         { "lead": "Rock Plating ×3", "text": "Ram the hunter at {{ROCK_MANTIS_HUNTER}} and its engines are dead before the shooting starts; guarantee the pod at {{ASTEROID_DERELICT_SHIP}}; and a third opening at {{CIVILIAN_ASTEROIDS_BEACON}}." },
         { "lead": "Crew Teleporter ×4", "text": "{{FRIENDLY_SLAVER}}, {{CIVILIAN_ASTEROIDS_BEACON}}, {{REBEL_VS_FEDERATION}} and {{QUEST_CREWDEAD_START}}, where it is one of only three keys in, alongside an Anti-Bio Beam and a Fire Bomb." },
         { "lead": "System Repair Drone ×3", "text": "{{ROCK_MANTIS_FREIGHTER}}, {{CIVILIAN_ASTEROIDS_BEACON}}, and sending the drone into the flames at {{DISTRESS_STATION_FIRE}} for a drone schematic instead of a coin flip with a crew member's life." },
@@ -62,7 +62,7 @@
     {
       "title": "What you can leave with",
       "items": [
-        { "lead": "Augment", "text": "**Damaged Stasis Pod** at {{ASTEROID_DERELICT_SHIP}} — the only named item the whole pool hands out, and it takes a run through a dense asteroid field to get." },
+        { "lead": "Augment", "text": "**Damaged Stasis Pod** at {{ASTEROID_DERELICT_SHIP}} — the only named item the whole pool hands out, and it sits in the one line the map can starve." },
         { "lead": "Crew", "text": "Rockmen two ways: talked round at {{ROCK_ATHIEST}}, where Improved Sensors makes it certain and the plain appeal is one outcome in three, or bought at {{FRIENDLY_SLAVER}}." },
         { "lead": "Crew", "text": "{{FRIENDLY_SLAVER}} is the one beacon that can produce a Mantis, a Rockman or an Engi; {{TAVERN_HIRE}} sells outright; {{STRANDED_BEACON}} can hand you a human off a moon with a level already in something." },
         { "lead": "Crew", "text": "26 of the 50 events in the pool can add someone — over half the sector, against five that can take someone away." },
@@ -73,11 +73,20 @@
     {
       "title": "What can bite",
       "items": [
-        { "lead": "Crew", "text": "Five events can kill a crew member outright, four of them crammed into a distress pool that only gets one or two beacons: {{DISTRESS_INFESTATION}}, {{DISTRESS_STATION_FIRE}}, {{DISTRESS_STATION_DISEASE}} and {{STRANDED_BEACON}}. The fifth is {{ROCK_STARSHIP_MINE}}." },
-        { "lead": "Environment", "text": "Weather is the sector's second weapon: five of the eight events across the hostile and boarding pools put you inside a hazard before anyone fires — three asteroid fields, two suns." },
+        { "lead": "Crew", "text": "Five events can kill a crew member outright, four of them inside the distress line: {{DISTRESS_INFESTATION}}, {{DISTRESS_STATION_FIRE}}, {{DISTRESS_STATION_DISEASE}} and {{STRANDED_BEACON}}. The fifth is {{ROCK_STARSHIP_MINE}}. That line is filled early, so the risk arrives early too." },
+        { "lead": "Environment", "text": "Five of the eight hostile and boarding events open inside a hazard — three asteroid fields, two suns — and a hazard freezes the ship menu while you sit in it: no upgrades, no cargo swaps, no crew reassignment until you jump. At the suns, holding shields up keeps a flare to one or two fires instead of three to six." },
         { "lead": "Boarders", "text": "Four events put someone aboard. Three are Rockmen, up to three of them at {{ROCK_BOARDERS_SHIP}} and at {{ROCK_BOARDERS_SUN}}; {{FEDERATION_PLANET_SIGNAL}} sends two to three humans." },
         { "lead": "Hull", "text": "{{QUEST_CREWDEAD_START}} is a job to take a ship **intact**. Destroy the target instead and the wreck costs you 13 hull, a random system, and one room hit with every effect at once." },
         { "lead": "Ammo", "text": "{{ROCK_STARSHIP_MINE}} chews through the hull while you decide: a missile detonation costs 3 hull, a beam drone costs a drone part, and defusing it by hand can drop into a red-wire/blue-wire flip where the wrong end kills the volunteer, takes 5 hull and opens a breach. Engines 5 backs you out of the whole thing for nothing." }
+      ]
+    },
+    {
+      "title": "Reading the map here",
+      "items": [
+        { "lead": "Distress", "text": "Rock is the exception to the note above: the distress line is filled **before** the neutral pool, not after, so the extra marker that {{ASTEROID_DERELICT_SHIP}} carries comes from the very bottom of the table and is the first one a full map loses. Two events in the distress line show no marker at all, so an ordinary-looking beacon can still be one of them." },
+        { "lead": "Scanners", "text": "Long-Ranged Scanners split the marked beacons exactly one way here: a possible-ship reading means {{FRIENDLY_BEACON}}, {{ESCORT_BEACON}} or {{TRAP_BEACON}} — two payouts and one ambush. Every other distress beacon in the sector reports as a plain unvisited location." },
+        { "lead": "Stores", "text": "Two, fixed, no roll, and first in the fill order — the shopping is the one guarantee this sector makes. Anything beyond it is an event opening a shop, and two of the three that can are in the 0–1 quest line." },
+        { "lead": "No cloud cover", "text": "The sector allocates no nebula line, so no purple clouds are drawn on the map: sensors work at every beacon, no jump you make slows the pursuit, and every hazard here is a sun or an asteroid field you can see coming with scanners." }
       ]
     }
   ]

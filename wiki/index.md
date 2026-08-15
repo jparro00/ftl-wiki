@@ -484,27 +484,26 @@ _Reached by quest marker, fleet or boss logic, or unreachable — see [[concept-
 
 20 pages.
 
-- [[sector-abandoned-sector]] — The Lanius sector, added in Advanced Edition. Display name is "Abandoned Sector" but its in-game id is… | LANIUS_SECTOR · special | Updated: 2026-08-09
-- [[sector-civilian-sector]] — The generic friendly sector. Its pool is Federation Space's with the store and item allocations roughly… | CIVILIAN_SECTOR · civilian | Updated: 2026-08-09
-- [[sector-engi-controlled-sector]] — Engi-flavoured sector with its own parallel set of event lists — every generic list is replaced by an ENGI… | ENGI_SECTOR | Updated: 2026-08-09
-- [[sector-engi-homeworlds]] — The unique Engi home sector. Identical to engi controlled sector except it guarantees one ENGIUNLOCK1 beacon… | ENGI_HOME | Updated: 2026-08-09
-- [[sector-federation-space]] — The sector every run begins in. Its event pool is the generic, faction-neutral one — the baseline against… | STANDARD_SPACE · special | Updated: 2026-08-09
-- [[sector-hidden-crystal-worlds]] — The hidden sector at the end of the Crystal route. Not reachable by normal map routing — it is entered via… | CRYSTAL_HOME · special | Updated: 2026-08-09
-- [[sector-mantis-controlled-sector]] — Mantis space. The narrowest event pool of any faction sector — 7 lists, with no quest list and no dedicated… | MANTIS_SECTOR | Updated: 2026-08-09
-- [[sector-mantis-homeworlds]] — Unique Mantis home sector. mantis controlled sector's pool plus a guaranteed MANTISNAMEDTHIEF beacon. | MANTIS_HOME | Updated: 2026-08-09
-- [[sector-pirate-controlled-sector]] — Pirate sector. Heaviest hostile allocation of the early-available sectors (6–8) plus a guaranteed boarding beacon. | PIRATE_SECTOR | Updated: 2026-08-09
-- [[sector-rebel-controlled-sector]] — Rebel-held space. Pool is structurally identical to the pirate sector's, swapped to REBEL lists. | REBEL_SECTOR | Updated: 2026-08-09
-- [[sector-rebel-stronghold]] — The unique rebel sector that houses the Flagship construction beacon. Identical to rebel controlled sector… | REBEL_SECTOR_MINIBOSS | Updated: 2026-08-09
-- [[sector-rock-controlled-sector]] — Rock space. Never appears as the first sector (minSector="1"), and carries the game's largest neutral… | ROCK_SECTOR | Updated: 2026-08-09
-- [[sector-rock-homeworlds]] — Unique Rock home sector, and the gateway to the Crystal route: it guarantees both the ROCKCRYSTALBEACON… | ROCK_HOME | Updated: 2026-08-09
-- [[sector-slug-controlled-nebula]] — Slug space, and a nebula sector throughout. The widest event pool in the game at 11 lists, including a… | SLUG_SECTOR · nebula | Updated: 2026-08-09
-- [[sector-slug-home-nebula]] — Unique Slug home sector — the largest event pool in the game at 12 lists. slug controlled nebula's pool plus… | SLUG_HOME · nebula | Updated: 2026-08-09
-- [[sector-the-last-stand]] — The final sector. Its pool is entirely boss-specific — no ordinary event lists appear at all. | FINAL · special | Updated: 2026-08-09
-- [[sector-uncharted-nebula]] — The unfactioned nebula sector. Its pool is built from dedicated NEBULA lists rather than the generic ones,… | NEBULA_SECTOR · nebula | Updated: 2026-08-09
-- [[sector-vestigial-definitions]] — Two <sectorDescription entries in sectordata.xml that appear to be dead stubs. Grouped on one page because… | DEEP_SPACE_SECTOR, ABANDONED_SECTOR | Updated: 2026-08-09
-- [[sector-zoltan-controlled-sector]] — Zoltan space. Guarantees a ZOLTANCREWSTUDY beacon even in the non-home variant — one of only two non-unique… | ZOLTAN_SECTOR | Updated: 2026-08-09
-- [[sector-zoltan-homeworlds]] — Unique Zoltan home sector. zoltan controlled sector's pool plus a guaranteed ZOLTANPEACEQUEST beacon. | ZOLTAN_HOME | Updated: 2026-08-09
-
+- [[sector-abandoned-sector]] — The Lanius sector, added in Advanced Edition. Display name is "Abandoned Sector" but its | LANIUS_SECTOR · hostile | Updated: 2026-08-15
+- [[sector-civilian-sector]] — The generic friendly sector, and the one that most clearly shows the gap between what a | CIVILIAN_SECTOR · civilian | Updated: 2026-08-15
+- [[sector-engi-controlled-sector]] — Engi-flavoured sector with its own parallel set of event lists — every generic list is | ENGI_SECTOR · civilian | Updated: 2026-08-15
+- [[sector-engi-homeworlds]] — The unique Engi home sector, and the only place the Stealth Cruiser quest can begin. Its pool | ENGI_HOME · civilian | Updated: 2026-08-15
+- [[sector-federation-space]] — The sector every run begins in. Its event pool is the generic, faction-neutral one — | STANDARD_SPACE · special | Updated: 2026-08-15
+- [[sector-hidden-crystal-worlds]] — The hidden sector at the end of the Crystal route. Not reachable by normal map routing — | CRYSTAL_HOME · special | Updated: 2026-08-15
+- [[sector-mantis-controlled-sector]] — Mantis space: seven allocation lists, 37 distinct events, and the two structural absences | MANTIS_SECTOR · hostile | Updated: 2026-08-15
+- [[sector-mantis-homeworlds]] — Unique Mantis home sector. mantis controlled sector's pool plus a guaranteed | MANTIS_HOME · hostile | Updated: 2026-08-15
+- [[sector-pirate-controlled-sector]] — A repeatable hostile sector available from the first sector onward (minSector="0", | PIRATE_SECTOR · hostile | Updated: 2026-08-15
+- [[sector-rebel-controlled-sector]] — Rebel-held space. Repeatable, and available from the first sector onward | REBEL_SECTOR · hostile | Updated: 2026-08-15
+- [[sector-rebel-stronghold]] — The unique Rebel sector that houses the Flagship construction beacon. Its allocation table is | REBEL_SECTOR_MINIBOSS · hostile | Updated: 2026-08-15
+- [[sector-rock-controlled-sector]] — Rock space: a repeatable red sector with two guaranteed stores, six to eight fights that | ROCK_SECTOR · hostile | Updated: 2026-08-15
+- [[sector-rock-homeworlds]] — Unique Rock home sector, and the gateway to the Crystal route: it guarantees both the | ROCK_HOME · hostile | Updated: 2026-08-15
+- [[sector-slug-controlled-nebula]] — Slug space, and a nebula sector throughout. The widest event pool in the game at 11 | SLUG_SECTOR · nebula | Updated: 2026-08-15
+- [[sector-slug-home-nebula]] — Unique Slug home sector — the largest event pool in the game at 12 allocation lines. | SLUG_HOME · nebula | Updated: 2026-08-15
+- [[sector-the-last-stand]] — The final sector. Its pool is entirely boss-specific — no ordinary event lists appear | FINAL · special | Updated: 2026-08-15
+- [[sector-uncharted-nebula]] — The unfactioned nebula sector. Its pool is built from dedicated NEBULA_ lists rather | NEBULA_SECTOR · nebula | Updated: 2026-08-15
+- [[sector-vestigial-definitions]] — Two <sectorDescription> entries in sector_data.xml that appear to be dead stubs. | DEEP_SPACE_SECTOR, ABANDONED_SECTOR | Updated: 2026-08-09
+- [[sector-zoltan-controlled-sector]] — Zoltan space. Guarantees a ZOLTAN_CREW_STUDY beacon even in the non-home variant — | ZOLTAN_SECTOR · civilian | Updated: 2026-08-15
+- [[sector-zoltan-homeworlds]] — Unique Zoltan home sector. zoltan controlled sector's allocation table plus a | ZOLTAN_HOME | Updated: 2026-08-15
 ## Entities
 
 16 pages.
@@ -634,9 +633,10 @@ _Reached by quest marker, fleet or boss logic, or unreachable — see [[concept-
 
 ## Sources
 
-326 source pages: 33 game-data files (`reliability: high`), 291 Fandom pages
-(`reliability: medium`), 1 research synthesis (`reliability: medium`), and 1 piece of
-first-party vendor documentation (`reliability: high`).
+347 source pages: 33 game-data files (`reliability: high`), 309 Fandom pages
+(308 `reliability: medium`, 1 `low`), 4 research syntheses (`reliability: medium`), and
+1 piece of first-party vendor documentation filed as `source_kind: wiki` at
+`reliability: high`.
 
 ### Game data
 
@@ -682,6 +682,7 @@ One page per ingested Fandom page, all `game_version: unknown`. Listed in `raw/w
 - [[source-fandom-ancient-device]] — raw/wiki/ancient-device.md
 - [[source-fandom-asteroid-belt-distress]] — raw/wiki/asteroid-belt-distress.md
 - [[source-fandom-asteroid-mining-colony]] — raw/wiki/asteroid-mining-colony.md
+- [[source-fandom-augmentations]] — raw/wiki/augmentations.md | rev 74810 | both | **what Long-Ranged Scanners does and does not tell you before a jump** | Ingested: 2026-08-15
 - [[source-fandom-auto-ship-attacking-civilian]] — raw/wiki/auto-ship-attacking-civilian.md
 - [[source-fandom-auto-ship-attacking-outpost]] — raw/wiki/auto-ship-attacking-outpost.md
 - [[source-fandom-auto-ship-carrying-shield-virus]] — raw/wiki/auto-ship-carrying-shield-virus.md
@@ -698,6 +699,7 @@ One page per ingested Fandom page, all `game_version: unknown`. Listed in `raw/w
 - [[source-fandom-auto-ship-warning]] — raw/wiki/auto-ship-warning.md
 - [[source-fandom-auto-ship-warning-in-nebula]] — raw/wiki/auto-ship-warning-in-nebula.md
 - [[source-fandom-battlefield-wreckage]] — raw/wiki/battlefield-wreckage.md
+- [[source-fandom-beacons]] — raw/wiki/beacons.md | rev 71696 | **beacon types, visibility, quest-marker placement rules** | Ingested: 2026-08-15
 - [[source-fandom-boarders-crystal]] — raw/wiki/boarders-crystal.md
 - [[source-fandom-boarders-humans-abandoned]] — raw/wiki/boarders-humans-abandoned.md
 - [[source-fandom-boarders-humans-in-nebula]] — raw/wiki/boarders-humans-in-nebula.md
@@ -749,6 +751,7 @@ One page per ingested Fandom page, all `game_version: unknown`. Listed in `raw/w
 - [[source-fandom-engi-ship-attacked-by-mantis-ship]] — raw/wiki/engi-ship-attacked-by-mantis-ship.md
 - [[source-fandom-engi-smashed-ships]] — raw/wiki/engi-smashed-ships.md
 - [[source-fandom-engi-surrender]] — raw/wiki/engi-surrender.md
+- [[source-fandom-environmental-hazards]] — raw/wiki/environmental-hazards.md | rev 74893 | **nebula/pulsar/ASB/asteroid/flare mechanics with timings** | Ingested: 2026-08-15
 - [[source-fandom-escape-pod]] — raw/wiki/escape-pod.md
 - [[source-fandom-escort-civilians]] — raw/wiki/escort-civilians.md
 - [[source-fandom-escort-civilians-ftl-haywire]] — raw/wiki/escort-civilians-ftl-haywire.md
@@ -762,7 +765,10 @@ One page per ingested Fandom page, all `game_version: unknown`. Listed in `raw/w
 - [[source-fandom-free-scrap-with-resources-zoltan]] — raw/wiki/free-scrap-with-resources-zoltan.md
 - [[source-fandom-free-weapon]] — raw/wiki/free-weapon.md
 - [[source-fandom-friendly-ship-out-of-fuel]] — raw/wiki/friendly-ship-out-of-fuel.md
+- [[source-fandom-ftl-advanced-edition]] — raw/wiki/ftl-advanced-edition.md | rev 74567 | ae | the version anchor: what AE changed, and what applies with AE content off | Ingested: 2026-08-15
+- [[source-fandom-game-bugs]] — raw/wiki/game-bugs.md | rev 74618 | both | save-reload bugs; fixed vs event stores are different objects on the map | Ingested: 2026-08-15
 - [[source-fandom-giant-alien-spiders]] — raw/wiki/giant-alien-spiders.md
+- [[source-fandom-guides-and-tips]] — raw/wiki/guides-and-tips.md | rev 74605 | link directory; the wiki's only sector-routing guidance is 3 outbound links | Ingested: 2026-08-15
 - [[source-fandom-improve-reactor-for-supplies]] — raw/wiki/improve-reactor-for-supplies.md
 - [[source-fandom-intelligent-ponies]] — raw/wiki/intelligent-ponies.md
 - [[source-fandom-lanius-craftsmen]] — raw/wiki/lanius-craftsmen.md
@@ -865,6 +871,7 @@ One page per ingested Fandom page, all `game_version: unknown`. Listed in `raw/w
 - [[source-fandom-rebel-fight-chance-in-nebula]] — raw/wiki/rebel-fight-chance-in-nebula.md
 - [[source-fandom-rebel-fight-choice-in-nebula]] — raw/wiki/rebel-fight-choice-in-nebula.md
 - [[source-fandom-rebel-fight-crystal]] — raw/wiki/rebel-fight-crystal.md
+- [[source-fandom-rebel-fleet]] — raw/wiki/rebel-fleet.md | rev 73264 | both | **every modifier to the fleet advance rate; what an overtaken beacon becomes** | Ingested: 2026-08-15
 - [[source-fandom-rebel-fight-engi]] — raw/wiki/rebel-fight-engi.md
 - [[source-fandom-rebel-fight-in-nebula]] — raw/wiki/rebel-fight-in-nebula.md
 - [[source-fandom-rebel-fight-in-plasma-storm]] — raw/wiki/rebel-fight-in-plasma-storm.md
@@ -910,8 +917,11 @@ One page per ingested Fandom page, all `game_version: unknown`. Listed in `raw/w
 - [[source-fandom-rock-pirates-fight-near-sun]] — raw/wiki/rock-pirates-fight-near-sun.md
 - [[source-fandom-rock-ship-in-plasma-storm]] — raw/wiki/rock-ship-in-plasma-storm.md
 - [[source-fandom-rock-war-vessel-encounter]] — raw/wiki/rock-war-vessel-encounter.md
+- [[source-fandom-scrap]] — raw/wiki/scrap.md | rev 73343 | scrap scales with sector *number* × difficulty; sector *type* shifts profit via its event pool | Ingested: 2026-08-15
+- [[source-fandom-sectors]] — raw/wiki/sectors.md | rev 74796 | both | **the sector hub — every per-sector Fandom title redirects here; carries the map-generation algorithm** | Ingested: 2026-08-15
 - [[source-fandom-sell-drone-parts-for-scrap]] — raw/wiki/sell-drone-parts-for-scrap.md
 - [[source-fandom-sell-missiles-for-scrap]] — raw/wiki/sell-missiles-for-scrap.md
+- [[source-fandom-sensors]] — raw/wiki/sensors.md | rev 73457 | what a nebula costs you: Sensors are disabled inside one | Ingested: 2026-08-15
 - [[source-fandom-settlement-mercenary-work]] — raw/wiki/settlement-mercenary-work.md
 - [[source-fandom-single-life-form-on-moon]] — raw/wiki/single-life-form-on-moon.md
 - [[source-fandom-slaver-friendly]] — raw/wiki/slaver-friendly.md
@@ -946,11 +956,16 @@ One page per ingested Fandom page, all `game_version: unknown`. Listed in `raw/w
 - [[source-fandom-store-rebel]] — raw/wiki/store-rebel.md
 - [[source-fandom-store-rock]] — raw/wiki/store-rock.md
 - [[source-fandom-store-zoltan]] — raw/wiki/store-zoltan.md
+- [[source-fandom-stores-and-resources]] — raw/wiki/stores-and-resources.md | rev 74856 | both | **store stocking rules, per-sector store economy, out-of-fuel / waiting mechanics** | Ingested: 2026-08-15
 - [[source-fandom-terraforming-scan]] — raw/wiki/terraforming-scan.md
 - [[source-fandom-template-reactor-power-cost]] — raw/wiki/template-reactor-power-cost.md | rev 68667 | a transcluded template, not an article | Ingested: 2026-08-14
+- [[source-fandom-template-stores-number-of-stores-by-sectors]] — raw/wiki/template-stores-number-of-stores-by-sectors.md | rev 73433 | **guaranteed stores per sector, all 13 types; matches sector_data.xml exactly** | Ingested: 2026-08-15
+- [[source-fandom-template-stores-additional-stores-from-events-by-sectors]] — raw/wiki/template-stores-additional-stores-from-events-by-sectors.md | rev 73435 | which store-spawning events reach which sector | Ingested: 2026-08-15
+- [[source-fandom-template-distress-events-by-sectors]] — raw/wiki/template-distress-events-by-sectors.md | rev 74574 | **the 30 distress-marked events + what LRS shows at each; matches the 30 `<distressBeacon/>` tags exactly** | Ingested: 2026-08-15
 - [[source-fandom-the-black-raven]] — raw/wiki/the-black-raven.md
 - [[source-fandom-the-engi-virus]] — raw/wiki/the-engi-virus.md
 - [[source-fandom-the-mercenary]] — raw/wiki/the-mercenary.md
+- [[source-fandom-the-rebellion]] — raw/wiki/the-rebellion.md | rev 68216 | lore only; factual content is the Rebel ship-type list | Ingested: 2026-08-15
 - [[source-fandom-trade-fuel-for-drone-parts]] — raw/wiki/trade-fuel-for-drone-parts.md
 - [[source-fandom-trade-resources]] — raw/wiki/trade-resources.md
 - [[source-fandom-trade-resources-in-nebula]] — raw/wiki/trade-resources-in-nebula.md
@@ -981,6 +996,8 @@ page. `source_kind: research` and the `raw/modding/` directory are extensions be
 
 - [[source-modding-research]] — raw/modding/2026-08-12-ftl-modding-research.md | both | Ingested: 2026-08-13
 - [[source-xftl-oxygen-mechanics]] — raw/modding/2026-08-14-xftl-oxygen-mechanics.txt | reverse-engineered engine constants for oxygen | unknown | Ingested: 2026-08-14
+- [[source-xftl-sector-map]] — raw/modding/2026-08-15-xftl-sector-map.txt | **the sector graph, the 6×4 beacon grid, exit placement, `AddQuest`, and the fleet advance in px/jump** | unknown | Ingested: 2026-08-15
+- [[source-xftl-stores]] — raw/modding/2026-08-15-xftl-stores.txt | store section generation, system selection, resource stock ranges | both | Ingested: 2026-08-15
 
 ### Vendor documentation
 

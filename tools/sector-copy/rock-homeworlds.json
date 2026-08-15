@@ -1,7 +1,7 @@
 {
   "slug": "rock-homeworlds",
 
-  "lede": "**The Rockmen fight you at home, and they fight you in weather.** Every ship in the hostile pool is Rock, and five of the eight events across the hostile and boarder pools drop you into an asteroid field or beside a sun before anyone fires. You come anyway for the two beacons the sector must place by name: one opens the **Rock Cruiser quest**, and {{ROCK_CRYSTAL_BEACON}} is the wormhole to the Crystal worlds — for a ship that already has a Crystal aboard.",
+  "lede": "**The Rockmen fight you at home, and they fight you in weather.** Every ship in the hostile pool is Rock, and five of the eight events across the hostile and boarder pools open in an asteroid field or beside a sun — hazards that lock the ship menu for as long as you stay, so no upgrades and no cargo-bay swaps while the rocks are landing. It is a late-run sector by construction — never earlier than five — and you come anyway for the two beacons it must place by name: one opens the **Rock Cruiser quest**, and {{ROCK_CRYSTAL_BEACON}} is the only door in the game to the Crystal worlds — for a ship that already has a Crystal aboard.",
 
   "stats": [
     { "metric": "beacons_min..beacons_max", "label": "Beacon spread" },
@@ -11,17 +11,17 @@
     { "metric": "distinct_events", "label": "Events in pool" }
   ],
 
-  "callout": "**Versus a plain Rock Controlled Sector:** every pool and every number is identical. The homeworlds add exactly three things — `unique=\"true\"`, `minSector=\"4\"`, and the two named beacons. The shooting is the same shooting; the reason to come is the two beacons.",
+  "callout": "**Versus a plain Rock Controlled Sector:** the same pools, the same allocation numbers, the same ships. Four things differ — it can appear once per run, never before sector 5, it adds the two named beacons at the head of the queue, and the **Crystal Lockdown Bomb** drops from rarity 4 to 2, the lowest value that weapon is given in any sector, the Crystal worlds included. The shooting is the same shooting; the reason to come is the top two lines.",
 
   "section_notes": {
-    "ROCK_CRYSTAL_BEACON": "The way out of the game's normal map, and the **Crystal crew** blue option is the only choice that opens it — the Damaged Stasis Pod on its own will not do. Without a Crystal aboard the device is a gamble: scrapping it either pays out a large pile of scrap or brings a Rock warship down on you for the vandalism.",
+    "ROCK_CRYSTAL_BEACON": "The way out of the game's normal map, and the **Crystal crew** blue option is the only choice that opens it — the Damaged Stasis Pod on its own will not do. Nothing in this sector can turn one into the other: the pod becomes a Crystal crew member at a Zoltan research facility, and there is none here, so whether this beacon pays was settled a sector or two ago. Without a Crystal aboard the device is a gamble: scrapping it either pays out a large pile of scrap or brings a Rock warship down on you for the vandalism.",
     "ROCK_UNLOCK1": "No fight here — the Rock warship never turns hostile and jumps away whatever you say. Two of the three replies plant the next marker; ignoring them ends the line on the spot.",
     "HOSTILE_ROCK": "Rock ships, all five. Three of them arrive with the environment already against you — twice in an asteroid field, once beside a sun.",
     "BOARDERS_ROCK": "{{ROCK_BOARDERS_SUN}} has no ship fight and no choice at all: two to three Rockmen are aboard the moment you arrive, and the sun is on you the whole time.",
-    "NEUTRAL_ROCK": "The deepest pool in the sector, and where the Crystal route's other half sits — {{ASTEROID_DERELICT_SHIP}} is the **Damaged Stasis Pod**. It is also where the trap is: {{ROCK_STARSHIP_MINE}} is the only event in this pool that can kill a crew member.",
-    "DISTRESS_BEACON_ROCK": "Allocated one to two beacons, and four of the sector's five crew-killing events live in this pool.",
-    "QUESTS_ROCK": "Allocated **0–1**, so this pool can place nothing at all. {{ROCK_QUEST_MARRIAGE_START}} is the sector's own: carry the bride to Numa V and hand her over for a random augment, or refuse, keep her as Rock crew, and fight the wedding party.",
-    "STORE_ROCK": "Fixed at two, not a range — this is the entire resupply the sector is required to give you."
+    "NEUTRAL_ROCK": "Last in the queue and the deepest pool in the sector — ten events sharing whatever the lines above leave behind, which makes everything in here the least dependable thing to plan a route around. That includes the Crystal route's first step: {{ASTEROID_DERELICT_SHIP}} is the **Damaged Stasis Pod**, and picking it up here is already too late to use it, because the device beacon wants the crew member, not the pod. The trap is {{ROCK_STARSHIP_MINE}}, the only event in this pool that can kill a crew member.",
+    "DISTRESS_BEACON_ROCK": "Four of the sector's five crew-killing events sit in this one line, and it is filled early enough that the beacons it asks for always land. The question here is never whether the line appears — it is which of twelve very different events you get.",
+    "QUESTS_ROCK": "This line can place nothing at all, and it matters less than it looks: nine events in the sector plant a quest marker, and only five of them are in here — three more sit in the distress line, and the guaranteed {{ROCK_UNLOCK1}} beacon is the ninth. {{ROCK_QUEST_MARRIAGE_START}} is the sector's own: carry the bride to Numa V and hand her over for a random augment, or refuse, keep her as Rock crew, and fight the wedding party.",
+    "STORE_ROCK": "Two, fixed, and third in the queue, so the resupply always happens. In a sector where asteroids keep striking after the enemy is dead and flares burn rooms between fights, what you are really buying at both of them is hull."
   },
 
   "chain": {
@@ -52,12 +52,12 @@
     {
       "title": "Blue options that pay here",
       "items": [
-        { "lead": "Crew Teleporter ×4", "text": "The widest gate in the pool — {{FRIENDLY_SLAVER}}, {{CIVILIAN_ASTEROIDS_BEACON}}, {{REBEL_VS_FEDERATION}} and {{QUEST_CREWDEAD_START}}." },
+        { "lead": "Sensors ×5", "text": "Level 2 or 3 opens a branch at five separate beacons, the widest gate in the pool — {{CIVILIAN_ASTEROIDS_BEACON}}, {{REBEL_VS_FEDERATION}}, {{FEDERATION_PLANET_SIGNAL}}, {{ROCK_ATHIEST}} and {{TRADER_UPGRADES}}." },
+        { "lead": "Crew Teleporter ×4", "text": "{{FRIENDLY_SLAVER}}, {{CIVILIAN_ASTEROIDS_BEACON}}, {{REBEL_VS_FEDERATION}} and {{QUEST_CREWDEAD_START}}." },
         { "lead": "Rockman ×3", "text": "{{ROCK_MANTIS_HUNTER}}, {{DISTRESS_STATION_FIRE}} and {{DISTRESS_STATION_DISEASE}} all take a Rock crew member's word where yours does not count." },
         { "lead": "Rock Plating ×3", "text": "{{ROCK_MANTIS_HUNTER}}, {{ASTEROID_DERELICT_SHIP}} and {{CIVILIAN_ASTEROIDS_BEACON}} — the augment the unlock chain pays out at its last step, spent straight back into this sector's pools." },
         { "lead": "System Repair Drone ×3", "text": "{{ROCK_MANTIS_FREIGHTER}}, {{CIVILIAN_ASTEROIDS_BEACON}}, and sending it into the flames at {{DISTRESS_STATION_FIRE}} instead of a crew member." },
-        { "lead": "Crystal ×1", "text": "One event, and it is the one that matters: {{ROCK_CRYSTAL_BEACON}}." },
-        { "lead": "Slug ×2", "text": "A lookout while you loot at {{ROCK_LOOTING}}, and a read on what is actually down there at {{STRANDED_BEACON}}." }
+        { "lead": "Crystal ×1", "text": "One event, and it is the one that matters: {{ROCK_CRYSTAL_BEACON}}." }
       ]
     },
     {
@@ -76,9 +76,19 @@
       "items": [
         { "lead": "Crew", "text": "Five events can kill a crew member outright, and four of them are packed into a distress pool that only gets one or two beacons: {{DISTRESS_INFESTATION}}, {{DISTRESS_STATION_FIRE}}, {{DISTRESS_STATION_DISEASE}} and {{STRANDED_BEACON}}." },
         { "lead": "Boarders", "text": "Four events put someone aboard. Three are Rockmen — up to three of them at {{ROCK_BOARDERS_SHIP}} and at {{ROCK_BOARDERS_SUN}} — and {{FEDERATION_PLANET_SIGNAL}} sends two to three humans." },
-        { "lead": "Environment", "text": "Weather is the sector's second weapon: {{ROCK_FIGHT_ASTEROID}}, {{ROCK_PIRATE_ASTEROID}} and {{ROCK_BOARDERS_ASTEROID}} in asteroids, {{ROCK_PIRATE_SUN}} and {{ROCK_BOARDERS_SUN}} beside a sun." },
+        { "lead": "Asteroids", "text": "Each rock either strips one shield layer or takes 1 hull and the system in that room, they keep coming after the enemy is dead, and they arrive **faster the more shield levels you own**. {{ROCK_FIGHT_ASTEROID}}, {{ROCK_PIRATE_ASTEROID}} and {{ROCK_BOARDERS_ASTEROID}}." },
+        { "lead": "Solar flares", "text": "A flare every 28–34 seconds with five seconds of warning: one or two fires while shields hold, three to six when they are down, and every burning room can take hull and system damage with it. {{ROCK_PIRATE_SUN}} and {{ROCK_BOARDERS_SUN}}." },
         { "lead": "Ammo", "text": "{{ROCK_STARSHIP_MINE}} costs one drone part to cut away, or one missile and 3 hull to detonate. Send someone out to defuse it by hand and **both** wire choices end the same way: the crew member dies, 5 hull, a breach. Engines 5 backs you out of it for nothing." },
         { "lead": "Scrap", "text": "Demand payment instead of paying at {{ROCK_SLUG_ARGUMENT}} and it opens with 3 hull damage, a system knocked out, and a fight. Freeing a slave at {{FRIENDLY_SLAVER}} runs 25–45 scrap." }
+      ]
+    },
+    {
+      "title": "Reading the map here",
+      "items": [
+        { "lead": "The two you came for", "text": "Neither named beacon announces itself. Only stores and distress calls put a marker on the map, so the device and the war vessel are ordinary unexplored dots until you jump in — unless you are carrying **Ruwen**, the Crystal crew member from the stasis pod, who turns {{ROCK_CRYSTAL_BEACON}} into a quest marker you can see from anywhere." },
+        { "lead": "Distress", "text": "Long-Ranged Scanners splits the distress-marked pool cleanly: only {{ESCORT_BEACON}}, {{FRIENDLY_BEACON}} and {{TRAP_BEACON}} read as a possible ship. A no-ship reading covers everything else, including {{ASTEROID_DERELICT_SHIP}} and every crew-killer that shows a marker at all." },
+        { "lead": "Quest markers", "text": "Nine events here plant one, and a marker can only land on a beacon you have not visited that is not a store, not a distress call, not the exit and not already taken by the fleet. Explore half the map first and the candidates thin out — and if this sector came up seventh, a marker with nowhere to go is dropped instead of carried forward." },
+        { "lead": "No nebula", "text": "Not one nebula line in the table, so no clouds convert beacons, sensors work everywhere, and nothing here slows the pursuit: every jump you make advances the fleet at the full rate." }
       ]
     }
   ]

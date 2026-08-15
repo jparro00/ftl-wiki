@@ -7,6 +7,7 @@
   "short_name": "Mantis Homeworlds",
   "extracted_from": "raw/gamedata/sector_data.xml",
   "min_sector": 2,
+  "earliest_sector": 3,
   "unique": true,
   "tracks": [
     "mantis",
@@ -122,7 +123,356 @@
           ],
           "fleet_delay": []
         }
-      ]
+      ],
+      "order": 0,
+      "placement": {
+        "position": 0,
+        "nebula_first": false,
+        "before_min": 0,
+        "before_max": 0,
+        "at_risk": false,
+        "always_short": false
+      }
+    },
+    {
+      "name": "STORE_MANTIS",
+      "min": 1,
+      "max": 2,
+      "kind": "event",
+      "section": "store",
+      "events": [
+        {
+          "id": "STORE_MANTIS",
+          "slug": "store-mantis",
+          "title": "Store (Mantis)",
+          "card": true,
+          "tags": [
+            "store"
+          ],
+          "marker": {
+            "store": true
+          },
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        }
+      ],
+      "order": 1,
+      "placement": {
+        "position": 1,
+        "nebula_first": false,
+        "before_min": 1,
+        "before_max": 1,
+        "at_risk": false,
+        "always_short": false
+      }
+    },
+    {
+      "name": "NOTHING_MANTIS",
+      "min": 2,
+      "max": 3,
+      "kind": "event",
+      "section": "empty",
+      "events": [
+        {
+          "id": "NOTHING_MANTIS",
+          "slug": "empty-beacon-mantis",
+          "title": "Empty beacon (Mantis)",
+          "card": true,
+          "tags": [],
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        }
+      ],
+      "order": 2,
+      "placement": {
+        "position": 2,
+        "nebula_first": false,
+        "before_min": 2,
+        "before_max": 3,
+        "at_risk": false,
+        "always_short": false
+      }
+    },
+    {
+      "name": "DISTRESS_BEACON_MANTIS",
+      "min": 1,
+      "max": 3,
+      "kind": "list",
+      "section": "distress",
+      "events": [
+        {
+          "id": "ESCORT_BEACON",
+          "slug": "escort-civilians-ftl-haywire",
+          "title": "Escort civilians FTL haywire",
+          "card": true,
+          "tags": [
+            "may-fight",
+            "crew",
+            "store",
+            "quest",
+            "unique"
+          ],
+          "marker": {
+            "beacon": "distress",
+            "store": true
+          },
+          "gates": [
+            {
+              "req": "FTL_JUMPER",
+              "label": "Adv. FTL Navigation"
+            }
+          ],
+          "items": [],
+          "crew_classes": [],
+          "quests": [
+            "QUEST_ESCORT_ARRIVE"
+          ],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "FRIENDLY_BEACON",
+          "slug": "friendly-ship-out-of-fuel",
+          "title": "Friendly ship out of fuel",
+          "card": true,
+          "tags": [
+            "crew",
+            "reward",
+            "cost"
+          ],
+          "marker": {
+            "beacon": "distress"
+          },
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "TRAP_BEACON",
+          "slug": "pirate-ship-distress-trap",
+          "title": "Pirate ship distress trap",
+          "card": true,
+          "tags": [
+            "fight",
+            "crew",
+            "unique"
+          ],
+          "marker": {
+            "beacon": "distress"
+          },
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "DISTRESS_TRAPPED_MINER",
+          "slug": "crushed-pirate",
+          "title": "Crushed pirate",
+          "card": true,
+          "tags": [
+            "may-fight",
+            "crew",
+            "cost",
+            "unique"
+          ],
+          "marker": {
+            "beacon": "distress"
+          },
+          "gates": [
+            {
+              "req": "WEAPONS_BEAM_DAMAGE",
+              "label": "WEAPONS_BEAM_DAMAGE"
+            },
+            {
+              "req": "COMBAT_BEAM_DRONE_LIST",
+              "label": "COMBAT_BEAM_DRONE_LIST"
+            }
+          ],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "DISTRESS_INFESTATION",
+          "slug": "giant-alien-spiders",
+          "title": "Giant alien spiders",
+          "card": true,
+          "tags": [
+            "crew-loss",
+            "reward",
+            "cost",
+            "unique"
+          ],
+          "marker": {
+            "beacon": "distress"
+          },
+          "gates": [
+            {
+              "req": "BATTLE",
+              "label": "Anti-Personnel Drone"
+            },
+            {
+              "req": "BOARDER",
+              "label": "Boarding Drone"
+            },
+            {
+              "req": "BEAM_BIO",
+              "label": "Anti-Bio Beam"
+            }
+          ],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "DISTRESS_SATELLITE_DEFENSE",
+          "slug": "malfunctioning-defense-system",
+          "title": "Malfunctioning defense system",
+          "card": true,
+          "tags": [
+            "reward",
+            "unique"
+          ],
+          "marker": {
+            "beacon": "distress"
+          },
+          "gates": [
+            {
+              "req": "WEAPONS_ION",
+              "label": "WEAPONS_ION"
+            },
+            {
+              "req": "cloaking",
+              "label": "Cloaking",
+              "lvl": "1"
+            },
+            {
+              "req": "cloaking",
+              "label": "Cloaking",
+              "lvl": "2"
+            },
+            {
+              "req": "cloaking",
+              "label": "Cloaking",
+              "lvl": "3"
+            },
+            {
+              "req": "engi",
+              "label": "Engi"
+            }
+          ],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "DISTRESS_STATION_FIRE",
+          "slug": "fire-on-research-station",
+          "title": "Fire on research station",
+          "card": true,
+          "tags": [
+            "crew-loss",
+            "crew",
+            "reward",
+            "unique"
+          ],
+          "marker": {
+            "beacon": "distress"
+          },
+          "gates": [
+            {
+              "req": "rock",
+              "label": "Rockman"
+            },
+            {
+              "req": "REPAIR",
+              "label": "System Repair Drone"
+            }
+          ],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "DISTRESS_STATION_DISEASE",
+          "slug": "unknown-disease-on-mining-colony",
+          "title": "Unknown disease on mining colony",
+          "card": true,
+          "tags": [
+            "crew-loss",
+            "reward",
+            "unique"
+          ],
+          "marker": {
+            "beacon": "distress"
+          },
+          "gates": [
+            {
+              "req": "rock",
+              "label": "Rockman"
+            },
+            {
+              "req": "engi",
+              "label": "Engi"
+            },
+            {
+              "req": "medbay",
+              "label": "Medbay",
+              "lvl": "2"
+            },
+            {
+              "req": "NANO_MEDBAY",
+              "label": "Engi Med-bot Dispersal"
+            }
+          ],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        }
+      ],
+      "order": 3,
+      "placement": {
+        "position": 3,
+        "nebula_first": false,
+        "before_min": 4,
+        "before_max": 6,
+        "at_risk": false,
+        "always_short": false
+      }
     },
     {
       "name": "HOSTILE_MANTIS",
@@ -158,6 +508,9 @@
             "fight",
             "crew"
           ],
+          "marker": {
+            "environment": "sun"
+          },
           "gates": [],
           "items": [],
           "crew_classes": [],
@@ -212,6 +565,9 @@
             "fight",
             "crew"
           ],
+          "marker": {
+            "environment": "asteroid"
+          },
           "gates": [],
           "items": [],
           "crew_classes": [],
@@ -253,6 +609,9 @@
               "crew",
               "unique"
             ],
+            "marker": {
+              "environment": "pulsar"
+            },
             "gates": [],
             "items": [],
             "crew_classes": [],
@@ -264,6 +623,15 @@
         ],
         "removed": [],
         "applies": "unconfirmed"
+      },
+      "order": 4,
+      "placement": {
+        "position": 4,
+        "nebula_first": false,
+        "before_min": 5,
+        "before_max": 9,
+        "at_risk": false,
+        "always_short": false
       }
     },
     {
@@ -306,6 +674,9 @@
             "boarders",
             "unique"
           ],
+          "marker": {
+            "environment": "sun"
+          },
           "gates": [],
           "items": [],
           "crew_classes": [],
@@ -320,390 +691,16 @@
           "unlock_ship": [],
           "fleet_delay": []
         }
-      ]
-    },
-    {
-      "name": "NEUTRAL_MANTIS",
-      "min": 6,
-      "max": 7,
-      "kind": "list",
-      "section": "neutral",
-      "events": [
-        {
-          "id": "MANTIS_FIGHT_CHOICE",
-          "slug": "mantis-fight-choice",
-          "title": "Mantis fight choice",
-          "card": true,
-          "tags": [
-            "may-fight",
-            "crew"
-          ],
-          "gates": [
-            {
-              "req": "cloaking",
-              "label": "Cloaking",
-              "lvl": "1"
-            }
-          ],
-          "items": [],
-          "crew_classes": [],
-          "quests": [],
-          "boarders": [],
-          "unlock_ship": [],
-          "fleet_delay": []
-        },
-        {
-          "id": "MANTIS_CIVILIAN",
-          "slug": "mantis-ship-attacking-civilian",
-          "title": "Mantis ship attacking civilian",
-          "card": true,
-          "tags": [
-            "may-fight",
-            "crew"
-          ],
-          "gates": [],
-          "items": [],
-          "crew_classes": [],
-          "quests": [],
-          "boarders": [],
-          "unlock_ship": [],
-          "fleet_delay": []
-        },
-        {
-          "id": "MANTIS_CREW",
-          "slug": "escape-pod",
-          "title": "Escape pod",
-          "card": true,
-          "tags": [
-            "boarders",
-            "crew-loss",
-            "crew",
-            "unique"
-          ],
-          "gates": [],
-          "items": [],
-          "crew_classes": [
-            "mantis",
-            "human"
-          ],
-          "quests": [],
-          "boarders": [
-            {
-              "class": "mantis",
-              "min": 1,
-              "max": 1
-            }
-          ],
-          "unlock_ship": [],
-          "fleet_delay": []
-        },
-        {
-          "id": "REBEL_TRANSPORT",
-          "slug": "rebel-transport-ship",
-          "title": "Rebel transport ship",
-          "card": true,
-          "tags": [
-            "may-fight",
-            "crew",
-            "unique"
-          ],
-          "gates": [],
-          "items": [],
-          "crew_classes": [],
-          "quests": [],
-          "boarders": [],
-          "unlock_ship": [],
-          "fleet_delay": []
-        },
-        {
-          "id": "BROKEN_REBEL_DRONE",
-          "slug": "deactivated-auto-ship",
-          "title": "Deactivated Auto-ship",
-          "card": true,
-          "tags": [
-            "may-fight",
-            "crew",
-            "unique"
-          ],
-          "gates": [
-            {
-              "req": "sensors",
-              "label": "Sensors",
-              "lvl": "3"
-            }
-          ],
-          "items": [],
-          "crew_classes": [],
-          "quests": [],
-          "boarders": [],
-          "unlock_ship": [],
-          "fleet_delay": []
-        },
-        {
-          "id": "ALISON_MANTIS_CREW",
-          "slug": "mantis-fugitive",
-          "title": "Mantis fugitive",
-          "card": true,
-          "tags": [
-            "may-fight",
-            "boarders",
-            "crew",
-            "unique"
-          ],
-          "gates": [],
-          "items": [],
-          "crew_classes": [
-            "mantis"
-          ],
-          "quests": [],
-          "boarders": [
-            {
-              "class": "mantis",
-              "min": 1,
-              "max": 1
-            }
-          ],
-          "unlock_ship": [],
-          "fleet_delay": []
-        }
-      ]
-    },
-    {
-      "name": "DISTRESS_BEACON_MANTIS",
-      "min": 1,
-      "max": 3,
-      "kind": "list",
-      "section": "distress",
-      "events": [
-        {
-          "id": "ESCORT_BEACON",
-          "slug": "escort-civilians-ftl-haywire",
-          "title": "Escort civilians FTL haywire",
-          "card": true,
-          "tags": [
-            "may-fight",
-            "crew",
-            "store",
-            "quest",
-            "unique"
-          ],
-          "gates": [
-            {
-              "req": "FTL_JUMPER",
-              "label": "Adv. FTL Navigation"
-            }
-          ],
-          "items": [],
-          "crew_classes": [],
-          "quests": [
-            "QUEST_ESCORT_ARRIVE"
-          ],
-          "boarders": [],
-          "unlock_ship": [],
-          "fleet_delay": []
-        },
-        {
-          "id": "FRIENDLY_BEACON",
-          "slug": "friendly-ship-out-of-fuel",
-          "title": "Friendly ship out of fuel",
-          "card": true,
-          "tags": [
-            "crew",
-            "reward",
-            "cost"
-          ],
-          "gates": [],
-          "items": [],
-          "crew_classes": [],
-          "quests": [],
-          "boarders": [],
-          "unlock_ship": [],
-          "fleet_delay": []
-        },
-        {
-          "id": "TRAP_BEACON",
-          "slug": "pirate-ship-distress-trap",
-          "title": "Pirate ship distress trap",
-          "card": true,
-          "tags": [
-            "fight",
-            "crew",
-            "unique"
-          ],
-          "gates": [],
-          "items": [],
-          "crew_classes": [],
-          "quests": [],
-          "boarders": [],
-          "unlock_ship": [],
-          "fleet_delay": []
-        },
-        {
-          "id": "DISTRESS_TRAPPED_MINER",
-          "slug": "crushed-pirate",
-          "title": "Crushed pirate",
-          "card": true,
-          "tags": [
-            "may-fight",
-            "crew",
-            "cost",
-            "unique"
-          ],
-          "gates": [
-            {
-              "req": "WEAPONS_BEAM_DAMAGE",
-              "label": "WEAPONS_BEAM_DAMAGE"
-            },
-            {
-              "req": "COMBAT_BEAM_DRONE_LIST",
-              "label": "COMBAT_BEAM_DRONE_LIST"
-            }
-          ],
-          "items": [],
-          "crew_classes": [],
-          "quests": [],
-          "boarders": [],
-          "unlock_ship": [],
-          "fleet_delay": []
-        },
-        {
-          "id": "DISTRESS_INFESTATION",
-          "slug": "giant-alien-spiders",
-          "title": "Giant alien spiders",
-          "card": true,
-          "tags": [
-            "crew-loss",
-            "reward",
-            "cost",
-            "unique"
-          ],
-          "gates": [
-            {
-              "req": "BATTLE",
-              "label": "Anti-Personnel Drone"
-            },
-            {
-              "req": "BOARDER",
-              "label": "Boarding Drone"
-            },
-            {
-              "req": "BEAM_BIO",
-              "label": "Anti-Bio Beam"
-            }
-          ],
-          "items": [],
-          "crew_classes": [],
-          "quests": [],
-          "boarders": [],
-          "unlock_ship": [],
-          "fleet_delay": []
-        },
-        {
-          "id": "DISTRESS_SATELLITE_DEFENSE",
-          "slug": "malfunctioning-defense-system",
-          "title": "Malfunctioning defense system",
-          "card": true,
-          "tags": [
-            "reward",
-            "unique"
-          ],
-          "gates": [
-            {
-              "req": "WEAPONS_ION",
-              "label": "WEAPONS_ION"
-            },
-            {
-              "req": "cloaking",
-              "label": "Cloaking",
-              "lvl": "1"
-            },
-            {
-              "req": "cloaking",
-              "label": "Cloaking",
-              "lvl": "2"
-            },
-            {
-              "req": "cloaking",
-              "label": "Cloaking",
-              "lvl": "3"
-            },
-            {
-              "req": "engi",
-              "label": "Engi"
-            }
-          ],
-          "items": [],
-          "crew_classes": [],
-          "quests": [],
-          "boarders": [],
-          "unlock_ship": [],
-          "fleet_delay": []
-        },
-        {
-          "id": "DISTRESS_STATION_FIRE",
-          "slug": "fire-on-research-station",
-          "title": "Fire on research station",
-          "card": true,
-          "tags": [
-            "crew-loss",
-            "crew",
-            "reward",
-            "unique"
-          ],
-          "gates": [
-            {
-              "req": "rock",
-              "label": "Rockman"
-            },
-            {
-              "req": "REPAIR",
-              "label": "System Repair Drone"
-            }
-          ],
-          "items": [],
-          "crew_classes": [],
-          "quests": [],
-          "boarders": [],
-          "unlock_ship": [],
-          "fleet_delay": []
-        },
-        {
-          "id": "DISTRESS_STATION_DISEASE",
-          "slug": "unknown-disease-on-mining-colony",
-          "title": "Unknown disease on mining colony",
-          "card": true,
-          "tags": [
-            "crew-loss",
-            "reward",
-            "unique"
-          ],
-          "gates": [
-            {
-              "req": "rock",
-              "label": "Rockman"
-            },
-            {
-              "req": "engi",
-              "label": "Engi"
-            },
-            {
-              "req": "medbay",
-              "label": "Medbay",
-              "lvl": "2"
-            },
-            {
-              "req": "NANO_MEDBAY",
-              "label": "Engi Med-bot Dispersal"
-            }
-          ],
-          "items": [],
-          "crew_classes": [],
-          "quests": [],
-          "boarders": [],
-          "unlock_ship": [],
-          "fleet_delay": []
-        }
-      ]
+      ],
+      "order": 5,
+      "placement": {
+        "position": 5,
+        "nebula_first": false,
+        "before_min": 11,
+        "before_max": 16,
+        "at_risk": false,
+        "always_short": false
+      }
     },
     {
       "name": "ITEMS",
@@ -976,6 +973,9 @@
               "store",
               "unique"
             ],
+            "marker": {
+              "store": true
+            },
             "gates": [
               {
                 "req": "mind",
@@ -1003,22 +1003,55 @@
         ],
         "removed": [],
         "applies": "unconfirmed"
+      },
+      "order": 6,
+      "placement": {
+        "position": 6,
+        "nebula_first": false,
+        "before_min": 12,
+        "before_max": 18,
+        "at_risk": false,
+        "always_short": false
       }
     },
     {
-      "name": "STORE_MANTIS",
-      "min": 1,
-      "max": 2,
-      "kind": "event",
-      "section": "store",
+      "name": "NEUTRAL_MANTIS",
+      "min": 6,
+      "max": 7,
+      "kind": "list",
+      "section": "neutral",
       "events": [
         {
-          "id": "STORE_MANTIS",
-          "slug": "store-mantis",
-          "title": "Store (Mantis)",
+          "id": "MANTIS_FIGHT_CHOICE",
+          "slug": "mantis-fight-choice",
+          "title": "Mantis fight choice",
           "card": true,
           "tags": [
-            "store"
+            "may-fight",
+            "crew"
+          ],
+          "gates": [
+            {
+              "req": "cloaking",
+              "label": "Cloaking",
+              "lvl": "1"
+            }
+          ],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "MANTIS_CIVILIAN",
+          "slug": "mantis-ship-attacking-civilian",
+          "title": "Mantis ship attacking civilian",
+          "card": true,
+          "tags": [
+            "may-fight",
+            "crew"
           ],
           "gates": [],
           "items": [],
@@ -1027,22 +1060,45 @@
           "boarders": [],
           "unlock_ship": [],
           "fleet_delay": []
-        }
-      ]
-    },
-    {
-      "name": "NOTHING_MANTIS",
-      "min": 2,
-      "max": 3,
-      "kind": "event",
-      "section": "empty",
-      "events": [
+        },
         {
-          "id": "NOTHING_MANTIS",
-          "slug": "empty-beacon-mantis",
-          "title": "Empty beacon (Mantis)",
+          "id": "MANTIS_CREW",
+          "slug": "escape-pod",
+          "title": "Escape pod",
           "card": true,
-          "tags": [],
+          "tags": [
+            "boarders",
+            "crew-loss",
+            "crew",
+            "unique"
+          ],
+          "gates": [],
+          "items": [],
+          "crew_classes": [
+            "mantis",
+            "human"
+          ],
+          "quests": [],
+          "boarders": [
+            {
+              "class": "mantis",
+              "min": 1,
+              "max": 1
+            }
+          ],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "REBEL_TRANSPORT",
+          "slug": "rebel-transport-ship",
+          "title": "Rebel transport ship",
+          "card": true,
+          "tags": [
+            "may-fight",
+            "crew",
+            "unique"
+          ],
           "gates": [],
           "items": [],
           "crew_classes": [],
@@ -1050,11 +1106,118 @@
           "boarders": [],
           "unlock_ship": [],
           "fleet_delay": []
+        },
+        {
+          "id": "BROKEN_REBEL_DRONE",
+          "slug": "deactivated-auto-ship",
+          "title": "Deactivated Auto-ship",
+          "card": true,
+          "tags": [
+            "may-fight",
+            "crew",
+            "unique"
+          ],
+          "gates": [
+            {
+              "req": "sensors",
+              "label": "Sensors",
+              "lvl": "3"
+            }
+          ],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "ALISON_MANTIS_CREW",
+          "slug": "mantis-fugitive",
+          "title": "Mantis fugitive",
+          "card": true,
+          "tags": [
+            "may-fight",
+            "boarders",
+            "crew",
+            "unique"
+          ],
+          "gates": [],
+          "items": [],
+          "crew_classes": [
+            "mantis"
+          ],
+          "quests": [],
+          "boarders": [
+            {
+              "class": "mantis",
+              "min": 1,
+              "max": 1
+            }
+          ],
+          "unlock_ship": [],
+          "fleet_delay": []
         }
-      ]
+      ],
+      "order": 7,
+      "placement": {
+        "position": 7,
+        "nebula_first": false,
+        "before_min": 13,
+        "before_max": 20,
+        "at_risk": false,
+        "always_short": false
+      }
     }
   ],
+  "generation": {
+    "grid_beacons": 24,
+    "grid_beacons_min": 19,
+    "allocated_min": 19,
+    "allocated_max": 27,
+    "can_exhaust_map": true,
+    "at_risk_entries": [],
+    "always_short_entries": [],
+    "cannot_meet_minimum": false,
+    "nebula_first": [],
+    "fallback_list": "NEUTRAL",
+    "fallback_list_ae": "OVERRIDE_NEUTRAL",
+    "exit_list": "EXIT_LIST",
+    "source": "raw/wiki/sectors.md"
+  },
   "rollup": {
+    "markers": {
+      "distress": {
+        "events": [
+          "DISTRESS_INFESTATION",
+          "DISTRESS_SATELLITE_DEFENSE",
+          "DISTRESS_STATION_DISEASE",
+          "DISTRESS_STATION_FIRE",
+          "DISTRESS_TRAPPED_MINER",
+          "ESCORT_BEACON",
+          "FRIENDLY_BEACON",
+          "TRAP_BEACON"
+        ],
+        "allocation_entries": [
+          "DISTRESS_BEACON_MANTIS"
+        ],
+        "marked_outside_allocation": [],
+        "allocated_but_unmarked": []
+      },
+      "store": [
+        "ESCORT_BEACON",
+        "STORE_MANTIS"
+      ],
+      "environment": {
+        "asteroid": [
+          "AUTO_ASTEROID"
+        ],
+        "sun": [
+          "BOARDERS_SUN",
+          "MANTIS_SUN_FIGHT"
+        ]
+      }
+    },
     "distinct_events": 38,
     "no_card": [],
     "always_fight": [
@@ -1147,8 +1310,8 @@
         ],
         "events": [
           "MANTIS_NAMED_THIEF",
-          "BROKEN_REBEL_DRONE",
-          "TRADER_UPGRADES"
+          "TRADER_UPGRADES",
+          "BROKEN_REBEL_DRONE"
         ]
       },
       {
@@ -1160,8 +1323,8 @@
           "3"
         ],
         "events": [
-          "MANTIS_FIGHT_CHOICE",
-          "DISTRESS_SATELLITE_DEFENSE"
+          "DISTRESS_SATELLITE_DEFENSE",
+          "MANTIS_FIGHT_CHOICE"
         ]
       },
       {
@@ -1390,6 +1553,8 @@
     ]
   },
   "metrics": {
+    "grid_beacons": 24,
+    "at_risk_entries": 0,
     "beacons_min": 19,
     "beacons_max": 27,
     "distinct_events": 38,
@@ -1419,19 +1584,19 @@
     "section:empty:max": 3,
     "entry:MANTIS_NAMED_THIEF:min": 1,
     "entry:MANTIS_NAMED_THIEF:max": 1,
+    "entry:STORE_MANTIS:min": 1,
+    "entry:STORE_MANTIS:max": 2,
+    "entry:NOTHING_MANTIS:min": 2,
+    "entry:NOTHING_MANTIS:max": 3,
+    "entry:DISTRESS_BEACON_MANTIS:min": 1,
+    "entry:DISTRESS_BEACON_MANTIS:max": 3,
     "entry:HOSTILE_MANTIS:min": 6,
     "entry:HOSTILE_MANTIS:max": 7,
     "entry:BOARDERS_MANTIS:min": 1,
     "entry:BOARDERS_MANTIS:max": 2,
-    "entry:NEUTRAL_MANTIS:min": 6,
-    "entry:NEUTRAL_MANTIS:max": 7,
-    "entry:DISTRESS_BEACON_MANTIS:min": 1,
-    "entry:DISTRESS_BEACON_MANTIS:max": 3,
     "entry:ITEMS:min": 1,
     "entry:ITEMS:max": 2,
-    "entry:STORE_MANTIS:min": 1,
-    "entry:STORE_MANTIS:max": 2,
-    "entry:NOTHING_MANTIS:min": 2,
-    "entry:NOTHING_MANTIS:max": 3
+    "entry:NEUTRAL_MANTIS:min": 6,
+    "entry:NEUTRAL_MANTIS:max": 7
   }
 }

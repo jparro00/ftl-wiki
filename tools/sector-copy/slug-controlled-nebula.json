@@ -1,7 +1,7 @@
 {
   "slug": "slug-controlled-nebula",
 
-  "lede": "Slug space does not open a fight, it opens with one of your systems already switched off — your doors, your oxygen, your medbay, or whichever of shields, oxygen and weapons you are made to nominate. **A Hacking system is the one blue option that answers all four**, and the nebula takes your sensors away before you can see any of it coming. Eleven entries, and the whole pool is built twice: once inside the clouds and once outside them.",
+  "lede": "Slug space does not open a fight, it opens with one of your systems already switched off — your doors, your oxygen, your medbay, or whichever of shields, oxygen and weapons you are made to nominate. **A Hacking system is the one blue option that answers all four**, and the clouds take your sensors away before you can see any of it coming. The usual consolation for flying blind is cut down here too: a nebula beacon in a nebula sector shaves only about a fifth off the Rebel advance, where the same beacon anywhere else would halve it.",
 
   "stats": [
     { "metric": "beacons_min..beacons_max", "label": "Beacon spread" },
@@ -11,15 +11,17 @@
     { "metric": "gated_events", "label": "Events with blue options" }
   ],
 
-  "callout": "**The nebula split is the sector.** Five entries carry `NEBULA` or `STORM` names and own 13 of the 18 guaranteed beacons; the other six fill the rest. Four of them are literal twins — hostile, neutral, store and empty each exist in both forms, and every event inside a `NEBULA` list carries the nebula flag while none outside one does.",
+  "callout": "**Versus Slug Home Nebula:** the same eleven lines with the same counts, plus one guaranteed `NEBULA_SLUG_FIGHT_UNLOCK` beacon — and that sector is once per run where this one can repeat. Everything on this page otherwise describes both.",
 
   "section_notes": {
+    "NEBULA_STORE_SLUG": "Two guaranteed stores, and the first thing the sector places, so no roll above them can take them away. Both sit inside the clouds — you shop with your sensors down.",
+    "STORE": "The third store is a coin flip rather than a casualty: this line is reached with beacons still free, and the file simply allows zero.",
     "HOSTILE_SLUG": "The dry half of the hostile pool: four straight fights, plus {{DONOR_BLACK_RAVEN}}, which is a challenge you can answer with a Slug telepath instead of guns.",
-    "NEBULA_HOSTILE_SLUG": "The largest single allocation in the sector, and three of its six events are the same trick — a remote hack that kills your doors, your oxygen, or your medbay and clone bay together, and only then powers weapons. Hacking counters all three, at the cost of your own hacking system for that fight.",
-    "NEBULA_NEUTRAL_SLUG": "Thirteen events competing for three to five beacons, and the least neutral list in the sector: a repair station that bills you afterwards, a store that is sometimes an ambush, and both of the quest markers.",
-    "NEUTRAL": "The generic pool, and where five of the six Sensors blue options live — outside the clouds, where sensors still work.",
-    "STORM_SLUG": "Only the Slug sectors allocate this. Two plasma-storm fights, and {{STORM_BOARDING}}, which puts three to four humans aboard with no ship to shoot back at.",
-    "DISTRESS_BEACON_SLUG": "The one mixed list — five of these eight carry the nebula flag and three do not. {{TRAP_BEACON}} is a fight on arrival, {{SLUG_DISTRESS_TRICK}} is a boarding dressed as a repair job, and {{SLUG_DISTRESS_MANTIS}} lets you pick which of the two ships to shoot."
+    "NEBULA_HOSTILE_SLUG": "The largest single allocation in the sector, and a cloud line, so it always gets its full share. Three of its six events are the same trick — a remote hack that kills your doors, your oxygen, or your medbay and clone bay together, and only then powers weapons. Hacking counters all three, at the cost of your own hacking system for that fight.",
+    "NEBULA_NEUTRAL_SLUG": "Thirteen events competing for three to five beacons, and the least neutral list in the sector: a repair station that bills you afterwards, a store that is sometimes an ambush, and both of the events that plant a quest marker.",
+    "NEUTRAL": "Last in the queue, so it is either squeezed out or over-served — every beacon still empty when the table runs out is filled from this same list. Four of the six Sensors blue options live here, outside the clouds, where sensors still work.",
+    "STORM_SLUG": "Only the Slug sectors allocate this, and its name is why it sits so low: a storm is a cloud environment without a `NEBULA_` name, so it waits its turn instead of being drawn with the rest. Arriving halves your reactor and pulls power off your systems for you.",
+    "DISTRESS_BEACON_SLUG": "Four of these eight put you in a nebula environment even though this is not a cloud line — the beacon is not drawn purple, but the event brings the fog with it, sensors and all. {{TRAP_BEACON}} is a fight on arrival, {{SLUG_DISTRESS_TRICK}} is a boarding dressed as a repair job, and {{SLUG_DISTRESS_MANTIS}} lets you pick which of the two ships to shoot."
   },
 
   "chain": {
@@ -57,9 +59,9 @@
       "title": "Blue options that pay here",
       "items": [
         { "lead": "Hacking ×6", "text": "The sector's answer key. It counters every Slug system hack — {{NEBULA_SLUG_DOORS}}, {{NEBULA_SLUG_OXYGEN}}, {{NEBULA_SLUG_MEDBAY}} and {{NEBULA_SLUG_CHOOSE_DEATH}} — though the counter zeroes your own hacking system for the duration of that fight." },
-        { "lead": "Slug ×5", "text": "A mind duel instead of a battle at {{DONOR_BLACK_RAVEN}}, the teleporting boarder spotted early at {{NEBULA_SLUG_FAKE_STORE}}, the survivor found at {{NEBULA_BATTLEFIELD}}, a conversation at {{DONOR_PONY}}, and a better price at {{PIRATE_SALESMAN}}." },
-        { "lead": "Sensors ×6", "text": "Level 2 or 3, and worth less than the count suggests: only {{NEBULA_REBEL_CHASE}} is inside the clouds. The other five sit in the non-nebula lists." },
-        { "lead": "Scanners ×2", "text": "Long-Ranged Scanners work where sensors do not — {{NEBULA_LOST_SHIP}} and {{NEBULA_REBEL_CHASE}} both say outright that you cannot track anything through the nebula without them." },
+        { "lead": "Slug ×5", "text": "A mind duel instead of a battle at {{DONOR_BLACK_RAVEN}}, the teleporting boarder spotted early at {{NEBULA_SLUG_FAKE_STORE}}, the survivor found at {{NEBULA_BATTLEFIELD}}, a conversation at {{DONOR_PONY}}, and a better price at {{PIRATE_SALESMAN}}. A Slug aboard also reads enemy crew straight through the fog, which is the one thing the clouds cannot take from you." },
+        { "lead": "Sensors ×6", "text": "Worth less than the count suggests, because the clouds switch sensors off. Only {{NEBULA_REBEL_CHASE}} offers a sensors branch inside them, and its text admits you are squeezing it out of malfunctioning gear; the other five sit in the non-nebula lists." },
+        { "lead": "Scanners ×2", "text": "Long-Ranged Scanners work where sensors do not — {{NEBULA_LOST_SHIP}} and {{NEBULA_REBEL_CHASE}} both say outright that you cannot track anything through the nebula without them. A Lifeform Scanner opens the same branch on the second." },
         { "lead": "Medbay ×3", "text": "Level 2 saves the plague victim at {{DONOR_PLAGUE}}, keeps half your medbay powered through {{NEBULA_SLUG_MEDBAY}} instead of losing it entirely, and turns the dying survivor into crew." },
         { "lead": "Mind Control ×1", "text": "Talks {{NEBULA_WEAPONS_TRADER}} down on price. One of its two outcomes has him come to his senses and attack instead." }
       ]
@@ -79,10 +81,22 @@
       "title": "What can bite",
       "items": [
         { "lead": "Systems", "text": "The hacker trio does not damage a system, it switches it off: doors, oxygen production, or medbay and clone bay both. {{NEBULA_SLUG_CHOOSE_DEATH}} halves shields, oxygen or weapons at your choice, or takes 35 scrap to go away." },
-        { "lead": "Boarders", "text": "Six events put someone aboard — up to four at {{FUELING_STATION}}, three to four humans at {{STORM_BOARDING}}, two Slugs teleported in before the fight even starts at {{NEBULA_SLUG_MEDBAY}}." },
-        { "lead": "Crew", "text": "Only three events can kill a crew member outright: {{SLUG_DISTRESS_TRICK}}, {{DONOR_PLAGUE}} and {{DONOR_PONY}} — and the last two sit in `NEUTRAL`, which places one or two beacons." },
+        { "lead": "Power", "text": "A plasma storm halves your reactor on arrival, rounding up, and strips power off your systems by itself — shields can be down before anything has fired. Zoltan bars and a Backup Battery are the exceptions, and the enemy reactor is halved too." },
+        { "lead": "Boarders", "text": "Six events put someone aboard — up to four at {{FUELING_STATION}}, three to four humans at {{STORM_BOARDING}} with no ship to shoot back at, two Slugs teleported in before the fight even starts at {{NEBULA_SLUG_MEDBAY}}." },
+        { "lead": "Crew", "text": "Only three events can kill a crew member outright: {{SLUG_DISTRESS_TRICK}}, {{DONOR_PLAGUE}} and {{DONOR_PONY}} — and the last two sit in `NEUTRAL`, which also mops up every beacon the table failed to fill, so they turn up more often than a 1–2 line suggests." },
         { "lead": "Scrap", "text": "{{NEBULA_SLUG_HULLFIX}} repairs you and then presents a bill for 50 scrap or 15 fuel. Refusing to pay starts a fight with your weapons halved or 4 hull already gone, and a third docking outcome caps your engines at 1 before the shooting even begins." },
         { "lead": "Sales", "text": "{{NEBULA_SLUG_FAKE_STORE}} is a real store on one of three outcomes. The other two board you, and one of them locks your weapons off first." }
+      ]
+    },
+    {
+      "title": "Reading the map here",
+      "items": [
+        { "lead": "Stores", "text": "Two of the three are guaranteed and are placed before anything else, so the squeeze never reaches them. Three more events can open a shop on top of that — {{PIRATE_BRIBER}}, {{SLUG_DRINK}} and {{NEBULA_SLUG_FAKE_STORE}}." },
+        { "lead": "Quests", "text": "A quest marker cannot be placed on a nebula beacon, a store, a distress beacon or the exit — and the four cloud lines claim twelve to eighteen beacons before anything else is placed. {{NEBULA_BATTLEFIELD}} and {{QUEST_SLUG_PIRATE_TRAP}} are both inside the clouds, and a marker with nowhere to land is pushed into the next sector instead." },
+        { "lead": "The fleet", "text": "Nebula cover is worth less at home than abroad. A cloud beacon here leaves the Rebels advancing about four fifths of a normal jump; the same beacon in a non-nebula sector cuts them to a half." },
+        { "lead": "Distress", "text": "Of the five distress events that raise a marker here, only {{TRAP_BEACON}} reads as a possible ship on Long-Ranged Scanners. The other four read as an unvisited location — which is not the same as safe: two of them can still end in a fight." },
+        { "lead": "Caught in a cloud", "text": "A nebula beacon taken by the fleet always gains an ion storm, but never an Anti-Ship Battery unless you are sitting there out of fuel. Being overtaken in the fog costs you your reactor rather than your hull." },
+        { "lead": "The exit", "text": "Exits draw from a list shared by every sector, and an exit that ends up under the cloud graphics is simply empty — no event, and no ion storm even once the fleet has taken it." }
       ]
     }
   ]

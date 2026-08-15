@@ -7,6 +7,7 @@
   "short_name": "The Last Stand",
   "extracted_from": "raw/gamedata/sector_data.xml",
   "min_sector": 7,
+  "earliest_sector": 8,
   "unique": true,
   "tracks": [
     "laststand"
@@ -19,6 +20,77 @@
     "card": false
   },
   "entries": [
+    {
+      "name": "STORE",
+      "min": 1,
+      "max": 1,
+      "kind": "event",
+      "section": "store",
+      "events": [
+        {
+          "id": "STORE",
+          "slug": "store",
+          "title": "Store",
+          "card": true,
+          "tags": [
+            "store"
+          ],
+          "marker": {
+            "store": true
+          },
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        }
+      ],
+      "order": 0,
+      "placement": {
+        "position": 0,
+        "nebula_first": false,
+        "before_min": 0,
+        "before_max": 0,
+        "at_risk": false,
+        "always_short": false
+      }
+    },
+    {
+      "name": "BOSS_REPAIR_STATION",
+      "min": 3,
+      "max": 3,
+      "kind": "event",
+      "section": "store",
+      "events": [
+        {
+          "id": "BOSS_REPAIR_STATION",
+          "slug": "repair-station-in-last-stand",
+          "title": "Repair station in Last Stand",
+          "card": true,
+          "tags": [
+            "reward"
+          ],
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        }
+      ],
+      "order": 1,
+      "placement": {
+        "position": 1,
+        "nebula_first": false,
+        "before_min": 1,
+        "before_max": 1,
+        "at_risk": false,
+        "always_short": false
+      }
+    },
     {
       "name": "BOSS_HOSTILE",
       "min": 6,
@@ -44,7 +116,16 @@
           "fleet_delay": [],
           "weight": 3
         }
-      ]
+      ],
+      "order": 2,
+      "placement": {
+        "position": 2,
+        "nebula_first": false,
+        "before_min": 4,
+        "before_max": 4,
+        "at_risk": false,
+        "always_short": false
+      }
     },
     {
       "name": "BOSS_NEUTRAL",
@@ -133,60 +214,46 @@
           "unlock_ship": [],
           "fleet_delay": []
         }
-      ]
-    },
-    {
-      "name": "BOSS_REPAIR_STATION",
-      "min": 3,
-      "max": 3,
-      "kind": "event",
-      "section": "store",
-      "events": [
-        {
-          "id": "BOSS_REPAIR_STATION",
-          "slug": "repair-station-in-last-stand",
-          "title": "Repair station in Last Stand",
-          "card": true,
-          "tags": [
-            "reward"
-          ],
-          "gates": [],
-          "items": [],
-          "crew_classes": [],
-          "quests": [],
-          "boarders": [],
-          "unlock_ship": [],
-          "fleet_delay": []
-        }
-      ]
-    },
-    {
-      "name": "STORE",
-      "min": 1,
-      "max": 1,
-      "kind": "event",
-      "section": "store",
-      "events": [
-        {
-          "id": "STORE",
-          "slug": "store",
-          "title": "Store",
-          "card": true,
-          "tags": [
-            "store"
-          ],
-          "gates": [],
-          "items": [],
-          "crew_classes": [],
-          "quests": [],
-          "boarders": [],
-          "unlock_ship": [],
-          "fleet_delay": []
-        }
-      ]
+      ],
+      "order": 3,
+      "placement": {
+        "position": 3,
+        "nebula_first": false,
+        "before_min": 10,
+        "before_max": 10,
+        "at_risk": false,
+        "always_short": false
+      }
     }
   ],
+  "generation": {
+    "grid_beacons": 24,
+    "grid_beacons_min": 19,
+    "allocated_min": 17,
+    "allocated_max": 20,
+    "can_exhaust_map": false,
+    "at_risk_entries": [],
+    "always_short_entries": [],
+    "cannot_meet_minimum": false,
+    "nebula_first": [],
+    "fallback_list": "NEUTRAL",
+    "fallback_list_ae": "OVERRIDE_NEUTRAL",
+    "exit_list": "EXIT_LIST",
+    "source": "raw/wiki/sectors.md"
+  },
   "rollup": {
+    "markers": {
+      "distress": {
+        "events": [],
+        "allocation_entries": [],
+        "marked_outside_allocation": [],
+        "allocated_but_unmarked": []
+      },
+      "store": [
+        "STORE"
+      ],
+      "environment": {}
+    },
     "distinct_events": 8,
     "no_card": [],
     "always_fight": [
@@ -215,6 +282,8 @@
     "quest_targets": []
   },
   "metrics": {
+    "grid_beacons": 24,
+    "at_risk_entries": 0,
     "beacons_min": 17,
     "beacons_max": 20,
     "distinct_events": 8,
@@ -232,13 +301,13 @@
     "section:neutral:max": 10,
     "section:store:min": 4,
     "section:store:max": 4,
+    "entry:STORE:min": 1,
+    "entry:STORE:max": 1,
+    "entry:BOSS_REPAIR_STATION:min": 3,
+    "entry:BOSS_REPAIR_STATION:max": 3,
     "entry:BOSS_HOSTILE:min": 6,
     "entry:BOSS_HOSTILE:max": 6,
     "entry:BOSS_NEUTRAL:min": 7,
-    "entry:BOSS_NEUTRAL:max": 10,
-    "entry:BOSS_REPAIR_STATION:min": 3,
-    "entry:BOSS_REPAIR_STATION:max": 3,
-    "entry:STORE:min": 1,
-    "entry:STORE:max": 1
+    "entry:BOSS_NEUTRAL:max": 10
   }
 }

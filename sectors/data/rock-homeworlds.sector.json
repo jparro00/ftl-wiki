@@ -7,6 +7,7 @@
   "short_name": "Rock Homeworlds",
   "extracted_from": "raw/gamedata/sector_data.xml",
   "min_sector": 4,
+  "earliest_sector": 5,
   "unique": true,
   "tracks": [
     "rock",
@@ -93,7 +94,16 @@
           "unlock_ship": [],
           "fleet_delay": []
         }
-      ]
+      ],
+      "order": 0,
+      "placement": {
+        "position": 0,
+        "nebula_first": false,
+        "before_min": 0,
+        "before_max": 0,
+        "at_risk": false,
+        "always_short": false
+      }
     },
     {
       "name": "ROCK_UNLOCK1",
@@ -132,440 +142,68 @@
           ],
           "fleet_delay": []
         }
-      ]
+      ],
+      "order": 1,
+      "placement": {
+        "position": 1,
+        "nebula_first": false,
+        "before_min": 1,
+        "before_max": 1,
+        "at_risk": false,
+        "always_short": false
+      }
     },
     {
-      "name": "HOSTILE_ROCK",
-      "min": 6,
-      "max": 8,
-      "kind": "list",
-      "section": "hostile",
-      "events": [
-        {
-          "id": "ROCK_SHIP",
-          "slug": "rock-fight",
-          "title": "Rock fight",
-          "card": true,
-          "tags": [
-            "fight",
-            "crew"
-          ],
-          "gates": [],
-          "items": [],
-          "crew_classes": [],
-          "quests": [],
-          "boarders": [],
-          "unlock_ship": [],
-          "fleet_delay": []
-        },
-        {
-          "id": "ROCK_PIRATE",
-          "slug": "rock-pirates-fight",
-          "title": "Rock pirates fight",
-          "card": true,
-          "tags": [
-            "fight",
-            "crew"
-          ],
-          "gates": [],
-          "items": [],
-          "crew_classes": [],
-          "quests": [],
-          "boarders": [],
-          "unlock_ship": [],
-          "fleet_delay": []
-        },
-        {
-          "id": "ROCK_FIGHT_ASTEROID",
-          "slug": "rock-fight-in-asteroid-field",
-          "title": "Rock fight in asteroid field",
-          "card": true,
-          "tags": [
-            "fight",
-            "crew",
-            "unique"
-          ],
-          "gates": [],
-          "items": [],
-          "crew_classes": [],
-          "quests": [],
-          "boarders": [],
-          "unlock_ship": [],
-          "fleet_delay": []
-        },
-        {
-          "id": "ROCK_PIRATE_ASTEROID",
-          "slug": "rock-pirates-fight-in-asteroid-field",
-          "title": "Rock pirates fight in asteroid field",
-          "card": true,
-          "tags": [
-            "fight",
-            "crew",
-            "unique"
-          ],
-          "gates": [],
-          "items": [],
-          "crew_classes": [],
-          "quests": [],
-          "boarders": [],
-          "unlock_ship": [],
-          "fleet_delay": []
-        },
-        {
-          "id": "ROCK_PIRATE_SUN",
-          "slug": "rock-pirates-fight-near-sun",
-          "title": "Rock pirates fight near sun",
-          "card": true,
-          "tags": [
-            "fight",
-            "crew",
-            "unique"
-          ],
-          "gates": [],
-          "items": [],
-          "crew_classes": [],
-          "quests": [],
-          "boarders": [],
-          "unlock_ship": [],
-          "fleet_delay": []
-        }
-      ]
-    },
-    {
-      "name": "BOARDERS_ROCK",
-      "min": 1,
+      "name": "STORE_ROCK",
+      "min": 2,
       "max": 2,
-      "kind": "list",
-      "section": "boarders",
+      "kind": "event",
+      "section": "store",
       "events": [
         {
-          "id": "ROCK_BOARDERS_SHIP",
-          "slug": "rock-fight-with-boarders",
-          "title": "Rock fight with boarders",
+          "id": "STORE_ROCK",
+          "slug": "store-rock",
+          "title": "Store (Rock)",
           "card": true,
           "tags": [
-            "fight",
-            "boarders",
-            "crew",
-            "unique"
+            "store"
           ],
+          "marker": {
+            "store": true
+          },
           "gates": [],
           "items": [],
           "crew_classes": [],
           "quests": [],
-          "boarders": [
-            {
-              "class": "rock",
-              "min": 1,
-              "max": 3
-            }
-          ],
-          "unlock_ship": [],
-          "fleet_delay": []
-        },
-        {
-          "id": "ROCK_BOARDERS_ASTEROID",
-          "slug": "rock-fight-with-boarders-in-asteroid-field",
-          "title": "Rock fight with boarders in asteroid field",
-          "card": true,
-          "tags": [
-            "fight",
-            "boarders",
-            "crew",
-            "unique"
-          ],
-          "gates": [],
-          "items": [],
-          "crew_classes": [],
-          "quests": [],
-          "boarders": [
-            {
-              "class": "rock",
-              "min": 1,
-              "max": 2
-            }
-          ],
-          "unlock_ship": [],
-          "fleet_delay": []
-        },
-        {
-          "id": "ROCK_BOARDERS_SUN",
-          "slug": "boarders-rockmen-near-sun",
-          "title": "Boarders: Rockmen near sun",
-          "card": true,
-          "tags": [
-            "boarders",
-            "unique"
-          ],
-          "gates": [],
-          "items": [],
-          "crew_classes": [],
-          "quests": [],
-          "boarders": [
-            {
-              "class": "rock",
-              "min": 2,
-              "max": 3
-            }
-          ],
+          "boarders": [],
           "unlock_ship": [],
           "fleet_delay": []
         }
-      ]
+      ],
+      "order": 2,
+      "placement": {
+        "position": 2,
+        "nebula_first": false,
+        "before_min": 2,
+        "before_max": 2,
+        "at_risk": false,
+        "always_short": false
+      }
     },
     {
-      "name": "NEUTRAL_ROCK",
-      "min": 7,
-      "max": 8,
-      "kind": "list",
-      "section": "neutral",
+      "name": "NOTHING_ROCK",
+      "min": 2,
+      "max": 3,
+      "kind": "event",
+      "section": "empty",
       "events": [
         {
-          "id": "ROCK_MANTIS_HUNTER",
-          "slug": "mantis-ship-with-rock-body-parts",
-          "title": "Mantis ship with Rock body parts",
+          "id": "NOTHING_ROCK",
+          "slug": "empty-beacon-rock",
+          "title": "Empty beacon (Rock)",
           "card": true,
-          "tags": [
-            "may-fight",
-            "crew",
-            "unique"
-          ],
-          "gates": [
-            {
-              "req": "ROCK_ARMOR",
-              "label": "Rock Plating"
-            },
-            {
-              "req": "rock",
-              "label": "Rockman"
-            }
-          ],
-          "items": [],
-          "crew_classes": [],
-          "quests": [],
-          "boarders": [],
-          "unlock_ship": [],
-          "fleet_delay": []
-        },
-        {
-          "id": "ROCK_MANTIS_FREIGHTER",
-          "slug": "mantis-ships-battle-for-rock-freighter",
-          "title": "Mantis ships battle for Rock freighter",
-          "card": true,
-          "tags": [
-            "may-fight",
-            "cost",
-            "unique"
-          ],
-          "gates": [
-            {
-              "req": "REPAIR",
-              "label": "System Repair Drone"
-            },
-            {
-              "req": "SHIP_REPAIR",
-              "label": "Hull Repair"
-            }
-          ],
-          "items": [],
-          "crew_classes": [],
-          "quests": [],
-          "boarders": [],
-          "unlock_ship": [],
-          "fleet_delay": []
-        },
-        {
-          "id": "ROCK_ATHIEST",
-          "slug": "rock-atheists",
-          "title": "Rock atheists",
-          "card": true,
-          "tags": [
-            "may-fight",
-            "crew",
-            "unique"
-          ],
-          "gates": [
-            {
-              "req": "sensors",
-              "label": "Sensors",
-              "lvl": "2"
-            }
-          ],
-          "items": [],
-          "crew_classes": [
-            "rock"
-          ],
-          "quests": [],
-          "boarders": [],
-          "unlock_ship": [],
-          "fleet_delay": []
-        },
-        {
-          "id": "ROCK_LOOTING",
-          "slug": "disabled-rock-ship",
-          "title": "Disabled Rock ship",
-          "card": true,
-          "tags": [
-            "may-fight",
-            "crew",
-            "unique"
-          ],
-          "gates": [
-            {
-              "req": "slug",
-              "label": "Slug"
-            }
-          ],
-          "items": [],
-          "crew_classes": [],
-          "quests": [],
-          "boarders": [],
-          "unlock_ship": [],
-          "fleet_delay": []
-        },
-        {
-          "id": "ROCK_STARSHIP_MINE",
-          "slug": "rock-live-mine",
-          "title": "Rock live mine",
-          "card": true,
-          "tags": [
-            "crew-loss",
-            "reward",
-            "cost",
-            "unique"
-          ],
-          "gates": [
-            {
-              "req": "WEAPONS_MISSILES",
-              "label": "WEAPONS_MISSILES"
-            },
-            {
-              "req": "COMBAT_BEAM_DRONE_LIST",
-              "label": "COMBAT_BEAM_DRONE_LIST"
-            },
-            {
-              "req": "engines",
-              "label": "Engines",
-              "lvl": "5"
-            }
-          ],
-          "items": [],
-          "crew_classes": [],
-          "quests": [],
-          "boarders": [],
-          "unlock_ship": [],
-          "fleet_delay": []
-        },
-        {
-          "id": "PIRATE_CIVILIAN",
-          "slug": "pirate-ship-attacking-civilian",
-          "title": "Pirate ship attacking civilian",
-          "card": true,
-          "tags": [
-            "may-fight",
-            "crew"
-          ],
+          "tags": [],
           "gates": [],
-          "items": [],
-          "crew_classes": [],
-          "quests": [],
-          "boarders": [],
-          "unlock_ship": [],
-          "fleet_delay": []
-        },
-        {
-          "id": "MERCENARY",
-          "slug": "the-mercenary",
-          "title": "The mercenary",
-          "card": true,
-          "tags": [
-            "may-fight",
-            "crew",
-            "cost"
-          ],
-          "gates": [],
-          "items": [],
-          "crew_classes": [],
-          "quests": [],
-          "boarders": [],
-          "unlock_ship": [],
-          "fleet_delay": [
-            -2
-          ]
-        },
-        {
-          "id": "FRIENDLY_SLAVER",
-          "slug": "slaver-friendly",
-          "title": "Slaver (friendly)",
-          "card": true,
-          "tags": [
-            "may-fight",
-            "crew",
-            "cost",
-            "unique"
-          ],
-          "gates": [
-            {
-              "req": "teleporter",
-              "label": "Crew Teleporter",
-              "lvl": "2"
-            }
-          ],
-          "items": [],
-          "crew_classes": [
-            "mantis",
-            "rock",
-            "engi"
-          ],
-          "quests": [],
-          "boarders": [],
-          "unlock_ship": [],
-          "fleet_delay": []
-        },
-        {
-          "id": "ASTEROID_DERELICT_SHIP",
-          "slug": "dense-asteroid-field-distress",
-          "title": "Dense asteroid field distress",
-          "card": true,
-          "tags": [
-            "reward",
-            "unique"
-          ],
-          "gates": [
-            {
-              "req": "ROCK_ARMOR",
-              "label": "Rock Plating"
-            }
-          ],
-          "items": [
-            {
-              "id": "STASIS_POD",
-              "kind": "augment",
-              "label": "Damaged Stasis Pod"
-            }
-          ],
-          "crew_classes": [],
-          "quests": [],
-          "boarders": [],
-          "unlock_ship": [],
-          "fleet_delay": []
-        },
-        {
-          "id": "ROCK_SLUG_ARGUMENT",
-          "slug": "rock-and-slug-standoff",
-          "title": "Rock and Slug standoff",
-          "card": true,
-          "tags": [
-            "may-fight",
-            "cost",
-            "unique"
-          ],
-          "gates": [
-            {
-              "req": "reactor",
-              "label": "reactor"
-            }
-          ],
           "items": [],
           "crew_classes": [],
           "quests": [],
@@ -573,7 +211,16 @@
           "unlock_ship": [],
           "fleet_delay": []
         }
-      ]
+      ],
+      "order": 3,
+      "placement": {
+        "position": 3,
+        "nebula_first": false,
+        "before_min": 4,
+        "before_max": 4,
+        "at_risk": false,
+        "always_short": false
+      }
     },
     {
       "name": "DISTRESS_BEACON_ROCK",
@@ -592,6 +239,9 @@
             "reward",
             "cost"
           ],
+          "marker": {
+            "beacon": "distress"
+          },
           "gates": [],
           "items": [],
           "crew_classes": [],
@@ -610,6 +260,9 @@
             "crew",
             "unique"
           ],
+          "marker": {
+            "beacon": "distress"
+          },
           "gates": [],
           "items": [],
           "crew_classes": [],
@@ -629,6 +282,9 @@
             "reward",
             "unique"
           ],
+          "marker": {
+            "beacon": "distress"
+          },
           "gates": [
             {
               "req": "medbay",
@@ -694,6 +350,9 @@
             "cost",
             "unique"
           ],
+          "marker": {
+            "beacon": "distress"
+          },
           "gates": [
             {
               "req": "DRONES_DEFENSE_LIST",
@@ -798,6 +457,10 @@
             "quest",
             "unique"
           ],
+          "marker": {
+            "beacon": "distress",
+            "store": true
+          },
           "gates": [
             {
               "req": "FTL_JUMPER",
@@ -824,6 +487,9 @@
             "cost",
             "unique"
           ],
+          "marker": {
+            "beacon": "distress"
+          },
           "gates": [
             {
               "req": "WEAPONS_BEAM_DAMAGE",
@@ -852,6 +518,9 @@
             "cost",
             "unique"
           ],
+          "marker": {
+            "beacon": "distress"
+          },
           "gates": [
             {
               "req": "BATTLE",
@@ -882,6 +551,9 @@
             "reward",
             "unique"
           ],
+          "marker": {
+            "beacon": "distress"
+          },
           "gates": [
             {
               "req": "WEAPONS_ION",
@@ -925,6 +597,9 @@
             "reward",
             "unique"
           ],
+          "marker": {
+            "beacon": "distress"
+          },
           "gates": [
             {
               "req": "rock",
@@ -952,6 +627,9 @@
             "reward",
             "unique"
           ],
+          "marker": {
+            "beacon": "distress"
+          },
           "gates": [
             {
               "req": "rock",
@@ -978,7 +656,228 @@
           "unlock_ship": [],
           "fleet_delay": []
         }
-      ]
+      ],
+      "order": 4,
+      "placement": {
+        "position": 4,
+        "nebula_first": false,
+        "before_min": 6,
+        "before_max": 7,
+        "at_risk": false,
+        "always_short": false
+      }
+    },
+    {
+      "name": "HOSTILE_ROCK",
+      "min": 6,
+      "max": 8,
+      "kind": "list",
+      "section": "hostile",
+      "events": [
+        {
+          "id": "ROCK_SHIP",
+          "slug": "rock-fight",
+          "title": "Rock fight",
+          "card": true,
+          "tags": [
+            "fight",
+            "crew"
+          ],
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "ROCK_PIRATE",
+          "slug": "rock-pirates-fight",
+          "title": "Rock pirates fight",
+          "card": true,
+          "tags": [
+            "fight",
+            "crew"
+          ],
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "ROCK_FIGHT_ASTEROID",
+          "slug": "rock-fight-in-asteroid-field",
+          "title": "Rock fight in asteroid field",
+          "card": true,
+          "tags": [
+            "fight",
+            "crew",
+            "unique"
+          ],
+          "marker": {
+            "environment": "asteroid"
+          },
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "ROCK_PIRATE_ASTEROID",
+          "slug": "rock-pirates-fight-in-asteroid-field",
+          "title": "Rock pirates fight in asteroid field",
+          "card": true,
+          "tags": [
+            "fight",
+            "crew",
+            "unique"
+          ],
+          "marker": {
+            "environment": "asteroid"
+          },
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "ROCK_PIRATE_SUN",
+          "slug": "rock-pirates-fight-near-sun",
+          "title": "Rock pirates fight near sun",
+          "card": true,
+          "tags": [
+            "fight",
+            "crew",
+            "unique"
+          ],
+          "marker": {
+            "environment": "sun"
+          },
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        }
+      ],
+      "order": 5,
+      "placement": {
+        "position": 5,
+        "nebula_first": false,
+        "before_min": 7,
+        "before_max": 9,
+        "at_risk": false,
+        "always_short": false
+      }
+    },
+    {
+      "name": "BOARDERS_ROCK",
+      "min": 1,
+      "max": 2,
+      "kind": "list",
+      "section": "boarders",
+      "events": [
+        {
+          "id": "ROCK_BOARDERS_SHIP",
+          "slug": "rock-fight-with-boarders",
+          "title": "Rock fight with boarders",
+          "card": true,
+          "tags": [
+            "fight",
+            "boarders",
+            "crew",
+            "unique"
+          ],
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [
+            {
+              "class": "rock",
+              "min": 1,
+              "max": 3
+            }
+          ],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "ROCK_BOARDERS_ASTEROID",
+          "slug": "rock-fight-with-boarders-in-asteroid-field",
+          "title": "Rock fight with boarders in asteroid field",
+          "card": true,
+          "tags": [
+            "fight",
+            "boarders",
+            "crew",
+            "unique"
+          ],
+          "marker": {
+            "environment": "asteroid"
+          },
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [
+            {
+              "class": "rock",
+              "min": 1,
+              "max": 2
+            }
+          ],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "ROCK_BOARDERS_SUN",
+          "slug": "boarders-rockmen-near-sun",
+          "title": "Boarders: Rockmen near sun",
+          "card": true,
+          "tags": [
+            "boarders",
+            "unique"
+          ],
+          "marker": {
+            "environment": "sun"
+          },
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [
+            {
+              "class": "rock",
+              "min": 2,
+              "max": 3
+            }
+          ],
+          "unlock_ship": [],
+          "fleet_delay": []
+        }
+      ],
+      "order": 6,
+      "placement": {
+        "position": 6,
+        "nebula_first": false,
+        "before_min": 13,
+        "before_max": 17,
+        "at_risk": false,
+        "always_short": false
+      }
     },
     {
       "name": "ITEMS",
@@ -1251,6 +1150,9 @@
               "store",
               "unique"
             ],
+            "marker": {
+              "store": true
+            },
             "gates": [
               {
                 "req": "mind",
@@ -1278,32 +1180,16 @@
         ],
         "removed": [],
         "applies": "unconfirmed"
+      },
+      "order": 7,
+      "placement": {
+        "position": 7,
+        "nebula_first": false,
+        "before_min": 14,
+        "before_max": 19,
+        "at_risk": false,
+        "always_short": false
       }
-    },
-    {
-      "name": "STORE_ROCK",
-      "min": 2,
-      "max": 2,
-      "kind": "event",
-      "section": "store",
-      "events": [
-        {
-          "id": "STORE_ROCK",
-          "slug": "store-rock",
-          "title": "Store (Rock)",
-          "card": true,
-          "tags": [
-            "store"
-          ],
-          "gates": [],
-          "items": [],
-          "crew_classes": [],
-          "quests": [],
-          "boarders": [],
-          "unlock_ship": [],
-          "fleet_delay": []
-        }
-      ]
     },
     {
       "name": "QUESTS_ROCK",
@@ -1346,6 +1232,9 @@
             "store",
             "quest"
           ],
+          "marker": {
+            "store": true
+          },
           "gates": [],
           "items": [],
           "crew_classes": [],
@@ -1411,6 +1300,9 @@
             "quest",
             "unique"
           ],
+          "marker": {
+            "store": true
+          },
           "gates": [],
           "items": [],
           "crew_classes": [],
@@ -1455,21 +1347,169 @@
           "unlock_ship": [],
           "fleet_delay": []
         }
-      ]
+      ],
+      "order": 8,
+      "placement": {
+        "position": 8,
+        "nebula_first": false,
+        "before_min": 15,
+        "before_max": 21,
+        "at_risk": false,
+        "always_short": false
+      }
     },
     {
-      "name": "NOTHING_ROCK",
-      "min": 2,
-      "max": 3,
-      "kind": "event",
-      "section": "empty",
+      "name": "NEUTRAL_ROCK",
+      "min": 7,
+      "max": 8,
+      "kind": "list",
+      "section": "neutral",
       "events": [
         {
-          "id": "NOTHING_ROCK",
-          "slug": "empty-beacon-rock",
-          "title": "Empty beacon (Rock)",
+          "id": "ROCK_MANTIS_HUNTER",
+          "slug": "mantis-ship-with-rock-body-parts",
+          "title": "Mantis ship with Rock body parts",
           "card": true,
-          "tags": [],
+          "tags": [
+            "may-fight",
+            "crew",
+            "unique"
+          ],
+          "gates": [
+            {
+              "req": "ROCK_ARMOR",
+              "label": "Rock Plating"
+            },
+            {
+              "req": "rock",
+              "label": "Rockman"
+            }
+          ],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "ROCK_MANTIS_FREIGHTER",
+          "slug": "mantis-ships-battle-for-rock-freighter",
+          "title": "Mantis ships battle for Rock freighter",
+          "card": true,
+          "tags": [
+            "may-fight",
+            "cost",
+            "unique"
+          ],
+          "gates": [
+            {
+              "req": "REPAIR",
+              "label": "System Repair Drone"
+            },
+            {
+              "req": "SHIP_REPAIR",
+              "label": "Hull Repair"
+            }
+          ],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "ROCK_ATHIEST",
+          "slug": "rock-atheists",
+          "title": "Rock atheists",
+          "card": true,
+          "tags": [
+            "may-fight",
+            "crew",
+            "unique"
+          ],
+          "gates": [
+            {
+              "req": "sensors",
+              "label": "Sensors",
+              "lvl": "2"
+            }
+          ],
+          "items": [],
+          "crew_classes": [
+            "rock"
+          ],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "ROCK_LOOTING",
+          "slug": "disabled-rock-ship",
+          "title": "Disabled Rock ship",
+          "card": true,
+          "tags": [
+            "may-fight",
+            "crew",
+            "unique"
+          ],
+          "gates": [
+            {
+              "req": "slug",
+              "label": "Slug"
+            }
+          ],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "ROCK_STARSHIP_MINE",
+          "slug": "rock-live-mine",
+          "title": "Rock live mine",
+          "card": true,
+          "tags": [
+            "crew-loss",
+            "reward",
+            "cost",
+            "unique"
+          ],
+          "gates": [
+            {
+              "req": "WEAPONS_MISSILES",
+              "label": "WEAPONS_MISSILES"
+            },
+            {
+              "req": "COMBAT_BEAM_DRONE_LIST",
+              "label": "COMBAT_BEAM_DRONE_LIST"
+            },
+            {
+              "req": "engines",
+              "label": "Engines",
+              "lvl": "5"
+            }
+          ],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "PIRATE_CIVILIAN",
+          "slug": "pirate-ship-attacking-civilian",
+          "title": "Pirate ship attacking civilian",
+          "card": true,
+          "tags": [
+            "may-fight",
+            "crew"
+          ],
           "gates": [],
           "items": [],
           "crew_classes": [],
@@ -1477,11 +1517,182 @@
           "boarders": [],
           "unlock_ship": [],
           "fleet_delay": []
+        },
+        {
+          "id": "MERCENARY",
+          "slug": "the-mercenary",
+          "title": "The mercenary",
+          "card": true,
+          "tags": [
+            "may-fight",
+            "crew",
+            "cost"
+          ],
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": [
+            -2
+          ]
+        },
+        {
+          "id": "FRIENDLY_SLAVER",
+          "slug": "slaver-friendly",
+          "title": "Slaver (friendly)",
+          "card": true,
+          "tags": [
+            "may-fight",
+            "crew",
+            "cost",
+            "unique"
+          ],
+          "gates": [
+            {
+              "req": "teleporter",
+              "label": "Crew Teleporter",
+              "lvl": "2"
+            }
+          ],
+          "items": [],
+          "crew_classes": [
+            "mantis",
+            "rock",
+            "engi"
+          ],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "ASTEROID_DERELICT_SHIP",
+          "slug": "dense-asteroid-field-distress",
+          "title": "Dense asteroid field distress",
+          "card": true,
+          "tags": [
+            "reward",
+            "unique"
+          ],
+          "marker": {
+            "beacon": "distress"
+          },
+          "gates": [
+            {
+              "req": "ROCK_ARMOR",
+              "label": "Rock Plating"
+            }
+          ],
+          "items": [
+            {
+              "id": "STASIS_POD",
+              "kind": "augment",
+              "label": "Damaged Stasis Pod"
+            }
+          ],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "ROCK_SLUG_ARGUMENT",
+          "slug": "rock-and-slug-standoff",
+          "title": "Rock and Slug standoff",
+          "card": true,
+          "tags": [
+            "may-fight",
+            "cost",
+            "unique"
+          ],
+          "gates": [
+            {
+              "req": "reactor",
+              "label": "reactor"
+            }
+          ],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
         }
-      ]
+      ],
+      "order": 9,
+      "placement": {
+        "position": 9,
+        "nebula_first": false,
+        "before_min": 15,
+        "before_max": 22,
+        "at_risk": false,
+        "always_short": false
+      }
     }
   ],
+  "generation": {
+    "grid_beacons": 24,
+    "grid_beacons_min": 19,
+    "allocated_min": 22,
+    "allocated_max": 30,
+    "can_exhaust_map": true,
+    "at_risk_entries": [],
+    "always_short_entries": [],
+    "cannot_meet_minimum": false,
+    "nebula_first": [],
+    "fallback_list": "NEUTRAL",
+    "fallback_list_ae": "OVERRIDE_NEUTRAL",
+    "exit_list": "EXIT_LIST",
+    "source": "raw/wiki/sectors.md"
+  },
   "rollup": {
+    "markers": {
+      "distress": {
+        "events": [
+          "ASTEROID_DERELICT_SHIP",
+          "CIVILIAN_ASTEROIDS_BEACON",
+          "DISTRESS_INFESTATION",
+          "DISTRESS_SATELLITE_DEFENSE",
+          "DISTRESS_STATION_DISEASE",
+          "DISTRESS_STATION_FIRE",
+          "DISTRESS_TRAPPED_MINER",
+          "ESCORT_BEACON",
+          "FRIENDLY_BEACON",
+          "STRANDED_BEACON",
+          "TRAP_BEACON"
+        ],
+        "allocation_entries": [
+          "DISTRESS_BEACON_ROCK"
+        ],
+        "marked_outside_allocation": [
+          "ASTEROID_DERELICT_SHIP"
+        ],
+        "allocated_but_unmarked": [
+          "PIRATE_CIVILIAN_BEACON",
+          "REBEL_VS_FEDERATION"
+        ]
+      },
+      "store": [
+        "ESCORT_BEACON",
+        "MERCENARY_WORK_START",
+        "QUEST_ESCORT",
+        "STORE_ROCK"
+      ],
+      "environment": {
+        "asteroid": [
+          "ROCK_BOARDERS_ASTEROID",
+          "ROCK_FIGHT_ASTEROID",
+          "ROCK_PIRATE_ASTEROID"
+        ],
+        "sun": [
+          "ROCK_BOARDERS_SUN",
+          "ROCK_PIRATE_SUN"
+        ]
+      }
+    },
     "distinct_events": 52,
     "no_card": [],
     "always_fight": [
@@ -1618,25 +1829,25 @@
           "3"
         ],
         "events": [
-          "ROCK_ATHIEST",
           "CIVILIAN_ASTEROIDS_BEACON",
           "REBEL_VS_FEDERATION",
           "TRADER_UPGRADES",
-          "FEDERATION_PLANET_SIGNAL"
+          "FEDERATION_PLANET_SIGNAL",
+          "ROCK_ATHIEST"
         ]
       },
       {
         "req": "teleporter",
         "label": "Crew Teleporter",
         "levels": [
-          "2",
-          "1"
+          "1",
+          "2"
         ],
         "events": [
-          "FRIENDLY_SLAVER",
           "CIVILIAN_ASTEROIDS_BEACON",
           "REBEL_VS_FEDERATION",
-          "QUEST_CREWDEAD_START"
+          "QUEST_CREWDEAD_START",
+          "FRIENDLY_SLAVER"
         ]
       },
       {
@@ -1654,9 +1865,9 @@
         "label": "System Repair Drone",
         "levels": [],
         "events": [
-          "ROCK_MANTIS_FREIGHTER",
           "CIVILIAN_ASTEROIDS_BEACON",
-          "DISTRESS_STATION_FIRE"
+          "DISTRESS_STATION_FIRE",
+          "ROCK_MANTIS_FREIGHTER"
         ]
       },
       {
@@ -1664,9 +1875,9 @@
         "label": "Rock Plating",
         "levels": [],
         "events": [
+          "CIVILIAN_ASTEROIDS_BEACON",
           "ROCK_MANTIS_HUNTER",
-          "ASTEROID_DERELICT_SHIP",
-          "CIVILIAN_ASTEROIDS_BEACON"
+          "ASTEROID_DERELICT_SHIP"
         ]
       },
       {
@@ -1674,9 +1885,9 @@
         "label": "Rockman",
         "levels": [],
         "events": [
-          "ROCK_MANTIS_HUNTER",
           "DISTRESS_STATION_FIRE",
-          "DISTRESS_STATION_DISEASE"
+          "DISTRESS_STATION_DISEASE",
+          "ROCK_MANTIS_HUNTER"
         ]
       },
       {
@@ -1693,8 +1904,8 @@
         "label": "COMBAT_BEAM_DRONE_LIST",
         "levels": [],
         "events": [
-          "ROCK_STARSHIP_MINE",
-          "DISTRESS_TRAPPED_MINER"
+          "DISTRESS_TRAPPED_MINER",
+          "ROCK_STARSHIP_MINE"
         ]
       },
       {
@@ -1732,8 +1943,8 @@
         "label": "reactor",
         "levels": [],
         "events": [
-          "ROCK_SLUG_ARGUMENT",
-          "TRADER_UPGRADES"
+          "TRADER_UPGRADES",
+          "ROCK_SLUG_ARGUMENT"
         ]
       },
       {
@@ -1741,8 +1952,8 @@
         "label": "Slug",
         "levels": [],
         "events": [
-          "ROCK_LOOTING",
-          "STRANDED_BEACON"
+          "STRANDED_BEACON",
+          "ROCK_LOOTING"
         ]
       },
       {
@@ -1934,9 +2145,9 @@
       {
         "value": "rock",
         "events": [
+          "ROCK_QUEST_MARRIAGE_START",
           "ROCK_ATHIEST",
-          "FRIENDLY_SLAVER",
-          "ROCK_QUEST_MARRIAGE_START"
+          "FRIENDLY_SLAVER"
         ]
       },
       {
@@ -2021,6 +2232,8 @@
     ]
   },
   "metrics": {
+    "grid_beacons": 24,
+    "at_risk_entries": 0,
     "beacons_min": 22,
     "beacons_max": 30,
     "distinct_events": 52,
@@ -2054,21 +2267,21 @@
     "entry:ROCK_CRYSTAL_BEACON:max": 1,
     "entry:ROCK_UNLOCK1:min": 1,
     "entry:ROCK_UNLOCK1:max": 1,
+    "entry:STORE_ROCK:min": 2,
+    "entry:STORE_ROCK:max": 2,
+    "entry:NOTHING_ROCK:min": 2,
+    "entry:NOTHING_ROCK:max": 3,
+    "entry:DISTRESS_BEACON_ROCK:min": 1,
+    "entry:DISTRESS_BEACON_ROCK:max": 2,
     "entry:HOSTILE_ROCK:min": 6,
     "entry:HOSTILE_ROCK:max": 8,
     "entry:BOARDERS_ROCK:min": 1,
     "entry:BOARDERS_ROCK:max": 2,
-    "entry:NEUTRAL_ROCK:min": 7,
-    "entry:NEUTRAL_ROCK:max": 8,
-    "entry:DISTRESS_BEACON_ROCK:min": 1,
-    "entry:DISTRESS_BEACON_ROCK:max": 2,
     "entry:ITEMS:min": 1,
     "entry:ITEMS:max": 2,
-    "entry:STORE_ROCK:min": 2,
-    "entry:STORE_ROCK:max": 2,
     "entry:QUESTS_ROCK:min": 0,
     "entry:QUESTS_ROCK:max": 1,
-    "entry:NOTHING_ROCK:min": 2,
-    "entry:NOTHING_ROCK:max": 3
+    "entry:NEUTRAL_ROCK:min": 7,
+    "entry:NEUTRAL_ROCK:max": 8
   }
 }

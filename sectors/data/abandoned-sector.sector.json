@@ -7,6 +7,7 @@
   "short_name": "Abandoned Sector",
   "extracted_from": "raw/gamedata/sector_data.xml",
   "min_sector": 1,
+  "earliest_sector": 2,
   "unique": false,
   "tracks": [
     "shrike",
@@ -66,57 +67,23 @@
   },
   "entries": [
     {
-      "name": "HOSTILE_ENVIRONMENT_LANIUS",
-      "min": 1,
+      "name": "STORE_LANIUS",
+      "min": 2,
       "max": 2,
-      "kind": "list",
-      "section": "hostile",
+      "kind": "event",
+      "section": "store",
       "events": [
         {
-          "id": "LANIUS_FIGHT_ASTEROID",
-          "slug": "lanius-fight-in-asteroid-field",
-          "title": "Lanius fight in asteroid field",
+          "id": "STORE_LANIUS",
+          "slug": "store-lanius",
+          "title": "Store (Lanius)",
           "card": true,
           "tags": [
-            "fight",
-            "crew",
-            "unique"
+            "store"
           ],
-          "gates": [],
-          "items": [],
-          "crew_classes": [],
-          "quests": [],
-          "boarders": [],
-          "unlock_ship": [],
-          "fleet_delay": []
-        },
-        {
-          "id": "LANIUS_FIGHT_PULSAR",
-          "slug": "lanius-fight-near-pulsar",
-          "title": "Lanius fight near pulsar",
-          "card": true,
-          "tags": [
-            "fight",
-            "crew",
-            "unique"
-          ],
-          "gates": [],
-          "items": [],
-          "crew_classes": [],
-          "quests": [],
-          "boarders": [],
-          "unlock_ship": [],
-          "fleet_delay": []
-        },
-        {
-          "id": "LANIUS_NOBOARDERS_PDS",
-          "slug": "lanius-fight-with-friendly-asb-support",
-          "title": "Lanius fight with friendly ASB support",
-          "card": true,
-          "tags": [
-            "fight",
-            "unique"
-          ],
+          "marker": {
+            "store": true
+          },
           "gates": [],
           "items": [],
           "crew_classes": [],
@@ -125,7 +92,372 @@
           "unlock_ship": [],
           "fleet_delay": []
         }
-      ]
+      ],
+      "order": 0,
+      "placement": {
+        "position": 0,
+        "nebula_first": false,
+        "before_min": 0,
+        "before_max": 0,
+        "at_risk": false,
+        "always_short": false
+      }
+    },
+    {
+      "name": "NOTHING_LANIUS",
+      "min": 1,
+      "max": 2,
+      "kind": "event",
+      "section": "empty",
+      "events": [
+        {
+          "id": "NOTHING_LANIUS",
+          "slug": "empty-beacon-lanius",
+          "title": "Empty beacon (Lanius)",
+          "card": true,
+          "tags": [],
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        }
+      ],
+      "order": 1,
+      "placement": {
+        "position": 1,
+        "nebula_first": false,
+        "before_min": 2,
+        "before_max": 2,
+        "at_risk": false,
+        "always_short": false
+      }
+    },
+    {
+      "name": "DISTRESS_BEACON_LANIUS",
+      "min": 1,
+      "max": 2,
+      "kind": "list",
+      "section": "distress",
+      "events": [
+        {
+          "id": "LANIUS_DISTRESS_FIGHT",
+          "slug": "lanius-ship-attacking-civilian-distress",
+          "title": "Lanius ship attacking civilian distress",
+          "card": true,
+          "tags": [
+            "may-fight",
+            "crew",
+            "unique"
+          ],
+          "marker": {
+            "beacon": "distress"
+          },
+          "gates": [
+            {
+              "req": "anaerobic",
+              "label": "Lanius"
+            }
+          ],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "LANIUS_DISTRESS_EMPTY",
+          "slug": "lanius-empty-distress-beacon-1",
+          "title": "Lanius empty distress beacon 1",
+          "card": true,
+          "tags": [
+            "unique"
+          ],
+          "marker": {
+            "beacon": "distress"
+          },
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "LANIUS_DISTRESS_TOOLATE",
+          "slug": "lanius-empty-distress-beacon-2",
+          "title": "Lanius empty distress beacon 2",
+          "card": true,
+          "tags": [
+            "unique"
+          ],
+          "marker": {
+            "beacon": "distress"
+          },
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "LANIUS_DISTRESS_TRAP",
+          "slug": "lanius-fight-distress",
+          "title": "Lanius fight distress",
+          "card": true,
+          "tags": [
+            "fight",
+            "crew",
+            "unique"
+          ],
+          "marker": {
+            "beacon": "distress"
+          },
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "LANIUS_SLUG_DISTRESS",
+          "slug": "lanius-ship-attacking-slug",
+          "title": "Lanius ship attacking Slug",
+          "card": true,
+          "tags": [
+            "may-fight",
+            "unique"
+          ],
+          "marker": {
+            "beacon": "distress"
+          },
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "LANIUS_MANTIS_DISTRESS",
+          "slug": "lanius-ship-attacking-mantis",
+          "title": "Lanius ship attacking Mantis",
+          "card": true,
+          "tags": [
+            "may-fight",
+            "unique"
+          ],
+          "marker": {
+            "beacon": "distress"
+          },
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "LANIUS_ROCK_DISTRESS",
+          "slug": "lanius-ship-attacking-rock",
+          "title": "Lanius ship attacking Rock",
+          "card": true,
+          "tags": [
+            "may-fight",
+            "unique"
+          ],
+          "marker": {
+            "beacon": "distress"
+          },
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "DISTRESS_SATELLITE_DEFENSE",
+          "slug": "malfunctioning-defense-system",
+          "title": "Malfunctioning defense system",
+          "card": true,
+          "tags": [
+            "reward",
+            "unique"
+          ],
+          "marker": {
+            "beacon": "distress"
+          },
+          "gates": [
+            {
+              "req": "WEAPONS_ION",
+              "label": "WEAPONS_ION"
+            },
+            {
+              "req": "cloaking",
+              "label": "Cloaking",
+              "lvl": "1"
+            },
+            {
+              "req": "cloaking",
+              "label": "Cloaking",
+              "lvl": "2"
+            },
+            {
+              "req": "cloaking",
+              "label": "Cloaking",
+              "lvl": "3"
+            },
+            {
+              "req": "engi",
+              "label": "Engi"
+            }
+          ],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "DISTRESS_STATION_FIRE",
+          "slug": "fire-on-research-station",
+          "title": "Fire on research station",
+          "card": true,
+          "tags": [
+            "crew-loss",
+            "crew",
+            "reward",
+            "unique"
+          ],
+          "marker": {
+            "beacon": "distress"
+          },
+          "gates": [
+            {
+              "req": "rock",
+              "label": "Rockman"
+            },
+            {
+              "req": "REPAIR",
+              "label": "System Repair Drone"
+            }
+          ],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "FRIENDLY_BEACON",
+          "slug": "friendly-ship-out-of-fuel",
+          "title": "Friendly ship out of fuel",
+          "card": true,
+          "tags": [
+            "crew",
+            "reward",
+            "cost"
+          ],
+          "marker": {
+            "beacon": "distress"
+          },
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "TRAP_BEACON",
+          "slug": "pirate-ship-distress-trap",
+          "title": "Pirate ship distress trap",
+          "card": true,
+          "tags": [
+            "fight",
+            "crew",
+            "unique"
+          ],
+          "marker": {
+            "beacon": "distress"
+          },
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "STRANDED_BEACON",
+          "slug": "single-life-form-on-moon",
+          "title": "Single life form on moon",
+          "card": true,
+          "tags": [
+            "crew-loss",
+            "crew",
+            "reward",
+            "unique"
+          ],
+          "marker": {
+            "beacon": "distress"
+          },
+          "gates": [
+            {
+              "req": "medbay",
+              "label": "Medbay",
+              "lvl": "2"
+            },
+            {
+              "req": "clonebay",
+              "label": "Clone Bay",
+              "lvl": "2"
+            },
+            {
+              "req": "medbay",
+              "label": "Medbay",
+              "lvl": "3"
+            },
+            {
+              "req": "slug",
+              "label": "Slug"
+            }
+          ],
+          "items": [],
+          "crew_classes": [
+            "human"
+          ],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        }
+      ],
+      "order": 2,
+      "placement": {
+        "position": 2,
+        "nebula_first": false,
+        "before_min": 3,
+        "before_max": 4,
+        "at_risk": false,
+        "always_short": false
+      }
     },
     {
       "name": "HOSTILE_LANIUS",
@@ -247,7 +579,96 @@
           "unlock_ship": [],
           "fleet_delay": []
         }
-      ]
+      ],
+      "order": 3,
+      "placement": {
+        "position": 3,
+        "nebula_first": false,
+        "before_min": 4,
+        "before_max": 6,
+        "at_risk": false,
+        "always_short": false
+      }
+    },
+    {
+      "name": "HOSTILE_ENVIRONMENT_LANIUS",
+      "min": 1,
+      "max": 2,
+      "kind": "list",
+      "section": "hostile",
+      "events": [
+        {
+          "id": "LANIUS_FIGHT_ASTEROID",
+          "slug": "lanius-fight-in-asteroid-field",
+          "title": "Lanius fight in asteroid field",
+          "card": true,
+          "tags": [
+            "fight",
+            "crew",
+            "unique"
+          ],
+          "marker": {
+            "environment": "asteroid"
+          },
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "LANIUS_FIGHT_PULSAR",
+          "slug": "lanius-fight-near-pulsar",
+          "title": "Lanius fight near pulsar",
+          "card": true,
+          "tags": [
+            "fight",
+            "crew",
+            "unique"
+          ],
+          "marker": {
+            "environment": "pulsar"
+          },
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "LANIUS_NOBOARDERS_PDS",
+          "slug": "lanius-fight-with-friendly-asb-support",
+          "title": "Lanius fight with friendly ASB support",
+          "card": true,
+          "tags": [
+            "fight",
+            "unique"
+          ],
+          "marker": {
+            "environment": "PDS"
+          },
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        }
+      ],
+      "order": 4,
+      "placement": {
+        "position": 4,
+        "nebula_first": false,
+        "before_min": 9,
+        "before_max": 12,
+        "at_risk": false,
+        "always_short": false
+      }
     },
     {
       "name": "BOARDERS_LANIUS",
@@ -278,7 +699,217 @@
           "unlock_ship": [],
           "fleet_delay": []
         }
-      ]
+      ],
+      "order": 5,
+      "placement": {
+        "position": 5,
+        "nebula_first": false,
+        "before_min": 10,
+        "before_max": 14,
+        "at_risk": false,
+        "always_short": false
+      }
+    },
+    {
+      "name": "ITEM_LANIUS",
+      "min": 2,
+      "max": 4,
+      "kind": "list",
+      "section": "items",
+      "events": [
+        {
+          "id": "LANIUS_FREE_STUFF",
+          "slug": "free-scrap-with-resources-lanius",
+          "title": "Free scrap with resources (Lanius)",
+          "card": true,
+          "tags": [
+            "reward",
+            "unique"
+          ],
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "LANIUS_TRADER_TRANSLATOR",
+          "slug": "lanius-trader-with-translator",
+          "title": "Lanius trader with translator",
+          "card": true,
+          "tags": [
+            "crew",
+            "reward",
+            "cost",
+            "unique"
+          ],
+          "gates": [],
+          "items": [],
+          "crew_classes": [
+            "anaerobic"
+          ],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "LANIUS_TRADER",
+          "slug": "lanius-trader",
+          "title": "Lanius trader",
+          "card": true,
+          "tags": [
+            "reward",
+            "cost",
+            "unique"
+          ],
+          "gates": [
+            {
+              "req": "anaerobic",
+              "label": "Lanius"
+            }
+          ],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "LANIUS_RESEARCHER_CRAFT",
+          "slug": "lanius-craftsmen",
+          "title": "Lanius craftsmen",
+          "card": true,
+          "tags": [
+            "cost",
+            "unique"
+          ],
+          "gates": [
+            {
+              "req": "anaerobic",
+              "label": "Lanius"
+            }
+          ],
+          "items": [
+            {
+              "id": "DLC_AUGMENTS",
+              "kind": "augment",
+              "label": "DLC_AUGMENTS"
+            },
+            {
+              "id": "DLC_WEAPONS",
+              "kind": "weapon",
+              "label": "DLC_WEAPONS"
+            },
+            {
+              "id": "DLC_DRONES",
+              "kind": "drone",
+              "label": "DLC_DRONES"
+            }
+          ],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "LANIUS_RESEARCHER_CONTACT",
+          "slug": "lanius-with-federation-science-craft",
+          "title": "Lanius with Federation science craft",
+          "card": true,
+          "tags": [
+            "reward",
+            "unique"
+          ],
+          "gates": [
+            {
+              "req": "anaerobic",
+              "label": "Lanius"
+            }
+          ],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        }
+      ],
+      "order": 6,
+      "placement": {
+        "position": 6,
+        "nebula_first": false,
+        "before_min": 11,
+        "before_max": 16,
+        "at_risk": false,
+        "always_short": false
+      }
+    },
+    {
+      "name": "QUESTS_LANIUS",
+      "min": 0,
+      "max": 1,
+      "kind": "list",
+      "section": "quests",
+      "events": [
+        {
+          "id": "FEDERATION_PLANET_SIGNAL",
+          "slug": "encrypted-federation-signal",
+          "title": "Encrypted federation signal",
+          "card": true,
+          "tags": [
+            "may-fight",
+            "boarders",
+            "crew",
+            "quest",
+            "unique"
+          ],
+          "gates": [
+            {
+              "req": "sensors",
+              "label": "Sensors",
+              "lvl": "2"
+            },
+            {
+              "req": "sensors",
+              "label": "Sensors",
+              "lvl": "3"
+            },
+            {
+              "req": "ADV_SCANNERS",
+              "label": "Long-Ranged Scanners"
+            }
+          ],
+          "items": [],
+          "crew_classes": [],
+          "quests": [
+            "HIDDEN_FEDERATION_BASE_LIST",
+            "FEDERATION_BASE_ASSIST"
+          ],
+          "boarders": [
+            {
+              "class": "human",
+              "min": 2,
+              "max": 3
+            }
+          ],
+          "unlock_ship": [],
+          "fleet_delay": []
+        }
+      ],
+      "order": 7,
+      "placement": {
+        "position": 7,
+        "nebula_first": false,
+        "before_min": 13,
+        "before_max": 20,
+        "at_risk": false,
+        "always_short": false
+      }
     },
     {
       "name": "NEUTRAL_LANIUS",
@@ -355,6 +986,9 @@
             "store",
             "unique"
           ],
+          "marker": {
+            "store": true
+          },
           "gates": [
             {
               "req": "anaerobic",
@@ -549,6 +1183,9 @@
             "store",
             "unique"
           ],
+          "marker": {
+            "store": true
+          },
           "gates": [],
           "items": [],
           "crew_classes": [],
@@ -606,520 +1243,73 @@
           "unlock_ship": [],
           "fleet_delay": []
         }
-      ]
-    },
-    {
-      "name": "DISTRESS_BEACON_LANIUS",
-      "min": 1,
-      "max": 2,
-      "kind": "list",
-      "section": "distress",
-      "events": [
-        {
-          "id": "LANIUS_DISTRESS_FIGHT",
-          "slug": "lanius-ship-attacking-civilian-distress",
-          "title": "Lanius ship attacking civilian distress",
-          "card": true,
-          "tags": [
-            "may-fight",
-            "crew",
-            "unique"
-          ],
-          "gates": [
-            {
-              "req": "anaerobic",
-              "label": "Lanius"
-            }
-          ],
-          "items": [],
-          "crew_classes": [],
-          "quests": [],
-          "boarders": [],
-          "unlock_ship": [],
-          "fleet_delay": []
-        },
-        {
-          "id": "LANIUS_DISTRESS_EMPTY",
-          "slug": "lanius-empty-distress-beacon-1",
-          "title": "Lanius empty distress beacon 1",
-          "card": true,
-          "tags": [
-            "unique"
-          ],
-          "gates": [],
-          "items": [],
-          "crew_classes": [],
-          "quests": [],
-          "boarders": [],
-          "unlock_ship": [],
-          "fleet_delay": []
-        },
-        {
-          "id": "LANIUS_DISTRESS_TOOLATE",
-          "slug": "lanius-empty-distress-beacon-2",
-          "title": "Lanius empty distress beacon 2",
-          "card": true,
-          "tags": [
-            "unique"
-          ],
-          "gates": [],
-          "items": [],
-          "crew_classes": [],
-          "quests": [],
-          "boarders": [],
-          "unlock_ship": [],
-          "fleet_delay": []
-        },
-        {
-          "id": "LANIUS_DISTRESS_TRAP",
-          "slug": "lanius-fight-distress",
-          "title": "Lanius fight distress",
-          "card": true,
-          "tags": [
-            "fight",
-            "crew",
-            "unique"
-          ],
-          "gates": [],
-          "items": [],
-          "crew_classes": [],
-          "quests": [],
-          "boarders": [],
-          "unlock_ship": [],
-          "fleet_delay": []
-        },
-        {
-          "id": "LANIUS_SLUG_DISTRESS",
-          "slug": "lanius-ship-attacking-slug",
-          "title": "Lanius ship attacking Slug",
-          "card": true,
-          "tags": [
-            "may-fight",
-            "unique"
-          ],
-          "gates": [],
-          "items": [],
-          "crew_classes": [],
-          "quests": [],
-          "boarders": [],
-          "unlock_ship": [],
-          "fleet_delay": []
-        },
-        {
-          "id": "LANIUS_MANTIS_DISTRESS",
-          "slug": "lanius-ship-attacking-mantis",
-          "title": "Lanius ship attacking Mantis",
-          "card": true,
-          "tags": [
-            "may-fight",
-            "unique"
-          ],
-          "gates": [],
-          "items": [],
-          "crew_classes": [],
-          "quests": [],
-          "boarders": [],
-          "unlock_ship": [],
-          "fleet_delay": []
-        },
-        {
-          "id": "LANIUS_ROCK_DISTRESS",
-          "slug": "lanius-ship-attacking-rock",
-          "title": "Lanius ship attacking Rock",
-          "card": true,
-          "tags": [
-            "may-fight",
-            "unique"
-          ],
-          "gates": [],
-          "items": [],
-          "crew_classes": [],
-          "quests": [],
-          "boarders": [],
-          "unlock_ship": [],
-          "fleet_delay": []
-        },
-        {
-          "id": "DISTRESS_SATELLITE_DEFENSE",
-          "slug": "malfunctioning-defense-system",
-          "title": "Malfunctioning defense system",
-          "card": true,
-          "tags": [
-            "reward",
-            "unique"
-          ],
-          "gates": [
-            {
-              "req": "WEAPONS_ION",
-              "label": "WEAPONS_ION"
-            },
-            {
-              "req": "cloaking",
-              "label": "Cloaking",
-              "lvl": "1"
-            },
-            {
-              "req": "cloaking",
-              "label": "Cloaking",
-              "lvl": "2"
-            },
-            {
-              "req": "cloaking",
-              "label": "Cloaking",
-              "lvl": "3"
-            },
-            {
-              "req": "engi",
-              "label": "Engi"
-            }
-          ],
-          "items": [],
-          "crew_classes": [],
-          "quests": [],
-          "boarders": [],
-          "unlock_ship": [],
-          "fleet_delay": []
-        },
-        {
-          "id": "DISTRESS_STATION_FIRE",
-          "slug": "fire-on-research-station",
-          "title": "Fire on research station",
-          "card": true,
-          "tags": [
-            "crew-loss",
-            "crew",
-            "reward",
-            "unique"
-          ],
-          "gates": [
-            {
-              "req": "rock",
-              "label": "Rockman"
-            },
-            {
-              "req": "REPAIR",
-              "label": "System Repair Drone"
-            }
-          ],
-          "items": [],
-          "crew_classes": [],
-          "quests": [],
-          "boarders": [],
-          "unlock_ship": [],
-          "fleet_delay": []
-        },
-        {
-          "id": "FRIENDLY_BEACON",
-          "slug": "friendly-ship-out-of-fuel",
-          "title": "Friendly ship out of fuel",
-          "card": true,
-          "tags": [
-            "crew",
-            "reward",
-            "cost"
-          ],
-          "gates": [],
-          "items": [],
-          "crew_classes": [],
-          "quests": [],
-          "boarders": [],
-          "unlock_ship": [],
-          "fleet_delay": []
-        },
-        {
-          "id": "TRAP_BEACON",
-          "slug": "pirate-ship-distress-trap",
-          "title": "Pirate ship distress trap",
-          "card": true,
-          "tags": [
-            "fight",
-            "crew",
-            "unique"
-          ],
-          "gates": [],
-          "items": [],
-          "crew_classes": [],
-          "quests": [],
-          "boarders": [],
-          "unlock_ship": [],
-          "fleet_delay": []
-        },
-        {
-          "id": "STRANDED_BEACON",
-          "slug": "single-life-form-on-moon",
-          "title": "Single life form on moon",
-          "card": true,
-          "tags": [
-            "crew-loss",
-            "crew",
-            "reward",
-            "unique"
-          ],
-          "gates": [
-            {
-              "req": "medbay",
-              "label": "Medbay",
-              "lvl": "2"
-            },
-            {
-              "req": "clonebay",
-              "label": "Clone Bay",
-              "lvl": "2"
-            },
-            {
-              "req": "medbay",
-              "label": "Medbay",
-              "lvl": "3"
-            },
-            {
-              "req": "slug",
-              "label": "Slug"
-            }
-          ],
-          "items": [],
-          "crew_classes": [
-            "human"
-          ],
-          "quests": [],
-          "boarders": [],
-          "unlock_ship": [],
-          "fleet_delay": []
-        }
-      ]
-    },
-    {
-      "name": "ITEM_LANIUS",
-      "min": 2,
-      "max": 4,
-      "kind": "list",
-      "section": "items",
-      "events": [
-        {
-          "id": "LANIUS_FREE_STUFF",
-          "slug": "free-scrap-with-resources-lanius",
-          "title": "Free scrap with resources (Lanius)",
-          "card": true,
-          "tags": [
-            "reward",
-            "unique"
-          ],
-          "gates": [],
-          "items": [],
-          "crew_classes": [],
-          "quests": [],
-          "boarders": [],
-          "unlock_ship": [],
-          "fleet_delay": []
-        },
-        {
-          "id": "LANIUS_TRADER_TRANSLATOR",
-          "slug": "lanius-trader-with-translator",
-          "title": "Lanius trader with translator",
-          "card": true,
-          "tags": [
-            "crew",
-            "reward",
-            "cost",
-            "unique"
-          ],
-          "gates": [],
-          "items": [],
-          "crew_classes": [
-            "anaerobic"
-          ],
-          "quests": [],
-          "boarders": [],
-          "unlock_ship": [],
-          "fleet_delay": []
-        },
-        {
-          "id": "LANIUS_TRADER",
-          "slug": "lanius-trader",
-          "title": "Lanius trader",
-          "card": true,
-          "tags": [
-            "reward",
-            "cost",
-            "unique"
-          ],
-          "gates": [
-            {
-              "req": "anaerobic",
-              "label": "Lanius"
-            }
-          ],
-          "items": [],
-          "crew_classes": [],
-          "quests": [],
-          "boarders": [],
-          "unlock_ship": [],
-          "fleet_delay": []
-        },
-        {
-          "id": "LANIUS_RESEARCHER_CRAFT",
-          "slug": "lanius-craftsmen",
-          "title": "Lanius craftsmen",
-          "card": true,
-          "tags": [
-            "cost",
-            "unique"
-          ],
-          "gates": [
-            {
-              "req": "anaerobic",
-              "label": "Lanius"
-            }
-          ],
-          "items": [
-            {
-              "id": "DLC_AUGMENTS",
-              "kind": "augment",
-              "label": "DLC_AUGMENTS"
-            },
-            {
-              "id": "DLC_WEAPONS",
-              "kind": "weapon",
-              "label": "DLC_WEAPONS"
-            },
-            {
-              "id": "DLC_DRONES",
-              "kind": "drone",
-              "label": "DLC_DRONES"
-            }
-          ],
-          "crew_classes": [],
-          "quests": [],
-          "boarders": [],
-          "unlock_ship": [],
-          "fleet_delay": []
-        },
-        {
-          "id": "LANIUS_RESEARCHER_CONTACT",
-          "slug": "lanius-with-federation-science-craft",
-          "title": "Lanius with Federation science craft",
-          "card": true,
-          "tags": [
-            "reward",
-            "unique"
-          ],
-          "gates": [
-            {
-              "req": "anaerobic",
-              "label": "Lanius"
-            }
-          ],
-          "items": [],
-          "crew_classes": [],
-          "quests": [],
-          "boarders": [],
-          "unlock_ship": [],
-          "fleet_delay": []
-        }
-      ]
-    },
-    {
-      "name": "STORE_LANIUS",
-      "min": 2,
-      "max": 2,
-      "kind": "event",
-      "section": "store",
-      "events": [
-        {
-          "id": "STORE_LANIUS",
-          "slug": "store-lanius",
-          "title": "Store (Lanius)",
-          "card": true,
-          "tags": [
-            "store"
-          ],
-          "gates": [],
-          "items": [],
-          "crew_classes": [],
-          "quests": [],
-          "boarders": [],
-          "unlock_ship": [],
-          "fleet_delay": []
-        }
-      ]
-    },
-    {
-      "name": "QUESTS_LANIUS",
-      "min": 0,
-      "max": 1,
-      "kind": "list",
-      "section": "quests",
-      "events": [
-        {
-          "id": "FEDERATION_PLANET_SIGNAL",
-          "slug": "encrypted-federation-signal",
-          "title": "Encrypted federation signal",
-          "card": true,
-          "tags": [
-            "may-fight",
-            "boarders",
-            "crew",
-            "quest",
-            "unique"
-          ],
-          "gates": [
-            {
-              "req": "sensors",
-              "label": "Sensors",
-              "lvl": "2"
-            },
-            {
-              "req": "sensors",
-              "label": "Sensors",
-              "lvl": "3"
-            },
-            {
-              "req": "ADV_SCANNERS",
-              "label": "Long-Ranged Scanners"
-            }
-          ],
-          "items": [],
-          "crew_classes": [],
-          "quests": [
-            "HIDDEN_FEDERATION_BASE_LIST",
-            "FEDERATION_BASE_ASSIST"
-          ],
-          "boarders": [
-            {
-              "class": "human",
-              "min": 2,
-              "max": 3
-            }
-          ],
-          "unlock_ship": [],
-          "fleet_delay": []
-        }
-      ]
-    },
-    {
-      "name": "NOTHING_LANIUS",
-      "min": 1,
-      "max": 2,
-      "kind": "event",
-      "section": "empty",
-      "events": [
-        {
-          "id": "NOTHING_LANIUS",
-          "slug": "empty-beacon-lanius",
-          "title": "Empty beacon (Lanius)",
-          "card": true,
-          "tags": [],
-          "gates": [],
-          "items": [],
-          "crew_classes": [],
-          "quests": [],
-          "boarders": [],
-          "unlock_ship": [],
-          "fleet_delay": []
-        }
-      ]
+      ],
+      "order": 8,
+      "placement": {
+        "position": 8,
+        "nebula_first": false,
+        "before_min": 13,
+        "before_max": 21,
+        "at_risk": false,
+        "always_short": false
+      }
     }
   ],
+  "generation": {
+    "grid_beacons": 24,
+    "grid_beacons_min": 19,
+    "allocated_min": 18,
+    "allocated_max": 27,
+    "can_exhaust_map": true,
+    "at_risk_entries": [],
+    "always_short_entries": [],
+    "cannot_meet_minimum": false,
+    "nebula_first": [],
+    "fallback_list": "NEUTRAL",
+    "fallback_list_ae": "OVERRIDE_NEUTRAL",
+    "exit_list": "EXIT_LIST",
+    "source": "raw/wiki/sectors.md"
+  },
   "rollup": {
+    "markers": {
+      "distress": {
+        "events": [
+          "DISTRESS_SATELLITE_DEFENSE",
+          "DISTRESS_STATION_FIRE",
+          "FRIENDLY_BEACON",
+          "LANIUS_DISTRESS_EMPTY",
+          "LANIUS_DISTRESS_FIGHT",
+          "LANIUS_DISTRESS_TOOLATE",
+          "LANIUS_DISTRESS_TRAP",
+          "LANIUS_MANTIS_DISTRESS",
+          "LANIUS_ROCK_DISTRESS",
+          "LANIUS_SLUG_DISTRESS",
+          "STRANDED_BEACON",
+          "TRAP_BEACON"
+        ],
+        "allocation_entries": [
+          "DISTRESS_BEACON_LANIUS"
+        ],
+        "marked_outside_allocation": [],
+        "allocated_but_unmarked": []
+      },
+      "store": [
+        "LANIUS_SCARED_CIVILIAN",
+        "PIRATE_BRIBER",
+        "STORE_LANIUS"
+      ],
+      "environment": {
+        "PDS": [
+          "LANIUS_NOBOARDERS_PDS"
+        ],
+        "asteroid": [
+          "LANIUS_FIGHT_ASTEROID"
+        ],
+        "pulsar": [
+          "LANIUS_FIGHT_PULSAR"
+        ]
+      }
+    },
     "distinct_events": 43,
     "no_card": [],
     "always_fight": [
@@ -1234,15 +1424,15 @@
         "label": "Lanius",
         "levels": [],
         "events": [
+          "LANIUS_DISTRESS_FIGHT",
+          "LANIUS_TRADER",
+          "LANIUS_RESEARCHER_CRAFT",
+          "LANIUS_RESEARCHER_CONTACT",
           "LANIUS_SOLO_SALVAGE",
           "LANIUS_SCARED_CIVILIAN",
           "LANIUS_GROUP_AUTO",
           "LANIUS_BEACON_EATER",
-          "LANIUS_DORMANT_EVENT",
-          "LANIUS_DISTRESS_FIGHT",
-          "LANIUS_TRADER",
-          "LANIUS_RESEARCHER_CRAFT",
-          "LANIUS_RESEARCHER_CONTACT"
+          "LANIUS_DORMANT_EVENT"
         ]
       },
       {
@@ -1253,9 +1443,9 @@
           "3"
         ],
         "events": [
+          "FEDERATION_PLANET_SIGNAL",
           "LANIUS_FUELING_STATION",
-          "BROKEN_REBEL_DRONE",
-          "FEDERATION_PLANET_SIGNAL"
+          "BROKEN_REBEL_DRONE"
         ]
       },
       {
@@ -1424,8 +1614,8 @@
       {
         "value": "anaerobic",
         "events": [
-          "LANIUS_BEACON_EATER",
-          "LANIUS_TRADER_TRANSLATOR"
+          "LANIUS_TRADER_TRANSLATOR",
+          "LANIUS_BEACON_EATER"
         ]
       },
       {
@@ -1470,6 +1660,8 @@
     ]
   },
   "metrics": {
+    "grid_beacons": 24,
+    "at_risk_entries": 0,
     "beacons_min": 18,
     "beacons_max": 27,
     "distinct_events": 43,
@@ -1497,23 +1689,23 @@
     "section:quests:max": 1,
     "section:empty:min": 1,
     "section:empty:max": 2,
-    "entry:HOSTILE_ENVIRONMENT_LANIUS:min": 1,
-    "entry:HOSTILE_ENVIRONMENT_LANIUS:max": 2,
-    "entry:HOSTILE_LANIUS:min": 5,
-    "entry:HOSTILE_LANIUS:max": 6,
-    "entry:BOARDERS_LANIUS:min": 1,
-    "entry:BOARDERS_LANIUS:max": 2,
-    "entry:NEUTRAL_LANIUS:min": 5,
-    "entry:NEUTRAL_LANIUS:max": 6,
-    "entry:DISTRESS_BEACON_LANIUS:min": 1,
-    "entry:DISTRESS_BEACON_LANIUS:max": 2,
-    "entry:ITEM_LANIUS:min": 2,
-    "entry:ITEM_LANIUS:max": 4,
     "entry:STORE_LANIUS:min": 2,
     "entry:STORE_LANIUS:max": 2,
+    "entry:NOTHING_LANIUS:min": 1,
+    "entry:NOTHING_LANIUS:max": 2,
+    "entry:DISTRESS_BEACON_LANIUS:min": 1,
+    "entry:DISTRESS_BEACON_LANIUS:max": 2,
+    "entry:HOSTILE_LANIUS:min": 5,
+    "entry:HOSTILE_LANIUS:max": 6,
+    "entry:HOSTILE_ENVIRONMENT_LANIUS:min": 1,
+    "entry:HOSTILE_ENVIRONMENT_LANIUS:max": 2,
+    "entry:BOARDERS_LANIUS:min": 1,
+    "entry:BOARDERS_LANIUS:max": 2,
+    "entry:ITEM_LANIUS:min": 2,
+    "entry:ITEM_LANIUS:max": 4,
     "entry:QUESTS_LANIUS:min": 0,
     "entry:QUESTS_LANIUS:max": 1,
-    "entry:NOTHING_LANIUS:min": 1,
-    "entry:NOTHING_LANIUS:max": 2
+    "entry:NEUTRAL_LANIUS:min": 5,
+    "entry:NEUTRAL_LANIUS:max": 6
   }
 }

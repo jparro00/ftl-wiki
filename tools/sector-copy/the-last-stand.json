@@ -1,7 +1,7 @@
 {
   "slug": "the-last-stand",
 
-  "lede": "Eight events, seventeen to twenty beacons, and not one blue option anywhere in the pool — every allocation but the neutral list is fixed, and all six hostile beacons are the same fight. What the sector places is mostly supply: three repair stations and a store. What it is actually about is not in the table below at all — the **Rebel Flagship** sits at the Federation Base, put there by the endgame rather than by any entry here.",
+  "lede": "The one sector whose table cannot fill the map: it asks for at most 20 slots against a 24-beacon ceiling, so nothing on it is ever cut and the spare beacons draw from the galaxy-wide fallback list instead. What it does place is supply and repetition — three repair stations, one store, and the same Rebel scout on all six hostile beacons. The fight you came for is on none of those rows: the **Rebel Flagship** and the Federation Base are put on the map by the endgame.",
 
   "stats": [
     { "metric": "beacons_min..beacons_max", "label": "Beacon spread" },
@@ -11,13 +11,13 @@
     { "metric": "gated_events", "label": "Blue options" }
   ],
 
-  "callout": "**The fight that is not listed.** Every row above is an allocation the sector must satisfy. The Flagship is not one of them: `BOSS_TEXT_1`, `BOSS_TEXT_2` and `BOSS_TEXT_3` sit in no event list and no sector description, and the Federation Base beacon is placed by the endgame. The entry beacon is odd in the other direction — the sector starts you on the `BOSS_NEUTRAL` list rather than on a named event, so the beacon you arrive at is a different encounter every run.",
+  "callout": "**Order does not matter here — and that is unique.** In every other sector the sequence of these rows decides what gets dropped once the map is full. This allocation tops out below the ceiling, so every row is placed in full every run and nothing is ever at risk. The overflow runs the other way instead: on a full map at least four beacons are left with nothing assigned, and they fall to the shared `NEUTRAL` fallback — ordinary galaxy events, no `BOSS_` prefix, none of them in the table below. **Pirate briber** is one that can turn up, which is also the only way this sector produces a second store.",
 
   "section_notes": {
     "BOSS_HOSTILE": "One event, written into the list three times, filling six beacons — every hostile beacon in the sector is the same encounter. Its ship is drawn from a roster of two crewed Rebel hulls and two automated ones, and it has no surrender branch and no escape branch: once {{BOSS_SCOUT}} starts, it runs to a wreck.",
-    "BOSS_NEUTRAL": "The only entry with any range in it, and the sector's entry beacon draws from here too. {{BOSS_FLEETS_BOTH_FIGHT}} and {{REBEL}} are fighting the moment you drop in; {{BOSS_FLEETS_FED}} is pure scenery; {{BOSS_SCOUT_RESCUE}} and {{SQUAT_REFUEL_STATION}} both let you decline.",
-    "BOSS_REPAIR_STATION": "No choices, no risk and no fight: 15 hull, every damaged system restored, 4 missiles, 5 fuel, 5 drone parts and 22–44 scrap, three times over.",
-    "STORE": "One store, and the only beacon in the sector where scrap turns into anything."
+    "BOSS_NEUTRAL": "The only entry with any range in it, and the sector's entry beacon draws from here too. Not to be confused with the shared `NEUTRAL` list that fills the leftover beacons — same word, different list, no events in common. {{BOSS_FLEETS_BOTH_FIGHT}} and {{REBEL}} are fighting the moment you drop in; {{BOSS_FLEETS_FED}} is pure scenery; {{BOSS_SCOUT_RESCUE}} and {{SQUAT_REFUEL_STATION}} both let you decline.",
+    "BOSS_REPAIR_STATION": "No choices, no risk and no fight: 15 hull, every damaged system restored, 4 missiles, 5 fuel, 5 drone parts and 22–44 scrap, three times over. Each one is single-use, and each carries its own label on the map — so the supply here is the part you can see coming, and the part the fleet can take off the board before you reach it.",
+    "STORE": "One store, guaranteed, and the only beacon in the sector where scrap turns into anything. Nothing in this pool can open a second one."
   },
 
   "chain": {
@@ -69,9 +69,20 @@
       ]
     },
     {
+      "title": "Reading the map here",
+      "items": [
+        { "lead": "No exit", "text": "This is the only sector with no exit beacon at all, so the shared exit list that fills one everywhere else never runs. Nothing on this map is a way out." },
+        { "lead": "No distress", "text": "Nothing in the pool carries the distress tag and no distress line is allocated, so that marker never appears here. The only thing the map labels ahead of time is supply: the store, and the three repair stations." },
+        { "lead": "Where the base sits", "text": "Toward the middle-right of the grid, and the game places it a fixed distance from your arrival — four jumps away on easy and normal, five to six on hard. The Flagship spawns in the two right-most columns, four to six jumps from the base." },
+        { "lead": "A different clock", "text": "The fleet does not sweep in from the left here. It takes scattered individual beacons each turn, and the Flagship takes whatever it is sitting on — so danger arrives behind you as readily as ahead." },
+        { "lead": "Waiting is a move", "text": "You can hold at a beacon with fuel still in the tank. It ticks the map forward like a jump, and a fight that starts after a wait begins with your FTL already charged." }
+      ]
+    },
+    {
       "title": "What can bite",
       "items": [
         { "lead": "Six forced fights", "text": "{{BOSS_SCOUT}} fills every hostile beacon, and the ship it loads has no surrender and no escape branch. Every one of the six ends in a destroyed hull or a dead crew." },
+        { "lead": "Overtaken beacons", "text": "A beacon the fleet takes loses whatever was on it — including a repair station you were saving — and becomes an Elite Fighter under an anti-ship battery, paying one fuel for the kill. There is nothing to farm there." },
         { "lead": "Thin pay", "text": "{{BOSS_FLEETS_BOTH_FIGHT}} is fighting on arrival and pays a low, scrap-only reward when destroyed — the text says outright there is no time to salvage the wreck." },
         { "lead": "Runners", "text": "{{REBEL}} can surrender or power up its FTL and leave, so a beacon that looks like scrap can end with neither the fight nor the salvage." },
         { "lead": "Attrition, not disaster", "text": "No event in this pool puts boarders aboard and none can kill a crew member. What the sector takes is hull and ammunition, across the six guaranteed fights plus whatever the neutral pool adds." }
@@ -81,8 +92,9 @@
       "title": "What is not here",
       "items": [
         { "lead": "Blue options", "text": "None. Not one event in the pool has a gated choice, so no system level, augment or crew species changes a single outcome in this sector." },
-        { "lead": "Quests and unlocks", "text": "Nothing here plants a quest marker, unlocks a ship, or hands out a named weapon or augment." },
-        { "lead": "Species", "text": "No crew type is referenced anywhere in the pool, and the sector declares no store rarity list of its own." },
+        { "lead": "Quests", "text": "No quest line is allocated and nothing in the pool plants a marker — this sector cannot hold a quest at all. A quest you trigger in the sector before it is not carried forward either; it is simply dropped." },
+        { "lead": "Unlocks and loot", "text": "Nothing here unlocks a ship or hands out a named weapon or augment." },
+        { "lead": "Species", "text": "No event in the pool names a crew type, and the sector declares no rarity list of its own — nothing in this sector's data tunes what the store's crew slots offer." },
         { "lead": "Unique", "text": "{{SQUAT_REFUEL_STATION}} is the only event here carrying the files' own unique flag." }
       ]
     }

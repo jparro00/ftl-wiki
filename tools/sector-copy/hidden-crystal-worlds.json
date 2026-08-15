@@ -1,24 +1,24 @@
 {
   "slug": "hidden-crystal-worlds",
 
-  "lede": "The sector you cannot fly to. Nothing on the map routes here — a Crystal crewmember brings you, and the arrival beacon plants the ship-unlock marker before you have made a single choice. Its floor of 25 beacons is the highest of any sector in the game and its pool is the smallest outside the flagship's, so the map is filled by fighting, a fixed block of twelve neutral beacons, and Crystalline hospitality that keeps turning back into fighting.",
+  "lede": "The sector you cannot fly to. Nothing on the map routes here — a Crystal crewmember brings you, and the ship-unlock marker is planted on the arrival beacon before you have made a single choice. It is also the only sector in the game whose allocation cannot fit: its **minimum** demand is one slot larger than the biggest map the game can build, so it always leaves something unplaced, and always the same something. Twenty-four events are all it has to fill that map with.",
 
   "stats": [
-    { "metric": "beacons_min..beacons_max", "label": "Beacon spread" },
+    { "metric": "beacons_min..beacons_max", "label": "Slots allocated" },
+    { "metric": "grid_beacons", "label": "Map ceiling" },
     { "metric": "distinct_events", "label": "Events in pool" },
     { "metric": "section:hostile:min..section:hostile:max", "label": "Guaranteed fights" },
-    { "metric": "entry:NEUTRAL_CRYSTAL:min..entry:NEUTRAL_CRYSTAL:max", "label": "Neutral beacons" },
     { "metric": "unique_events", "label": "Once-only events" }
   ],
 
-  "callout": "**The pool is smaller than the map.** Twelve beacons come off a ten-event neutral list where six events are once-only, and six to ten more off a five-event hostile list where three are — leaving four neutral events and two hostile ones to cover everything that repeats. Repetition here is not bad luck, it is arithmetic. And nothing in this sector calls for help: it is the only sector outside the flagship's with no distress list and no quest list at all.",
+  "callout": "**Everything above the neutral line gets placed in full.** The five lines ahead of it come to at most nineteen, so the stores, the item beacons, the empties, the fights and the boarders are never what gets cut — the whole shortfall lands on the bottom line, every run. Two things follow. The shared filler list that tops up leftover beacons everywhere else can never be reached here, because this table runs out of map before it runs out of lines. And with a pool this small, repetition is arithmetic rather than bad luck: twelve neutral slots draw on ten events of which six are once-only, and six to ten hostile slots draw on five of which three are.",
 
   "section_notes": {
-    "HOSTILE_CRYSTAL": "Six to ten beacons off five events, three of them once-only, so most of the shooting is {{CRYSTAL_FIGHT}} — which the list names three times — and {{CRYSTAL_REBEL}}. Four of the five will take a surrender; the Rebel auto-scout at {{CRYSTAL_AUTO}} has no crew to offer one.",
-    "BOARDERS_CRYSTAL": "A prison escort rounding up intruders. Two to three Crystalline boarders, no choice offered and nothing to read — they are aboard before the text finishes. Allocated once or twice.",
-    "NEUTRAL_CRYSTAL": "Pinned at exactly twelve — the only allocation in the game with no range at all above single digits. Three of the ten are a third party shooting at a Crystal ship ({{CRYSTAL_REBEL_CRYSTAL}}, {{CRYSTAL_MANTIS_CRYSTAL}}, {{CRYSTAL_PIRATE_CRYSTAL}}), where stepping in can be paid off with a Crystal weapon. {{CRYSTAL_FED_DESERTER}} is the outlier: 15–25 scrap and 1–3 fuel to a Federation ship that ran, in exchange for the map.",
-    "ITEMS_CRYSTAL": "Two beacons off six events, and four of the six are the generic free weapon, free drone, refuelling station and repair station. The two that are actually Crystalline — {{CRYSTAL_CACHE}} and {{CRYSTAL_SCRAP_EXCITED}} — are both once-only, so there is no guarantee either one shows up.",
-    "STORE_CRYSTAL": "Two to three stores, and the only rarity table in the game that carries the Crystal weapons — both Crystal Bursts and both Heavy Crystals (the Lockdown Bomb also turns up in Rock space). The only crew type on sale is Crystal; every other species is set to never.",
+    "HOSTILE_CRYSTAL": "Six to ten beacons off five events, three of them once-only, so most of the shooting is {{CRYSTAL_FIGHT}} — which the list names three times — and {{CRYSTAL_REBEL}}. Four of the five will take a surrender; the Rebel auto-scout at {{CRYSTAL_AUTO}} has no crew to offer one. This line is settled before the neutral one is touched, so rolling the high end costs you conversations, not fights.",
+    "BOARDERS_CRYSTAL": "A prison escort rounding up intruders. Two to three Crystalline boarders, no choice offered and nothing to read — they are aboard before the text finishes. Allocated once or twice, and early enough in the queue that it always lands.",
+    "NEUTRAL_CRYSTAL": "Twelve is the ask; what it gets is the map's leftovers — at most eleven, and fewer every time a line above rolls high. This is where the sector's arithmetic is paid from. Three of the ten are a third party shooting at a Crystal ship ({{CRYSTAL_REBEL_CRYSTAL}}, {{CRYSTAL_MANTIS_CRYSTAL}}, {{CRYSTAL_PIRATE_CRYSTAL}}), where stepping in can be paid off with a Crystal weapon. {{CRYSTAL_FED_DESERTER}} is the outlier: 15–25 scrap and 1–3 fuel to a Federation ship that ran, in exchange for the map.",
+    "ITEMS_CRYSTAL": "Two beacons off a six-event list, and four of the six are the generic free weapon, free drone, refuelling station and repair station that any sector can throw at you. The two that are actually Crystalline — {{CRYSTAL_CACHE}} and {{CRYSTAL_SCRAP_EXCITED}} — are both once-only, so this is two draws from a bag where a third of the tickets are the ones worth having.",
+    "STORE_CRYSTAL": "Two to three, placed before anything else, and the only rarity table in the game that stocks the Crystal weapons — both Crystal Bursts, both Heavy Crystals, and the Lockdown Bomb that is otherwise Rock country. The only crew on sale is Crystal; every other species is set to never. Nothing in the pool can open a fourth shop, so this line is the whole of the sector's economy unless the exit hands you one.",
     "NOTHING_CRYSTAL": "Two guaranteed dead beacons. The docked ships scatter and the station itself cloaks rather than deal with an outsider."
   },
 
@@ -28,7 +28,7 @@
       {
         "marker": "1",
         "title": "{{START_BEACON_CRYSTAL}}",
-        "detail": "\"Here we are, my home sector.\" Your Crystal companion makes good on the deal and forwards the coordinates of their old ship. One option, no way to miss it — the marker is planted on arrival.",
+        "detail": "\"Here we are, my home sector.\" Your Crystal companion makes good on the deal and forwards the coordinates of their old ship. One option, no way to miss it — the marker is planted on arrival, before your first jump.",
         "ref": "START_BEACON_CRYSTAL → quest CRYSTAL_UNLOCK"
       },
       {
@@ -48,7 +48,7 @@
         { "lead": "Breach Missiles ×1", "text": "The other clean way into the cache — one missile spent, instead of firing everything you have and mostly bouncing off." },
         { "lead": "Engines 7 · Teleporter 2", "text": "Both pull your crewmember back out of the cache's singularity trap. Engines keep the cargo as well; the teleporter saves the person only." },
         { "lead": "Rockman · Backup DNA Bank", "text": "Two ways through {{CRYSTAL_HUMAN_TESTS}} without putting a body on the table — the Rockman is an evolutionary cousin, the DNA bank is data they have never seen." },
-        { "lead": "Distraction Buoys ×1", "text": "At {{CRYSTAL_REQUEST}}, takes the scrap and the jump of fleet delay with none of the chance of being caught faking it." },
+        { "lead": "Distraction Buoys ×1", "text": "Worth carrying in twice over: it postpones the fleet a turn as you arrive, and at {{CRYSTAL_REQUEST}} it takes the scrap and the jump of delay with none of the chance of being caught faking it." },
         { "lead": "Four events, seven gates", "text": "Only four events in the whole pool gate anything, and {{CRYSTAL_CACHE}} carries four of the seven gates by itself." }
       ]
     },
@@ -71,6 +71,17 @@
         { "lead": "Fleet", "text": "{{CRYSTAL_HELP_DIG}} advances the Rebel fleet a jump for every cycle you wait, and the Heavy Crystal is behind two of them. {{CRYSTAL_REBEL_CRYSTAL}} advances it one if you shoot the Crystal ship rather than the Rebel." },
         { "lead": "Fuel", "text": "The cache escape that saves both the crewmember and the cargo detonates **your entire fuel reserve** to do it. Advanced Engines do the same job for nothing." },
         { "lead": "Refusals", "text": "{{CRYSTAL_HUMAN_TESTS}} can answer a flat no by undocking a warship that will not accept surrender. {{CRYSTAL_HELP_DIG}} is safe to decline outright — it only turns hostile if you promise help and then pull your crewmember back out." }
+      ]
+    },
+    {
+      "title": "Reading the map here",
+      "items": [
+        { "lead": "Nothing is marked", "text": "Not one event in this pool carries a distress tag, so no beacon here is ever labelled as one. The stores, the exit and the quest are the only things the map will ever name; every other beacon is opaque until you are standing on it." },
+        { "lead": "Scanners", "text": "No event in the sector sets an environment — no asteroid field, no sun, no pulsar anywhere in the pool — so Long-Ranged Scanners have nothing to warn you about. Here the augment is a ship detector and nothing else." },
+        { "lead": "The quest marker", "text": "Planted on arrival, before your first jump, and it lands on a beacon that already had an event — which it overwrites. The cruiser costs you one of the sector's encounters as well as the trip out to it." },
+        { "lead": "The fleet", "text": "The Rebels follow you through here like anywhere else, and there is no nebula in this sector to duck into, so the one universal way of halving their advance is off the table. Exactly one branch in the whole pool pushes them back; everything else that touches them pushes the wrong way." },
+        { "lead": "Hazards", "text": "The only environmental danger you will meet is the one the Rebels bring: a beacon they have taken overwrites whatever was on it, often with an anti-ship battery attached." },
+        { "lead": "The exit", "text": "Not in the table below — it draws from a list every sector shares, and with no cloud cover in this sector it never falls back to the empty nebula exit. It is also the last beacon that can still turn into a shop." }
       ]
     }
   ]

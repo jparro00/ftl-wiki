@@ -1,7 +1,7 @@
 {
   "slug": "mantis-homeworlds",
 
-  "lede": "The Mantis sector with a name in it. Six or seven beacons open in combat before you can choose anything, one or two more skip the ship fight entirely and drop **2–4 boarders straight onto your deck**, and one beacon is always {{MANTIS_NAMED_THIEF}} — the only ship unlock either Mantis sector can hand you. Nothing here is settled at range.",
+  "lede": "The Mantis sector with a name in it. Six or seven beacons open in combat before you can choose anything, one or two more skip the ship fight entirely and drop **2–4 boarders straight onto your deck**, and one beacon is always {{MANTIS_NAMED_THIEF}} — the only ship unlock either Mantis sector can hand you. Arrive repaired and stocked: shops are as scarce here as in pirate or Rebel space, and no beacon in this sector slows the Rebel fleet.",
 
   "stats": [
     { "metric": "beacons_min..beacons_max", "label": "Beacon spread" },
@@ -11,13 +11,14 @@
     { "metric": "distinct_events", "label": "Events in pool" }
   ],
 
-  "callout": "**Versus a plain Mantis Controlled Sector:** every list is the same list and every count is the same count — 6–7 hostile, 6–7 neutral, 1–2 boarding, 1–3 distress, 1–2 items, 1–2 stores, 2–3 empty. The entire difference is the guaranteed `MANTIS_NAMED_THIEF` beacon: one more jump on the map, one more event in the pool, and with it the sector's only ship unlock, its only named augment and its third quest start.",
+  "callout": "**Versus a plain Mantis Controlled Sector:** every list is the same list and every count is the same count — 6–7 hostile, 6–7 neutral, 1–2 boarding, 1–3 distress, 1–2 items, 1–2 stores, 2–3 empty. The whole difference is the guaranteed `MANTIS_NAMED_THIEF` beacon, and because it is taken at the top of the table it costs nothing above it — what it displaces, on a full map, is one more neutral encounter at the bottom. One more event in the pool, and with it the sector's only ship unlock, its only named augment and its third quest start.",
 
   "section_notes": {
-    "MANTIS_NAMED_THIEF": "Always placed, exactly once. It is a fight either way — the Mantis blue option is a greeting, not a way out — and everything it is worth comes after the shooting stops.",
-    "HOSTILE_MANTIS": "{{MANTIS_FIGHT}} is listed twice, so a plain Mantis warship is the likeliest thing waiting at any of these. {{DONOR_MANTIS_CHASE}} is the one that can leave the beacon unfinished — if it escapes, chasing it plants a quest marker; {{AUTO_WARNING}} is a Rebel scout that runs to report your position rather than fight to the end.",
+    "MANTIS_NAMED_THIEF": "One beacon wide and first in the queue, so no roll above it can crowd it off the map. It is a fight either way — the Mantis blue option is a greeting, not a way out — and everything it is worth comes after the shooting stops.",
+    "STORE_MANTIS": "Filled second, so every shop the sector owes you lands. That is close to all the shopping there is: {{ESCORT_BEACON}}, over in the distress list, is the only event in the pool that can open one, and the sector has no trading hub or mercenary posting of its own. Advanced Edition's item-list override would add {{STORE_REBELSIDE}}.",
+    "HOSTILE_MANTIS": "{{MANTIS_FIGHT}} is listed twice, so a plain Mantis warship is the likeliest thing waiting at any of these. {{DONOR_MANTIS_CHASE}} is the one that can leave the beacon unfinished — if it escapes, chasing it plants a quest marker; {{AUTO_WARNING}} is a Rebel scout that would rather run and report your position, and letting it go buys the fleet a jump on you.",
     "BOARDERS_MANTIS": "{{MANTIS_BOARDERS}} is listed twice against {{BOARDERS_SUN}}'s once. Neither is a ship battle you can decline: the boarders are aboard as the event opens, 2–4 of them, and the pirate version stages it inside a star's flare range.",
-    "NEUTRAL_MANTIS": "\"Neutral\" is a filing label. Five of these six can end in combat, {{MANTIS_CREW}} can kill a crew member and leave a Mantis loose in the room, and {{ALISON_MANTIS_CREW}} opens with an intruder already on deck.",
+    "NEUTRAL_MANTIS": "\"Neutral\" is a filing label. Five of these six can end in combat, {{MANTIS_CREW}} can kill a crew member and leave a Mantis loose in the room, and {{ALISON_MANTIS_CREW}} opens with an intruder already on deck. It is also the line the map trims — last in the queue, and the only one the sector's overspend can reach.",
     "DISTRESS_BEACON_MANTIS": "The densest pool on the page and the thinnest allocation. Three of the sector's four crew-killers live here, and so do six of its eleven gated events — the Rockman, Engi, Adv. Medbay, ion and drone answers all pay out in a pool that may only get one beacon.",
     "ITEMS": "Trades and stations rather than free loot: {{REPAIR_STATION}}, {{REFUEL_STATION}} and the two selling posts all want something back, and {{TAVERN_HIRE}} is the one place in the sector that sells you a crew member outright."
   },
@@ -46,7 +47,7 @@
       {
         "marker": "4",
         "title": "Bring him back",
-        "detail": "**Adv. Medbay** or **Adv. Clone Bay** revives him and he joins: a Mantis with two levels in every skill, the **Mantis Pheromones** augment, high scrap, the stash marker, and coordinates for \"a custom cruiser he has been working on\" that unlock a ship.",
+        "detail": "**Adv. Medbay** or **Adv. Clone Bay** revives him and he joins: a Mantis with two levels in every skill, the **Mantis Pheromones** augment, high scrap, the stash marker, and coordinates for \"a custom cruiser he has been working on\" that unlock a ship. One event, one branch — no second beacon to survive first.",
         "ref": "req=\"medbay\"/\"clonebay\" lvl=\"2\" · unlockShip id=\"2\""
       },
       {
@@ -85,9 +86,18 @@
       "items": [
         { "lead": "Boarders", "text": "Four events put hostiles inside your hull, and the map guarantees at least one boarding beacon. {{MANTIS_BOARDERS}} and {{BOARDERS_SUN}} arrive 2–4 strong with no ship fight attached." },
         { "lead": "Crew", "text": "Four events can kill a crew member outright: {{DISTRESS_INFESTATION}}, {{DISTRESS_STATION_FIRE}}, {{DISTRESS_STATION_DISEASE}}, and {{MANTIS_CREW}}, which kills **and** leaves the killer aboard." },
-        { "lead": "Fights", "text": "Seven events in the pool open in combat and nine more can turn into it from a choice — and that is before the boarding pool, which never involves an enemy ship at all." },
+        { "lead": "Fights", "text": "Seven events in the pool open in combat and eight more can turn into it from a choice — and that is before the boarding pool, which never involves an enemy ship at all." },
         { "lead": "Stars", "text": "{{MANTIS_SUN_FIGHT}} and {{BOARDERS_SUN}} both stage next to a star, with the solar hazard running on your ship while you fight or repel." },
         { "lead": "Traps", "text": "{{TRAP_BEACON}} is a distress call that opens hostile, and siding with the fugitive in {{ALISON_MANTIS_CREW}} can cost hull and a system before the Engi ship even opens fire." }
+      ]
+    },
+    {
+      "title": "Reading the map here",
+      "items": [
+        { "lead": "Distress", "text": "One of the few sectors whose distress markers are honest: every event in the distress list carries the tag and no event outside it does, so what the table allocates is exactly what the map can show you." },
+        { "lead": "A marked shop", "text": "{{ESCORT_BEACON}} is the sector's one unplanned store, and it is a distress beacon — so the shop you did not expect arrives wearing the distress marker, not the store marker." },
+        { "lead": "The fleet", "text": "No nebula line anywhere in the table, so nothing here halves the Rebel advance and every jump costs full pursuit. The compensation is that sensors work at every beacon in the sector." },
+        { "lead": "Quest markers", "text": "Three events plant one, and a marker can only take over an ordinary unvisited beacon — never a store, a distress beacon or the exit. Trigger them early: with the fleet close behind, the marker is pushed into the next sector instead." }
       ]
     }
   ]

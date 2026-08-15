@@ -7,6 +7,7 @@
   "short_name": "Hidden Crystal Worlds",
   "extracted_from": "raw/gamedata/sector_data.xml",
   "min_sector": 0,
+  "earliest_sector": 1,
   "unique": true,
   "tracks": [
     "debris",
@@ -259,6 +260,242 @@
   },
   "entries": [
     {
+      "name": "STORE_CRYSTAL",
+      "min": 2,
+      "max": 3,
+      "kind": "event",
+      "section": "store",
+      "events": [
+        {
+          "id": "STORE_CRYSTAL",
+          "slug": "store-crystal",
+          "title": "Store (Crystal)",
+          "card": true,
+          "tags": [
+            "store"
+          ],
+          "marker": {
+            "store": true
+          },
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        }
+      ],
+      "order": 0,
+      "placement": {
+        "position": 0,
+        "nebula_first": false,
+        "before_min": 0,
+        "before_max": 0,
+        "at_risk": false,
+        "always_short": false
+      }
+    },
+    {
+      "name": "ITEMS_CRYSTAL",
+      "min": 2,
+      "max": 2,
+      "kind": "list",
+      "section": "items",
+      "events": [
+        {
+          "id": "CRYSTAL_CACHE",
+          "slug": "crystalline-cache",
+          "title": "Crystalline cache",
+          "card": true,
+          "tags": [
+            "boarders",
+            "crew-loss",
+            "reward",
+            "cost",
+            "unique"
+          ],
+          "gates": [
+            {
+              "req": "teleporter",
+              "label": "Crew Teleporter",
+              "lvl": "2"
+            },
+            {
+              "req": "engines",
+              "label": "Engines",
+              "lvl": "7"
+            },
+            {
+              "req": "MISSILES_BREACH",
+              "label": "Breach Missiles"
+            },
+            {
+              "req": "crystal",
+              "label": "Crystal"
+            }
+          ],
+          "items": [
+            {
+              "id": "WEAPONS_CRYSTAL",
+              "kind": "weapon",
+              "label": "WEAPONS_CRYSTAL"
+            }
+          ],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [
+            {
+              "class": "crystal",
+              "min": 2,
+              "max": 3
+            }
+          ],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "CRYSTAL_SCRAP_EXCITED",
+          "slug": "crystal-scrap-collector",
+          "title": "Crystal scrap collector",
+          "card": true,
+          "tags": [
+            "crew",
+            "cost",
+            "unique"
+          ],
+          "gates": [],
+          "items": [
+            {
+              "id": "BOMB_LOCK",
+              "kind": "weapon",
+              "label": "Crystal Lockdown Bomb"
+            },
+            {
+              "id": "CRYSTAL_BURST_2",
+              "kind": "weapon",
+              "label": "Crystal Burst Mark II"
+            }
+          ],
+          "crew_classes": [
+            "crystal"
+          ],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "FIND_DRONE",
+          "slug": "free-drone-schematic",
+          "title": "Free drone schematic",
+          "card": true,
+          "tags": [
+            "reward"
+          ],
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "FIND_WEAPON",
+          "slug": "free-weapon",
+          "title": "Free weapon",
+          "card": true,
+          "tags": [
+            "reward"
+          ],
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "REFUEL_STATION",
+          "slug": "refueling-station",
+          "title": "Refueling station",
+          "card": true,
+          "tags": [
+            "reward",
+            "cost",
+            "unique"
+          ],
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "REPAIR_STATION",
+          "slug": "repair-station",
+          "title": "Repair station",
+          "card": true,
+          "tags": [
+            "cost",
+            "unique"
+          ],
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        }
+      ],
+      "order": 1,
+      "placement": {
+        "position": 1,
+        "nebula_first": false,
+        "before_min": 2,
+        "before_max": 3,
+        "at_risk": false,
+        "always_short": false
+      }
+    },
+    {
+      "name": "NOTHING_CRYSTAL",
+      "min": 2,
+      "max": 2,
+      "kind": "event",
+      "section": "empty",
+      "events": [
+        {
+          "id": "NOTHING_CRYSTAL",
+          "slug": "empty-beacon-crystal",
+          "title": "Empty beacon (Crystal)",
+          "card": true,
+          "tags": [],
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        }
+      ],
+      "order": 2,
+      "placement": {
+        "position": 2,
+        "nebula_first": false,
+        "before_min": 4,
+        "before_max": 5,
+        "at_risk": false,
+        "always_short": false
+      }
+    },
+    {
       "name": "HOSTILE_CRYSTAL",
       "min": 6,
       "max": 10,
@@ -357,7 +594,16 @@
           "unlock_ship": [],
           "fleet_delay": []
         }
-      ]
+      ],
+      "order": 3,
+      "placement": {
+        "position": 3,
+        "nebula_first": false,
+        "before_min": 6,
+        "before_max": 7,
+        "at_risk": false,
+        "always_short": false
+      }
     },
     {
       "name": "BOARDERS_CRYSTAL",
@@ -388,7 +634,16 @@
           "unlock_ship": [],
           "fleet_delay": []
         }
-      ]
+      ],
+      "order": 4,
+      "placement": {
+        "position": 4,
+        "nebula_first": false,
+        "before_min": 12,
+        "before_max": 17,
+        "at_risk": false,
+        "always_short": false
+      }
     },
     {
       "name": "NEUTRAL_CRYSTAL",
@@ -631,216 +886,48 @@
             1
           ]
         }
-      ]
-    },
-    {
-      "name": "ITEMS_CRYSTAL",
-      "min": 2,
-      "max": 2,
-      "kind": "list",
-      "section": "items",
-      "events": [
-        {
-          "id": "CRYSTAL_CACHE",
-          "slug": "crystalline-cache",
-          "title": "Crystalline cache",
-          "card": true,
-          "tags": [
-            "boarders",
-            "crew-loss",
-            "reward",
-            "cost",
-            "unique"
-          ],
-          "gates": [
-            {
-              "req": "teleporter",
-              "label": "Crew Teleporter",
-              "lvl": "2"
-            },
-            {
-              "req": "engines",
-              "label": "Engines",
-              "lvl": "7"
-            },
-            {
-              "req": "MISSILES_BREACH",
-              "label": "Breach Missiles"
-            },
-            {
-              "req": "crystal",
-              "label": "Crystal"
-            }
-          ],
-          "items": [
-            {
-              "id": "WEAPONS_CRYSTAL",
-              "kind": "weapon",
-              "label": "WEAPONS_CRYSTAL"
-            }
-          ],
-          "crew_classes": [],
-          "quests": [],
-          "boarders": [
-            {
-              "class": "crystal",
-              "min": 2,
-              "max": 3
-            }
-          ],
-          "unlock_ship": [],
-          "fleet_delay": []
-        },
-        {
-          "id": "CRYSTAL_SCRAP_EXCITED",
-          "slug": "crystal-scrap-collector",
-          "title": "Crystal scrap collector",
-          "card": true,
-          "tags": [
-            "crew",
-            "cost",
-            "unique"
-          ],
-          "gates": [],
-          "items": [
-            {
-              "id": "BOMB_LOCK",
-              "kind": "weapon",
-              "label": "Crystal Lockdown Bomb"
-            },
-            {
-              "id": "CRYSTAL_BURST_2",
-              "kind": "weapon",
-              "label": "Crystal Burst Mark II"
-            }
-          ],
-          "crew_classes": [
-            "crystal"
-          ],
-          "quests": [],
-          "boarders": [],
-          "unlock_ship": [],
-          "fleet_delay": []
-        },
-        {
-          "id": "FIND_DRONE",
-          "slug": "free-drone-schematic",
-          "title": "Free drone schematic",
-          "card": true,
-          "tags": [
-            "reward"
-          ],
-          "gates": [],
-          "items": [],
-          "crew_classes": [],
-          "quests": [],
-          "boarders": [],
-          "unlock_ship": [],
-          "fleet_delay": []
-        },
-        {
-          "id": "FIND_WEAPON",
-          "slug": "free-weapon",
-          "title": "Free weapon",
-          "card": true,
-          "tags": [
-            "reward"
-          ],
-          "gates": [],
-          "items": [],
-          "crew_classes": [],
-          "quests": [],
-          "boarders": [],
-          "unlock_ship": [],
-          "fleet_delay": []
-        },
-        {
-          "id": "REFUEL_STATION",
-          "slug": "refueling-station",
-          "title": "Refueling station",
-          "card": true,
-          "tags": [
-            "reward",
-            "cost",
-            "unique"
-          ],
-          "gates": [],
-          "items": [],
-          "crew_classes": [],
-          "quests": [],
-          "boarders": [],
-          "unlock_ship": [],
-          "fleet_delay": []
-        },
-        {
-          "id": "REPAIR_STATION",
-          "slug": "repair-station",
-          "title": "Repair station",
-          "card": true,
-          "tags": [
-            "cost",
-            "unique"
-          ],
-          "gates": [],
-          "items": [],
-          "crew_classes": [],
-          "quests": [],
-          "boarders": [],
-          "unlock_ship": [],
-          "fleet_delay": []
-        }
-      ]
-    },
-    {
-      "name": "STORE_CRYSTAL",
-      "min": 2,
-      "max": 3,
-      "kind": "event",
-      "section": "store",
-      "events": [
-        {
-          "id": "STORE_CRYSTAL",
-          "slug": "store-crystal",
-          "title": "Store (Crystal)",
-          "card": true,
-          "tags": [
-            "store"
-          ],
-          "gates": [],
-          "items": [],
-          "crew_classes": [],
-          "quests": [],
-          "boarders": [],
-          "unlock_ship": [],
-          "fleet_delay": []
-        }
-      ]
-    },
-    {
-      "name": "NOTHING_CRYSTAL",
-      "min": 2,
-      "max": 2,
-      "kind": "event",
-      "section": "empty",
-      "events": [
-        {
-          "id": "NOTHING_CRYSTAL",
-          "slug": "empty-beacon-crystal",
-          "title": "Empty beacon (Crystal)",
-          "card": true,
-          "tags": [],
-          "gates": [],
-          "items": [],
-          "crew_classes": [],
-          "quests": [],
-          "boarders": [],
-          "unlock_ship": [],
-          "fleet_delay": []
-        }
-      ]
+      ],
+      "order": 5,
+      "placement": {
+        "position": 5,
+        "nebula_first": false,
+        "before_min": 13,
+        "before_max": 19,
+        "at_risk": false,
+        "always_short": true
+      }
     }
   ],
+  "generation": {
+    "grid_beacons": 24,
+    "grid_beacons_min": 19,
+    "allocated_min": 25,
+    "allocated_max": 31,
+    "can_exhaust_map": true,
+    "at_risk_entries": [],
+    "always_short_entries": [
+      "NEUTRAL_CRYSTAL"
+    ],
+    "cannot_meet_minimum": true,
+    "nebula_first": [],
+    "fallback_list": "NEUTRAL",
+    "fallback_list_ae": "OVERRIDE_NEUTRAL",
+    "exit_list": "EXIT_LIST",
+    "source": "raw/wiki/sectors.md"
+  },
   "rollup": {
+    "markers": {
+      "distress": {
+        "events": [],
+        "allocation_entries": [],
+        "marked_outside_allocation": [],
+        "allocated_but_unmarked": []
+      },
+      "store": [
+        "STORE_CRYSTAL"
+      ],
+      "environment": {}
+    },
     "distinct_events": 24,
     "no_card": [],
     "always_fight": [
@@ -909,8 +996,8 @@
         "label": "Crystal",
         "levels": [],
         "events": [
-          "CRYSTAL_CHATTY",
-          "CRYSTAL_CACHE"
+          "CRYSTAL_CACHE",
+          "CRYSTAL_CHATTY"
         ]
       },
       {
@@ -974,10 +1061,10 @@
           "label": "WEAPONS_CRYSTAL"
         },
         "events": [
+          "CRYSTAL_CACHE",
           "CRYSTAL_REBEL_CRYSTAL",
           "CRYSTAL_MANTIS_CRYSTAL",
-          "CRYSTAL_PIRATE_CRYSTAL",
-          "CRYSTAL_CACHE"
+          "CRYSTAL_PIRATE_CRYSTAL"
         ]
       },
       {
@@ -1015,8 +1102,8 @@
       {
         "value": "crystal",
         "events": [
-          "CRYSTAL_FIGHT",
-          "CRYSTAL_SCRAP_EXCITED"
+          "CRYSTAL_SCRAP_EXCITED",
+          "CRYSTAL_FIGHT"
         ]
       },
       {
@@ -1030,6 +1117,8 @@
     "quest_targets": []
   },
   "metrics": {
+    "grid_beacons": 24,
+    "at_risk_entries": 0,
     "beacons_min": 25,
     "beacons_max": 31,
     "distinct_events": 24,
@@ -1053,17 +1142,17 @@
     "section:store:max": 3,
     "section:empty:min": 2,
     "section:empty:max": 2,
+    "entry:STORE_CRYSTAL:min": 2,
+    "entry:STORE_CRYSTAL:max": 3,
+    "entry:ITEMS_CRYSTAL:min": 2,
+    "entry:ITEMS_CRYSTAL:max": 2,
+    "entry:NOTHING_CRYSTAL:min": 2,
+    "entry:NOTHING_CRYSTAL:max": 2,
     "entry:HOSTILE_CRYSTAL:min": 6,
     "entry:HOSTILE_CRYSTAL:max": 10,
     "entry:BOARDERS_CRYSTAL:min": 1,
     "entry:BOARDERS_CRYSTAL:max": 2,
     "entry:NEUTRAL_CRYSTAL:min": 12,
-    "entry:NEUTRAL_CRYSTAL:max": 12,
-    "entry:ITEMS_CRYSTAL:min": 2,
-    "entry:ITEMS_CRYSTAL:max": 2,
-    "entry:STORE_CRYSTAL:min": 2,
-    "entry:STORE_CRYSTAL:max": 3,
-    "entry:NOTHING_CRYSTAL:min": 2,
-    "entry:NOTHING_CRYSTAL:max": 2
+    "entry:NEUTRAL_CRYSTAL:max": 12
   }
 }

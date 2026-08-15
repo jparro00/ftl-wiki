@@ -1,26 +1,26 @@
 {
   "slug": "civilian-sector",
 
-  "lede": "Nobody's territory, and the friendliest allocation a run is likely to get: **two to three stores**, two to three item beacons, and an item list in which not one event can hurt you. The fixed cost is six to eight hostile beacons — two of them Rebel scouts you arrive already shooting at — and the shape of the map is not fixed at all, because the nebula entry is allocated anywhere from zero to eight beacons and nothing else in the sector swings that far.",
+  "lede": "Nobody's territory, and a genuine shopping sector: **two to three guaranteed stores** — matched only by the Engi sectors and the Crystal homeworld — plus two to three item beacons on a list where not one event can hurt you. The fixed cost is six to eight hostile beacons, two of them Rebel scouts you arrive already shooting at. What it will not promise is a quest: this sector is allowed to roll zero, and the nebula line ahead of the quest line is wide enough to leave nothing for it.",
 
   "stats": [
     { "metric": "beacons_min..beacons_max", "label": "Beacon spread" },
     { "metric": "entry:STORE:min..entry:STORE:max", "label": "Stores" },
     { "metric": "section:hostile:min..section:hostile:max", "label": "Hostile beacons" },
     { "metric": "section:nebula:min..section:nebula:max", "label": "Nebula beacons" },
-    { "metric": "distinct_events", "label": "Events in pool" }
+    { "metric": "quest_start_events", "label": "Events that plant a quest" }
   ],
 
-  "callout": "**Versus Federation Space:** the same lists under the same names, with the counts turned up — stores 1–2 becomes 2–3, items 1–1 becomes 2–3, nebula 0–4 becomes 0–8, and the guaranteed quest beacon becomes 0–2. The hostile allocation is identical in both, so what grows here is the shopping and the nebula, not the danger. The one list Federation Space carries that this sector does not is `HOSTILE_BOARDING` — allocated 0–0 there, and commented out entirely here, so neither sector places a boarding beacon by this table.",
+  "callout": "**Versus Federation Space:** the same lists under the same names with the counts turned up — stores 1–2 becomes 2–3, items 1–1 becomes 2–3, nebula 0–4 becomes 0–8. One line runs the other way. Federation Space guarantees exactly one quest beacon; here the quest line is 0–2 and sits at the bottom of a table that asks for more than the map can hold, so the richer sector is also the one that can leave you with no quest beacon at all. The only list Federation Space carries that this sector does not is `HOSTILE_BOARDING` — allocated 0–0 there, commented out entirely here, so neither sector places a boarding beacon by this table.",
 
   "section_notes": {
-    "HOSTILE1": "Two beacons, no range — the only entry in the sector with no slack in it. {{SQUAT_WARNING}} and {{AUTO_WARNING}} are both Rebel scouts you arrive already in combat with, and both hand the fleet an extra jump if the scout gets away.",
+    "HOSTILE1": "Two beacons, no range — the only entry in the sector with no slack in it, and the one the sector drops first when it runs out of map. Lose it and the real fight count lands under the six to eight the budget promises. {{SQUAT_WARNING}} and {{AUTO_WARNING}} are both Rebel scouts you arrive already in combat with, and both hand the fleet an extra jump if the scout gets away.",
     "HOSTILE_CIVILIAN": "The standing tax, four to six times over: pirates, Rebels and auto-ships. {{PIRATE_SLAVER}} is the one that can cost a crew member without a shot being fired — Engines 6 is the only way past the demand — and clearing its crew instead is where a Mantis, Rockman or Engi can come from.",
-    "NEUTRAL_CIVILIAN": "This list loads the whole distress pool inside itself, so a neutral beacon here can turn out to be any distress beacon. Its own additions are the ones worth stopping for: {{MERCENARY}} sells two jumps of fleet delay for scrap, and {{PIRATE_BRIBER}} pays you to stay out of someone else's fight.",
-    "NEBULA": "Zero to eight — the widest entry on the page, and the one that decides how big the sector feels. Three of the sector's five boarding events sit here, and none of the three has a ship attached: the boarders arrive, and that is the whole event.",
+    "NEUTRAL_CIVILIAN": "This list carries the entire distress list inside itself as one of its ten entries, so a neutral beacon here can turn out to be any distress beacon — and it is filled before the distress line is. Its own additions are the ones worth stopping for: {{MERCENARY}} sells two jumps of fleet delay for scrap, and {{PIRATE_BRIBER}} pays you to stay out of someone else's fight.",
+    "NEBULA": "Zero to eight — the widest nebula allocation outside the nebula sectors, and the line that decides how much map is left for everything under it. Three of the sector's six boarding events sit here, and none of the three has a ship attached: the boarders arrive, and that is the whole event.",
     "DISTRESS_BEACON": "One or two beacons carrying five of the eight events in the sector that can kill a crew member. {{STRANDED_BEACON}} alone offers four ways to buy a better outcome — Medbay 2, Medbay 3, Clone Bay 2, or a Slug to assess the man before you touch him.",
-    "ITEMS": "Two to three beacons of pure economy: a free weapon, a free drone schematic, free scrap, and stations that trade one resource for another. Not one event in this list carries a fight, boarders or crew loss — the AE delta below is what would add the exception.",
-    "STORE": "These resolve to the single generic store event rather than to a list, so there is no sector flavour attached to them — just the shop.",
+    "ITEMS": "Two to three beacons of pure economy: a free weapon, a free drone schematic, free scrap, and stations that trade one resource for another. Not one event in this list carries a fight, boarders or crew loss — the AE delta below is what would add the exception, and it is also a fourth way to find a shop.",
+    "STORE": "These resolve to the single generic store event rather than to a list, so there is no sector flavour attached to them — just the shop. Nothing above them can starve them either, which is why the store count is the one number on this page you can plan around.",
     "QUESTS": "Zero to two markers, and zero is allowed: Federation Space guarantees a quest beacon, this sector does not. {{MERCHANT_REQUEST}} hands over five drone parts up front just for taking the job; {{QUEST_CREWDEAD_START}} cannot be started at all without a Crew Teleporter, an Anti-Bio Beam or a Fire Bomb — take the plain option and you are told you are not properly equipped."
   },
 
@@ -69,9 +69,19 @@
       "title": "What can bite",
       "items": [
         { "lead": "Crew, eight ways", "text": "Eight events can kill a crew member. {{DISTRESS_INFESTATION}} is the sharpest of them — sending people in is a straight roll between a dead crew member and a high reward, unless you are carrying an Anti-Personnel Drone, a Boarding Drone or an Anti-Bio Beam." },
-        { "lead": "Boarders ×5", "text": "{{REFUGEE_GHOST}} is the trap: a drifting refugee ship with its comms down, and two to four humans aboard. {{NEBULA_REBEL_BOARDING}} and {{STORM_BOARDING}} are three to four, with no ship to shoot at." },
-        { "lead": "The fleet", "text": "Five events can hand the Rebels a jump: {{SQUAT_WARNING}}, {{AUTO_WARNING}} and {{NEBULA_AUTO_WARNING}} if the scout escapes, {{NEBULA_REBEL_UNDETECTED}} if hiding goes wrong, and {{CIVILIAN_ASTEROIDS_BEACON}} for walking away from the rescue." },
+        { "lead": "Boarders", "text": "Six events put someone aboard. {{REFUGEE_GHOST}} is the trap: a drifting refugee ship with its comms down, and two to four humans aboard. {{NEBULA_REBEL_BOARDING}} and {{STORM_BOARDING}} are three to four, with no ship to shoot at." },
+        { "lead": "The fleet", "text": "Five events can hand the Rebels a jump: {{SQUAT_WARNING}}, {{AUTO_WARNING}} and {{NEBULA_AUTO_WARNING}} if the scout escapes, {{NEBULA_REBEL_UNDETECTED}} if hiding goes wrong, and {{CIVILIAN_ASTEROIDS_BEACON}} for walking away from the rescue. Against them, {{MERCENARY}} sells two jumps of delay and {{PIRATE_BRIBER}} one." },
         { "lead": "Tolls", "text": "{{PIRATE_CHOICE}} wants 15–25 scrap to let you through, and refusing starts the fight it was threatening anyway." }
+      ]
+    },
+    {
+      "title": "Reading the map here",
+      "items": [
+        { "lead": "Stores", "text": "Two to three are guaranteed and nothing can squeeze them out. Four events in the pool can open a shop on top of that — {{PIRATE_BRIBER}}, {{MERCENARY_WORK_START}}, {{QUEST_ESCORT}} and {{ESCORT_BEACON}} — and the Advanced Edition item list adds a fifth in {{STORE_REBELSIDE}}. A store marker on the map is not necessarily one of the guaranteed ones." },
+        { "lead": "Distress markers", "text": "Do not read the one-to-two distress allocation as the number of diamonds you will see. The neutral line carries the whole distress list inside it and is filled earlier, so neutral beacons can come out as distress markers too. Twelve events can be sitting behind one, and five of those can cost a crew member." },
+        { "lead": "Quest markers", "text": "Nine events in this pool plant a marker, but a marker needs a beacon that is unvisited, is not a store, is not already a distress signal and is not inside a cloud. In a sector that can lay eight nebula beacons and three stores, those exclusions bite hardest: a quest accepted here has fewer legal beacons to land on than one accepted in a sector with no clouds, and a quest with nowhere to go is handed to the next sector." },
+        { "lead": "Inside the clouds", "text": "Every nebula beacon blinds your sensors and halves the Rebel advance for that jump; the plasma-storm ones halve your reactor the moment you arrive, so leave spare power before jumping. Clouds never carry an anti-ship battery, which makes them the least bad place to be overtaken — the fleet turns them into an ion storm instead." },
+        { "lead": "Both ends of the range", "text": "Roll every line low and the sector asks for far fewer beacons than the map holds, and the leftovers come from the shared filler list that no section below shows. Roll every line high and it asks for more than the map holds and the bottom of the table never happens. The same sector can be a tight tour of its own lists or a stretch of generic filler." }
       ]
     }
   ]
