@@ -63,6 +63,9 @@
   }
 
   * { box-sizing: border-box; }
+  /* PAGE-ONLY-START — the standalone card page's own chrome. build-card.py strips
+     this when it emits cards/runtime/card.css, which is styling for a card embedded
+     in someone else's page (a sector page's shadow root) and must not paint over it. */
   body {
     margin: 0; padding: 2.4rem 1.15rem 4rem;
     background: var(--void);
@@ -72,6 +75,7 @@
     -webkit-font-smoothing: antialiased;
   }
   .wrap { max-width: 44rem; margin: 0 auto; }
+  /* PAGE-ONLY-END */
 
   header { margin-bottom: 1.7rem; }
   .eyebrow {
@@ -184,20 +188,10 @@
   }
 </style>
 
-<div class="wrap">
-  <header>
-    <p class="eyebrow" id="eyebrow"></p>
-    <h1 id="title"></h1>
-    <p class="hail" id="hail"></p>
-    <p class="arrival" id="arrival"></p>
-  </header>
-
-  <div class="card" id="tree"></div>
-
-  <div id="chain"></div>
-
-  <p class="note" id="note"></p>
-</div>
+<!-- The card's skeleton is built by the runtime, not written here: a card embedded in a
+     sector page renders into a shadow root that has no markup to find. One builder,
+     both places. -->
+<div class="wrap" id="card-root"></div>
 
 <script type="application/json" id="event-data">
 {
@@ -1092,442 +1086,533 @@
 </script>
 
 <script>
-  "use strict";
+/*
+  FTL event card — the renderer, and the only copy of it.
 
-  const DATA  = JSON.parse(document.getElementById("event-data").textContent);
-  const VOCAB = JSON.parse(document.getElementById("card-vocab").textContent);
+  Exposes one global, FTLCard:
 
-  const F = VOCAB.format || {};
-  const esc = s => String(s == null ? "" : s).replace(/[&<>]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" }[c]));
-  const fill = (tpl, vals) => String(tpl || "").replace(/\{(\w+)\}/g, (_, k) => vals[k] == null ? "" : vals[k]).replace(/\s+/g, " ").trim();
+    FTLCard.render(root, data, vocab)  build a card's DOM inside `root`
+    FTLCard.define(slug, data)         register an event payload (cards/data/<slug>.js)
+    FTLCard.get(slug)                  a registered payload, or undefined
+    FTLCard.vocab                      the shared vocabulary, appended at build time
 
-  /* ---------- effects → phrase + tone, entirely from the vocabulary ---------- */
+  It is used in two places and must stay reentrant for the second:
 
-  function rewardPhrase(e) {
-    const level = (VOCAB.levels || {})[e.level] || String(e.level || "").toLowerCase();
-    /* An unmapped tier shows its raw name. Falling back to the `standard` template
-       would silently claim scrap for a missile or drone-part reward. */
-    const tpl = (VOCAB.tiers || {})[e.tier] || "{level} " + e.tier;
-    return [fill(tpl, { level }), (VOCAB.tier_tones || {})[e.tier] || "cost"];
+    cards/card-<slug>.html   inlines this file and calls render() once, into the page
+    sectors/sector-*.html    loads cards/runtime/card.js and calls render() many times,
+                             once per beacon box the reader opens, each into its own
+                             shadow root
+
+  So: no top-level state, no document-wide ids, and the DOM skeleton is built here
+  rather than written into the card's HTML — a shadow root has no skeleton to find.
+  Nothing here is event-specific and no English the card shows is written here; every
+  word comes from the vocabulary, every fact from the data.
+
+  Edit this file to change the behaviour of every card at once. See tools/EVENT-CARD.md.
+*/
+"use strict";
+
+(function (global) {
+
+  const registry = new Map();
+  const waiting = new Map();
+
+  /* A payload file is a single define() call, so loading one is a <script> tag away —
+     the only way a file:// page can read a sibling directory (SECTOR-PAGE.md §6.1). */
+  function define(slug, data) {
+    registry.set(slug, data);
+    const pending = waiting.get(slug) || [];
+    waiting.delete(slug);
+    pending.forEach(fn => fn(data));
   }
 
-  /* Resources are signed: a negative item_modify is a cost, and the label has to
-     agree in number with the amount. */
-  function resourceParts(e) {
-    const lo = Math.abs(e.min), hi = Math.abs(e.max);
-    const names = (VOCAB.resource_labels || {})[e.resource] || [e.resource, e.resource];
-    const sign = e.min <= 0 && e.max <= 0 && (lo || hi) ? VOCAB.spend_prefix || "" : "";
-    const join = sign ? (F.range_join_signed || "") : (F.range_join || "");
-    const range = lo === hi ? String(lo) : sign + lo + join + sign + hi;
-    const name = hi === 1 && lo === 1 ? names[0] : names[1];
-    return { range: lo === hi ? sign + range : range, resource: name };
+  function whenDefined(slug, fn) {
+    if (registry.has(slug)) return fn(registry.get(slug));
+    waiting.set(slug, (waiting.get(slug) || []).concat(fn));
   }
 
-  function effectPhrase(e) {
-    if (e.kind === "nothing") return [VOCAB.nothing, "none"];
-    if (e.kind === "reward") return rewardPhrase(e);
-
-    /* Two effects read in both directions: a ship turning hostile or standing down, and
-       modifyPursuit, whose sign decides whether the fleet gains or loses ground. */
-    let key = e.kind === "ship_hostility" && !e.hostile ? "ship_hostility_off" : e.kind;
-    if (e.kind === "fleet_delay" && e.amount > 0) key = "fleet_advance";
-    if (e.kind === "resource" && e.min <= 0 && e.max <= 0) key = "resource_spend";
-    if (e.kind === "crew_gain" && e.amount < 0) key = "crew_lost";
-    const spec = (VOCAB.effects || {})[key];
-    if (!spec) return [e.kind, ""];
-
-    const lookup = { hazard: "hazards", environment: "environments" }[e.kind];
-    const envLabel = (VOCAB.environments || {})[e.environment] || e.environment;
-    const parts = e.kind === "resource" ? resourceParts(e)
-      : e.kind === "environment"
-        ? { label: fill((VOCAB.environment_targets || {})[e.target] || "{label}", { label: envLabel }) }
-      : lookup ? { label: (VOCAB[lookup] || {})[e[e.kind]] || e[e.kind] }
-      : e.kind === "system_damage" ? { system: (VOCAB.systems || {})[e.system] || e.system }
-      : e.kind === "fleet_delay" ? { jumps: (VOCAB.jumps || {})[Math.abs(e.amount)] || "" }
-      : e.kind === "boarders" ? { range: e.min === e.max ? String(e.min) : e.min + (F.range_join || "") + e.max }
-      : e.kind === "item" && e.id === "RANDOM" ? { label: (VOCAB.random_items || {})[e.item_kind] || e.label }
-      : e.kind === "item" && e.from_list
-        ? { label: (VOCAB.item_lists || {})[e.id] || (VOCAB.random_items || {})[e.item_kind] || e.label }
-      : e.kind === "unlock_ship" ? { label: (VOCAB.ship_unlocks || {})[String(e.id)] || "a ship" }
-      : {};
-    /* A status verb is the file's own word; keep it literal rather than interpreting it. */
-    if (e.kind === "status") {
-      const tpl = (VOCAB.statuses || {})[e.status];
-      const sysName = (VOCAB.systems || {})[e.system] || e.system;
-      const targeted = fill((VOCAB.status_targets || {})[e.target] || "{system}", { system: sysName });
-      if (tpl) return [fill(tpl, { ...e, system: targeted }),
-                       (spec || {}).tone || "none"];
-    }
-    const species = (VOCAB.species || {})[e.class] || e.class;
-    const named = e.name ? fill(VOCAB.name_suffix, { name: e.name }) : "";
-    const noun = (VOCAB.boarder_words || [])[e.min === 1 && e.max === 1 ? 0 : 1] || "";
-    const skillNames = Object.keys(e.skills || {}).map(k => (VOCAB.skills || {})[k] || k);
-    let skills = skillNames.length
-      ? fill(VOCAB.skill_suffix, { list: skillNames.join(", ") }) : "";
-    if (e.all_skills) {
-      skills = (VOCAB.all_skills_suffix || {})[e.all_skills]
-        || fill(VOCAB.all_skills_suffix_n, { n: e.all_skills });
-    }
-    let text = fill(spec.text, {
-      ...e, ...parts, amount: Math.abs(e.amount), skills, noun, name: named,
-      class: e.class ? species + " " : "",
-    });
-    for (const [flag, suffix] of Object.entries(spec.if || {})) if (e[flag]) text += suffix;
-    return [text, spec.tone || ""];
-  }
-
-  function effectsHTML(effects) {
-    if (!effects || !effects.length) return "";
-    return effects.map(e => {
-      const [phrase, tone] = effectPhrase(e);
-      const dlc = e.dlc ? VOCAB.dlc_mark || "" : "";
-      return "<b" + (tone ? ' class="' + tone + '"' : "") + ">" + esc(phrase) + "</b>" + esc(dlc);
-    }).join(F.effect_join || "");
-  }
-
-  /* ---------- tree shape ----------
-     decision (player picks) · chance (game picks) · combat (named branches) ·
-     ref (a table we do not re-expand). All three branching kinds resolve to
-     options carrying a child event, so all render as the same row-with-kids. */
-
-  /* Vocabulary override, then the ship class the extractor resolved from the
-     blueprint, then the raw ship id. */
-  const shipLabel = node =>
-    (VOCAB.ship_labels || {})[node.ship] || node.ship_label ||
-    (node.ship_labels || []).join(F.or_join || "") ||
-    (VOCAB.ship_lists || {})[node.auto_blueprint] ||
-    String(node.ship || "").toLowerCase().replace(/_/g, " ");
-
-  /* An event list can hold the same outcome several times over (the pirate
-     deadCrew list repeats one entry five times). Identical siblings collapse to
-     one row carrying a count — a fact about the list, not an odds claim. */
-  function merge(opts) {
-    const seen = new Map();
-    for (const o of opts) {
-      const key = JSON.stringify([o.label || null, o.gate || null, o.child || null]);
-      const hit = seen.get(key);
-      if (hit) hit.count = (hit.count || 1) + 1;
-      else seen.set(key, { ...o });
-    }
-    return [...seen.values()];
-  }
-
-  /* A branch the data proves cannot happen — deadCrew on a hull that declares no
-     crew — stays in the JSON but off the card. */
-  const branchOptions = node => (node.branches || []).filter(b => b.reachable !== false).map(b => ({
-    label: (VOCAB.branches || {})[b.on] || b.on,
-    /* chance="0" branches exist and the files comment them as specially triggered, so
-       the branch stays — but a "0%" chip would contradict what a chip means (R6). */
-    share: b.chance != null && Number(b.chance) > 0
-      ? fill(F.percent, { n: Math.round(Number(b.chance) * 100) }) : null,
-    child: b.child,
-  }));
-
-  function options(node) {
-    if (!node) return [];
-    if (node.kind === "decision" || node.kind === "sequence") return node.options || [];
-    if (node.kind === "chance") return merge(node.options || []);
-    if (node.kind === "combat") return branchOptions(node);
-    return [];
-  }
-
-  /* A decision can have a ship at the beacon as well as a menu; the fight is a
-     second block under the same node, not one of the choices. */
-  const hasChildren = node => !!node && (options(node).length > 0 || showsCombat(node));
-
-  function lead(node) {
-    if (!node) return "";
-    const L = VOCAB.leads || {};
-    if (node.kind === "combat") return fill(L.combat, { ship: shipLabel(node) });
-    if (node.kind === "chance") return fill(L.chance, { n: (node.options || []).length });
-    if (node.kind === "decision") return L.decision || "";
-    if (node.kind === "sequence") return L.sequence || "";
-    /* Two different refusals to expand. A plain ref is the recursion guard —
-       the same table, reached again. A ref with a card is a dispatch: a whole
-       event that stands on its own and is not this event's business. */
-    if (node.kind === "ref") return fill(node.card ? L.card_ref : L.ref, { target: node.target });
-    return "";
-  }
-
-  function blockLabel(node) {
-    const B = VOCAB.block_labels || {};
-    if (!node) return "";
-    if (node.kind === "combat") return fill(B.combat, { ship: shipLabel(node) });
-    if (node.kind === "chance") {
-      const n = (node.options || []).length;
-      const base = node.odds_basis === "unweighted" ? fill(B.chance_unweighted, { n }) : fill(B.chance_weighted, { n });
-      return base + (node.dlc ? VOCAB.dlc_mark || "" : "");
-    }
-    if (node.kind === "decision" || node.kind === "sequence") return B.decision || "";
-    return "";
-  }
-
-  /* Vocabulary override first (systems and species), then the in-game blueprint
-     title the extractor resolved, then the raw req as a last resort. */
-  const isBlue = g => !!g && g.blue !== "false";
-
-  function gateLabel(g) {
-    const base = (VOCAB.gate_labels || {})[g.req] || g.label || g.req;
-    const B = VOCAB.gate_bounds || {};
-    for (const k of ["lvl", "max_lvl", "min_level"]) {
-      if (g[k]) return fill(B[k], { label: base, n: g[k] });
-    }
-    return base;
-  }
-
-  /* ---------- rows ---------- */
-
-  let uid = 0;
-
-  function klabel(text, depth) {
-    const l = document.createElement("div");
-    l.className = "klabel";
-    l.style.setProperty("--d", depth);
-    l.textContent = text;
-    return l;
-  }
-
-  /* A ship attached to a decision is not one of the choices — it is a ship sitting
-     at the beacon. Give it one row of its own that expands into the fight, so it
-     cannot be misread as another menu item. */
-  const combatOption = node => ({
-    label: (VOCAB.attached_combat || {}).hostile || "",
-    child: { effects: [], node: node.combat },
-  });
-
-  /* A ship no option in the event can turn hostile is not reachable from the menu,
-     so it gets no row — the card would otherwise imply a way to start that fight. */
-  const showsCombat = node => !!node && !!node.combat && node.combat.reachable !== false;
-
-  /* The ship at the beacon is "ambient": a row that flips it hostile starts *that*
-     fight, so the fight belongs under that row — where every other card puts one —
-     rather than floating at the end of the menu. */
-  const flipsHostile = child =>
-    (child.effects || []).some(e => e.kind === "ship_hostility" && e.hostile);
-
-  function fill_block(box, node, depth, ambient) {
-    if (!node) return;
-    const own = blockLabel(node);
-    if (own) box.appendChild(klabel(own, depth));
-    const inner = (node && node.combat) || ambient;
-    options(node).forEach(k => box.appendChild(buildNode(k, depth, 0, inner)));
-    /* Only a ship that arrives hostile is nobody's consequence; it keeps its own row. */
-    if (showsCombat(node) && node.combat.hostile) {
-      box.appendChild(buildNode(combatOption(node), depth, 0, null));
-    }
-  }
-
-  /* A random table whose entries are all identical is not a choice the player
-     experiences — the outcome is certain. Collapse it into the row above rather
-     than printing "1 of 2" over a single row. */
-  function flatten(child) {
-    let c = child;
-    for (let guard = 0; guard < 8; guard++) {
-      const n = c.node;
-      if (!n || n.kind !== "chance") break;
-      const merged = merge(n.options || []);
-      if (merged.length !== 1) break;
-      const only = merged[0];
-      if (only.gate || only.share) break;
-      const oc = only.child || {};
-      c = {
-        text: c.text || oc.text,
-        effects: [...(c.effects || []), ...(oc.effects || [])],
-        node: oc.node,
-      };
-    }
-    return c;
-  }
-
-  function buildNode(opt, depth, number, ambient) {
-    const child = flatten(opt.child || {});
-    const started = flipsHostile(child) && ambient && ambient.reachable !== false ? ambient : null;
-    const expandable = hasChildren(child.node) || !!started;
-
-    const node = document.createElement("div");
-    node.className = "node";
-
-    const el = document.createElement(expandable ? "button" : "div");
-    el.className = "row" + (isBlue(opt.gate) ? " gated" : "");
-    el.style.setProperty("--d", depth);
-
-    /* Gated choices already carry their requirement in the game text — "(Beam
-       Weapon) Carefully cut the ship out." — so drop that parenthetical and let
-       the styled gate stand in for it. */
-    let label = opt.label || (child.text || {}).value || VOCAB.unlabelled || "";
-    if (opt.gate) label = label.replace(/^\s*\([^)]*\)\s*/, "");
-
-    const gate = opt.gate
-      ? '<span class="gate">' + esc((F.gate_open || "") + gateLabel(opt.gate) + (F.gate_close || "")) + "</span> "
-      : "";
-    const rowDlc = opt.dlc ? VOCAB.dlc_mark || "" : "";
-    const num = number ? number + (F.number_suffix || "") : "";
-    const body = effectsHTML(child.effects) || lead(child.node) || esc(VOCAB.nothing);
-    /* The chip column says one thing: this branch is one of several possible
-       outcomes. A gate is not an outcome — the blue row and its requirement
-       already state it — so gated rows get no chip. */
-    const odds = opt.count > 1 ? fill(VOCAB.merge_chip, { n: opt.count }) : opt.share || null;
-
-    let html =
-      '<span class="choice">' + gate + esc(num + label + rowDlc) + "</span>" +
-      (odds ? '<span class="odds">' + esc(odds) + "</span>" : "") +
-      '<span class="effect">' + esc(F.arrow || "") + body + "</span>";
-
-    if (expandable) {
-      const id = "kids-" + (++uid);
-      el.type = "button";
-      el.setAttribute("aria-expanded", "false");
-      el.setAttribute("aria-controls", id);
-      html += '<span class="caret" aria-hidden="true">' + esc(F.caret || "") + "</span>";
-      el.innerHTML = html;
-      node.appendChild(el);
-
-      const box = document.createElement("div");
-      box.className = "kids";
-      box.id = id;
-      box.hidden = true;
-      fill_block(box, child.node, depth + 1, ambient);
-      if (started) {
-        box.appendChild(klabel(blockLabel(started), depth + 1));
-        branchOptions(started).forEach(k => box.appendChild(buildNode(k, depth + 1, 0, null)));
-      }
-      node.appendChild(box);
-
-      el.addEventListener("click", () => {
-        const open = el.getAttribute("aria-expanded") === "true";
-        el.setAttribute("aria-expanded", String(!open));
-        box.hidden = open;
-      });
-    } else {
-      el.innerHTML = html;
-      node.appendChild(el);
-    }
+  function element(tag, cls) {
+    const node = document.createElement(tag);
+    if (cls) node.className = cls;
     return node;
   }
 
-  /* ---------- header, footnotes, mount ---------- */
+  /* The card's shape. Classes only — no ids — because several cards can share one
+     document once sector pages start embedding them. */
+  function skeleton(root) {
+    const header = element("header");
+    const parts = {
+      eyebrow: element("p", "eyebrow"),
+      title: element("h1"),
+      hail: element("p", "hail"),
+      arrival: element("p", "arrival"),
+      tree: element("div", "card"),
+      chain: element("div", "chainbox"),
+      note: element("p", "note"),
+    };
+    header.appendChild(parts.eyebrow);
+    header.appendChild(parts.title);
+    header.appendChild(parts.hail);
+    header.appendChild(parts.arrival);
+    root.appendChild(header);
+    root.appendChild(parts.tree);
+    root.appendChild(parts.chain);
+    root.appendChild(parts.note);
+    return parts;
+  }
 
-  function survey(node, acc) {
-    if (!node) return acc;
-    if (node.kind === "chance" && node.odds_basis === "unweighted") acc.unweighted = true;
-    if (node.combat) survey(node.combat, acc);
-    options(node).forEach(o => {
-      if (o.gate) acc.gates = true;
-      if (o.gate && o.gate.max_group != null) acc.max_group = true;
-      survey((o.child || {}).node, acc);
+  function renderCard(root, DATA, VOCAB) {
+    DATA = DATA || {};
+    VOCAB = VOCAB || FTLCard.vocab || {};
+
+    const parts = skeleton(root);
+
+    const F = VOCAB.format || {};
+    const esc = s => String(s == null ? "" : s).replace(/[&<>]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" }[c]));
+    const fill = (tpl, vals) => String(tpl || "").replace(/\{(\w+)\}/g, (_, k) => vals[k] == null ? "" : vals[k]).replace(/\s+/g, " ").trim();
+
+    /* ---------- effects → phrase + tone, entirely from the vocabulary ---------- */
+
+    function rewardPhrase(e) {
+      const level = (VOCAB.levels || {})[e.level] || String(e.level || "").toLowerCase();
+      /* An unmapped tier shows its raw name. Falling back to the `standard` template
+         would silently claim scrap for a missile or drone-part reward. */
+      const tpl = (VOCAB.tiers || {})[e.tier] || "{level} " + e.tier;
+      return [fill(tpl, { level }), (VOCAB.tier_tones || {})[e.tier] || "cost"];
+    }
+
+    /* Resources are signed: a negative item_modify is a cost, and the label has to
+       agree in number with the amount. */
+    function resourceParts(e) {
+      const lo = Math.abs(e.min), hi = Math.abs(e.max);
+      const names = (VOCAB.resource_labels || {})[e.resource] || [e.resource, e.resource];
+      const sign = e.min <= 0 && e.max <= 0 && (lo || hi) ? VOCAB.spend_prefix || "" : "";
+      const join = sign ? (F.range_join_signed || "") : (F.range_join || "");
+      const range = lo === hi ? String(lo) : sign + lo + join + sign + hi;
+      const name = hi === 1 && lo === 1 ? names[0] : names[1];
+      return { range: lo === hi ? sign + range : range, resource: name };
+    }
+
+    function effectPhrase(e) {
+      if (e.kind === "nothing") return [VOCAB.nothing, "none"];
+      if (e.kind === "reward") return rewardPhrase(e);
+
+      /* Two effects read in both directions: a ship turning hostile or standing down, and
+         modifyPursuit, whose sign decides whether the fleet gains or loses ground. */
+      let key = e.kind === "ship_hostility" && !e.hostile ? "ship_hostility_off" : e.kind;
+      if (e.kind === "fleet_delay" && e.amount > 0) key = "fleet_advance";
+      if (e.kind === "resource" && e.min <= 0 && e.max <= 0) key = "resource_spend";
+      if (e.kind === "crew_gain" && e.amount < 0) key = "crew_lost";
+      const spec = (VOCAB.effects || {})[key];
+      if (!spec) return [e.kind, ""];
+
+      const lookup = { hazard: "hazards", environment: "environments" }[e.kind];
+      const envLabel = (VOCAB.environments || {})[e.environment] || e.environment;
+      const parts = e.kind === "resource" ? resourceParts(e)
+        : e.kind === "environment"
+          ? { label: fill((VOCAB.environment_targets || {})[e.target] || "{label}", { label: envLabel }) }
+        : lookup ? { label: (VOCAB[lookup] || {})[e[e.kind]] || e[e.kind] }
+        : e.kind === "system_damage" ? { system: (VOCAB.systems || {})[e.system] || e.system }
+        : e.kind === "fleet_delay" ? { jumps: (VOCAB.jumps || {})[Math.abs(e.amount)] || "" }
+        : e.kind === "boarders" ? { range: e.min === e.max ? String(e.min) : e.min + (F.range_join || "") + e.max }
+        : e.kind === "item" && e.id === "RANDOM" ? { label: (VOCAB.random_items || {})[e.item_kind] || e.label }
+        : e.kind === "item" && e.from_list
+          ? { label: (VOCAB.item_lists || {})[e.id] || (VOCAB.random_items || {})[e.item_kind] || e.label }
+        : e.kind === "unlock_ship" ? { label: (VOCAB.ship_unlocks || {})[String(e.id)] || "a ship" }
+        : {};
+      /* A status verb is the file's own word; keep it literal rather than interpreting it. */
+      if (e.kind === "status") {
+        const tpl = (VOCAB.statuses || {})[e.status];
+        const sysName = (VOCAB.systems || {})[e.system] || e.system;
+        const targeted = fill((VOCAB.status_targets || {})[e.target] || "{system}", { system: sysName });
+        if (tpl) return [fill(tpl, { ...e, system: targeted }),
+                         (spec || {}).tone || "none"];
+      }
+      const species = (VOCAB.species || {})[e.class] || e.class;
+      const named = e.name ? fill(VOCAB.name_suffix, { name: e.name }) : "";
+      const noun = (VOCAB.boarder_words || [])[e.min === 1 && e.max === 1 ? 0 : 1] || "";
+      const skillNames = Object.keys(e.skills || {}).map(k => (VOCAB.skills || {})[k] || k);
+      let skills = skillNames.length
+        ? fill(VOCAB.skill_suffix, { list: skillNames.join(", ") }) : "";
+      if (e.all_skills) {
+        skills = (VOCAB.all_skills_suffix || {})[e.all_skills]
+          || fill(VOCAB.all_skills_suffix_n, { n: e.all_skills });
+      }
+      let text = fill(spec.text, {
+        ...e, ...parts, amount: Math.abs(e.amount), skills, noun, name: named,
+        class: e.class ? species + " " : "",
+      });
+      for (const [flag, suffix] of Object.entries(spec.if || {})) if (e[flag]) text += suffix;
+      return [text, spec.tone || ""];
+    }
+
+    function effectsHTML(effects) {
+      if (!effects || !effects.length) return "";
+      return effects.map(e => {
+        const [phrase, tone] = effectPhrase(e);
+        const dlc = e.dlc ? VOCAB.dlc_mark || "" : "";
+        return "<b" + (tone ? ' class="' + tone + '"' : "") + ">" + esc(phrase) + "</b>" + esc(dlc);
+      }).join(F.effect_join || "");
+    }
+
+    /* ---------- tree shape ----------
+       decision (player picks) · chance (game picks) · combat (named branches) ·
+       ref (a table we do not re-expand). All three branching kinds resolve to
+       options carrying a child event, so all render as the same row-with-kids. */
+
+    /* Vocabulary override, then the ship class the extractor resolved from the
+       blueprint, then the raw ship id. */
+    const shipLabel = node =>
+      (VOCAB.ship_labels || {})[node.ship] || node.ship_label ||
+      (node.ship_labels || []).join(F.or_join || "") ||
+      (VOCAB.ship_lists || {})[node.auto_blueprint] ||
+      String(node.ship || "").toLowerCase().replace(/_/g, " ");
+
+    /* An event list can hold the same outcome several times over (the pirate
+       deadCrew list repeats one entry five times). Identical siblings collapse to
+       one row carrying a count — a fact about the list, not an odds claim. */
+    function merge(opts) {
+      const seen = new Map();
+      for (const o of opts) {
+        const key = JSON.stringify([o.label || null, o.gate || null, o.child || null]);
+        const hit = seen.get(key);
+        if (hit) hit.count = (hit.count || 1) + 1;
+        else seen.set(key, { ...o });
+      }
+      return [...seen.values()];
+    }
+
+    /* A branch the data proves cannot happen — deadCrew on a hull that declares no
+       crew — stays in the JSON but off the card. */
+    const branchOptions = node => (node.branches || []).filter(b => b.reachable !== false).map(b => ({
+      label: (VOCAB.branches || {})[b.on] || b.on,
+      /* chance="0" branches exist and the files comment them as specially triggered, so
+         the branch stays — but a "0%" chip would contradict what a chip means (R6). */
+      share: b.chance != null && Number(b.chance) > 0
+        ? fill(F.percent, { n: Math.round(Number(b.chance) * 100) }) : null,
+      child: b.child,
+    }));
+
+    function options(node) {
+      if (!node) return [];
+      if (node.kind === "decision" || node.kind === "sequence") return node.options || [];
+      if (node.kind === "chance") return merge(node.options || []);
+      if (node.kind === "combat") return branchOptions(node);
+      return [];
+    }
+
+    /* A decision can have a ship at the beacon as well as a menu; the fight is a
+       second block under the same node, not one of the choices. */
+    const hasChildren = node => !!node && (options(node).length > 0 || showsCombat(node));
+
+    function lead(node) {
+      if (!node) return "";
+      const L = VOCAB.leads || {};
+      if (node.kind === "combat") return fill(L.combat, { ship: shipLabel(node) });
+      if (node.kind === "chance") return fill(L.chance, { n: (node.options || []).length });
+      if (node.kind === "decision") return L.decision || "";
+      if (node.kind === "sequence") return L.sequence || "";
+      /* Two different refusals to expand. A plain ref is the recursion guard —
+         the same table, reached again. A ref with a card is a dispatch: a whole
+         event that stands on its own and is not this event's business. */
+      if (node.kind === "ref") return fill(node.card ? L.card_ref : L.ref, { target: node.target });
+      return "";
+    }
+
+    function blockLabel(node) {
+      const B = VOCAB.block_labels || {};
+      if (!node) return "";
+      if (node.kind === "combat") return fill(B.combat, { ship: shipLabel(node) });
+      if (node.kind === "chance") {
+        const n = (node.options || []).length;
+        const base = node.odds_basis === "unweighted" ? fill(B.chance_unweighted, { n }) : fill(B.chance_weighted, { n });
+        return base + (node.dlc ? VOCAB.dlc_mark || "" : "");
+      }
+      if (node.kind === "decision" || node.kind === "sequence") return B.decision || "";
+      return "";
+    }
+
+    /* Vocabulary override first (systems and species), then the in-game blueprint
+       title the extractor resolved, then the raw req as a last resort. */
+    const isBlue = g => !!g && g.blue !== "false";
+
+    function gateLabel(g) {
+      const base = (VOCAB.gate_labels || {})[g.req] || g.label || g.req;
+      const B = VOCAB.gate_bounds || {};
+      for (const k of ["lvl", "max_lvl", "min_level"]) {
+        if (g[k]) return fill(B[k], { label: base, n: g[k] });
+      }
+      return base;
+    }
+
+    /* ---------- rows ---------- */
+
+    /* Per render, not per document: two cards in one page must not hand out the
+       same aria-controls id. */
+    let uid = 0;
+
+    function klabel(text, depth) {
+      const l = element("div", "klabel");
+      l.style.setProperty("--d", depth);
+      l.textContent = text;
+      return l;
+    }
+
+    /* A ship attached to a decision is not one of the choices — it is a ship sitting
+       at the beacon. Give it one row of its own that expands into the fight, so it
+       cannot be misread as another menu item. */
+    const combatOption = node => ({
+      label: (VOCAB.attached_combat || {}).hostile || "",
+      child: { effects: [], node: node.combat },
     });
-    return acc;
-  }
 
-  const display = DATA.display || {};
-  const flags = DATA.flags || {};
-  const D = VOCAB.display || {};
-  const chain = DATA.chain || [];
-  const found = chain.reduce((acc, s) => survey(s.node, acc), survey(DATA.node, {}));
+    /* A ship no option in the event can turn hostile is not reachable from the menu,
+       so it gets no row — the card would otherwise imply a way to start that fight. */
+    const showsCombat = node => !!node && !!node.combat && node.combat.reachable !== false;
 
-  const eyebrow = display.eyebrow || (D.eyebrow || {})[flags.beacon]
-    || (flags.store ? (D.eyebrow || {}).store : null) || (D.eyebrow || {}).default || "";
-  const notes = display.note ? [display.note] : [
-    flags.unique ? (D.notes || {}).unique : null,
-    flags.environment
-      ? fill((D.notes || {}).environment, {
-          label: fill((VOCAB.environment_targets || {})[flags.environment_target] || "{label}",
-                      { label: (VOCAB.environments || {})[flags.environment] || flags.environment }),
-        })
-      : null,
-    DATA.dlc ? (D.notes || {}).dlc : null,
-    (DATA.text || {}).variants
-      ? fill((D.notes || {}).variants, { n: DATA.text.variants }) : null,
-    found.max_group ? (D.notes || {}).max_group : null,
-    chain.length ? (D.notes || {}).chain : null,
-    found.unweighted ? (D.notes || {}).unweighted : null,
-    found.gates ? (D.notes || {}).gates : null,
-  ].filter(Boolean);
+    /* The ship at the beacon is "ambient": a row that flips it hostile starts *that*
+       fight, so the fight belongs under that row — where every other card puts one —
+       rather than floating at the end of the menu. */
+    const flipsHostile = child =>
+      (child.effects || []).some(e => e.kind === "ship_hostility" && e.hostile);
 
-  document.getElementById("eyebrow").textContent = eyebrow;
-  document.getElementById("title").textContent = DATA.title || "";
-  const quote = t => (F.quote_open || "") + t + (F.quote_close || "");
-  document.getElementById("hail").textContent = quote((DATA.text || {}).value || "");
-  document.getElementById("note").textContent = notes.join(" ");
-
-  /* R17: the root record can carry effects of its own — boarders already aboard, a
-     fleet move, a hull hit — that belong to no choice. They render once, on arrival. */
-  /* environment is already stated once in the footnote (R15); don't say it twice */
-  const rootEffects = (DATA.effects || []).filter(e => e.kind !== "environment");
-  const arrival = effectsHTML(rootEffects);
-  if (arrival) {
-    document.getElementById("arrival").innerHTML =
-      esc(VOCAB.on_arrival || "") + " " + esc(F.arrow || "") + " " + arrival;
-  }
-
-  /* Root options are numbered to match the in-game menu; gated (blue) rows are
-     not, since the player only sees the ones they qualify for. */
-  function mount(container, node) {
-    /* Only a decision's options are a menu the player picks from, so only those
-       get in-game numbers. A root that is a fight or a random table is labelled
-       instead — otherwise its branches read as choices. */
-    if (!node) return;
-    if (node.kind !== "decision") {
-      fill_block(container, node, 0, null);
-      return;
+    function fill_block(box, node, depth, ambient) {
+      if (!node) return;
+      const own = blockLabel(node);
+      if (own) box.appendChild(klabel(own, depth));
+      const inner = (node && node.combat) || ambient;
+      options(node).forEach(k => box.appendChild(buildNode(k, depth, 0, inner)));
+      /* Only a ship that arrives hostile is nobody's consequence; it keeps its own row. */
+      if (showsCombat(node) && node.combat.hostile) {
+        box.appendChild(buildNode(combatOption(node), depth, 0, null));
+      }
     }
-    let n = 0;
-    options(node).forEach(opt => {
-      if (!isBlue(opt.gate)) n++;
-      container.appendChild(buildNode(opt, 0, isBlue(opt.gate) ? 0 : n, node.combat));
+
+    /* A random table whose entries are all identical is not a choice the player
+       experiences — the outcome is certain. Collapse it into the row above rather
+       than printing "1 of 2" over a single row. */
+    function flatten(child) {
+      let c = child;
+      for (let guard = 0; guard < 8; guard++) {
+        const n = c.node;
+        if (!n || n.kind !== "chance") break;
+        const merged = merge(n.options || []);
+        if (merged.length !== 1) break;
+        const only = merged[0];
+        if (only.gate || only.share) break;
+        const oc = only.child || {};
+        c = {
+          text: c.text || oc.text,
+          effects: [...(c.effects || []), ...(oc.effects || [])],
+          node: oc.node,
+        };
+      }
+      return c;
+    }
+
+    function buildNode(opt, depth, number, ambient) {
+      const child = flatten(opt.child || {});
+      const started = flipsHostile(child) && ambient && ambient.reachable !== false ? ambient : null;
+      const expandable = hasChildren(child.node) || !!started;
+
+      const node = element("div", "node");
+
+      const el = element(expandable ? "button" : "div",
+                         "row" + (isBlue(opt.gate) ? " gated" : ""));
+      el.style.setProperty("--d", depth);
+
+      /* Gated choices already carry their requirement in the game text — "(Beam
+         Weapon) Carefully cut the ship out." — so drop that parenthetical and let
+         the styled gate stand in for it. */
+      let label = opt.label || (child.text || {}).value || VOCAB.unlabelled || "";
+      if (opt.gate) label = label.replace(/^\s*\([^)]*\)\s*/, "");
+
+      const gate = opt.gate
+        ? '<span class="gate">' + esc((F.gate_open || "") + gateLabel(opt.gate) + (F.gate_close || "")) + "</span> "
+        : "";
+      const rowDlc = opt.dlc ? VOCAB.dlc_mark || "" : "";
+      const num = number ? number + (F.number_suffix || "") : "";
+      const body = effectsHTML(child.effects) || lead(child.node) || esc(VOCAB.nothing);
+      /* The chip column says one thing: this branch is one of several possible
+         outcomes. A gate is not an outcome — the blue row and its requirement
+         already state it — so gated rows get no chip. */
+      const odds = opt.count > 1 ? fill(VOCAB.merge_chip, { n: opt.count }) : opt.share || null;
+
+      let html =
+        '<span class="choice">' + gate + esc(num + label + rowDlc) + "</span>" +
+        (odds ? '<span class="odds">' + esc(odds) + "</span>" : "") +
+        '<span class="effect">' + esc(F.arrow || "") + body + "</span>";
+
+      if (expandable) {
+        const id = "kids-" + (++uid);
+        el.type = "button";
+        el.setAttribute("aria-expanded", "false");
+        el.setAttribute("aria-controls", id);
+        html += '<span class="caret" aria-hidden="true">' + esc(F.caret || "") + "</span>";
+        el.innerHTML = html;
+        node.appendChild(el);
+
+        const box = element("div", "kids");
+        box.id = id;
+        box.hidden = true;
+        fill_block(box, child.node, depth + 1, ambient);
+        if (started) {
+          box.appendChild(klabel(blockLabel(started), depth + 1));
+          branchOptions(started).forEach(k => box.appendChild(buildNode(k, depth + 1, 0, null)));
+        }
+        node.appendChild(box);
+
+        el.addEventListener("click", () => {
+          const open = el.getAttribute("aria-expanded") === "true";
+          el.setAttribute("aria-expanded", String(!open));
+          box.hidden = open;
+        });
+      } else {
+        el.innerHTML = html;
+        node.appendChild(el);
+      }
+      return node;
+    }
+
+    /* ---------- header, footnotes, mount ---------- */
+
+    function survey(node, acc) {
+      if (!node) return acc;
+      if (node.kind === "chance" && node.odds_basis === "unweighted") acc.unweighted = true;
+      if (node.combat) survey(node.combat, acc);
+      options(node).forEach(o => {
+        if (o.gate) acc.gates = true;
+        if (o.gate && o.gate.max_group != null) acc.max_group = true;
+        survey((o.child || {}).node, acc);
+      });
+      return acc;
+    }
+
+    const display = DATA.display || {};
+    const flags = DATA.flags || {};
+    const D = VOCAB.display || {};
+    const chain = DATA.chain || [];
+    const found = chain.reduce((acc, s) => survey(s.node, acc), survey(DATA.node, {}));
+
+    const eyebrow = display.eyebrow || (D.eyebrow || {})[flags.beacon]
+      || (flags.store ? (D.eyebrow || {}).store : null) || (D.eyebrow || {}).default || "";
+    const notes = display.note ? [display.note] : [
+      flags.unique ? (D.notes || {}).unique : null,
+      flags.environment
+        ? fill((D.notes || {}).environment, {
+            label: fill((VOCAB.environment_targets || {})[flags.environment_target] || "{label}",
+                        { label: (VOCAB.environments || {})[flags.environment] || flags.environment }),
+          })
+        : null,
+      DATA.dlc ? (D.notes || {}).dlc : null,
+      (DATA.text || {}).variants
+        ? fill((D.notes || {}).variants, { n: DATA.text.variants }) : null,
+      found.max_group ? (D.notes || {}).max_group : null,
+      chain.length ? (D.notes || {}).chain : null,
+      found.unweighted ? (D.notes || {}).unweighted : null,
+      found.gates ? (D.notes || {}).gates : null,
+    ].filter(Boolean);
+
+    parts.eyebrow.textContent = eyebrow;
+    parts.title.textContent = DATA.title || "";
+    const quote = t => (F.quote_open || "") + t + (F.quote_close || "");
+    parts.hail.textContent = quote((DATA.text || {}).value || "");
+    parts.note.textContent = notes.join(" ");
+
+    /* R17: the root record can carry effects of its own — boarders already aboard, a
+       fleet move, a hull hit — that belong to no choice. They render once, on arrival. */
+    /* environment is already stated once in the footnote (R15); don't say it twice */
+    const rootEffects = (DATA.effects || []).filter(e => e.kind !== "environment");
+    const arrival = effectsHTML(rootEffects);
+    if (arrival) {
+      parts.arrival.innerHTML =
+        esc(VOCAB.on_arrival || "") + " " + esc(F.arrow || "") + " " + arrival;
+    }
+
+    /* Root options are numbered to match the in-game menu; gated (blue) rows are
+       not, since the player only sees the ones they qualify for. */
+    function mount(container, node) {
+      /* Only a decision's options are a menu the player picks from, so only those
+         get in-game numbers. A root that is a fight or a random table is labelled
+         instead — otherwise its branches read as choices. */
+      if (!node) return;
+      if (node.kind !== "decision") {
+        fill_block(container, node, 0, null);
+        return;
+      }
+      let n = 0;
+      options(node).forEach(opt => {
+        if (!isBlue(opt.gate)) n++;
+        container.appendChild(buildNode(opt, 0, isBlue(opt.gate) ? 0 : n, node.combat));
+      });
+      if (showsCombat(node) && node.combat.hostile) {
+        container.appendChild(buildNode(combatOption(node), 0, 0, null));
+      }
+    }
+
+    mount(parts.tree, DATA.node);
+
+    /* Each quest marker's destination is its own encounter at its own beacon, so it
+       gets its own card below rather than another level of nesting. */
+    chain.forEach((stage, i) => {
+      const sec = element("section", "stage");
+
+      const mark = element("p", "stage-mark");
+      mark.textContent = fill(VOCAB.chain_step, { n: i + 1 });
+      sec.appendChild(mark);
+
+      if (stage.repeat) {
+        const loop = element("p", "stage-loop");
+        loop.textContent = VOCAB.chain_loop || "";
+        sec.appendChild(loop);
+        parts.chain.appendChild(sec);
+        return;
+      }
+
+      const h = element("h2");
+      h.textContent = stage.title || VOCAB.chain_heading || "";
+      sec.appendChild(h);
+
+      const stageArrival = effectsHTML((stage.effects || []).filter(e => e.kind !== "environment"));
+      if (stageArrival) {
+        const a = element("p", "arrival");
+        a.innerHTML = esc(VOCAB.on_arrival || "") + " " + esc(F.arrow || "") + " " + stageArrival;
+        sec.appendChild(a);
+      }
+
+      const text = (stage.text || {}).value;
+      if (text) {
+        const hail = element("p", "hail");
+        hail.textContent = quote(text);
+        sec.appendChild(hail);
+      }
+
+      const card = element("div", "card");
+      mount(card, stage.node);
+      sec.appendChild(card);
+      parts.chain.appendChild(sec);
     });
-    if (showsCombat(node) && node.combat.hostile) {
-      container.appendChild(buildNode(combatOption(node), 0, 0, null));
-    }
+
+    return root;
   }
 
-  mount(document.getElementById("tree"), DATA.node);
+  const FTLCard = {
+    render: renderCard,
+    define: define,
+    whenDefined: whenDefined,
+    get: slug => registry.get(slug),
+    vocab: null,
+  };
 
-  /* Each quest marker's destination is its own encounter at its own beacon, so it
-     gets its own card below rather than another level of nesting. */
-  const chainBox = document.getElementById("chain");
-  chain.forEach((stage, i) => {
-    const sec = document.createElement("section");
-    sec.className = "stage";
+  global.FTLCard = FTLCard;
 
-    const mark = document.createElement("p");
-    mark.className = "stage-mark";
-    mark.textContent = fill(VOCAB.chain_step, { n: i + 1 });
-    sec.appendChild(mark);
+})(typeof globalThis !== "undefined" ? globalThis : this);
+</script>
 
-    if (stage.repeat) {
-      const loop = document.createElement("p");
-      loop.className = "stage-loop";
-      loop.textContent = VOCAB.chain_loop || "";
-      sec.appendChild(loop);
-      chainBox.appendChild(sec);
-      return;
-    }
-
-    const h = document.createElement("h2");
-    h.textContent = stage.title || VOCAB.chain_heading || "";
-    sec.appendChild(h);
-
-    const stageArrival = effectsHTML((stage.effects || []).filter(e => e.kind !== "environment"));
-    if (stageArrival) {
-      const a = document.createElement("p");
-      a.className = "arrival";
-      a.innerHTML = esc(VOCAB.on_arrival || "") + " " + esc(F.arrow || "") + " " + stageArrival;
-      sec.appendChild(a);
-    }
-
-    const text = (stage.text || {}).value;
-    if (text) {
-      const hail = document.createElement("p");
-      hail.className = "hail";
-      hail.textContent = quote(text);
-      sec.appendChild(hail);
-    }
-
-    const card = document.createElement("div");
-    card.className = "card";
-    mount(card, stage.node);
-    sec.appendChild(card);
-    chainBox.appendChild(sec);
-  });
+<script>
+  /* Two lines of page: everything else lives in tools/card-runtime.js, which
+     build-card.py inlines above so a published card stays self-contained. */
+  FTLCard.render(document.getElementById("card-root"),
+                 JSON.parse(document.getElementById("event-data").textContent),
+                 JSON.parse(document.getElementById("card-vocab").textContent));
 </script>

@@ -39,6 +39,10 @@ TITLE = re.compile(r"^<title>[^\n]*?</title>$", re.MULTILINE)
 # so one hop up and across reaches a card from a page opened off disk. Relative on purpose:
 # a published artifact mints its URL at publish time, so no absolute link is knowable here.
 CARD_HREF = "../cards/card-{slug}.html"
+CARD_RUNTIME = "../cards/runtime/card.js"
+CARD_CSS = "../cards/runtime/card.css"
+CARD_DATA = "../cards/data/{slug}.js"
+LOADER = TOOLS / "sector-cards.js"
 
 COPY_KEYS = {"slug", "lede", "stats", "callout", "section_notes", "panels", "chain"}
 REQUIRED = {"slug", "lede", "stats", "panels"}
@@ -162,8 +166,13 @@ def rail_of(record):
 
 
 def event_html(record):
-    """One beacon box. A box whose event has a card is a link to it; one without
-    stays inert rather than pointing at a file that is not there."""
+    """One beacon box.
+
+    A box whose event has a card opens onto that card, rendered in place by
+    tools/sector-cards.js — the panel starts empty and is filled the first time the
+    box is opened. The corner link still goes to the standalone card page. An event
+    with no card stays an inert box rather than promising something that is not there.
+    """
     body = (
         f'<div class="t">{html.escape(record["title"])}</div>'
         f'<div class="id">{html.escape(record["id"])}</div>'
@@ -171,7 +180,17 @@ def event_html(record):
     )
     if record.get("card") and record.get("slug"):
         href = CARD_HREF.format(slug=record["slug"])
-        return f'<a class="ev link{rail_of(record)}" href="{html.escape(href, quote=True)}">{body}</a>'
+        link = (
+            f'<a class="cardlink" href="{html.escape(href, quote=True)}"'
+            f' title="{html.escape(VOC["cards"]["open"], quote=True)}">'
+            f'{html.escape(VOC["cards"]["open_mark"])}</a>'
+        )
+        return (
+            f'<details class="evbox{rail_of(record)}" data-card="{html.escape(record["slug"], quote=True)}">'
+            f'<summary class="ev">{body}{link}</summary>'
+            '<div class="cardpanel"></div>'
+            "</details>"
+        )
     return f'<div class="ev{rail_of(record)}">{body}</div>'
 
 
@@ -441,6 +460,29 @@ def footnotes(data):
     return "<footer>" + "".join(f"<p>{html.escape(n)}</p>" for n in notes) + "</footer>"
 
 
+def loader_html():
+    """The config block and the loader that turns a beacon box into its card.
+
+    The paths and every word the loader can show are emitted here; the script itself
+    holds no English and no path, the same split the rest of this pipeline uses.
+    """
+    config = {
+        "runtime": CARD_RUNTIME,
+        "css": CARD_CSS,
+        "data": CARD_DATA,
+        "strings": {
+            "loading": VOC["cards"]["loading"],
+            "failed": VOC["cards"]["failed"],
+        },
+    }
+    payload = json.dumps(config, ensure_ascii=False, indent=2).replace("<", "\\u003c")
+    return (
+        '<script type="application/json" id="sector-card-loader">\n'
+        f"{payload}\n</script>\n"
+        f"<script>\n{LOADER.read_text(encoding='utf-8')}</script>"
+    )
+
+
 def header_html(data, copy, titles, slug):
     facts = [
         (VOC["facts"]["earliest"], str(data.get("earliest_sector", data["min_sector"] + 1))),
@@ -510,6 +552,7 @@ def render(data, copy):
     parts.append(chain_html(copy, titles, slug))
     parts.append(panels_html(data, copy, titles, slug))
     parts.append(footnotes(data))
+    parts.append(loader_html())
     return "".join(parts)
 
 

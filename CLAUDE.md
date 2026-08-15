@@ -439,7 +439,13 @@ raw/gamedata/*.xml  →  sectors/data/<slug>.sector.json  →  sectors/sector-<s
    + cards/trees/*  ▲                                    ▲
               extract-sector.py            build-sector.py + sector-page-render.html
                                                          + tools/sector-copy/<slug>.json
+                                                         + tools/sector-cards.js
 ```
+
+A beacon box on a built page **opens onto that event's card, in place** — loaded on demand
+from `cards/runtime/` and `cards/data/`, which `build-card.py` emits. That works off disk,
+where these pages are read; a published page can only offer the corner link. `SECTOR-PAGE.md`
+§6.1 has the why.
 
 **Read `tools/SECTOR-PAGE.md` and follow it** — same reasoning as the card spec: this file is
 injected at session start and can lag the working tree, so the spec is authoritative.

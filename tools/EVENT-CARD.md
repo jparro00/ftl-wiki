@@ -19,6 +19,8 @@ python tools/build-card.py cards/trees/auto-ship-near-storage-station.tree.json
 node  tools/smoke-card.js cards/card-auto-ship-near-storage-station.html
 ```
 
+`--all` rebuilds every card; `--runtime` rebuilds only the shared runtime files (§7.3).
+
 Then publish the built file with the Artifact tool (§9).
 
 The **event id is the only input**. Find it by matching on-screen text against
@@ -34,12 +36,15 @@ extractor prints rather than assuming one.
 | Path | Role | Hand-written? |
 |---|---|---|
 | `tools/extract-event.py` | game XML → `ftl-event-tree/1` JSON | code only |
-| `tools/build-card.py` | inlines tree + vocabulary into the shell | code only |
-| `tools/event-card-render.html` | layout, colour, interaction | design only — **no English** |
+| `tools/build-card.py` | inlines runtime + tree + vocabulary into the shell; emits the payload and the shared runtime | code only |
+| `tools/card-runtime.js` | **the renderer**, and the only copy of it | code only |
+| `tools/event-card-render.html` | layout, colour, and the page a card is | design only — **no English** |
 | `tools/card-vocab.json` | every word and punctuation mark that isn't game text | yes, shared by all cards |
-| `tools/smoke-card.js` | renders a built card under a DOM shim, for testing | code only |
+| `tools/smoke-card.js` | runs the renderer under a DOM shim, for testing | code only |
 | `cards/trees/<slug>.tree.json` | generated tree (regenerable data, not a page) | never |
 | `cards/card-<slug>.html` | the built card; publish target | never |
+| `cards/data/<slug>.js` | the same tree as one `FTLCard.define()` call (§7.3) | never |
+| `cards/runtime/card.js` `card.css` | renderer + vocabulary, and the CSS, for pages that embed cards (§7.3) | never |
 
 Inputs consumed, all under `raw/gamedata/` except the last:
 
@@ -267,10 +272,14 @@ vocabulary needs one entry per sense.** Check this first when adding any effect 
 
 ## 7. Stage 2 — rendering
 
-`build-card.py` inlines the tree and the vocabulary into `event-card-render.html` and stamps
-the title. **Inlining is required**: a published artifact runs under a CSP that blocks all
-network requests, and `file://` blocks cross-origin reads, so fetching a sibling JSON fails
-in both places. Both documents are still parsed as JSON, so data never becomes code.
+`build-card.py` inlines the renderer (`tools/card-runtime.js`), the tree and the vocabulary
+into `event-card-render.html` and stamps the title. **Inlining is required**: a published
+artifact runs under a CSP that blocks all network requests, and `file://` blocks cross-origin
+reads, so fetching a sibling JSON fails in both places. Both documents are still parsed as
+JSON, so data never becomes code.
+
+The renderer lives in its own file because a card is no longer the only thing that renders
+one — see §7.3. The card page is three lines of bootstrap on top of it.
 
 ### 7.1 Rendering rules
 
@@ -309,6 +318,38 @@ in both places. Both documents are still parsed as JSON, so data never becomes c
   displace the `leads.combat` phrase, so without this the ship is never named on any route
   that flips hostility.
 
+### 7.3 The same renderer, embedded elsewhere
+
+A sector page shows a card inside itself rather than sending the reader away
+(`tools/SECTOR-PAGE.md` §6.1). It uses the same renderer on the same data, so there is one
+of each — a second implementation would drift within a week.
+
+`build-card.py` emits three things for that:
+
+```
+cards/runtime/card.js     tools/card-runtime.js + `FTLCard.vocab = {…}`   (~30 KB, once)
+cards/runtime/card.css    the card CSS, page chrome stripped, :root → :host (~7 KB, once)
+cards/data/<slug>.js      FTLCard.define("<slug>", {…the tree…})           (~8 KB each)
+```
+
+Three constraints shaped this, and each one is load-bearing:
+
+- **`FTLCard.render(root, data, vocab)` must be reentrant.** It builds its own skeleton and
+  keeps no module-level state, because a sector page renders many cards into one document and
+  a shadow root has no markup to find. Nothing may be looked up by document id.
+- **The payload is a `.js` file, not the `.json` tree, because of `file://`.** A local page
+  cannot `fetch`, `XHR` or `import()` a sibling file — all three are blocked in Chrome and in
+  Firefox with stock prefs — but a classic `<script src>` loads fine. So the tree ships again
+  as one `define()` call. That is the only reason for the duplication.
+- **The CSS is transformed, not copied.** Everything between the `PAGE-ONLY-START` and
+  `PAGE-ONLY-END` markers in `event-card-render.html` is the standalone page's own chrome
+  (background, page padding, the centred column) and is stripped; `:root` becomes `:host`
+  because `:root` cannot match inside a shadow root. Keep new page-level rules inside those
+  markers or an embedded card will repaint the page around it.
+
+The runtime pair is rebuilt on **every** `build-card.py` run, including `--runtime` on its
+own, so it cannot drift from what the cards inline.
+
 ### 7.2 Verification
 
 ```bash
@@ -339,7 +380,8 @@ diff /tmp/a.json /tmp/b.json
 | Wording reads wrong | `card-vocab.json` | the card HTML |
 | Punctuation or number format | `card-vocab.json` → `format` | the renderer |
 | A branch is missing or misplaced | `extract-event.py`, then re-extract | the tree JSON by hand |
-| Layout, colour, interaction | `event-card-render.html` (changes every card) | one card |
+| Layout, colour | `event-card-render.html` (changes every card **and** every embedded card) | one card |
+| Interaction, row building | `tools/card-runtime.js` (same reach) | a built card |
 | Title is wrong | the wiki page's H1 | `--title` as a habit |
 
 After any renderer or vocabulary change, rebuild **every** existing tree and smoke-test them.

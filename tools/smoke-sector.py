@@ -12,6 +12,7 @@ Exit code 1 if any check fails. Required before publishing (tools/SECTOR-PAGE.md
 
 import argparse
 import html.parser
+import json
 import pathlib
 import re
 import sys
@@ -92,6 +93,9 @@ def main():
     problems += [f"unclosed <{t}>" for t, _, _ in page.stack]
 
     body = re.sub(r"<style>.*?</style>", "", source, flags=re.DOTALL)
+    # The loader and its config are code, not copy: they hold comment asterisks and
+    # braces that these checks are meant to catch in prose, and nothing a reader sees.
+    body = re.sub(r"<script.*?</script>", "", body, flags=re.DOTALL)
     body = re.sub(r"<!--.*?-->", "", body, flags=re.DOTALL)
     for needle, why in LEAKS:
         if needle in body:
@@ -119,21 +123,44 @@ def main():
     if not rows:
         problems.append("no beacon-budget rows")
 
-    # A beacon box that links to a card no one built is worse than an inert box: it
-    # looks live and lands on a 404. The link is relative, so resolve it the way the
-    # browser will — against the directory the page sits in.
-    links = [n for n in events if n["tag"] == "a"]
-    dead = set()
+    # Every path the page will ask the browser for, resolved the way the browser will:
+    # relative to the directory the page sits in. A box that looks live and then lands
+    # on a 404 is worse than an inert one, and the loader's failure text is the only
+    # thing a reader would ever see of it.
+    def resolve(href):
+        return (args.page.parent / href).resolve()
+
+    links = [n for n in page.nodes if n["tag"] == "a" and "cardlink" in n["classes"]]
+    boxes = [n for n in page.nodes if n["tag"] == "details" and "evbox" in n["classes"]]
+    missing = set()
     for node in links:
         href = node["attrs"].get("href", "")
         if not href:
-            problems.append("event link with no href")
-            continue
-        target = (args.page.parent / href).resolve()
-        if not target.exists():
-            dead.add(href)
-    for href in sorted(dead):
-        problems.append(f"event link points at a missing card: {href}")
+            problems.append("card link with no href")
+        elif not resolve(href).exists():
+            missing.add(href)
+
+    config = None
+    for node in page.nodes:
+        if node["attrs"].get("id") == "sector-card-loader":
+            config = json.loads(" ".join(node["text"]))
+    if config is None:
+        problems.append("no card-loader config block")
+    else:
+        for key in ("runtime", "css"):
+            if not resolve(config[key]).exists():
+                missing.add(config[key])
+        for node in boxes:
+            slug = node["attrs"].get("data-card")
+            if not slug:
+                problems.append("beacon box with no data-card slug")
+                continue
+            payload = config["data"].replace("{slug}", slug)
+            if not resolve(payload).exists():
+                missing.add(payload)
+    for href in sorted(missing):
+        problems.append(f"page asks for a file that is not there: {href}")
+
     expanders = [n for n in page.nodes if n["tag"] == "details" and "bwrap" in n["classes"]]
 
     out = []
@@ -178,7 +205,7 @@ def main():
         for problem in problems:
             print(f"  - {problem}")
         sys.exit(1)
-    print(f"OK — {len(events)} event rows ({len(links)} linked to cards), "
+    print(f"OK — {len(events)} event rows ({len(boxes)} open onto their card), "
           f"{len(rows)} budget rows ({len(expanders)} expandable), {len(stats)} stat tiles")
 
 

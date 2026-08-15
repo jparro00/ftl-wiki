@@ -152,24 +152,40 @@
   .brow.hostile .blk.maybe { background: var(--barred); }
   .brow.zero .cnt { color: var(--faint); }
 
-  .pool { display: grid; grid-template-columns: repeat(auto-fill, minmax(16.5rem, 1fr)); gap: .4rem; }
-  .ev {
+  .pool { display: grid; grid-template-columns: repeat(auto-fill, minmax(16.5rem, 1fr)); gap: .4rem; align-items: start; }
+  .ev, .evbox {
     background: var(--panel); border: 1px solid var(--edge); border-left: 2px solid var(--rail);
-    border-radius: 2px; padding: .48rem .6rem; display: flex; flex-direction: column; gap: .22rem;
+    border-radius: 2px;
   }
-  /* A box that is a link goes to that event's card, one directory over. */
-  a.ev.link { color: inherit; text-decoration: none; transition: border-color .12s ease, background .12s ease; }
-  /* Three sides only — the left border is the tag rail and must keep its colour. */
-  a.ev.link:hover {
-    background: var(--sunk);
+  .ev { padding: .48rem .6rem; display: flex; flex-direction: column; gap: .22rem; }
+  /* A beacon box opens onto its card, rendered in place by tools/sector-cards.js. */
+  .evbox { position: relative; }
+  .evbox > summary.ev {
+    list-style: none; cursor: pointer; padding-right: 1.6rem;
+    transition: background .12s ease;
+  }
+  .evbox > summary.ev::-webkit-details-marker { display: none; }
+  .evbox:hover { border-top-color: var(--cyan); border-right-color: var(--cyan); border-bottom-color: var(--cyan); }
+  .evbox:hover > summary.ev { background: var(--sunk); }
+  .evbox:hover .t { color: var(--cyan); }
+  .evbox > summary.ev:focus-visible { outline: 2px solid var(--cyan); outline-offset: -2px; }
+  /* An open card is a page-width thing, not a grid cell's worth. */
+  .evbox[open] {
+    grid-column: 1 / -1;
     border-top-color: var(--cyan); border-right-color: var(--cyan); border-bottom-color: var(--cyan);
   }
-  a.ev.link:hover .t { color: var(--cyan); }
-  a.ev.link:focus-visible { outline: 2px solid var(--cyan); outline-offset: 1px; }
-  .ev.fight { border-left-color: var(--red); }
-  .ev.may { border-left-color: var(--barred); }
-  .ev.good { border-left-color: var(--green); }
-  .ev.risk { border-left-color: var(--amber); }
+  .evbox[open] > summary.ev { background: var(--sunk); border-bottom: 1px solid var(--edge); }
+  .cardpanel { display: block; padding: .85rem .9rem 1rem; font-size: .84rem; color: var(--dim); }
+  .cardlink {
+    position: absolute; top: .3rem; right: .35rem; z-index: 1;
+    color: var(--faint); text-decoration: none; font-size: .8rem; line-height: 1;
+    padding: .15rem .2rem; border-radius: 2px;
+  }
+  .cardlink:hover, .cardlink:focus-visible { color: var(--cyan); }
+  .ev.fight, .evbox.fight { border-left-color: var(--red); }
+  .ev.may, .evbox.may { border-left-color: var(--barred); }
+  .ev.good, .evbox.good { border-left-color: var(--green); }
+  .ev.risk, .evbox.risk { border-left-color: var(--amber); }
   .ev .t { font-size: .84rem; font-weight: 500; line-height: 1.25; }
   .ev .id { font-family: var(--mono); font-size: .63rem; color: var(--faint); letter-spacing: .03em; overflow-wrap: anywhere; }
   .tags { display: flex; flex-wrap: wrap; gap: .25rem; margin-top: .1rem; }

@@ -2559,3 +2559,63 @@ nowhere on a published artifact — artifact URLs are minted at publish time, so
 link is knowable when the page is built. The expansion itself is pure HTML and works either
 way. Live links on a published page would need a registry of published card URLs, which does
 not exist: 0 of 387 cards are published.
+
+## [2026-08-15] tooling | Beacon boxes open onto their card, in the page
+
+Following the linking work earlier today: clicking a beacon box navigated away to the card.
+Now the box opens and the card renders underneath it, without leaving the sector page — and
+without the sector page carrying any card content.
+
+### The constraint that shaped it
+
+From `file://` a page cannot read a sibling file. Probed directly in both browsers, against
+the real `sectors/` → `cards/` hop:
+
+| Mechanism | Chrome `file://` | Firefox `file://` (stock prefs) |
+|---|---|---|
+| `fetch` / `XHR` / dynamic `import()` | blocked | blocked |
+| classic `<script src>` | **works** | **works** |
+
+Firefox matters because it is the default `.html` handler on this machine. Playwright's
+Firefox appeared to allow everything until its `playwright.cfg` turned out to set
+`security.fileuri.strict_origin_policy=false`; with the stock value restored it matches
+Chrome exactly. `tools/smoke-inline.py` forces that pref back on for the same reason.
+
+So each event's tree ships a second time as a one-line `FTLCard.define()` call that a
+`<script>` tag can load, and the loader pulls the runtime, the CSS and one payload on demand.
+
+### Shipped
+
+- `tools/card-runtime.js` — **new, and now the only copy of the renderer**. Extracted from
+  `event-card-render.html` and made reentrant: `FTLCard.render(root, data, vocab)` builds its
+  own skeleton, keeps no module state and looks nothing up by document id, because a sector
+  page renders many cards into one document and a shadow root has no markup to find.
+- `tools/build-card.py` — inlines the runtime into every card (published cards stay
+  self-contained), and emits `cards/data/<slug>.js`, `cards/runtime/card.js` and
+  `cards/runtime/card.css`. `--all` and `--runtime` added. The CSS is transformed, not copied:
+  the `PAGE-ONLY` block is stripped and `:root` becomes `:host`.
+- `tools/sector-cards.js` — new loader, ~2 KB, holding no English and no paths; both come
+  from a config block `build-sector.py` emits beside it.
+- `tools/build-sector.py`, `tools/sector-page-render.html` — the box is a `<details>` with a
+  corner `↗` to the standalone card; an open box spans the pool grid.
+- `tools/smoke-inline.py` — **new**: drives a built page in Firefox over `file://`, opens
+  boxes, and fails if a card does not render or its heading is not the event the box names.
+  A length threshold tried first and wrongly failed `store` and `free-weapon`, which are
+  genuinely three-line cards; matching the title catches the failure that matters instead.
+- `tools/smoke-sector.py` — now resolves every path the page will request (corner links,
+  runtime, one payload per box) and fails on any that is missing.
+- `tools/EVENT-CARD.md` §7.3 (new), `tools/SECTOR-PAGE.md` §6.1 (rewritten), `CLAUDE.md`.
+
+### Verified
+
+386 cards rebuilt; all pass `smoke-card.js`, and a rendered card diffs identically against
+the pre-refactor build. 19 sector pages rebuilt; all pass `smoke-sector.py`, and all pass
+`smoke-inline.py` in **both** Firefox and Chromium from `file://`. Both builds are
+byte-identical across runs.
+
+Sector pages grew ~15 KB (the loader), not the ~600 KB–1.4 MB their pools weigh.
+
+### Limit, stated on purpose
+
+A published sector page cannot reach `cards/`, so there a box shows the loader's failure line
+and only the corner link works. Opening a box also needs scripting; the budget lines do not.

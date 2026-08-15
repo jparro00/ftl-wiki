@@ -1,0 +1,1 @@
+FTLCard.define("boss-stalemate",{"schema":"ftl-event-tree/1","id":"BOSS_STALEMATE","slug":"boss-stalemate","title":"Stalemate — the ship jumps away","extracted_from":"raw/gamedata/events.xml","text":{"value":"The ship jumped away without warning. You prepare to pursue.","ref":"event_BOSS_STALEMATE_text"},"name":"BOSS_STALEMATE","source":"raw/gamedata/events.xml","effects":[]});

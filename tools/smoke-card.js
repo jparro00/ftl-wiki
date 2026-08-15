@@ -6,6 +6,10 @@
   exceptions, rows that come out blank, vocabulary gaps that fall through to raw
   ids, and mis-nested chain stages.
 
+  The renderer is tools/card-runtime.js, inlined into every card. This harness
+  evaluates it, then calls FTLCard.render() itself rather than running the card's
+  own bootstrap — the same entry point sector pages use.
+
   Exit code is non-zero if the renderer throws.
 */
 const fs = require("fs");
@@ -19,7 +23,9 @@ if (!file) {
 const html = fs.readFileSync(file, "utf8");
 const scripts = [...html.matchAll(/<script(?: type="application\/json" id="([\w-]+)")?>([\s\S]*?)<\/script>/g)];
 const json = Object.fromEntries(scripts.filter(m => m[1]).map(m => [m[1], m[2]]));
-const body = scripts.find(m => !m[1])[2];
+// Two plain scripts now: the runtime and the card's three-line bootstrap. The
+// runtime is the long one.
+const runtime = scripts.filter(m => !m[1]).map(m => m[2]).sort((a, b) => b.length - a.length)[0];
 
 const mk = tag => ({
   tag, className: "", innerHTML: "", textContent: "", hidden: false, children: [],
@@ -30,15 +36,36 @@ const mk = tag => ({
   appendChild(c) { this.children.push(c); return c; },
 });
 
-const nodes = {
-  eyebrow: mk("p"), title: mk("h1"), hail: mk("p"), arrival: mk("p"),
-  note: mk("p"), tree: mk("div"), chain: mk("div"),
-};
-nodes["event-data"] = { textContent: json["event-data"] };
-nodes["card-vocab"] = { textContent: json["card-vocab"] };
+const document = { createElement: mk, getElementById: () => null };
+const scope = {};
+new Function("document", "globalThis", runtime)(document, scope);
 
-const document = { getElementById: id => nodes[id], createElement: mk };
-new Function("document", body)(document);
+const root = mk("div");
+scope.FTLCard.render(root, JSON.parse(json["event-data"]), JSON.parse(json["card-vocab"]));
+
+/* The renderer builds the skeleton, so find its parts by class rather than by id. */
+const find = (el, cls) => {
+  for (const c of el.children) {
+    if (c.className.split(" ").includes(cls)) return c;
+    const hit = find(c, cls);
+    if (hit) return hit;
+  }
+  return null;
+};
+const firstTag = (el, tag) => {
+  for (const c of el.children) {
+    if (c.tag === tag) return c;
+    const hit = firstTag(c, tag);
+    if (hit) return hit;
+  }
+  return null;
+};
+
+const nodes = {
+  eyebrow: find(root, "eyebrow"), title: firstTag(root, "h1"), hail: find(root, "hail"),
+  arrival: find(root, "arrival"), note: find(root, "note"),
+  tree: find(root, "card"), chain: find(root, "chainbox"),
+};
 
 const strip = s => s.replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim();
 

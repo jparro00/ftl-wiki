@@ -36,7 +36,9 @@ comes from the join in §4.6 — use the path the extractor prints rather than a
 | `tools/sector-page-render.html` | layout, colour, type | design only — **no English** |
 | `tools/sector-vocab.json` | every word the renderer emits that is not from the data | yes, shared by all pages |
 | `tools/sector-copy/<slug>.json` | the words for one sector | **yes — this is the authoring surface** |
+| `tools/sector-cards.js` | the loader that opens a beacon box onto its card (§6.1) | code only — **no English, no paths** |
 | `tools/smoke-sector.py` | renders a built page as text and checks it | code only |
+| `tools/smoke-inline.py` | drives a built page in a real browser and checks the boxes open | code only |
 | `sectors/data/<slug>.sector.json` | generated profile (regenerable data, not a page) | never |
 | `sectors/sector-<slug>.html` | the built page; publish target | never |
 
@@ -320,28 +322,51 @@ Page order, all of it derived except where marked:
    clause per condition that applies: the `unique` scope question, the no-weights rule,
    ambiguous entries, inline outcomes with no id, missing trees
 
-### 6.1 Beacon boxes are links to cards
+### 6.1 Beacon boxes open onto their card, in place
 
 Every beacon box — in a budget row's expansion, in the markers section and in the pool
-sections, all of them `event_html()` — is an `<a>` to `../cards/card-<slug>.html` when the
-event has a card, and an inert `<div>` when it does not. The slug is the one the extractor
-already carries per event (`slug`, `card`), so nothing new is derived here.
+sections, all of them `event_html()` — is a `<details>` carrying `data-card="<slug>"`. Open
+one and that event's card renders underneath it, full width, in the page. The corner `↗`
+still goes to the standalone `cards/card-<slug>.html`. An event with no card stays an inert
+`<div>`. The slug is the one the extractor already carries per event (`slug`, `card`).
 
-**The link is relative, and that is the constraint that decides everything about it.** A
-sector page opened from disk sits in `sectors/`, a card in `cards/`, so one hop up and across
-reaches it. A *published* page cannot: artifact URLs are minted at publish time, so no
-absolute link is knowable at build time, and a relative one does not resolve on the artifact
-host. **Published sector pages therefore have dead beacon boxes** — the expansion still works,
-because `<details>` is HTML with no scripting, but the links only go anywhere off disk. If a
-published page ever needs live links, it needs a registry of published card URLs, not a
-change here.
+Nothing about the card is embedded in the page. `tools/sector-cards.js` (~2 KB, inlined,
+with its paths and its two strings in a config block beside it) loads three things on the
+first open and none before it:
 
-The expansion duplicates the pool sections' content, deliberately: the budget answers "what
-does this line place?" at the point the question occurs, and the pool sections stay the place
-to read a whole section at once. It costs roughly a third of the page size.
+```
+cards/runtime/card.js    renderer + vocabulary   once per page   ~30 KB
+cards/runtime/card.css   card styling            once per box    ~7 KB
+cards/data/<slug>.js     one FTLCard.define()    once per event  ~8 KB
+```
 
-`smoke-sector.py` resolves every `href` against the page's own directory and fails on one
-that does not exist — a box that looks live and lands on a 404 is worse than an inert one.
+Sector pages therefore grow by the loader, not by their pool: ~15 KB, not the ~600 KB–1.4 MB
+their trees weigh. The card content stays where it is maintained — one file per event, built
+by the card pipeline (`tools/EVENT-CARD.md` §7.3).
+
+**Three things about this are forced, not chosen:**
+
+- **Script tags, not `fetch`.** From `file://` a page cannot read a sibling file: `fetch`,
+  `XHR` and dynamic `import()` are all blocked in Chrome and in Firefox with stock prefs. A
+  classic `<script src>` is not. That single exception is why the payload is a `.js` file
+  wrapping the tree rather than the tree itself.
+- **A shadow root per card.** The two stylesheets collide on `wrap`, `eyebrow`, `note`,
+  `fight` and `cost`, and both define the palette variables; without isolation an open card
+  repaints the page around it. The page's explicit `data-theme` is copied onto the host,
+  because `:host-context()` is not implemented in Firefox.
+- **Published pages keep the link, not the expansion.** An artifact host cannot reach
+  `cards/` at all, so on a published page the corner link is the whole story and opening a
+  box shows the loader's failure line. The rich version is the local one — which is where
+  these pages are read.
+
+The budget's expansion duplicates the pool sections' rows, deliberately: the budget answers
+"what does this line place?" where the question occurs, and the pool sections stay the place
+to read a whole section at once. Opening the same event in both costs one payload, not two.
+
+Two checks cover this, and they see different things (§7): `smoke-sector.py` resolves every
+path the page will ask for — corner links, runtime, and one payload per box — and fails on
+anything missing. `smoke-inline.py` drives a real browser over `file://` and fails if a box
+does not open onto the card its own title names.
 
 ---
 
@@ -349,6 +374,7 @@ that does not exist — a box that looks live and lands on a 404 is worse than a
 
 ```bash
 python tools/smoke-sector.py sectors/sector-<slug>.html   # required before publishing
+python tools/smoke-inline.py sectors/sector-<slug>.html   # or --all; needs playwright
 ```
 
 Parses the built page, prints **everything it can show** — title, facts, tiles, budget rows,
@@ -358,7 +384,12 @@ missing budget, a beacon box whose card link does not resolve on disk, and any `
 that survived into the output.
 
 It does not check CSS, layout, colour or theming. It cannot check whether a sentence is true —
-that is what rule 1 in §5 is for.
+that is what rule 1 in §5 is for. And it cannot see a card at all: those are rendered into a
+shadow root at open time and exist only in a live page, which is what `smoke-inline.py` is
+for. That one opens boxes in Firefox over `file://` — the browser and the scheme that
+constrain the design — and fails on a page error, a box that never becomes ready, an empty
+shadow root, a card whose heading is not the event the box names, or a row inside a card that
+will not expand.
 
 Determinism check — build twice and diff:
 
@@ -379,6 +410,8 @@ diff /tmp/a.html /tmp/b.html
 | A pool is missing an event, or a tag is wrong | `extract-sector.py`, then re-extract | the data JSON by hand |
 | A tag is wrong *for one event* | that event's tree — `extract-event.py` | `extract-sector.py` |
 | Layout, colour, spacing | `sector-page-render.html` (changes all 19 pages) | one page |
+| A beacon box will not open onto its card | `tools/sector-cards.js`, or rebuild the payloads with `build-card.py --all` | the built page |
+| The embedded card itself looks or behaves wrong | the card pipeline — `card-runtime.js`, `event-card-render.html` (EVENT-CARD.md §7.3) | anything under `sectors/` |
 | The sector title is wrong | the wiki page's H1 | anywhere else |
 
 After any renderer or vocabulary change, rebuild **every** page and smoke-test them. These
@@ -425,9 +458,13 @@ where the links work.
 
 ## 11. Known limits
 
-- A pool row shows the event's title and tags, not its outcomes; the card it links to has them.
-  That link works **only off disk** — a published page's beacon boxes are dead, because artifact
-  URLs are minted at publish time and are not knowable at build time (§6.1).
+- A pool row shows the event's title and tags; its outcomes are one click away in the card the
+  box opens onto. That works **only off disk**: an artifact host cannot reach `cards/`, so on a
+  published page a box shows the loader's failure line and only the corner link is any use
+  (§6.1).
+- Opening a box needs scripting. With JavaScript off, the budget lines still expand — those are
+  plain `<details>` — but a beacon box opens onto an empty panel, and the corner link is the
+  way through.
 - `distinct_events` counts every event any entry can produce, including the store and empty-
   beacon events. It is a measure of pool breadth, not of interesting encounters.
 - **Every metric covers the allocated pool only — the `startEvent` is excluded.** That matters

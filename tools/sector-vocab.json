@@ -131,7 +131,7 @@
     "entry": "entry beacon is always {event}.",
     "zero": "allocated 0–0 — the sector reserves the list but places none.",
     "short_mark": "always short",
-    "expand": "Open a line to see every event it can place; open an event to see its card."
+    "expand": "Open a line to see every event it can place; open an event to read its card here."
   },
   "footnotes": {
     "sources": "Built from {files}.",
@@ -150,5 +150,11 @@
     "beacons": "{min}–{max} beacons",
     "beacons_fixed": "{min} beacons",
     "beacons_one": "1 beacon"
+  },
+  "cards": {
+    "loading": "Loading card…",
+    "failed": "Card unavailable — build it with tools/build-card.py, and open this page from disk.",
+    "open": "Open the full card",
+    "open_mark": "↗"
   }
 }
