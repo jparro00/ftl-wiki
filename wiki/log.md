@@ -3497,3 +3497,183 @@ The build refuses to guess: a sector with no designation fails it, and every car
 target is checked to exist. The palette is sliced out of `sector-page-render.html` between
 `TOKENS-START` / `TOKENS-END` markers rather than copied, so the chooser cannot drift from the
 profiles in colour.
+
+## [2026-08-16] tooling | The sector map opens the chooser, with the offer pinned
+
+At the sector map — the screen that offers the next sectors — the watcher now serves
+`sectors/index.html?pick=<slug>,<slug>`, the chooser with those sectors already in the
+comparison panel. `view: "choose"` outranks both card and sector: it is the one moment the
+player is being asked a question this wiki can answer.
+
+**Two facts, two sources.** The screen is `starMap.bChoosingNewSector`; the offer is
+`currentSector.neighbors` — the engine's own adjacency, which is what "can travel to" means.
+The next *column* of the sector map is not the same set, so the column was never an option.
+
+**Neither is documented anywhere in `raw/`.** [[source-beacon-name-labels-mod]] lists the
+StarMap members it verified and leaves the sector-choice screen an explicit open question;
+Hyperspace's zip ships no API docs (checked). So the mod attempts both reads and, if either
+fails, logs the **actual** exposed member names once — SWIG keeps attributes in the
+metatable's `.get`/`.set` tables and methods in `.fn`, so reading those names *is* the API
+surface. A probe rather than a guessing loop, and it fires only on failure.
+
+Status: `bChoosingNewSector` is confirmed exposed — the launch log carried a `chosen`
+transition with no probe line. `currentSector.neighbors` is **unverified**: it is only read
+when the sector map actually opens, and the game has sat at the main menu since the relaunch.
+
+Watcher side, all tested against a synthetic log: two names, three names, one name that
+resolves to nothing (dropped, never guessed), an unreadable offer (`-> ?`, which still shows
+the chooser unpinned, because the screen being up is itself the fact), and `chosen` clearing
+it. `?pick=` overrides hand-pinned state — the offer is not a preference to be remembered
+over — and the panel grows a third column when the map offers three.
+
+**Bug found while waiting.** The watcher reported `ENGI_HOME` at the main menu after a
+relaunch: Hyperspace truncates `FTL_HS.log` at launch, and the reader treated "no `Sector:`
+line in the file" as "keep the last one I saw". A shrinking file is now read as a restart and
+clears the sector, the map state, the last event and the offer. Verified against a synthetic
+truncation.
+
+## [2026-08-16] tooling | The sector-page redesign lands on all 19
+
+The mock is the pipeline now. `tools/SECTOR-PAGE-REDESIGN.md` §6 ran end to end in one pass:
+extractor, then vocabulary and renderer, then all 19 copy files, committed as `cc16c04`.
+
+**Extraction stayed additive.** `rollup.gates` entries gained `system` — read from
+`<systemBlueprint>`, never a hand-written list — and `levels_detail`, the per-level rows that
+let `Sensors 2` and `Sensors 3` be separate lines with their own distinct-event counts.
+`crew_store_odds` gained `excluded`, the species a store here cannot sell. Every event record
+gained `distress` / `store-marker` tags that agree exactly with `rollup.markers`. Pages built
+from the new data *before* the renderer changed were byte-identical to the old ones, which is
+what made the rest safe.
+
+**The page lost more than it gained, deliberately.** Stat tiles, the rarity block, the pool
+sections that duplicated the budget expansions, the whole footer, the callout, and nine
+paragraphs of prose that restated blocks already legible. What arrived: per-level blue options
+reading `Teleporter 1+`, a crew box in two columns at whole percentages, budget expansions
+carrying their section note and Advanced Edition delta, and a legend that says what a faded
+block's chance actually means — `P(roll ≥ k)`, not `P(roll = k)`. The glance row measures
+142px and 141px on every sector; the crew box alone used to be 265.
+
+**Three decisions were the user's**, and two of them cost something. Provenance is *dropped*,
+not relocated: no sources, no "these generation rules are the community's reverse-engineering",
+no note that the store-crew percentages came out of a disassembly. `SECTOR-PAGE.md` §3 has to
+be amended to exempt these pages from **S4 and S5** rather than leave them silently violated —
+that is step 5 and is not done. The evidence itself is still in `wiki/concepts/` and
+`raw/modding/`. The rarity block was cut outright ("no page needs this"). Two conditional
+generation notes were restored after being cut: Hidden Crystal Worlds asks for 25 beacons
+against a map that holds 24, and `NEUTRAL` is both a numbered line and the fill-in row on the
+two Slug nebulas — without that line its row reads as a rendering bug.
+
+**Worth remembering about the method.** Five rounds of review happened in the browser, not in
+chat: `sectors/mockups/review-layer.html` appended to a built page, notes exported as markdown.
+The notes anchor by character offset, so they survive a rebuild — and they are terse and often
+anchored to whatever was nearest rather than what was meant. "Remove all this" on a
+4,000-character selection meant "delete the pool sections"; notes left on a variations page's
+untouched baseline were the user drawing the shape they wanted, not describing the baseline.
+
+One thing the last agent caught that the brief had wrong: `sector-copy/federation-space.json`
+was never updated — the mock hardcoded its lede and filtered its dead panel, so the reviewed
+sector was the one page still carrying the old copy. Fixed here, and `stats` / `callout` now
+fail the build rather than being ignored.
+
+## [2026-08-16] tooling | The sector-page spec catches up with the code, and the delta doc is deleted
+
+Step 5 of the redesign rollout, and the last one: `tools/SECTOR-PAGE.md` reconciled against the
+shipped pipeline, then `tools/SECTOR-PAGE-REDESIGN.md` deleted. A delta document that outlives
+its merge becomes a second source of truth, and this one was already a change list written
+before the code existed — verified against `extract-sector.py`, `build-sector.py`,
+`sector-vocab.json`, both smoke tests and a built page rather than against its own account.
+
+**The exemption is the important edit.** §3's S4 and S5 now say outright that sector pages
+carry no provenance and no standing caveats, why (user decision, 2026-08-16), and where the
+evidence went instead — `wiki/concepts/` and `raw/modding/`. An invariant that is silently
+violated is worse than one that says where it does not apply. Everything the page stopped
+saying is now recorded as a known limit rather than quietly dropped: the hit-count definition,
+the store's three slots, the community provenance of the generation rules, the `ambiguous`
+entry flag. §12 is new and holds the five readings the pipeline runs on that no file states.
+
+Also rewritten: §6's page order end to end (no stat tiles, no rarity block, no pool sections,
+no footer; markers are two sections; budget expansions carry the section note and the AE
+delta; a legend with two wordings), §6.2 as two blocks not three, §5's schema without `stats`
+and `callout` — which now **fail** the build rather than being ignored — §4.3's tag table with
+the two marker tags, §4.3's `system` / `levels_detail`, §4.3c's `excluded` and the `NOLOC`
+filter, §4.7 reframed now that nothing reads most of the metrics, and §7's failure list.
+The review loop that produced the redesign is folded in as §7c so it survives the deletion.
+
+**The quick start did not run as written.** Without `PYTHONIOENCODING=utf-8` the smoke test
+dies on the page's own `↗` on a cp1252 console. It is now the first line of §1 rather than a
+pitfall thirty pages down.
+
+Three things found and left alone, being code: two stale comments still cite the deleted
+document (`build-sector.py:49` describes `stats`/`callout` as accepted-and-ignored, which they
+have not been since step 4; `smoke-sector.py:10`), and `sectors/sector-federation-space-mock.html`
+is still in the sectors directory, where `--all` picks it up and fails on the review layer's
+own JavaScript.
+
+## [2026-08-16] tooling | What the sector map can and cannot tell an outside program
+
+The chooser now opens at the sector map, populated. What it is populated *with* took three
+probe rounds to establish, and the answer is worth recording because it closes an open
+question and forecloses a tempting mistake.
+
+**Confirmed exposed** (dumped from SWIG's own `.get`/`.set`/`.fn` tables on the live
+bindings, rather than guessed):
+
+| Object | Members |
+|---|---|
+| `StarMap` | `bChoosingNewSector`, `bMapRevealed`, `bSecretSector`, `bTutorialGenerated`, `currentLoc`, `currentSector`, `dangerZone`, `hoverLoc`, `locations`, `mapsBottom`, `potentialLoc`, `pursuitDelay`, `sectors`, `ship`, `shipNoFuel`, `worldLevel` · fn `ForceWaitMessage`, `ModifyPursuit`, `PointToGrid` |
+| `Sector` | `description`, `level`, `visited` — **and nothing else** |
+| `SectorDescription` | `name`, `shortName`, `type` |
+
+So **the offer cannot be read**. The engine's adjacency (`neighbors`, `reachable`) is not
+bound to Lua. Two other routes were checked and closed:
+
+- **`locations` is not repurposed on the sector-choice screen.** It still holds the current
+  sector's 24 beacons; `currentLoc.connectedLocations` returned `STRANDED_BEACON`,
+  `NEBULA_PIRATE_SMUGGLE`, `NEBULA_LOST_SHIP`, `TRADER_UPGRADES_EXCHANGE`. That is the open
+  question in `raw/modding/2026-08-15-beacon-name-labels-mod.md` §7 — **answered, negative**.
+- **No sector-choice hook.** `Defines.InternalEvents` has 78 entries; none is the choice.
+
+What *is* readable is the whole sector tree by column, names and visited flags included —
+`L0: Civilian Sector* | L1: Uncharted Nebula, Rebel Controlled Sector | L2: …`. So the mod
+reports the **next column**, which is a superset of what the player can reach, and says so:
+the log line carries the word `column`, the watcher passes `&column=1`, and the page prints
+a caveat above the panel. [[source-xftl-sector-map]] does document the linking rules, but
+loosely — its own author calls the implementation "annoying to read due to inlining" — and
+re-deriving them would risk naming the *wrong* two, which is worse than naming a few extra.
+
+**Two failures worth keeping.** `rawget` is not in Hyperspace's Lua sandbox either — the
+first probe called it and threw *out of the render hook*, so the diagnostic destroyed the
+thing it was diagnosing; every probe call site is now `pcall`-guarded and the build rejects
+any script mentioning `rawget`, `rawset`, `io.`, `os.`, `require` or `debug.` (comments
+stripped first, or the note explaining that would trip it). And the watcher kept reporting
+`ENGI_HOME` at the main menu after a relaunch, because Hyperspace truncates its log at launch
+and the reader treated "no `Sector:` line" as "keep the last one"; a shrinking file is now
+read as a restart.
+
+## [2026-08-16] tooling | The review layer is a tool with a spec, not a thing that happened once
+
+The commenting layer the sector-page redesign was reviewed with is now reusable on any built
+page in this repo: `tools/REVIEW-LAYER.md` is the spec, `tools/review-layer.html` the
+implementation, and `python tools/add-review-layer.py <page>` produces the copy.
+
+**Two real bugs surfaced while proving it.** Both were found by driving the layer in Firefox
+rather than by reading it, and both had been live through all five review rounds:
+
+- **A range boundary is not always inside a text node.** Triple-click, select-all, and any drag
+  crossing an element edge hand back `(element, childIndex)`, which the offset walker could not
+  resolve — so the Comment button simply never appeared. Silent: nothing to see, no error.
+- **Multi-element notes orphaned on the first reload.** The check that a stored anchor still
+  covers its quote compared raw text, but a selection spanning elements reads back with the
+  line break the browser inserts between them, while the markup has no whitespace there at all.
+  The comparison now ignores whitespace entirely.
+
+The script exists for one reason a hand-append does not cover: **relative links.** A copy one
+directory deeper needs `../../cards/…`, and the card loader's paths live in a JSON config block
+rather than in `href`/`src` attributes, so an attribute-only rewrite leaves every beacon box
+opening onto nothing — with the page looking perfectly fine. The first review copy, moved by
+hand into `sectors/mockups/`, had exactly that defect; it is deleted rather than repaired,
+since the script regenerates one on demand.
+
+Also fixed: `smoke-sector.py` stripped `<style>` but not `<style id="…">`, so a page with a
+second style block failed the stray-asterisk check on its own CSS comments. That is why the
+mock had been failing smoke since it was built — the failure was in the checker, not the page.
