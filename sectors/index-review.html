@@ -1,0 +1,800 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FTL sectors (review)</title>
+<style>
+:root {
+    --void:   #070B10;
+    --panel:  #101822;
+    --sunk:   #0B1219;
+    --edge:   #1F2E3C;
+    --ink:    #D6E2EC;
+    --dim:    #7C8FA3;
+    --faint:  #55697C;
+    --cyan:   #5FD3E8;
+    --green:  #78C46B;
+    --amber:  #E8B84B;
+    --red:    #E0685C;
+    --rail:   #22384A;
+    --hex:    rgba(95,211,232,.035);
+    --barlo:  rgba(95,211,232,.22);
+    --barred: rgba(224,104,92,.28);
+
+    --sans: ui-sans-serif, system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+  }
+  @media (prefers-color-scheme: light) {
+    :root {
+      --void: #EEF1F4; --panel: #FFFFFF; --sunk: #F5F7F9; --edge: #D3DBE2;
+      --ink: #14202B; --dim: #5B6C7B; --faint: #7A8895; --cyan: #12708A;
+      --green: #3B7A31; --amber: #8A6606; --red: #AF3B2E; --rail: #C2CDD6;
+      --hex: rgba(18,112,138,.045); --barlo: rgba(18,112,138,.18);
+      --barred: rgba(175,59,46,.22);
+    }
+  }
+  :root[data-theme="dark"] {
+    --void: #070B10; --panel: #101822; --sunk: #0B1219; --edge: #1F2E3C;
+    --ink: #D6E2EC; --dim: #7C8FA3; --faint: #55697C; --cyan: #5FD3E8;
+    --green: #78C46B; --amber: #E8B84B; --red: #E0685C; --rail: #22384A;
+    --hex: rgba(95,211,232,.035); --barlo: rgba(95,211,232,.22);
+    --barred: rgba(224,104,92,.28);
+  }
+  :root[data-theme="light"] {
+    --void: #EEF1F4; --panel: #FFFFFF; --sunk: #F5F7F9; --edge: #D3DBE2;
+    --ink: #14202B; --dim: #5B6C7B; --faint: #7A8895; --cyan: #12708A;
+    --green: #3B7A31; --amber: #8A6606; --red: #AF3B2E; --rail: #C2CDD6;
+    --hex: rgba(18,112,138,.045); --barlo: rgba(18,112,138,.18);
+    --barred: rgba(175,59,46,.22);
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; padding: 2.6rem 1.15rem 4.5rem;
+    background: var(--void);
+    background-image: radial-gradient(var(--hex) 1px, transparent 1.6px);
+    background-size: 22px 22px;
+    color: var(--ink); font-family: var(--sans); line-height: 1.5;
+  }
+  .wrap { max-width: 72rem; margin: 0 auto; }
+  .eyebrow {
+    font-family: var(--mono); font-size: .68rem; letter-spacing: .18em;
+    text-transform: uppercase; color: var(--cyan);
+  }
+  h1 { font-size: 1.9rem; margin: .3rem 0 .5rem; letter-spacing: -.01em; }
+  .lede { color: var(--dim); max-width: 46rem; margin: 0 0 2.2rem; }
+  h2 {
+    font-size: .82rem; letter-spacing: .12em; text-transform: uppercase;
+    color: var(--ink); margin: 2.4rem 0 .2rem; display: flex; flex-wrap: wrap;
+    align-items: baseline; gap: .6rem;
+  }
+  h2 .meta {
+    font-family: var(--sans); font-size: .72rem; letter-spacing: 0;
+    text-transform: none; color: var(--faint);
+  }
+  section > .note { color: var(--faint); font-size: .78rem; margin: .3rem 0 1rem; }
+
+  /* the pinned pair */
+  .slots { display: grid; grid-template-columns: 1fr 1fr; gap: .6rem; margin-top: .9rem; }
+  .slot {
+    border: 1px solid var(--edge); border-radius: 3px; background: var(--panel);
+    padding: .8rem .9rem; min-height: 5.4rem;
+  }
+  .slot.empty {
+    border-style: dashed; background: transparent; color: var(--faint);
+    display: flex; align-items: center; justify-content: center; text-align: center;
+    font-size: .8rem; padding: 1.2rem;
+  }
+  .slot .top { display: flex; align-items: baseline; gap: .5rem; flex-wrap: wrap; }
+  .slot .name { font-size: 1.02rem; font-weight: 600; }
+  .slot a.name { color: var(--ink); text-decoration: none; }
+  .slot a.name:hover { color: var(--cyan); }
+  .slot .drop {
+    margin-left: auto; background: none; border: 1px solid var(--edge); color: var(--faint);
+    font-family: var(--mono); border-radius: 2px; cursor: pointer; line-height: 1;
+    padding: .12rem .34rem;
+  }
+  .slot .drop:hover { color: var(--red); border-color: var(--red); }
+  .cmp { width: 100%; border-collapse: collapse; margin-top: 1rem; }
+  .cmp th, .cmp td {
+    border-top: 1px solid var(--edge); padding: .34rem .5rem; font-size: .82rem;
+    font-variant-numeric: tabular-nums;
+  }
+  .cmp th { text-align: left; font-weight: 400; color: var(--dim); }
+  .cmp td { text-align: right; font-family: var(--mono); width: 8.5rem; }
+  .cmp td.more { color: var(--cyan); }
+  .cmp tr.head th, .cmp tr.head td {
+    border-top: 0; color: var(--faint); font-size: .68rem; letter-spacing: .1em;
+    text-transform: uppercase;
+  }
+
+  /* the 19 */
+  .grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(17rem, 1fr));
+    gap: .55rem; margin-top: .9rem;
+  }
+  .card {
+    display: block; position: relative; text-decoration: none; color: inherit;
+    border: 1px solid var(--edge); border-left: 2px solid var(--rail); border-radius: 3px;
+    background: var(--panel); padding: .62rem .75rem .68rem;
+  }
+  .card:hover { border-color: var(--rail); background: var(--sunk); }
+  .card:hover .name { color: var(--cyan); }
+  .card.civilian { border-left-color: var(--green); }
+  .card.hostile  { border-left-color: var(--red); }
+  .card.nebula   { border-left-color: #9B7BD4; }
+  .card.special  { border-left-color: var(--amber); }
+  .card .name { font-size: .95rem; font-weight: 600; padding-right: 1.6rem; }
+  .card .sub {
+    font-family: var(--mono); font-size: .68rem; color: var(--faint); margin-top: .2rem;
+  }
+  .card .nums {
+    display: flex; flex-wrap: wrap; gap: .5rem; margin-top: .45rem;
+    font-family: var(--mono); font-size: .7rem; color: var(--dim);
+  }
+  .card .nums b { color: var(--ink); font-weight: 600; }
+  .pin {
+    position: absolute; top: .45rem; right: .45rem; width: 1.35rem; height: 1.35rem;
+    border: 1px solid var(--edge); border-radius: 2px; background: var(--sunk);
+    color: var(--faint); font-family: var(--mono); font-size: .8rem; line-height: 1;
+    cursor: pointer; padding: 0;
+  }
+  .pin:hover { color: var(--cyan); border-color: var(--cyan); }
+  .card.pinned { border-color: var(--cyan); }
+  .card.pinned .pin { color: var(--cyan); border-color: var(--cyan); }
+  .chip {
+    font-size: .58rem; letter-spacing: .09em; text-transform: uppercase;
+    padding: .06rem .3rem; border-radius: 2px; border: 1px solid currentColor;
+    font-family: var(--sans);
+  }
+  .chip.civilian { color: var(--green); }
+  .chip.hostile { color: var(--red); }
+  .chip.nebula { color: #9B7BD4; }
+  .chip.special { color: var(--amber); }
+  .chip.unique { color: var(--faint); }
+  @media (max-width: 34rem) { .slots { grid-template-columns: 1fr; } }
+
+</style></head>
+<body><div class="wrap">
+<header>
+  <div class="eyebrow">Sector profiles</div>
+  <h1>Where next?</h1>
+  <p class="lede">Every sector the game can offer you, by the designation the map colours it with. Open one for its full profile — what it must place, what it can pay, and what bites.</p>
+</header>
+<section>
+  <h2>This jump<span class="meta">the map offers two — pin them here to compare</span></h2>
+  <p class="note" id="caveat" style="display:none"></p>
+  <div class="slots" id="slots"></div>
+  <div id="cmp"></div>
+</section>
+<section><h2>Civilian<span class="meta">green on the map — 48% of rolls</span></h2><div class="grid"><a class="card civilian" data-slug="civilian-sector" href="sector-civilian-sector.html" title="Open profile"><button class="pin" title="Pin to this jump">+</button><div class="name">Civilian Sector</div><div class="sub">from sector 1</div><div class="nums"><span><b>14–32</b> beacons</span><span><b>2–3</b> stores</span><span><b>14</b> open in a fight</span></div></a><a class="card civilian" data-slug="engi-controlled-sector" href="sector-engi-controlled-sector.html" title="Open profile"><button class="pin" title="Pin to this jump">+</button><div class="name">Engi Controlled Sector</div><div class="sub">from sector 1</div><div class="nums"><span><b>19–27</b> beacons</span><span><b>2–3</b> stores</span><span><b>9</b> open in a fight</span></div></a><a class="card civilian" data-slug="zoltan-controlled-sector" href="sector-zoltan-controlled-sector.html" title="Open profile"><button class="pin" title="Pin to this jump">+</button><div class="name">Zoltan Controlled Sector</div><div class="sub">from sector 2</div><div class="nums"><span><b>20–32</b> beacons</span><span><b>2</b> stores</span><span><b>14</b> open in a fight</span></div></a><a class="card civilian" data-slug="engi-homeworlds" href="sector-engi-homeworlds.html" title="Open profile"><button class="pin" title="Pin to this jump">+</button><div class="name">Engi Homeworlds</div><div class="sub">from sector 3 · once per run</div><div class="nums"><span><b>21–29</b> beacons</span><span><b>2–3</b> stores</span><span><b>9</b> open in a fight</span></div></a><a class="card civilian" data-slug="zoltan-homeworlds" href="sector-zoltan-homeworlds.html" title="Open profile"><button class="pin" title="Pin to this jump">+</button><div class="name">Zoltan Homeworlds</div><div class="sub">from sector 3 · once per run</div><div class="nums"><span><b>21–33</b> beacons</span><span><b>2</b> stores</span><span><b>14</b> open in a fight</span></div></a></div></section><section><h2>Hostile<span class="meta">red on the map — 32% of rolls</span></h2><div class="grid"><a class="card hostile" data-slug="mantis-controlled-sector" href="sector-mantis-controlled-sector.html" title="Open profile"><button class="pin" title="Pin to this jump">+</button><div class="name">Mantis Controlled Sector</div><div class="sub">from sector 1</div><div class="nums"><span><b>18–26</b> beacons</span><span><b>1–2</b> stores</span><span><b>7</b> open in a fight</span></div></a><a class="card hostile" data-slug="pirate-controlled-sector" href="sector-pirate-controlled-sector.html" title="Open profile"><button class="pin" title="Pin to this jump">+</button><div class="name">Pirate Controlled Sector</div><div class="sub">from sector 1</div><div class="nums"><span><b>16–29</b> beacons</span><span><b>1–2</b> stores</span><span><b>8</b> open in a fight</span></div></a><a class="card hostile" data-slug="rebel-controlled-sector" href="sector-rebel-controlled-sector.html" title="Open profile"><button class="pin" title="Pin to this jump">+</button><div class="name">Rebel Controlled Sector</div><div class="sub">from sector 1</div><div class="nums"><span><b>16–30</b> beacons</span><span><b>1–2</b> stores</span><span><b>10</b> open in a fight</span></div></a><a class="card hostile" data-slug="abandoned-sector" href="sector-abandoned-sector.html" title="Open profile"><button class="pin" title="Pin to this jump">+</button><div class="name">Abandoned Sector</div><div class="sub">from sector 2 · Advanced Edition only</div><div class="nums"><span><b>18–27</b> beacons</span><span><b>2</b> stores</span><span><b>10</b> open in a fight</span></div></a><a class="card hostile" data-slug="rock-controlled-sector" href="sector-rock-controlled-sector.html" title="Open profile"><button class="pin" title="Pin to this jump">+</button><div class="name">Rock Controlled Sector</div><div class="sub">from sector 2</div><div class="nums"><span><b>20–28</b> beacons</span><span><b>2</b> stores</span><span><b>8</b> open in a fight</span></div></a><a class="card hostile" data-slug="mantis-homeworlds" href="sector-mantis-homeworlds.html" title="Open profile"><button class="pin" title="Pin to this jump">+</button><div class="name">Mantis Homeworlds</div><div class="sub">from sector 3 · once per run</div><div class="nums"><span><b>19–27</b> beacons</span><span><b>1–2</b> stores</span><span><b>7</b> open in a fight</span></div></a><a class="card hostile" data-slug="rebel-stronghold" href="sector-rebel-stronghold.html" title="Open profile"><button class="pin" title="Pin to this jump">+</button><div class="name">Rebel Stronghold</div><div class="sub">from sector 5 · once per run</div><div class="nums"><span><b>17–31</b> beacons</span><span><b>1–2</b> stores</span><span><b>10</b> open in a fight</span></div></a><a class="card hostile" data-slug="rock-homeworlds" href="sector-rock-homeworlds.html" title="Open profile"><button class="pin" title="Pin to this jump">+</button><div class="name">Rock Homeworlds</div><div class="sub">from sector 5 · once per run</div><div class="nums"><span><b>22–30</b> beacons</span><span><b>2</b> stores</span><span><b>8</b> open in a fight</span></div></a></div></section><section><h2>Nebula<span class="meta">purple on the map — 20% of rolls</span></h2><div class="grid"><a class="card nebula" data-slug="uncharted-nebula" href="sector-uncharted-nebula.html" title="Open profile"><button class="pin" title="Pin to this jump">+</button><div class="name">Uncharted Nebula</div><div class="sub">from sector 1</div><div class="nums"><span><b>19–26</b> beacons</span><span><b>0–1</b> stores</span><span><b>5</b> open in a fight</span></div></a><a class="card nebula" data-slug="slug-controlled-nebula" href="sector-slug-controlled-nebula.html" title="Open profile"><button class="pin" title="Pin to this jump">+</button><div class="name">Slug Controlled Nebula</div><div class="sub">from sector 4</div><div class="nums"><span><b>18–34</b> beacons</span><span><b>2–3</b> stores</span><span><b>9</b> open in a fight</span></div></a><a class="card nebula" data-slug="slug-home-nebula" href="sector-slug-home-nebula.html" title="Open profile"><button class="pin" title="Pin to this jump">+</button><div class="name">Slug Home Nebula</div><div class="sub">from sector 4 · once per run</div><div class="nums"><span><b>19–35</b> beacons</span><span><b>2–3</b> stores</span><span><b>10</b> open in a fight</span></div></a></div></section><section><h2>Special<span class="meta">not part of the three-colour roll</span></h2><div class="grid"><a class="card special" data-slug="federation-space" href="sector-federation-space.html" title="Open profile"><button class="pin" title="Pin to this jump">+</button><div class="name">Federation Space</div><div class="sub">always sector 1 — never a choice</div><div class="nums"><span><b>13–24</b> beacons</span><span><b>1–2</b> stores</span><span><b>14</b> open in a fight</span></div></a><a class="card special" data-slug="hidden-crystal-worlds" href="sector-hidden-crystal-worlds.html" title="Open profile"><button class="pin" title="Pin to this jump">+</button><div class="name">Hidden Crystal Worlds</div><div class="sub">never offered on the map · once per run</div><div class="nums"><span><b>25–31</b> beacons</span><span><b>2–3</b> stores</span><span><b>5</b> open in a fight</span></div></a><a class="card special" data-slug="the-last-stand" href="sector-the-last-stand.html" title="Open profile"><button class="pin" title="Pin to this jump">+</button><div class="name">The Last Stand</div><div class="sub">always sector 8 — never a choice</div><div class="nums"><span><b>17–20</b> beacons</span><span><b>4</b> stores</span><span><b>3</b> open in a fight</span></div></a></div></section>
+<p class="note">Designations per the community wiki&#x27;s own grouping of the sector map; everything else is read from sector_data.xml and the event files.</p>
+</div>
+<script>
+
+const SECTORS = {"abandoned-sector": {"slug": "abandoned-sector", "name": "Abandoned Sector", "cls": "hostile", "sub": "from sector 2 · Advanced Edition only", "rows": [{"key": "beacons", "label": "Beacons on the map", "low": 18, "high": 27}, {"key": "section:store:", "label": "Guaranteed stores", "low": 2, "high": 2}, {"key": "always_fight_events", "label": "Events that open in a fight", "low": 10, "high": 10}, {"key": "boarder_events", "label": "Events that put boarders aboard", "low": 3, "high": 3}, {"key": "quest_start_events", "label": "Events that can start a quest", "low": 1, "high": 1}, {"key": "blue_options", "label": "Blue options in the pool", "low": 16, "high": 16}, {"key": "crew_gain_events", "label": "Events that can give you crew", "low": 25, "high": 25}, {"key": "fallback", "label": "Beacons left to the fill-in list", "low": 0, "high": 6}]}, "civilian-sector": {"slug": "civilian-sector", "name": "Civilian Sector", "cls": "civilian", "sub": "from sector 1", "rows": [{"key": "beacons", "label": "Beacons on the map", "low": 14, "high": 32}, {"key": "section:store:", "label": "Guaranteed stores", "low": 2, "high": 3}, {"key": "always_fight_events", "label": "Events that open in a fight", "low": 14, "high": 14}, {"key": "boarder_events", "label": "Events that put boarders aboard", "low": 6, "high": 6}, {"key": "quest_start_events", "label": "Events that can start a quest", "low": 9, "high": 9}, {"key": "blue_options", "label": "Blue options in the pool", "low": 33, "high": 33}, {"key": "crew_gain_events", "label": "Events that can give you crew", "low": 42, "high": 42}, {"key": "fallback", "label": "Beacons left to the fill-in list", "low": 0, "high": 10}]}, "engi-controlled-sector": {"slug": "engi-controlled-sector", "name": "Engi Controlled Sector", "cls": "civilian", "sub": "from sector 1", "rows": [{"key": "beacons", "label": "Beacons on the map", "low": 19, "high": 27}, {"key": "section:store:", "label": "Guaranteed stores", "low": 2, "high": 3}, {"key": "always_fight_events", "label": "Events that open in a fight", "low": 9, "high": 9}, {"key": "boarder_events", "label": "Events that put boarders aboard", "low": 6, "high": 6}, {"key": "quest_start_events", "label": "Events that can start a quest", "low": 6, "high": 6}, {"key": "blue_options", "label": "Blue options in the pool", "low": 28, "high": 28}, {"key": "crew_gain_events", "label": "Events that can give you crew", "low": 29, "high": 29}, {"key": "fallback", "label": "Beacons left to the fill-in list", "low": 0, "high": 5}]}, "engi-homeworlds": {"slug": "engi-homeworlds", "name": "Engi Homeworlds", "cls": "civilian", "sub": "from sector 3 · once per run", "rows": [{"key": "beacons", "label": "Beacons on the map", "low": 21, "high": 29}, {"key": "section:store:", "label": "Guaranteed stores", "low": 2, "high": 3}, {"key": "always_fight_events", "label": "Events that open in a fight", "low": 9, "high": 9}, {"key": "boarder_events", "label": "Events that put boarders aboard", "low": 6, "high": 6}, {"key": "quest_start_events", "label": "Events that can start a quest", "low": 7, "high": 7}, {"key": "blue_options", "label": "Blue options in the pool", "low": 28, "high": 28}, {"key": "crew_gain_events", "label": "Events that can give you crew", "low": 29, "high": 29}, {"key": "fallback", "label": "Beacons left to the fill-in list", "low": 0, "high": 3}]}, "federation-space": {"slug": "federation-space", "name": "Federation Space", "cls": "special", "sub": "always sector 1 — never a choice", "rows": [{"key": "beacons", "label": "Beacons on the map", "low": 13, "high": 24}, {"key": "section:store:", "label": "Guaranteed stores", "low": 1, "high": 2}, {"key": "always_fight_events", "label": "Events that open in a fight", "low": 14, "high": 14}, {"key": "boarder_events", "label": "Events that put boarders aboard", "low": 14, "high": 14}, {"key": "quest_start_events", "label": "Events that can start a quest", "low": 9, "high": 9}, {"key": "blue_options", "label": "Blue options in the pool", "low": 34, "high": 34}, {"key": "crew_gain_events", "label": "Events that can give you crew", "low": 44, "high": 44}, {"key": "fallback", "label": "Beacons left to the fill-in list", "low": 0, "high": 11}]}, "hidden-crystal-worlds": {"slug": "hidden-crystal-worlds", "name": "Hidden Crystal Worlds", "cls": "special", "sub": "never offered on the map · once per run", "rows": [{"key": "beacons", "label": "Beacons on the map", "low": 25, "high": 31}, {"key": "section:store:", "label": "Guaranteed stores", "low": 2, "high": 3}, {"key": "always_fight_events", "label": "Events that open in a fight", "low": 5, "high": 5}, {"key": "boarder_events", "label": "Events that put boarders aboard", "low": 3, "high": 3}, {"key": "quest_start_events", "label": "Events that can start a quest", "low": 0, "high": 0}, {"key": "blue_options", "label": "Blue options in the pool", "low": 7, "high": 7}, {"key": "crew_gain_events", "label": "Events that can give you crew", "low": 13, "high": 13}, {"key": "fallback", "label": "Beacons left to the fill-in list", "low": 0, "high": 0}]}, "mantis-controlled-sector": {"slug": "mantis-controlled-sector", "name": "Mantis Controlled Sector", "cls": "hostile", "sub": "from sector 1", "rows": [{"key": "beacons", "label": "Beacons on the map", "low": 18, "high": 26}, {"key": "section:store:", "label": "Guaranteed stores", "low": 1, "high": 2}, {"key": "always_fight_events", "label": "Events that open in a fight", "low": 7, "high": 7}, {"key": "boarder_events", "label": "Events that put boarders aboard", "low": 4, "high": 4}, {"key": "quest_start_events", "label": "Events that can start a quest", "low": 2, "high": 2}, {"key": "blue_options", "label": "Blue options in the pool", "low": 19, "high": 19}, {"key": "crew_gain_events", "label": "Events that can give you crew", "low": 16, "high": 16}, {"key": "fallback", "label": "Beacons left to the fill-in list", "low": 0, "high": 6}]}, "mantis-homeworlds": {"slug": "mantis-homeworlds", "name": "Mantis Homeworlds", "cls": "hostile", "sub": "from sector 3 · once per run", "rows": [{"key": "beacons", "label": "Beacons on the map", "low": 19, "high": 27}, {"key": "section:store:", "label": "Guaranteed stores", "low": 1, "high": 2}, {"key": "always_fight_events", "label": "Events that open in a fight", "low": 7, "high": 7}, {"key": "boarder_events", "label": "Events that put boarders aboard", "low": 4, "high": 4}, {"key": "quest_start_events", "label": "Events that can start a quest", "low": 3, "high": 3}, {"key": "blue_options", "label": "Blue options in the pool", "low": 22, "high": 22}, {"key": "crew_gain_events", "label": "Events that can give you crew", "low": 17, "high": 17}, {"key": "fallback", "label": "Beacons left to the fill-in list", "low": 0, "high": 5}]}, "pirate-controlled-sector": {"slug": "pirate-controlled-sector", "name": "Pirate Controlled Sector", "cls": "hostile", "sub": "from sector 1", "rows": [{"key": "beacons", "label": "Beacons on the map", "low": 16, "high": 29}, {"key": "section:store:", "label": "Guaranteed stores", "low": 1, "high": 2}, {"key": "always_fight_events", "label": "Events that open in a fight", "low": 8, "high": 8}, {"key": "boarder_events", "label": "Events that put boarders aboard", "low": 9, "high": 9}, {"key": "quest_start_events", "label": "Events that can start a quest", "low": 6, "high": 6}, {"key": "blue_options", "label": "Blue options in the pool", "low": 32, "high": 32}, {"key": "crew_gain_events", "label": "Events that can give you crew", "low": 34, "high": 34}, {"key": "fallback", "label": "Beacons left to the fill-in list", "low": 0, "high": 8}]}, "rebel-controlled-sector": {"slug": "rebel-controlled-sector", "name": "Rebel Controlled Sector", "cls": "hostile", "sub": "from sector 1", "rows": [{"key": "beacons", "label": "Beacons on the map", "low": 16, "high": 30}, {"key": "section:store:", "label": "Guaranteed stores", "low": 1, "high": 2}, {"key": "always_fight_events", "label": "Events that open in a fight", "low": 10, "high": 10}, {"key": "boarder_events", "label": "Events that put boarders aboard", "low": 6, "high": 6}, {"key": "quest_start_events", "label": "Events that can start a quest", "low": 6, "high": 6}, {"key": "blue_options", "label": "Blue options in the pool", "low": 23, "high": 23}, {"key": "crew_gain_events", "label": "Events that can give you crew", "low": 23, "high": 23}, {"key": "fallback", "label": "Beacons left to the fill-in list", "low": 0, "high": 8}]}, "rebel-stronghold": {"slug": "rebel-stronghold", "name": "Rebel Stronghold", "cls": "hostile", "sub": "from sector 5 · once per run", "rows": [{"key": "beacons", "label": "Beacons on the map", "low": 17, "high": 31}, {"key": "section:store:", "label": "Guaranteed stores", "low": 1, "high": 2}, {"key": "always_fight_events", "label": "Events that open in a fight", "low": 10, "high": 10}, {"key": "boarder_events", "label": "Events that put boarders aboard", "low": 6, "high": 6}, {"key": "quest_start_events", "label": "Events that can start a quest", "low": 6, "high": 6}, {"key": "blue_options", "label": "Blue options in the pool", "low": 23, "high": 23}, {"key": "crew_gain_events", "label": "Events that can give you crew", "low": 23, "high": 23}, {"key": "fallback", "label": "Beacons left to the fill-in list", "low": 0, "high": 7}]}, "rock-controlled-sector": {"slug": "rock-controlled-sector", "name": "Rock Controlled Sector", "cls": "hostile", "sub": "from sector 2", "rows": [{"key": "beacons", "label": "Beacons on the map", "low": 20, "high": 28}, {"key": "section:store:", "label": "Guaranteed stores", "low": 2, "high": 2}, {"key": "always_fight_events", "label": "Events that open in a fight", "low": 8, "high": 8}, {"key": "boarder_events", "label": "Events that put boarders aboard", "low": 4, "high": 4}, {"key": "quest_start_events", "label": "Events that can start a quest", "low": 8, "high": 8}, {"key": "blue_options", "label": "Blue options in the pool", "low": 30, "high": 30}, {"key": "crew_gain_events", "label": "Events that can give you crew", "low": 26, "high": 26}, {"key": "fallback", "label": "Beacons left to the fill-in list", "low": 0, "high": 4}]}, "rock-homeworlds": {"slug": "rock-homeworlds", "name": "Rock Homeworlds", "cls": "hostile", "sub": "from sector 5 · once per run", "rows": [{"key": "beacons", "label": "Beacons on the map", "low": 22, "high": 30}, {"key": "section:store:", "label": "Guaranteed stores", "low": 2, "high": 2}, {"key": "always_fight_events", "label": "Events that open in a fight", "low": 8, "high": 8}, {"key": "boarder_events", "label": "Events that put boarders aboard", "low": 4, "high": 4}, {"key": "quest_start_events", "label": "Events that can start a quest", "low": 9, "high": 9}, {"key": "blue_options", "label": "Blue options in the pool", "low": 31, "high": 31}, {"key": "crew_gain_events", "label": "Events that can give you crew", "low": 28, "high": 28}, {"key": "fallback", "label": "Beacons left to the fill-in list", "low": 0, "high": 2}]}, "slug-controlled-nebula": {"slug": "slug-controlled-nebula", "name": "Slug Controlled Nebula", "cls": "nebula", "sub": "from sector 4", "rows": [{"key": "beacons", "label": "Beacons on the map", "low": 18, "high": 34}, {"key": "section:store:", "label": "Guaranteed stores", "low": 2, "high": 3}, {"key": "always_fight_events", "label": "Events that open in a fight", "low": 9, "high": 9}, {"key": "boarder_events", "label": "Events that put boarders aboard", "low": 6, "high": 6}, {"key": "quest_start_events", "label": "Events that can start a quest", "low": 2, "high": 2}, {"key": "blue_options", "label": "Blue options in the pool", "low": 23, "high": 23}, {"key": "crew_gain_events", "label": "Events that can give you crew", "low": 39, "high": 39}, {"key": "fallback", "label": "Beacons left to the fill-in list", "low": 0, "high": 6}]}, "slug-home-nebula": {"slug": "slug-home-nebula", "name": "Slug Home Nebula", "cls": "nebula", "sub": "from sector 4 · once per run", "rows": [{"key": "beacons", "label": "Beacons on the map", "low": 19, "high": 35}, {"key": "section:store:", "label": "Guaranteed stores", "low": 2, "high": 3}, {"key": "always_fight_events", "label": "Events that open in a fight", "low": 10, "high": 10}, {"key": "boarder_events", "label": "Events that put boarders aboard", "low": 6, "high": 6}, {"key": "quest_start_events", "label": "Events that can start a quest", "low": 3, "high": 3}, {"key": "blue_options", "label": "Blue options in the pool", "low": 23, "high": 23}, {"key": "crew_gain_events", "label": "Events that can give you crew", "low": 40, "high": 40}, {"key": "fallback", "label": "Beacons left to the fill-in list", "low": 0, "high": 5}]}, "the-last-stand": {"slug": "the-last-stand", "name": "The Last Stand", "cls": "special", "sub": "always sector 8 — never a choice", "rows": [{"key": "beacons", "label": "Beacons on the map", "low": 17, "high": 20}, {"key": "section:store:", "label": "Guaranteed stores", "low": 4, "high": 4}, {"key": "always_fight_events", "label": "Events that open in a fight", "low": 3, "high": 3}, {"key": "boarder_events", "label": "Events that put boarders aboard", "low": 0, "high": 0}, {"key": "quest_start_events", "label": "Events that can start a quest", "low": 0, "high": 0}, {"key": "blue_options", "label": "Blue options in the pool", "low": 0, "high": 0}, {"key": "crew_gain_events", "label": "Events that can give you crew", "low": 2, "high": 2}, {"key": "fallback", "label": "Beacons left to the fill-in list", "low": 0, "high": 7}]}, "uncharted-nebula": {"slug": "uncharted-nebula", "name": "Uncharted Nebula", "cls": "nebula", "sub": "from sector 1", "rows": [{"key": "beacons", "label": "Beacons on the map", "low": 19, "high": 26}, {"key": "section:store:", "label": "Guaranteed stores", "low": 0, "high": 1}, {"key": "always_fight_events", "label": "Events that open in a fight", "low": 5, "high": 5}, {"key": "boarder_events", "label": "Events that put boarders aboard", "low": 3, "high": 3}, {"key": "quest_start_events", "label": "Events that can start a quest", "low": 3, "high": 3}, {"key": "blue_options", "label": "Blue options in the pool", "low": 31, "high": 31}, {"key": "crew_gain_events", "label": "Events that can give you crew", "low": 24, "high": 24}, {"key": "fallback", "label": "Beacons left to the fill-in list", "low": 0, "high": 5}]}, "zoltan-controlled-sector": {"slug": "zoltan-controlled-sector", "name": "Zoltan Controlled Sector", "cls": "civilian", "sub": "from sector 2", "rows": [{"key": "beacons", "label": "Beacons on the map", "low": 20, "high": 32}, {"key": "section:store:", "label": "Guaranteed stores", "low": 2, "high": 2}, {"key": "always_fight_events", "label": "Events that open in a fight", "low": 14, "high": 14}, {"key": "boarder_events", "label": "Events that put boarders aboard", "low": 8, "high": 8}, {"key": "quest_start_events", "label": "Events that can start a quest", "low": 4, "high": 4}, {"key": "blue_options", "label": "Blue options in the pool", "low": 22, "high": 22}, {"key": "crew_gain_events", "label": "Events that can give you crew", "low": 32, "high": 32}, {"key": "fallback", "label": "Beacons left to the fill-in list", "low": 0, "high": 4}]}, "zoltan-homeworlds": {"slug": "zoltan-homeworlds", "name": "Zoltan Homeworlds", "cls": "civilian", "sub": "from sector 3 · once per run", "rows": [{"key": "beacons", "label": "Beacons on the map", "low": 21, "high": 33}, {"key": "section:store:", "label": "Guaranteed stores", "low": 2, "high": 2}, {"key": "always_fight_events", "label": "Events that open in a fight", "low": 14, "high": 14}, {"key": "boarder_events", "label": "Events that put boarders aboard", "low": 8, "high": 8}, {"key": "quest_start_events", "label": "Events that can start a quest", "low": 5, "high": 5}, {"key": "blue_options", "label": "Blue options in the pool", "low": 22, "high": 22}, {"key": "crew_gain_events", "label": "Events that can give you crew", "low": 33, "high": 33}, {"key": "fallback", "label": "Beacons left to the fill-in list", "low": 0, "high": 3}]}};
+const WORDS = {"picks_empty": "Pin a sector with + to bring it up here. Two at a time, because that is what the map gives you.", "picks_one": "Pin the other option to compare them.", "picks_column": "These are the sectors in the next column of the map. You can reach some of them — the game does not tell a program outside it which.", "pin": "Pin to this jump", "unpin": "Unpin", "pin_mark": "+", "unpin_mark": "×", "classes": {"civilian": {"label": "Civilian", "hint": "green on the map — 48% of rolls"}, "hostile": {"label": "Hostile", "hint": "red on the map — 32% of rolls"}, "nebula": {"label": "Nebula", "hint": "purple on the map — 20% of rolls"}, "special": {"label": "Special", "hint": "not part of the three-colour roll"}}};
+const KEY = 'ftl-sector-picks';
+const MAX_PINS = 2;      // what the map offers, and what a hand can pin
+const MAX_SLOTS = 4;     // ...but a map column can hold four, and a URL may carry them
+
+let picks = [];
+try { picks = JSON.parse(localStorage.getItem(KEY) || '[]').filter(s => SECTORS[s]); }
+catch (e) { picks = []; }
+
+// ?pick=slug,slug wins over whatever was pinned by hand. That is how the save watcher
+// opens this page at a sector choice: it knows the offer, and the offer is not a
+// preference to be remembered over it.
+const params = new URLSearchParams(location.search);
+const fromUrl = (params.get('pick') || '')
+  .split(',').map(s => s.trim()).filter(s => SECTORS[s]).slice(0, MAX_SLOTS);
+if (fromUrl.length) picks = fromUrl;
+// &column=1 means these are the next column of the map, not a verified list of what
+// this sector connects to -- Hyperspace does not expose the adjacency. The page says so
+// rather than letting the panel imply a promise the data cannot make.
+const isColumn = fromUrl.length > 0 && params.get('column') === '1';
+
+function chip(cls, text) {
+  return '<span class="chip ' + cls + '">' + text + '</span>';
+}
+
+function render() {
+  // The slots, then the comparison, then the pinned state on the cards. Two slots
+  // normally; three only when something handed us three, which the sector map can.
+  const slots = document.getElementById('slots');
+  const count = Math.max(MAX_PINS, picks.length);
+  slots.style.gridTemplateColumns = 'repeat(' + count + ', 1fr)';
+  slots.innerHTML = Array.from({length: count}, (_, i) => i).map(i => {
+    const s = SECTORS[picks[i]];
+    if (!s) return '<div class="slot empty">' +
+      (picks.length ? WORDS.picks_one : WORDS.picks_empty) + '</div>';
+    return '<div class="slot"><div class="top">' +
+      '<a class="name" href="sector-' + s.slug + '.html">' + s.name + '</a>' +
+      chip(s.cls, WORDS.classes[s.cls].label) +
+      '<button class="drop" data-drop="' + s.slug + '" title="' + WORDS.unpin + '">' +
+      WORDS.unpin_mark + '</button></div>' +
+      '<div class="sub">' + s.sub + '</div></div>';
+  }).join('');
+
+  const caveat = document.getElementById('caveat');
+  caveat.textContent = isColumn ? WORDS.picks_column : '';
+  caveat.style.display = isColumn ? 'block' : 'none';
+
+  const cmp = document.getElementById('cmp');
+  const chosen = picks.map(s => SECTORS[s]).filter(Boolean);
+  if (chosen.length >= 2) {
+    const span = r => r.low === r.high ? String(r.low) : r.low + '\u2013' + r.high;
+    const rows = chosen[0].rows.map((row, i) => {
+      const all = chosen.map(s => s.rows[i]);
+      const top = Math.max.apply(null, all.map(r => r.high));
+      // The leading side is marked, never judged: more fights is not worse and more
+      // stores is not better without knowing the run. Ties mark nothing.
+      const tied = all.filter(r => r.high === top).length > 1;
+      return '<tr><th>' + row.label + '</th>' + all.map(r =>
+        '<td' + (!tied && r.high === top ? ' class="more"' : '') + '>' + span(r) + '</td>'
+      ).join('') + '</tr>';
+    }).join('');
+    cmp.innerHTML = '<table class="cmp"><tr class="head"><th></th>' +
+      chosen.map(s => '<td>' + s.name + '</td>').join('') + '</tr>' + rows + '</table>';
+  } else {
+    cmp.innerHTML = '';
+  }
+
+  document.querySelectorAll('.card').forEach(card => {
+    const on = picks.indexOf(card.dataset.slug) >= 0;
+    card.classList.toggle('pinned', on);
+    const pin = card.querySelector('.pin');
+    pin.textContent = on ? WORDS.unpin_mark : WORDS.pin_mark;
+    pin.title = on ? WORDS.unpin : WORDS.pin;
+  });
+  localStorage.setItem(KEY, JSON.stringify(picks));
+}
+
+function toggle(slug) {
+  const at = picks.indexOf(slug);
+  if (at >= 0) picks.splice(at, 1);
+  else if (picks.length < MAX_PINS) picks.push(slug);
+  else picks = picks.slice(-(MAX_PINS - 1)).concat(slug);  // oldest falls out
+  render();
+}
+
+document.addEventListener('click', ev => {
+  const pin = ev.target.closest('.pin');
+  if (pin) { ev.preventDefault(); toggle(pin.closest('.card').dataset.slug); return; }
+  const drop = ev.target.closest('.drop');
+  if (drop) { ev.preventDefault(); toggle(drop.dataset.drop); }
+});
+
+render();
+
+</script>
+</body></html>
+
+<!-- ============================================================================
+     REVIEW LAYER — added to this copy only, never to the shared shell.
+     Select any text on the page to attach a note. Notes persist in localStorage
+     and export as markdown for Claude. Nothing here touches the page's own data.
+     ============================================================================ -->
+<style id="cmt-style">
+  mark.cmt-hl {
+    background: rgba(232,184,75,.28);
+    color: inherit;
+    border-bottom: 1px solid rgba(232,184,75,.75);
+    border-radius: 2px;
+    padding: 0 1px;
+    cursor: pointer;
+  }
+  mark.cmt-hl[data-active="1"] { background: rgba(232,184,75,.55); }
+
+  #cmt-fab {
+    position: fixed; z-index: 9998;
+    display: none;
+    padding: 6px 12px;
+    font: 600 12px/1 var(--sans, system-ui);
+    letter-spacing: .04em; text-transform: uppercase;
+    color: #0B1219; background: var(--amber, #E8B84B);
+    border: 0; border-radius: 4px;
+    box-shadow: 0 4px 14px rgba(0,0,0,.45);
+    cursor: pointer;
+  }
+
+  #cmt-composer {
+    position: fixed; z-index: 9999; display: none;
+    width: 320px; padding: 10px;
+    background: var(--panel, #101822);
+    border: 1px solid var(--edge, #1F2E3C); border-radius: 6px;
+    box-shadow: 0 10px 30px rgba(0,0,0,.5);
+  }
+  #cmt-composer .q {
+    font: 400 11px/1.45 var(--mono, monospace);
+    color: var(--dim, #7C8FA3);
+    max-height: 54px; overflow: hidden;
+    border-left: 2px solid var(--amber, #E8B84B);
+    padding-left: 7px; margin-bottom: 8px;
+  }
+  #cmt-composer textarea {
+    width: 100%; box-sizing: border-box; height: 84px; resize: vertical;
+    background: var(--sunk, #0B1219); color: var(--ink, #D6E2EC);
+    border: 1px solid var(--edge, #1F2E3C); border-radius: 4px;
+    padding: 7px; font: 400 13px/1.45 var(--sans, system-ui);
+  }
+  #cmt-composer .row { display: flex; gap: 6px; margin-top: 8px; justify-content: flex-end; }
+
+  .cmt-btn {
+    font: 600 11px/1 var(--sans, system-ui); letter-spacing: .04em;
+    padding: 7px 11px; border-radius: 4px; cursor: pointer;
+    background: var(--sunk, #0B1219); color: var(--ink, #D6E2EC);
+    border: 1px solid var(--edge, #1F2E3C);
+  }
+  .cmt-btn.primary { background: var(--amber, #E8B84B); color: #0B1219; border-color: transparent; }
+  .cmt-btn:hover { border-color: var(--amber, #E8B84B); }
+
+  #cmt-tab {
+    position: fixed; right: 0; top: 92px; z-index: 9997;
+    writing-mode: vertical-rl;
+    padding: 12px 7px;
+    font: 600 11px/1 var(--sans, system-ui); letter-spacing: .12em; text-transform: uppercase;
+    color: #0B1219; background: var(--amber, #E8B84B);
+    border: 0; border-radius: 5px 0 0 5px; cursor: pointer;
+    box-shadow: 0 4px 14px rgba(0,0,0,.4);
+  }
+
+  #cmt-panel {
+    position: fixed; top: 0; right: 0; bottom: 0; z-index: 9997;
+    width: 340px; transform: translateX(100%);
+    transition: transform .18s ease;
+    display: flex; flex-direction: column;
+    background: var(--panel, #101822);
+    border-left: 1px solid var(--edge, #1F2E3C);
+    box-shadow: -12px 0 34px rgba(0,0,0,.45);
+  }
+  #cmt-panel[data-open="1"] { transform: none; }
+  #cmt-panel header {
+    display: flex; align-items: center; gap: 8px;
+    padding: 12px 12px 10px; border-bottom: 1px solid var(--edge, #1F2E3C);
+  }
+  #cmt-panel header h2 {
+    margin: 0; flex: 1;
+    font: 700 12px/1 var(--sans, system-ui); letter-spacing: .14em; text-transform: uppercase;
+    color: var(--ink, #D6E2EC);
+  }
+  #cmt-list { flex: 1; overflow-y: auto; padding: 10px; }
+  #cmt-list .empty {
+    font: 400 12px/1.6 var(--sans, system-ui); color: var(--faint, #55697C); padding: 8px 4px;
+  }
+  .cmt-item {
+    border: 1px solid var(--edge, #1F2E3C); border-radius: 5px;
+    background: var(--sunk, #0B1219);
+    padding: 9px; margin-bottom: 9px; cursor: pointer;
+  }
+  .cmt-item:hover { border-color: var(--amber, #E8B84B); }
+  .cmt-item .q {
+    font: 400 11px/1.45 var(--mono, monospace); color: var(--dim, #7C8FA3);
+    border-left: 2px solid var(--amber, #E8B84B); padding-left: 7px; margin-bottom: 6px;
+  }
+  .cmt-item .n {
+    font: 400 13px/1.5 var(--sans, system-ui); color: var(--ink, #D6E2EC);
+    white-space: pre-wrap;
+  }
+  .cmt-item .tools { display: flex; gap: 10px; margin-top: 7px; }
+  .cmt-item .tools button {
+    background: none; border: 0; padding: 0; cursor: pointer;
+    font: 600 10px/1 var(--sans, system-ui); letter-spacing: .06em; text-transform: uppercase;
+    color: var(--faint, #55697C);
+  }
+  .cmt-item .tools button:hover { color: var(--red, #E0685C); }
+  .cmt-item .tools button.edit:hover { color: var(--cyan, #5FD3E8); }
+  #cmt-foot {
+    padding: 10px; border-top: 1px solid var(--edge, #1F2E3C);
+    display: flex; gap: 6px; flex-wrap: wrap;
+  }
+  #cmt-toast {
+    position: fixed; left: 50%; bottom: 26px; transform: translateX(-50%);
+    z-index: 10000; display: none;
+    padding: 9px 16px; border-radius: 5px;
+    background: var(--amber, #E8B84B); color: #0B1219;
+    font: 600 12px/1 var(--sans, system-ui);
+  }
+  @media print { #cmt-tab, #cmt-panel, #cmt-fab, #cmt-composer, #cmt-toast { display: none !important; } }
+</style>
+
+<div id="cmt-ui">
+  <button id="cmt-tab" type="button">Comments <span id="cmt-count">0</span></button>
+  <button id="cmt-fab" type="button">Comment</button>
+
+  <div id="cmt-composer">
+    <div class="q"></div>
+    <textarea placeholder="What should change here?"></textarea>
+    <div class="row">
+      <button class="cmt-btn" data-act="cancel" type="button">Cancel</button>
+      <button class="cmt-btn primary" data-act="save" type="button">Save</button>
+    </div>
+  </div>
+
+  <aside id="cmt-panel">
+    <header>
+      <h2>Review notes</h2>
+      <button class="cmt-btn" data-act="close" type="button">Close</button>
+    </header>
+    <div id="cmt-list"></div>
+    <div id="cmt-foot">
+      <button class="cmt-btn primary" data-act="copy" type="button">Copy for Claude</button>
+      <button class="cmt-btn" data-act="download" type="button">Download .md</button>
+      <button class="cmt-btn" data-act="clear" type="button">Clear all</button>
+    </div>
+  </aside>
+
+  <div id="cmt-toast"></div>
+</div>
+
+<script id="cmt-script">
+(() => {
+  "use strict";
+
+  const KEY = "ftl-review:" + (location.pathname.split("/").pop() || "page");
+  const ui = document.getElementById("cmt-ui");
+  const fab = document.getElementById("cmt-fab");
+  const composer = document.getElementById("cmt-composer");
+  const panel = document.getElementById("cmt-panel");
+  const list = document.getElementById("cmt-list");
+  const count = document.getElementById("cmt-count");
+  const toastEl = document.getElementById("cmt-toast");
+
+  let notes = [];
+  let pending = null;   /* {start, end, quote} awaiting a note */
+  let editing = null;   /* id being re-edited */
+
+  /* ---- storage ---------------------------------------------------------- */
+
+  const load = () => {
+    try { notes = JSON.parse(localStorage.getItem(KEY) || "[]"); }
+    catch (err) { notes = []; }
+  };
+  const save = () => {
+    try { localStorage.setItem(KEY, JSON.stringify(notes)); }
+    catch (err) { toast("Could not save — storage blocked"); }
+  };
+
+  /* ---- text-offset anchoring -------------------------------------------
+     Every anchor is a [start,end) pair of character offsets into the page's
+     visible text, so highlights survive a reload without depending on DOM
+     paths. Wrapping a range in <mark> splits text nodes but never changes the
+     text itself, so offsets recorded earlier stay valid.                    */
+
+  const walker = () => document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, {
+    acceptNode(node) {
+      if (!node.nodeValue) return NodeFilter.FILTER_REJECT;
+      const parent = node.parentElement;
+      if (!parent) return NodeFilter.FILTER_REJECT;
+      if (ui.contains(parent)) return NodeFilter.FILTER_REJECT;
+      const tag = parent.tagName;
+      if (tag === "SCRIPT" || tag === "STYLE" || tag === "TITLE") return NodeFilter.FILTER_REJECT;
+      return NodeFilter.FILTER_ACCEPT;
+    }
+  });
+
+  /* A range boundary is not always inside a text node: triple-click, select-all and
+     any drag that crosses an element edge hand back (element, childIndex) instead.
+     Both forms resolve to the same scale — characters of visible text from the top. */
+  const offsetOf = (node, offset) => {
+    if (node.nodeType === Node.TEXT_NODE) {
+      const w = walker();
+      let total = 0, cur;
+      while ((cur = w.nextNode())) {
+        if (cur === node) return total + offset;
+        total += cur.nodeValue.length;
+      }
+      return -1;
+    }
+
+    /* Element boundary: the offset counts child nodes. Walk the text and take the
+       position where the child at that index begins — or where the element ends, when
+       the boundary sits past its last child. */
+    const kids = node.childNodes;
+    const edge = offset >= kids.length ? null : kids[offset];
+    const w = walker();
+    let total = 0, cur, endOfNode = -1;
+    while ((cur = w.nextNode())) {
+      if (edge && (cur === edge || edge.contains(cur))) return total;
+      total += cur.nodeValue.length;
+      if (node.contains(cur)) endOfNode = total;
+    }
+    /* No text after the boundary inside this element: its own end, or the document's. */
+    return edge ? (endOfNode >= 0 ? endOfNode : -1) : (endOfNode >= 0 ? endOfNode : -1);
+  };
+
+  /* All text-node slices covered by [start,end), in document order. */
+  const slices = (start, end) => {
+    const out = [];
+    const w = walker();
+    let total = 0, cur;
+    while ((cur = w.nextNode())) {
+      const len = cur.nodeValue.length;
+      const nodeStart = total, nodeEnd = total + len;
+      total = nodeEnd;
+      if (nodeEnd <= start) continue;
+      if (nodeStart >= end) break;
+      out.push({
+        node: cur,
+        from: Math.max(0, start - nodeStart),
+        to: Math.min(len, end - nodeStart)
+      });
+    }
+    return out;
+  };
+
+  const paint = note => {
+    let painted = 0;
+    for (const s of slices(note.start, note.end)) {
+      if (s.to <= s.from) continue;
+      const r = document.createRange();
+      r.setStart(s.node, s.from);
+      r.setEnd(s.node, s.to);
+      const mark = document.createElement("mark");
+      mark.className = "cmt-hl";
+      mark.dataset.cid = note.id;
+      try { r.surroundContents(mark); painted++; }
+      catch (err) { /* a slice that straddles an element edge — skip it */ }
+    }
+    return painted > 0;
+  };
+
+  const unpaint = id => {
+    document.querySelectorAll('mark.cmt-hl[data-cid="' + id + '"]').forEach(mark => {
+      const parent = mark.parentNode;
+      while (mark.firstChild) parent.insertBefore(mark.firstChild, mark);
+      parent.removeChild(mark);
+      parent.normalize();
+    });
+  };
+
+  /* ---- ui --------------------------------------------------------------- */
+
+  let toastTimer = 0;
+  const toast = msg => {
+    toastEl.textContent = msg;
+    toastEl.style.display = "block";
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => { toastEl.style.display = "none"; }, 1900);
+  };
+
+  const hideFab = () => { fab.style.display = "none"; };
+
+  const place = (el, rect) => {
+    el.style.display = "block";
+    const w = el.offsetWidth, h = el.offsetHeight;
+    let left = rect.left + rect.width / 2 - w / 2;
+    left = Math.max(8, Math.min(left, window.innerWidth - w - 8));
+    let top = rect.top - h - 8;
+    if (top < 8) top = rect.bottom + 8;
+    top = Math.min(top, window.innerHeight - h - 8);
+    el.style.left = left + "px";
+    el.style.top = top + "px";
+  };
+
+  const closeComposer = () => {
+    composer.style.display = "none";
+    composer.querySelector("textarea").value = "";
+    pending = null;
+    editing = null;
+  };
+
+  const openComposer = (rect, quote, existing) => {
+    composer.querySelector(".q").textContent = quote;
+    const ta = composer.querySelector("textarea");
+    ta.value = existing || "";
+    place(composer, rect);
+    ta.focus();
+  };
+
+  const render = () => {
+    count.textContent = String(notes.length);
+    list.innerHTML = "";
+    if (!notes.length) {
+      const p = document.createElement("div");
+      p.className = "empty";
+      p.textContent = "No notes yet. Select any text on the page and click Comment.";
+      list.appendChild(p);
+      return;
+    }
+    notes.slice().sort((a, b) => a.start - b.start).forEach((note, i) => {
+      const item = document.createElement("div");
+      item.className = "cmt-item";
+      item.dataset.cid = note.id;
+
+      const q = document.createElement("div");
+      q.className = "q";
+      q.textContent = (i + 1) + ". " + note.quote;
+
+      const n = document.createElement("div");
+      n.className = "n";
+      n.textContent = note.text;
+
+      const tools = document.createElement("div");
+      tools.className = "tools";
+      const edit = document.createElement("button");
+      edit.className = "edit"; edit.type = "button"; edit.dataset.act = "edit";
+      edit.textContent = "Edit";
+      const del = document.createElement("button");
+      del.type = "button"; del.dataset.act = "delete";
+      del.textContent = "Delete";
+      tools.append(edit, del);
+
+      item.append(q, n, tools);
+      list.appendChild(item);
+    });
+  };
+
+  const focusNote = id => {
+    document.querySelectorAll("mark.cmt-hl[data-active]").forEach(m => m.removeAttribute("data-active"));
+    const marks = document.querySelectorAll('mark.cmt-hl[data-cid="' + id + '"]');
+    marks.forEach(m => m.setAttribute("data-active", "1"));
+    if (marks.length) marks[0].scrollIntoView({ behavior: "smooth", block: "center" });
+  };
+
+  /* ---- export ----------------------------------------------------------- */
+
+  const markdown = () => {
+    const title = (document.querySelector("title") || {}).textContent || document.title || "page";
+    const lines = ["# Review notes — " + title, "", "File: " + location.pathname, ""];
+    notes.slice().sort((a, b) => a.start - b.start).forEach((note, i) => {
+      lines.push("## " + (i + 1));
+      lines.push("> " + note.quote.replace(/\n+/g, " "));
+      lines.push("");
+      lines.push(note.text);
+      lines.push("");
+    });
+    return lines.join("\n");
+  };
+
+  /* ---- events ----------------------------------------------------------- */
+
+  document.addEventListener("mouseup", event => {
+    if (ui.contains(event.target)) return;
+    setTimeout(() => {
+      const sel = window.getSelection();
+      if (!sel || sel.isCollapsed || !sel.rangeCount) { hideFab(); return; }
+      const range = sel.getRangeAt(0);
+      const quote = sel.toString().trim();
+      if (!quote) { hideFab(); return; }
+      const start = offsetOf(range.startContainer, range.startOffset);
+      const end = offsetOf(range.endContainer, range.endOffset);
+      if (start < 0 || end < 0 || end <= start) { hideFab(); return; }
+      pending = { start, end, quote, rect: range.getBoundingClientRect() };
+      place(fab, pending.rect);
+    }, 0);
+  });
+
+  fab.addEventListener("click", () => {
+    if (!pending) return;
+    hideFab();
+    openComposer(pending.rect, pending.quote, "");
+  });
+
+  composer.addEventListener("click", event => {
+    const act = event.target.dataset && event.target.dataset.act;
+    if (act === "cancel") { closeComposer(); return; }
+    if (act !== "save") return;
+
+    const text = composer.querySelector("textarea").value.trim();
+    if (!text) { toast("Write something first"); return; }
+
+    if (editing) {
+      const note = notes.find(n => n.id === editing);
+      if (note) note.text = text;
+    } else if (pending) {
+      const note = {
+        id: "c" + notes.length + "-" + pending.start + "-" + pending.end,
+        start: pending.start,
+        end: pending.end,
+        quote: pending.quote,
+        text
+      };
+      notes.push(note);
+      paint(note);
+      window.getSelection().removeAllRanges();
+    }
+    save(); render(); closeComposer();
+    panel.dataset.open = "1";
+  });
+
+  composer.addEventListener("keydown", event => {
+    if (event.key === "Escape") closeComposer();
+    if (event.key === "Enter" && (event.metaKey || event.ctrlKey)) {
+      composer.querySelector('[data-act="save"]').click();
+    }
+  });
+
+  document.addEventListener("click", event => {
+    const mark = event.target.closest && event.target.closest("mark.cmt-hl");
+    if (mark) {
+      panel.dataset.open = "1";
+      focusNote(mark.dataset.cid);
+      const item = list.querySelector('.cmt-item[data-cid="' + mark.dataset.cid + '"]');
+      if (item) item.scrollIntoView({ block: "center" });
+      return;
+    }
+    if (!ui.contains(event.target)) hideFab();
+  });
+
+  document.getElementById("cmt-tab").addEventListener("click", () => {
+    panel.dataset.open = panel.dataset.open === "1" ? "0" : "1";
+  });
+
+  panel.addEventListener("click", event => {
+    const btn = event.target.closest("button");
+    const item = event.target.closest(".cmt-item");
+
+    if (btn && btn.dataset.act === "close") { panel.dataset.open = "0"; return; }
+
+    if (btn && btn.dataset.act === "copy") {
+      navigator.clipboard.writeText(markdown())
+        .then(() => toast("Copied — paste it to Claude"))
+        .catch(() => toast("Clipboard blocked — use Download"));
+      return;
+    }
+
+    if (btn && btn.dataset.act === "download") {
+      const blob = new Blob([markdown()], { type: "text/markdown" });
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = "review-notes.md";
+      a.click();
+      setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+      return;
+    }
+
+    if (btn && btn.dataset.act === "clear") {
+      if (!notes.length) return;
+      if (!confirm("Delete all " + notes.length + " notes?")) return;
+      notes.forEach(n => unpaint(n.id));
+      notes = []; save(); render();
+      return;
+    }
+
+    if (!item) return;
+    const id = item.dataset.cid;
+
+    if (btn && btn.dataset.act === "delete") {
+      unpaint(id);
+      notes = notes.filter(n => n.id !== id);
+      save(); render();
+      return;
+    }
+
+    if (btn && btn.dataset.act === "edit") {
+      const note = notes.find(n => n.id === id);
+      if (!note) return;
+      editing = id; pending = null;
+      const mark = document.querySelector('mark.cmt-hl[data-cid="' + id + '"]');
+      const rect = mark ? mark.getBoundingClientRect()
+                        : { left: window.innerWidth / 2, top: 120, width: 0, height: 0, bottom: 120 };
+      openComposer(rect, note.quote, note.text);
+      return;
+    }
+
+    focusNote(id);
+  });
+
+  /* ---- boot -------------------------------------------------------------
+     Repaint oldest-first so earlier marks don't shift the offsets of later
+     ones — they can't, since wrapping preserves text — and drop any anchor
+     the page no longer contains (the page was rebuilt under the note).      */
+
+  load();
+  const survivors = [];
+  /* A selection spanning elements reads back with line breaks the browser inserted at
+     the block boundaries, while the markup itself has no whitespace between those
+     elements at all — so the check ignores whitespace entirely rather than collapsing
+     it. Same characters at the same offsets is still a strong guard against a page
+     that changed underneath the note. */
+  const same = s => s.replace(/\s+/g, "");
+  notes.slice().sort((a, b) => a.start - b.start).forEach(note => {
+    const found = slices(note.start, note.end).map(s => s.node.nodeValue.slice(s.from, s.to)).join("");
+    if (same(found) && same(found) === same(note.quote) && paint(note)) survivors.push(note);
+    else survivors.push(Object.assign({ orphan: true }, note));
+  });
+  notes = survivors;
+  render();
+  if (notes.length) panel.dataset.open = "1";
+})();
+</script>
