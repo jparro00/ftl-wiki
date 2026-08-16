@@ -3,9 +3,12 @@
 
     python tools/smoke-sector.py sectors/sector-engi-homeworlds.html
 
-Prints the whole page — header, facts, stat tiles, beacon budget, every pool row,
-the chain, the panels and the footnotes. Anything the page can show must appear in
-this dump, or a defect there is invisible.
+Prints the whole page — header, facts, the glance blocks, the beacon budget, every
+event row, the markers, the chain and the panels. Anything the page can show must
+appear in this dump, or a defect there is invisible.
+
+The stat tiles and the footnotes were cut from the design (SECTOR-PAGE-REDESIGN.md
+§2.2, §2.9), so the checks that required them are gone with them.
 
 Exit code 1 if any check fails. Required before publishing (tools/SECTOR-PAGE.md §7).
 """
@@ -106,15 +109,6 @@ def main():
     if not page.title or "EDIT" in (page.title or ""):
         problems.append("title was not stamped")
 
-    stats = [n for n in page.nodes if "stat" in n["classes"]]
-    numbers = texts(page, "n")
-    labels = texts(page, "k")
-    if not numbers:
-        problems.append("no stat tiles")
-    for value in numbers:
-        if not re.fullmatch(r"\d+(–\d+)?", value):
-            problems.append(f"stat tile is not a number: {value!r}")
-
     events = [n for n in page.nodes if "ev" in n["classes"]]
     for node in events:
         if not node["text"]:
@@ -169,10 +163,6 @@ def main():
     out.append(f"LEDE      {' '.join(texts(page, 'lede'))}")
     out.append(f"FACTS     {' | '.join(texts(page, 'fact'))}")
     out.append("")
-    out.append("STATS")
-    for value, label in zip(numbers, labels):
-        out.append(f"  {value:>9}  {label}")
-    out.append("")
     # The two generated blocks above the budget. They carry no copy at all, so the only
     # way a wrong label or a missing count shows up is by being printed here.
     glance = [n for n in page.nodes if "gp" in n["classes"]]
@@ -185,8 +175,6 @@ def main():
         if "grow" in node["classes"]:
             if not re.fullmatch(r"\d+", node["text"][-1] if node["text"] else ""):
                 problems.append(f"blue-option row without a hit count: {node['text']}")
-        if "rrow" in node["classes"] and len(node["text"]) < 3:
-            problems.append(f"rarity row missing its move or verdict: {node['text']}")
     out.append("BUDGET")
     for node in rows:
         out.append("  " + "  ".join(node["text"]))
@@ -205,12 +193,6 @@ def main():
     for node in page.nodes:
         if "panel" in node["classes"] and "gp" not in node["classes"]:
             out.append("  " + " | ".join(node["text"]))
-    out.append("")
-    out.append("FOOTER")
-    for node in page.nodes:
-        if node["tag"] == "footer":
-            for line in node["text"]:
-                out.append("  " + line)
 
     print("\n".join(out))
     print()
@@ -220,7 +202,7 @@ def main():
             print(f"  - {problem}")
         sys.exit(1)
     print(f"OK — {len(events)} event rows ({len(boxes)} open onto their card), "
-          f"{len(rows)} budget rows ({len(expanders)} expandable), {len(stats)} stat tiles")
+          f"{len(rows)} budget rows ({len(expanders)} expandable)")
 
 
 if __name__ == "__main__":

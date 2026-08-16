@@ -346,18 +346,31 @@ SCRIPT = """
 const SECTORS = %(data)s;
 const WORDS = %(words)s;
 const KEY = 'ftl-sector-picks';
+const MAX_PINS = 2;      // what the map offers, and what a hand can pin
+const MAX_SLOTS = 3;     // ...but the game can offer three, so a URL may carry three
+
 let picks = [];
 try { picks = JSON.parse(localStorage.getItem(KEY) || '[]').filter(s => SECTORS[s]); }
 catch (e) { picks = []; }
+
+// ?pick=slug,slug wins over whatever was pinned by hand. That is how the save watcher
+// opens this page at a sector choice: it knows the offer, and the offer is not a
+// preference to be remembered over it.
+const fromUrl = (new URLSearchParams(location.search).get('pick') || '')
+  .split(',').map(s => s.trim()).filter(s => SECTORS[s]).slice(0, MAX_SLOTS);
+if (fromUrl.length) picks = fromUrl;
 
 function chip(cls, text) {
   return '<span class="chip ' + cls + '">' + text + '</span>';
 }
 
 function render() {
-  // The two slots, then the comparison, then the pinned state on the cards.
+  // The slots, then the comparison, then the pinned state on the cards. Two slots
+  // normally; three only when something handed us three, which the sector map can.
   const slots = document.getElementById('slots');
-  slots.innerHTML = [0, 1].map(i => {
+  const count = Math.max(MAX_PINS, picks.length);
+  slots.style.gridTemplateColumns = 'repeat(' + count + ', 1fr)';
+  slots.innerHTML = Array.from({length: count}, (_, i) => i).map(i => {
     const s = SECTORS[picks[i]];
     if (!s) return '<div class="slot empty">' +
       (picks.length ? WORDS.picks_one : WORDS.picks_empty) + '</div>';
@@ -370,20 +383,21 @@ function render() {
   }).join('');
 
   const cmp = document.getElementById('cmp');
-  const a = SECTORS[picks[0]], b = SECTORS[picks[1]];
-  if (a && b) {
+  const chosen = picks.map(s => SECTORS[s]).filter(Boolean);
+  if (chosen.length >= 2) {
     const span = r => r.low === r.high ? String(r.low) : r.low + '\\u2013' + r.high;
-    const rows = a.rows.map((row, i) => {
-      const other = b.rows[i];
-      // Larger side marked, never judged: more fights is not worse, and more
-      // stores is not better, without knowing the run.
-      const ca = row.high > other.high ? ' class="more"' : '';
-      const cb = other.high > row.high ? ' class="more"' : '';
-      return '<tr><th>' + row.label + '</th><td' + ca + '>' + span(row) +
-             '</td><td' + cb + '>' + span(other) + '</td></tr>';
+    const rows = chosen[0].rows.map((row, i) => {
+      const all = chosen.map(s => s.rows[i]);
+      const top = Math.max.apply(null, all.map(r => r.high));
+      // The leading side is marked, never judged: more fights is not worse and more
+      // stores is not better without knowing the run. Ties mark nothing.
+      const tied = all.filter(r => r.high === top).length > 1;
+      return '<tr><th>' + row.label + '</th>' + all.map(r =>
+        '<td' + (!tied && r.high === top ? ' class="more"' : '') + '>' + span(r) + '</td>'
+      ).join('') + '</tr>';
     }).join('');
-    cmp.innerHTML = '<table class="cmp"><tr class="head"><th></th><td>' + a.name +
-      '</td><td>' + b.name + '</td></tr>' + rows + '</table>';
+    cmp.innerHTML = '<table class="cmp"><tr class="head"><th></th>' +
+      chosen.map(s => '<td>' + s.name + '</td>').join('') + '</tr>' + rows + '</table>';
   } else {
     cmp.innerHTML = '';
   }
@@ -401,8 +415,8 @@ function render() {
 function toggle(slug) {
   const at = picks.indexOf(slug);
   if (at >= 0) picks.splice(at, 1);
-  else if (picks.length < 2) picks.push(slug);
-  else picks = [picks[1], slug];   // a third pick pushes the older one out
+  else if (picks.length < MAX_PINS) picks.push(slug);
+  else picks = picks.slice(-(MAX_PINS - 1)).concat(slug);  // oldest falls out
   render();
 }
 

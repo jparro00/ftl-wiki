@@ -78,9 +78,12 @@ This is the change with the widest blast radius:
   `sector-vocab.json` `headings.glance_meta`.
 - **Blue options** and **Crew in stores** now measure 142px and 141px collapsed, at the real
   457px panel width. They read as a level pair, which was the point.
-- The third block, **Store rarity — where this sector differs**, was never present on
-  Federation Space (it declares no `rarityList`). **It is untouched and unreviewed.** Thirteen
-  of the 19 pages render one, and the redesign has nothing to say about it yet — see §5.
+- The third block, **Store rarity — where this sector differs**, is **cut from the design
+  entirely** (user decision, 2026-08-16: "no page needs this"). It never appeared on Federation
+  Space, which declares no `rarityList`; thirteen of the 19 pages render one today and none
+  will after this. Delete `rarity_html()` and its `sector-vocab.json` `rarity` block. The
+  extractor keeps emitting `crew_rarity` — it costs nothing, and `crew_store_odds` is computed
+  from the same effective-rarity logic (SECTOR-PAGE.md §4.3c), which stays.
 
 ### 2.4 Blue options — per level, level in the name, top four, whole box clicks
 
@@ -232,53 +235,86 @@ they said:
 
 ---
 
-## 5. Open questions — resolve these with the user before implementing
+## 5. Open questions
 
-1. **Where does provenance live now?** §2.9 removed the footer, which carried: the source file
-   list, "generation rules are community-derived", the `minSector` offset, the 19-beacon floor,
-   the `unique` scope question, and the no-weights rule. §2.5 removed the crew-odds provenance
-   line — a block that states percentages read out of a **disassembly** now says nothing about
-   where they came from. Options: a collapsed "sources" disclosure at the foot, tooltips, or a
-   companion `wiki/` page the pages link to. **Spec invariants S4 and S5 and §7's checks have
-   to be amended either way — do not just delete them.**
-2. **Is the min–max roll uniform?** The pages now print per-block percentages. The source says
+Three were put to the user on 2026-08-16 and are **settled** — recorded here because the
+reasoning matters later, not because anything is left to decide:
+
+- **Provenance is dropped, not relocated.** No footer, no disclosure, no link out. The pages
+  carry no sources, no "generation rules are community-derived" caveat, no `unique`-scope
+  question, and no note that the store-crew percentages were read out of a disassembly.
+  **`SECTOR-PAGE.md` §3 must be amended to exempt sector pages from S4 and S5 explicitly**, and
+  §7's checks with it. An invariant that is silently violated is worse than one that says where
+  it does not apply — and the evidence itself is not lost: it stays in `wiki/concepts/`
+  (`blueprint-rarity.md`, `sector-event-allocation.md`, `event-uniqueness.md`) and in
+  `raw/modding/2026-08-16-store-crew-selection-disassembly.md`.
+- **`stats` is deleted from all 19 copy files**, and `build-sector.py` stops accepting the key.
+- **The rarity block is cut from the design** (§2.3).
+
+Still open, and none of them block the rollout:
+
+1. **Is the min–max roll uniform?** The pages now print per-block percentages. The source says
    only "randomly choose between the minimum and maximum (inclusive)"
    (`raw/wiki/sectors.md`, community reverse-engineering). Uniform is the natural reading and
    is what the mock computes; it is still an assumption stated as a number on the page.
-3. **Is a level-less system gate the same as level 1?** §2.4 merges them. Sound for systems
+2. **Is a level-less system gate the same as level 1?** §2.4 merges them. Sound for systems
    (having one means level 1), but no file says so.
-4. **`stats` in the copy files** — drop the key from all 19, or keep it accepted and ignored?
-5. **What is lost with the removed meta**: the store slot count (3, AE) and the fact that some
+3. **What is lost with the removed meta**: the store slot count (3, AE) and the fact that some
    species are excluded now appear only as tooltips and 0% rows. Acceptable, or does one line
    come back?
-6. **The hit-count definition** ("a hit is one event that offers it, not one beacon") no longer
+4. **The hit-count definition** ("a hit is one event that offers it, not one beacon") no longer
    appears anywhere.
-7. **The rarity block** (§2.3) has never been reviewed. Thirteen of the 19 pages show it.
-8. **File the naming contradiction** from §2.1 in `wiki/sectors/federation-space.md` per
+5. **File the naming contradiction** from §2.1 in `wiki/sectors/federation-space.md` per
    CLAUDE.md §4 — game files vs what the map shows.
+6. **Two dummy `crewBlueprint`s**, `battle` and `repair`, are rarity 0 like the three excluded
+   species but are never shown to a player — the files mark them `NOLOC="1"` with the desc
+   "Dummy blueprint needed now." The extractor filters on `NOLOC`, so `excluded` carries three
+   species rather than five. Derivable, but not a rule any file states.
 
 ---
 
 ## 6. Rolling this out to the other 18 sectors
 
-Order matters. The first two steps are decisions, not code.
+Order matters.
 
-1. **Settle §5.1 and §5.4 with the user.** Everything else is mechanical; these two change what
-   the renderer must emit.
-2. **Extractor first** (`extract-sector.py`, then re-extract all 19). Four additions, each of
-   which keeps the renderer out of the XML: per-level gate rows, `system` on each gate,
-   `excluded` species in `crew_store_odds`, and `distress`/`store` marker tags per event.
-   Re-run `tools/extract-sector.py --all` and diff the JSON before touching the renderer.
-3. **Vocabulary and renderer** (`sector-vocab.json`, `build-sector.py`,
-   `sector-page-render.html`, plus the new toggle script). Port the mock's hardcoded English
-   into the vocab file as you go — the mock is the reference for wording, not the source of it.
-4. **Copy files.** Every sector needs: a shortened lede, `callout` removed, `stats` resolved,
+1. ~~**Settle the blocking decisions with the user.**~~ **Done, 2026-08-16** — §5.
+2. ~~**Extractor first.**~~ **Done, 2026-08-16.** `rollup.gates` entries now carry `system` and
+   `levels_detail` (per-level rows, de-duplicated by event id, a level-less system gate folded
+   into `"1"` and a non-system gate as one `lvl: null` row); `crew_store_odds.excluded` lists
+   the species a store here cannot sell; and every event record carries `distress` /
+   `store-marker` tags matching `rollup.markers` exactly. All 19 re-extracted, additive only —
+   pages built from the new data are byte-identical to the old.
+
+   Two things step 3 must know. **The marker tag is `store-marker`, not `store`** — `store`
+   already means "a store opens in this tree", which is a narrower set, so the mock's
+   `.tg.store` CSS has to be pointed at the new name deliberately. And the built pages in the
+   tree are **stale against `sector-page-render.html`** by a 5-line CSS comment block that
+   predates all of this; it lands on the next rebuild and is not a regression.
+3. ~~**Vocabulary and renderer.**~~ **Done, 2026-08-16.** `sector-vocab.json` rewritten (rarity,
+   footnotes, pool-section and stat-tile words gone; legend, block tooltips, marker tags and the
+   two generation paragraphs in); `build-sector.py` drops `stats_html`, `rarity_html`,
+   `pool_sections` and `footnotes`, and `sector-page-render.html` carries the mock's CSS.
+   `tools/sector-toggle.js` is the new toggle script, inlined the way `sector-cards.js` is.
+
+   Three things step 4 must know. **`stats` and `callout` are accepted and ignored**, not
+   rejected — a hard failure before the copy pass would leave the tree unbuildable; they are
+   `DEAD_KEYS` in `build-sector.py` and should leave `COPY_KEYS` once all 19 copy files are
+   clean. **The legend's worked example needed a second wording**: the mock's "80% for one" is
+   only true where the example line's minimum is 0, so a line that already guarantees blocks
+   renders `legend.may_offset` instead. And **two of the eight old paragraphs came back as
+   conditional third lines** (user decision, 2026-08-16), because both state something no block
+   on the page shows: `generation.fallback_also_allocated` on the two Slug nebulas, where
+   `NEUTRAL` is a numbered line *and* the fill-in row and the budget otherwise reads as a
+   doubled row, and `generation.cannot_meet_minimum` on Hidden Crystal Worlds, which allocates
+   25 against a 24-beacon ceiling. The other 16 pages keep the two-paragraph note exactly.
+4. **Copy files.** Every sector needs: a shortened lede, `callout` removed, `stats` deleted,
    and any panel that duplicated a now-deleted section removed — on Federation Space that was
    **Reading the map here**, whose cloud paragraph moved into the generation note. Expect the
    same panel to exist under other names elsewhere.
-5. **Update `SECTOR-PAGE.md`.** §6's page order, §6.2's block descriptions, §7's failure list,
-   §4.3's tag table, and the §3 invariants touched by §5.1 here. When this document and the
-   spec agree, delete this document.
+5. **Update `SECTOR-PAGE.md`.** §6's page order, §6.2's block descriptions (the rarity block is
+   gone), §7's failure list (no stat tiles, no footnotes), §4.3's tag table (the two marker
+   tags), §5's copy schema (no `stats`, no `callout`), and §3's S4/S5 exemption per §5 here.
+   When this document and the spec agree, delete this document.
 6. **Verify per sector**: `smoke-sector.py` and `smoke-inline.py`, plus a real look at the
    glance row — the two panels are only level because their content happens to balance on this
    sector, and nothing enforces it.
@@ -289,4 +325,5 @@ Order matters. The first two steps are decisions, not code.
 Sectors likely to stress the new shape: **Hidden Crystal Worlds** (allocates 25 against a
 24-beacon ceiling, so its fill-in row is a zero row), **The Last Stand** (no glance section at
 all — nothing to level the crew box against), the two **Slug nebulas** (allocate the fallback
-list by name as well), and the thirteen sectors with a `rarityList` (§5.7).
+list by name as well), and the thirteen sectors whose pages lose a whole glance block when the
+rarity panel goes (§2.3) — check the remaining two still balance there.

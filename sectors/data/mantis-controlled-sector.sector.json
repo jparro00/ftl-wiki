@@ -104,6 +104,24 @@
         "share": 14.3,
         "in_store": 37.0
       }
+    ],
+    "excluded": [
+      {
+        "id": "crystal",
+        "label": "Crystal"
+      },
+      {
+        "id": "anaerobic",
+        "label": "Lanius"
+      },
+      {
+        "id": "slug",
+        "label": "Slug"
+      },
+      {
+        "id": "energy",
+        "label": "Zoltan"
+      }
     ]
   },
   "start_event": {
@@ -134,7 +152,8 @@
           "title": "Store (Mantis)",
           "card": true,
           "tags": [
-            "store"
+            "store",
+            "store-marker"
           ],
           "marker": {
             "store": true
@@ -207,7 +226,9 @@
             "crew",
             "store",
             "quest",
-            "unique"
+            "unique",
+            "distress",
+            "store-marker"
           ],
           "marker": {
             "beacon": "distress",
@@ -236,7 +257,8 @@
           "tags": [
             "crew",
             "reward",
-            "cost"
+            "cost",
+            "distress"
           ],
           "marker": {
             "beacon": "distress"
@@ -257,7 +279,8 @@
           "tags": [
             "fight",
             "crew",
-            "unique"
+            "unique",
+            "distress"
           ],
           "marker": {
             "beacon": "distress"
@@ -279,7 +302,8 @@
             "may-fight",
             "crew",
             "cost",
-            "unique"
+            "unique",
+            "distress"
           ],
           "marker": {
             "beacon": "distress"
@@ -310,7 +334,8 @@
             "crew-loss",
             "reward",
             "cost",
-            "unique"
+            "unique",
+            "distress"
           ],
           "marker": {
             "beacon": "distress"
@@ -343,7 +368,8 @@
           "card": true,
           "tags": [
             "reward",
-            "unique"
+            "unique",
+            "distress"
           ],
           "marker": {
             "beacon": "distress"
@@ -389,7 +415,8 @@
             "crew-loss",
             "crew",
             "reward",
-            "unique"
+            "unique",
+            "distress"
           ],
           "marker": {
             "beacon": "distress"
@@ -419,7 +446,8 @@
           "tags": [
             "crew-loss",
             "reward",
-            "unique"
+            "unique",
+            "distress"
           ],
           "marker": {
             "beacon": "distress"
@@ -958,7 +986,8 @@
               "may-fight",
               "crew",
               "store",
-              "unique"
+              "unique",
+              "store-marker"
             ],
             "marker": {
               "store": true
@@ -1326,7 +1355,8 @@
         "tags": [
           "may-fight",
           "store",
-          "unique"
+          "unique",
+          "store-marker"
         ],
         "marker": {
           "store": true
@@ -1787,6 +1817,7 @@
           "cloaking"
         ],
         "req": "cloaking",
+        "system": true,
         "levels": [
           "1",
           "2",
@@ -1795,6 +1826,27 @@
         "events": [
           "DISTRESS_SATELLITE_DEFENSE",
           "MANTIS_FIGHT_CHOICE"
+        ],
+        "levels_detail": [
+          {
+            "lvl": "1",
+            "events": [
+              "DISTRESS_SATELLITE_DEFENSE",
+              "MANTIS_FIGHT_CHOICE"
+            ]
+          },
+          {
+            "lvl": "2",
+            "events": [
+              "DISTRESS_SATELLITE_DEFENSE"
+            ]
+          },
+          {
+            "lvl": "3",
+            "events": [
+              "DISTRESS_SATELLITE_DEFENSE"
+            ]
+          }
         ]
       },
       {
@@ -1803,10 +1855,20 @@
           "engi"
         ],
         "req": "engi",
+        "system": false,
         "levels": [],
         "events": [
           "DISTRESS_SATELLITE_DEFENSE",
           "DISTRESS_STATION_DISEASE"
+        ],
+        "levels_detail": [
+          {
+            "lvl": null,
+            "events": [
+              "DISTRESS_SATELLITE_DEFENSE",
+              "DISTRESS_STATION_DISEASE"
+            ]
+          }
         ]
       },
       {
@@ -1815,10 +1877,20 @@
           "rock"
         ],
         "req": "rock",
+        "system": false,
         "levels": [],
         "events": [
           "DISTRESS_STATION_FIRE",
           "DISTRESS_STATION_DISEASE"
+        ],
+        "levels_detail": [
+          {
+            "lvl": null,
+            "events": [
+              "DISTRESS_STATION_FIRE",
+              "DISTRESS_STATION_DISEASE"
+            ]
+          }
         ]
       },
       {
@@ -1827,12 +1899,27 @@
           "sensors"
         ],
         "req": "sensors",
+        "system": true,
         "levels": [
           "3"
         ],
         "events": [
           "TRADER_UPGRADES",
           "BROKEN_REBEL_DRONE"
+        ],
+        "levels_detail": [
+          {
+            "lvl": "1",
+            "events": [
+              "TRADER_UPGRADES"
+            ]
+          },
+          {
+            "lvl": "3",
+            "events": [
+              "BROKEN_REBEL_DRONE"
+            ]
+          }
         ]
       },
       {
@@ -1841,9 +1928,18 @@
           "FTL_JUMPER"
         ],
         "req": "FTL_JUMPER",
+        "system": false,
         "levels": [],
         "events": [
           "ESCORT_BEACON"
+        ],
+        "levels_detail": [
+          {
+            "lvl": null,
+            "events": [
+              "ESCORT_BEACON"
+            ]
+          }
         ]
       },
       {
@@ -1852,9 +1948,18 @@
           "BEAM_BIO"
         ],
         "req": "BEAM_BIO",
+        "system": false,
         "levels": [],
         "events": [
           "DISTRESS_INFESTATION"
+        ],
+        "levels_detail": [
+          {
+            "lvl": null,
+            "events": [
+              "DISTRESS_INFESTATION"
+            ]
+          }
         ]
       },
       {
@@ -1863,9 +1968,18 @@
           "BATTLE"
         ],
         "req": "BATTLE",
+        "system": false,
         "levels": [],
         "events": [
           "DISTRESS_INFESTATION"
+        ],
+        "levels_detail": [
+          {
+            "lvl": null,
+            "events": [
+              "DISTRESS_INFESTATION"
+            ]
+          }
         ]
       },
       {
@@ -1874,9 +1988,18 @@
           "COMBAT_BEAM_DRONE_LIST"
         ],
         "req": "COMBAT_BEAM_DRONE_LIST",
+        "system": false,
         "levels": [],
         "events": [
           "DISTRESS_TRAPPED_MINER"
+        ],
+        "levels_detail": [
+          {
+            "lvl": null,
+            "events": [
+              "DISTRESS_TRAPPED_MINER"
+            ]
+          }
         ]
       },
       {
@@ -1885,9 +2008,18 @@
           "WEAPONS_BEAM_DAMAGE"
         ],
         "req": "WEAPONS_BEAM_DAMAGE",
+        "system": false,
         "levels": [],
         "events": [
           "DISTRESS_TRAPPED_MINER"
+        ],
+        "levels_detail": [
+          {
+            "lvl": null,
+            "events": [
+              "DISTRESS_TRAPPED_MINER"
+            ]
+          }
         ]
       },
       {
@@ -1896,9 +2028,18 @@
           "BOARDER"
         ],
         "req": "BOARDER",
+        "system": false,
         "levels": [],
         "events": [
           "DISTRESS_INFESTATION"
+        ],
+        "levels_detail": [
+          {
+            "lvl": null,
+            "events": [
+              "DISTRESS_INFESTATION"
+            ]
+          }
         ]
       },
       {
@@ -1907,9 +2048,18 @@
           "doors"
         ],
         "req": "doors",
+        "system": true,
         "levels": [],
         "events": [
           "TRADER_UPGRADES"
+        ],
+        "levels_detail": [
+          {
+            "lvl": "1",
+            "events": [
+              "TRADER_UPGRADES"
+            ]
+          }
         ]
       },
       {
@@ -1918,9 +2068,18 @@
           "NANO_MEDBAY"
         ],
         "req": "NANO_MEDBAY",
+        "system": false,
         "levels": [],
         "events": [
           "DISTRESS_STATION_DISEASE"
+        ],
+        "levels_detail": [
+          {
+            "lvl": null,
+            "events": [
+              "DISTRESS_STATION_DISEASE"
+            ]
+          }
         ]
       },
       {
@@ -1929,9 +2088,18 @@
           "WEAPONS_ION"
         ],
         "req": "WEAPONS_ION",
+        "system": false,
         "levels": [],
         "events": [
           "DISTRESS_SATELLITE_DEFENSE"
+        ],
+        "levels_detail": [
+          {
+            "lvl": null,
+            "events": [
+              "DISTRESS_SATELLITE_DEFENSE"
+            ]
+          }
         ]
       },
       {
@@ -1940,11 +2108,20 @@
           "medbay"
         ],
         "req": "medbay",
+        "system": true,
         "levels": [
           "2"
         ],
         "events": [
           "DISTRESS_STATION_DISEASE"
+        ],
+        "levels_detail": [
+          {
+            "lvl": "2",
+            "events": [
+              "DISTRESS_STATION_DISEASE"
+            ]
+          }
         ]
       },
       {
@@ -1953,9 +2130,18 @@
           "WEAPONS_MISSILES_EVENTS"
         ],
         "req": "WEAPONS_MISSILES_EVENTS",
+        "system": false,
         "levels": [],
         "events": [
           "HELP_MINERS"
+        ],
+        "levels_detail": [
+          {
+            "lvl": null,
+            "events": [
+              "HELP_MINERS"
+            ]
+          }
         ]
       },
       {
@@ -1964,9 +2150,18 @@
           "oxygen"
         ],
         "req": "oxygen",
+        "system": true,
         "levels": [],
         "events": [
           "TRADER_UPGRADES"
+        ],
+        "levels_detail": [
+          {
+            "lvl": "1",
+            "events": [
+              "TRADER_UPGRADES"
+            ]
+          }
         ]
       },
       {
@@ -1975,9 +2170,18 @@
           "pilot"
         ],
         "req": "pilot",
+        "system": true,
         "levels": [],
         "events": [
           "TRADER_UPGRADES"
+        ],
+        "levels_detail": [
+          {
+            "lvl": "1",
+            "events": [
+              "TRADER_UPGRADES"
+            ]
+          }
         ]
       },
       {
@@ -1986,9 +2190,18 @@
           "reactor"
         ],
         "req": "reactor",
+        "system": false,
         "levels": [],
         "events": [
           "TRADER_UPGRADES"
+        ],
+        "levels_detail": [
+          {
+            "lvl": null,
+            "events": [
+              "TRADER_UPGRADES"
+            ]
+          }
         ]
       },
       {
@@ -1997,9 +2210,18 @@
           "REPAIR"
         ],
         "req": "REPAIR",
+        "system": false,
         "levels": [],
         "events": [
           "DISTRESS_STATION_FIRE"
+        ],
+        "levels_detail": [
+          {
+            "lvl": null,
+            "events": [
+              "DISTRESS_STATION_FIRE"
+            ]
+          }
         ]
       }
     ],

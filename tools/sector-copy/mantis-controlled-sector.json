@@ -1,17 +1,7 @@
 {
   "slug": "mantis-controlled-sector",
 
-  "lede": "Mantis space comes at you through the airlock, and it does not restock you afterwards. One to two guaranteed stores and — unlike Pirate space, which carries four — a single event in the whole pool that can open another. Six to seven hostile beacons plus one to two boarding parties, no nebula anywhere to slow the Rebels, and not one event here that buys you a jump of delay.",
-
-  "stats": [
-    { "metric": "beacons_min..beacons_max", "label": "Beacon spread" },
-    { "metric": "section:hostile:min..section:hostile:max", "label": "Guaranteed fights" },
-    { "metric": "entry:BOARDERS_MANTIS:min..entry:BOARDERS_MANTIS:max", "label": "Boarding beacons" },
-    { "metric": "entry:STORE_MANTIS:min..entry:STORE_MANTIS:max", "label": "Stores" },
-    { "metric": "distinct_events", "label": "Events in pool" }
-  ],
-
-  "callout": "**Versus the Mantis Homeworlds:** identical, entry for entry — the same seven lists at the same minimums and the same maximums. The Homeworlds add exactly one thing, the guaranteed `MANTIS_NAMED_THIEF` beacon and the ship unlock behind it. This sector is that sector with the named quest cut out.",
+  "lede": "Mantis space comes at you through the airlock, and it does not restock you afterwards: past the guaranteed stores, exactly one event in the whole pool can open another counter, and nothing in it buys you a jump of distance from the Rebels.",
 
   "section_notes": {
     "STORE_MANTIS": "First line in the table, so the one or two stores are the only thing here that never gets squeezed — and they are very nearly the whole shop. The pool's one other route to a counter is at the far end of the quest {{ESCORT_BEACON}} sends you on.",
@@ -77,16 +67,6 @@
         { "lead": "Crew", "text": "{{DISTRESS_STATION_FIRE}} pays a scientist if you dock and cut in, at a cost of 3 hull and a random system. {{TAVERN_HIRE}} is the reliable version of the same idea." },
         { "lead": "Repairs", "text": "{{MANTIS_CIVILIAN}} is the one place a saved civilian pays back in kind: 5 hull repaired, a free weapon installed, or a crew member, depending on who you rescued." },
         { "lead": "The best gated payouts", "text": "An augment from the Rock at the fire, a weapon from Engi Med-bot Dispersal at the disease colony, a drone from a Repair drone at the fire. All three need the kit before you arrive." }
-      ]
-    },
-    {
-      "title": "Reading the map here",
-      "items": [
-        { "lead": "Distress", "text": "The distress-tagged events here are exactly the distress list, in both directions — nothing outside it carries the tag, nothing inside it is missing one. The markers you can count are the one to three the table allocated and no more, which is not true of most sectors." },
-        { "lead": "Scanners", "text": "Three of the eight arrive with a ship already parked at the beacon: {{ESCORT_BEACON}} and {{FRIENDLY_BEACON}}, both friendly, and {{TRAP_BEACON}}, a pirate lying in wait. A ship reading on a distress marker narrows it to those three, one of which opens fire." },
-        { "lead": "Stores", "text": "One to two, placed before anything else, and then effectively nothing. Arriving here already needing hull and fuel is the mistake this sector punishes hardest." },
-        { "lead": "No nebula", "text": "No nebula line, so no purple clouds are drawn: sensors work everywhere, no beacon halves the Rebel advance, the exit is never a dead nebula stop, and the rule that pushes quest markers out of cloud cover never fires." },
-        { "lead": "Leftovers", "text": "The table's minimum is well under the map's ceiling, so beacons can be left over and filled from the shared filler list — which is where the pirate briber and the fleet-delaying mercenary live. Neither appears in any of this sector's own lists." }
       ]
     }
   ]

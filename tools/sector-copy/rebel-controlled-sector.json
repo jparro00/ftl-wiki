@@ -1,17 +1,7 @@
 {
   "slug": "rebel-controlled-sector",
 
-  "lede": "Rebel space, held by the fleet that is already chasing you — the sector where the pursuit stops being background weather and becomes something your choices move. **Seven of the 49 events here touch the fleet clock, and six of them can only push it the wrong way**: a scout that lives long enough to charge its FTL doubles that jump's advance. The counterweight is not an event at all — reaching a nebula beacon halves the advance, so the sector's most dependable brake is whatever cloud the map happens to draw.",
-
-  "stats": [
-    { "metric": "beacons_min..beacons_max", "label": "Beacon spread" },
-    { "metric": "section:hostile:min..section:hostile:max", "label": "Guaranteed fights" },
-    { "metric": "section:boarders:min..section:boarders:max", "label": "Boarding beacons" },
-    { "metric": "section:nebula:min..section:nebula:max", "label": "Nebula beacons" },
-    { "metric": "distinct_events", "label": "Events in pool" }
-  ],
-
-  "callout": "**Two sectors hide in this one table, and they are mutually exclusive.** Roll high everywhere and the map fills before the last line is reached — the neutral pool goes, and with it {{AUTO_DEFENSE_RADAR}}, the only event in the sector that can push the fleet **back**. Roll low and the table runs out before the beacons do, and the leftovers are drawn from a shared list that is not Rebel-flavoured at all — the one way a mercenary selling two jumps of delay ever appears here.",
+  "lede": "Rebel space, held by the fleet already chasing you — the sector where the pursuit stops being background weather and becomes something your choices move. **Seven of the 49 events here touch the fleet clock and six of them can only push it the wrong way**, and the one dependable brake is not an event at all but whatever cloud the map happens to draw.",
 
   "section_notes": {
     "HOSTILE_REBEL": "Two of these five are scouts rather than warships. {{AUTO_WARNING}} and {{SQUAT_WARNING}} are ordinary fights right up until they start charging FTL — let either get away and that jump's advance doubles, which is the one thing killing them quickly actually buys. {{REBEL_TRANSPORT}} in the neutral pool looks identical and is not: its escape costs you nothing.",
@@ -82,16 +72,8 @@
         { "lead": "Boarders ×6", "text": "One beacon of them is guaranteed, but six events can put people aboard: up to four humans at {{BOARDERS_SUN}}, {{NEBULA_REBEL_BOARDING}} and the infected station on {{MERCHANT_REQUEST}}, two to three at {{BOARDERS_REBEL_SHIP}} and {{FEDERATION_PLANET_SIGNAL}}, one or two at {{ALISON_DEFECTOR}}." },
         { "lead": "Crew loss ×4", "text": "{{STORM_ITEMS}}, {{DISTRESS_STATION_FIRE}}, {{ALISON_DEFECTOR}} and {{MERCHANT_REQUEST}} are the only events that can take someone off the roster, and every one of them is a branch you opt into — nothing here costs crew on arrival." },
         { "lead": "Drone parts", "text": "{{AUTO_DEFENSE_RADAR}} charges a drone part for the approach whether or not it works, including the outcome where the drone is shot down and the auto-ship comes for you anyway." },
-        { "lead": "Bait", "text": "{{TRAP_BEACON}} is a distress call with a pirate behind it, and one of the five outcomes at {{FEDERATION_PLANET_SIGNAL}} is a Rebel signal broadcast specifically to catch ships like yours." }
-      ]
-    },
-    {
-      "title": "Reading the map here",
-      "items": [
-        { "lead": "The clouds are the brake", "text": "Reaching a nebula beacon halves that jump's advance, and how many the map has is settled before a single event is assigned. A cloud-free roll leaves the radar station as the only thing in the sector that can slow the fleet at all — and that sits in the line most likely to be cut." },
-        { "lead": "If it catches you", "text": "A Rebel Elite Fighter under an anti-ship battery: three hull and a guaranteed breach per real shot, one fuel for the kill and no scrap, because the armada stops you stripping the wreck. Inside a cloud there is no battery — the beacon gains an ion storm instead, half your reactor and no breaches." },
-        { "lead": "Stores", "text": "One or two are guaranteed and the line is filled early enough that the squeeze never reaches it. {{ESCORT_BEACON}} can open a third, and the shared fallback list carries a pirate briber who will sell you into one." },
-        { "lead": "Quest markers", "text": "A planted marker still needs somewhere legal to land: an unvisited beacon, outside the clouds, not already taken by the fleet, and nearer to you than the fleet is to it. In the sector where the fleet is the whole problem, that filter is what quietly pushes quests into the next one." }
+        { "lead": "Bait", "text": "{{TRAP_BEACON}} is a distress call with a pirate behind it, and one of the five outcomes at {{FEDERATION_PLANET_SIGNAL}} is a Rebel signal broadcast specifically to catch ships like yours." },
+        { "lead": "If it catches you", "text": "A Rebel Elite Fighter under an anti-ship battery: three hull and a guaranteed breach per real shot, one fuel for the kill and no scrap, because the armada stops you stripping the wreck. Inside a cloud there is no battery — the beacon gains an ion storm instead, half your reactor and no breaches." }
       ]
     }
   ]

@@ -62,6 +62,20 @@
         "share": 5.9,
         "in_store": 16.6
       }
+    ],
+    "excluded": [
+      {
+        "id": "crystal",
+        "label": "Crystal"
+      },
+      {
+        "id": "anaerobic",
+        "label": "Lanius"
+      },
+      {
+        "id": "slug",
+        "label": "Slug"
+      }
     ]
   },
   "start_event": {
@@ -84,7 +98,8 @@
           "title": "Store",
           "card": true,
           "tags": [
-            "store"
+            "store",
+            "store-marker"
           ],
           "marker": {
             "store": true
@@ -446,7 +461,8 @@
         "tags": [
           "may-fight",
           "store",
-          "unique"
+          "unique",
+          "store-marker"
         ],
         "marker": {
           "store": true

@@ -1,17 +1,7 @@
 {
   "slug": "the-last-stand",
 
-  "lede": "The one sector whose table cannot fill the map: it asks for at most 20 slots against a 24-beacon ceiling, so nothing on it is ever cut and the spare beacons draw from the galaxy-wide fallback list instead. What it does place is supply and repetition — three repair stations, one store, and the same Rebel scout on all six hostile beacons. The fight you came for is on none of those rows: the **Rebel Flagship** and the Federation Base are put on the map by the endgame.",
-
-  "stats": [
-    { "metric": "beacons_min..beacons_max", "label": "Beacon spread" },
-    { "metric": "section:hostile:min..section:hostile:max", "label": "Forced fights" },
-    { "metric": "entry:BOSS_REPAIR_STATION:min..entry:BOSS_REPAIR_STATION:max", "label": "Repair stations" },
-    { "metric": "distinct_events", "label": "Events in pool" },
-    { "metric": "gated_events", "label": "Blue options" }
-  ],
-
-  "callout": "**Order does not matter here — and that is unique.** In every other sector the sequence of these rows decides what gets dropped once the map is full. This allocation tops out below the ceiling, so every row is placed in full every run and nothing is ever at risk. The overflow runs the other way instead: on a full map at least four beacons are left with nothing assigned, and they fall to the shared `NEUTRAL` fallback — ordinary galaxy events, no `BOSS_` prefix, none of them in the table below. **Pirate briber** is one that can turn up, which is also the only way this sector produces a second store.",
+  "lede": "The one sector whose table cannot fill the map, so nothing on it is ever cut and the spare beacons draw from the galaxy-wide fallback list instead. What it places is supply and repetition — three repair stations, one store, and the same Rebel scout on every hostile beacon; the fight you came for is put on the map by the endgame, not by this table.",
 
   "section_notes": {
     "BOSS_HOSTILE": "One event, written into the list three times, filling six beacons — every hostile beacon in the sector is the same encounter. Its ship is drawn from a roster of two crewed Rebel hulls and two automated ones, and it has no surrender branch and no escape branch: once {{BOSS_SCOUT}} starts, it runs to a wreck.",
@@ -69,10 +59,9 @@
       ]
     },
     {
-      "title": "Reading the map here",
+      "title": "The endgame map",
       "items": [
         { "lead": "No exit", "text": "This is the only sector with no exit beacon at all, so the shared exit list that fills one everywhere else never runs. Nothing on this map is a way out." },
-        { "lead": "No distress", "text": "Nothing in the pool carries the distress tag and no distress line is allocated, so that marker never appears here. The only thing the map labels ahead of time is supply: the store, and the three repair stations." },
         { "lead": "Where the base sits", "text": "Toward the middle-right of the grid, and the game places it a fixed distance from your arrival — four jumps away on easy and normal, five to six on hard. The Flagship spawns in the two right-most columns, four to six jumps from the base." },
         { "lead": "A different clock", "text": "The fleet does not sweep in from the left here. It takes scattered individual beacons each turn, and the Flagship takes whatever it is sitting on — so danger arrives behind you as readily as ahead." },
         { "lead": "Waiting is a move", "text": "You can hold at a beacon with fuel still in the tank. It ticks the map forward like a jump, and a fight that starts after a wait begins with your FTL already charged." }

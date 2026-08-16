@@ -1,20 +1,10 @@
 {
   "slug": "rock-homeworlds",
 
-  "lede": "**The Rockmen fight you at home, and they fight you in weather.** Every ship in the hostile pool is Rock, and five of the eight events across the hostile and boarder pools open in an asteroid field or beside a sun — hazards that lock the ship menu for as long as you stay, so no upgrades and no cargo-bay swaps while the rocks are landing. It is a late-run sector by construction — never earlier than five — and you come anyway for the two beacons it must place by name: one opens the **Rock Cruiser quest**, and {{ROCK_CRYSTAL_BEACON}} is the only door in the game to the Crystal worlds — for a ship that already has a Crystal aboard.",
-
-  "stats": [
-    { "metric": "beacons_min..beacons_max", "label": "Beacon spread" },
-    { "metric": "section:hostile:min..section:hostile:max", "label": "Guaranteed fights" },
-    { "metric": "entry:STORE_ROCK:min..entry:STORE_ROCK:max", "label": "Stores" },
-    { "metric": "quest_start_events", "label": "Quest starters in pool" },
-    { "metric": "distinct_events", "label": "Events in pool" }
-  ],
-
-  "callout": "**Versus a plain Rock Controlled Sector:** the same pools, the same allocation numbers, the same ships. Four things differ — it can appear once per run, never before sector 5, it adds the two named beacons at the head of the queue, and the **Crystal Lockdown Bomb** drops from rarity 4 to 2, the lowest value that weapon is given in any sector, the Crystal worlds included. The shooting is the same shooting; the reason to come is the top two lines.",
+  "lede": "**The Rockmen fight you at home, and they fight you in weather** — five of the eight events across the hostile and boarder pools open in an asteroid field or beside a sun, hazards that lock the ship menu for as long as you stay. You come anyway for the two beacons the sector must place by name: one opens the **Rock Cruiser quest**, and {{ROCK_CRYSTAL_BEACON}} is the only door in the game to the Crystal worlds — for a ship that already has a Crystal aboard.",
 
   "section_notes": {
-    "ROCK_CRYSTAL_BEACON": "The way out of the game's normal map, and the **Crystal crew** blue option is the only choice that opens it — the Damaged Stasis Pod on its own will not do. Nothing in this sector can turn one into the other: the pod becomes a Crystal crew member at a Zoltan research facility, and there is none here, so whether this beacon pays was settled a sector or two ago. Without a Crystal aboard the device is a gamble: scrapping it either pays out a large pile of scrap or brings a Rock warship down on you for the vandalism.",
+    "ROCK_CRYSTAL_BEACON": "The way out of the game's normal map, and the **Crystal crew** blue option is the only choice that opens it — the Damaged Stasis Pod on its own will not do. Nothing in this sector can turn one into the other: the pod becomes a Crystal crew member at a Zoltan research facility, and there is none here, so whether this beacon pays was settled a sector or two ago. Without a Crystal aboard the device is a gamble: scrapping it either pays out a large pile of scrap or brings a Rock warship down on you for the vandalism. Carrying **Ruwen** is also the only thing that makes this beacon visible in advance — he turns it into a quest marker you can see from anywhere on the map.",
     "ROCK_UNLOCK1": "No fight here — the Rock warship never turns hostile and jumps away whatever you say. Two of the three replies plant the next marker; ignoring them ends the line on the spot.",
     "HOSTILE_ROCK": "Rock ships, all five. Three of them arrive with the environment already against you — twice in an asteroid field, once beside a sun.",
     "BOARDERS_ROCK": "{{ROCK_BOARDERS_SUN}} has no ship fight and no choice at all: two to three Rockmen are aboard the moment you arrive, and the sun is on you the whole time.",
@@ -80,15 +70,6 @@
         { "lead": "Solar flares", "text": "A flare every 28–34 seconds with five seconds of warning: one or two fires while shields hold, three to six when they are down, and every burning room can take hull and system damage with it. {{ROCK_PIRATE_SUN}} and {{ROCK_BOARDERS_SUN}}." },
         { "lead": "Ammo", "text": "{{ROCK_STARSHIP_MINE}} costs one drone part to cut away, or one missile and 3 hull to detonate. Send someone out to defuse it by hand and **both** wire choices end the same way: the crew member dies, 5 hull, a breach. Engines 5 backs you out of it for nothing." },
         { "lead": "Scrap", "text": "Demand payment instead of paying at {{ROCK_SLUG_ARGUMENT}} and it opens with 3 hull damage, a system knocked out, and a fight. Freeing a slave at {{FRIENDLY_SLAVER}} runs 25–45 scrap." }
-      ]
-    },
-    {
-      "title": "Reading the map here",
-      "items": [
-        { "lead": "The two you came for", "text": "Neither named beacon announces itself. Only stores and distress calls put a marker on the map, so the device and the war vessel are ordinary unexplored dots until you jump in — unless you are carrying **Ruwen**, the Crystal crew member from the stasis pod, who turns {{ROCK_CRYSTAL_BEACON}} into a quest marker you can see from anywhere." },
-        { "lead": "Distress", "text": "Long-Ranged Scanners splits the distress-marked pool cleanly: only {{ESCORT_BEACON}}, {{FRIENDLY_BEACON}} and {{TRAP_BEACON}} read as a possible ship. A no-ship reading covers everything else, including {{ASTEROID_DERELICT_SHIP}} and every crew-killer that shows a marker at all." },
-        { "lead": "Quest markers", "text": "Nine events here plant one, and a marker can only land on a beacon you have not visited that is not a store, not a distress call, not the exit and not already taken by the fleet. Explore half the map first and the candidates thin out — and if this sector came up seventh, a marker with nowhere to go is dropped instead of carried forward." },
-        { "lead": "No nebula", "text": "Not one nebula line in the table, so no clouds convert beacons, sensors work everywhere, and nothing here slows the pursuit: every jump you make advances the fleet at the full rate." }
       ]
     }
   ]

@@ -82,20 +82,6 @@
   }
   .fact b { color: var(--ink); font-weight: 600; }
 
-  .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(9.2rem, 1fr)); gap: .55rem; }
-  .stat {
-    background: var(--panel); border: 1px solid var(--edge); border-radius: 3px;
-    padding: .75rem .8rem; display: flex; flex-direction: column; gap: .15rem;
-  }
-  .stat .n {
-    font-family: var(--mono); font-size: 1.5rem; font-weight: 600;
-    font-variant-numeric: tabular-nums; letter-spacing: -.02em; line-height: 1.1; color: var(--cyan);
-  }
-  .stat .k {
-    font-family: var(--mono); font-size: .62rem; letter-spacing: .14em;
-    text-transform: uppercase; color: var(--faint);
-  }
-
   section { display: flex; flex-direction: column; gap: .8rem; }
   h2 {
     font-size: .74rem; font-family: var(--mono); font-weight: 600;
@@ -162,6 +148,23 @@
   .brow.fill .rank, .brow.fill .name { color: var(--dim); }
   .mark.fill { color: var(--faint); }
 
+  /* What a block means, once, under the table. A faded block is "at least this many",
+     which is not something the shape can say on its own. */
+  .legend {
+    display: flex; flex-direction: column; gap: .4rem;
+    border: 1px solid var(--edge); border-radius: 2px; background: var(--sunk);
+    padding: .6rem .75rem;
+  }
+  .lgrow {
+    display: grid; grid-template-columns: 3rem 1fr; gap: .7rem; align-items: baseline;
+    font-size: .82rem; color: var(--dim);
+  }
+  .lgrow .lgkey { display: flex; gap: 2px; padding-top: .3rem; }
+  .lgrow strong { color: var(--ink); font-weight: 600; }
+  /* The budget paints red per row; the legend needs both colours side by side. */
+  .blk.hostile { background: var(--red); }
+  .blk.maybe.hostile { background: var(--barred); }
+
   .pool { display: grid; grid-template-columns: repeat(auto-fill, minmax(16.5rem, 1fr)); gap: .4rem; align-items: start; }
   .ev, .evbox {
     background: var(--panel); border: 1px solid var(--edge); border-left: 2px solid var(--rail);
@@ -207,6 +210,11 @@
   .tg.crew, .tg.reward { color: var(--green); }
   .tg.crew-loss, .tg.boarders, .tg.cost { color: var(--amber); }
   .tg.quest, .tg.store { color: var(--cyan); }
+  /* The two marker tags — what the map draws on the beacon before you jump to it.
+     `store-marker` is not `store`: `store` means a store opens somewhere in the tree,
+     which is the narrower set. */
+  .tg.store-marker { color: var(--cyan); }
+  .tg.distress { color: var(--amber); }
 
   .delta {
     border: 1px dashed var(--edge); border-radius: 2px; background: var(--sunk);
@@ -216,6 +224,8 @@
     font-family: var(--mono); font-size: .62rem; letter-spacing: .12em;
     text-transform: uppercase; color: var(--amber);
   }
+  /* A budget line's expansion carries its pool, then its note, then the AE twin. */
+  .bpool .delta, .bpool .note { margin-top: .5rem; }
 
   .cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr)); gap: .9rem; align-items: start; }
   .panel {
@@ -234,7 +244,7 @@
   }
 
   /* The two generated blocks above the budget: every blue option the pool gates,
-     and every blueprint whose rarity this sector moves off its base value. */
+     and the crew a store here can sell. */
   .glance { display: grid; grid-template-columns: repeat(auto-fit, minmax(19rem, 1fr)); gap: .9rem; align-items: start; }
   .panel h3 .cnt {
     font-family: var(--mono); font-size: .62rem; letter-spacing: .08em;
@@ -247,60 +257,60 @@
     display: grid; grid-template-columns: 1fr auto auto; gap: .4rem; align-items: baseline;
     font-size: .8rem; padding: .12rem 0; border-bottom: 1px solid var(--sunk);
   }
-  .grow .g { overflow-wrap: anywhere; }
-  .grow .lv {
-    font-family: var(--mono); font-size: .6rem; color: var(--faint);
-    border: 1px solid var(--edge); border-radius: 2px; padding: 0 .22rem;
-  }
+  /* Blue options read in the card's blue, the colour they carry in game. The level is
+     part of the name, so there is no separate chip to colour. */
+  .grow .g { overflow-wrap: anywhere; color: hsl(204, 100%, 50%); }
   .grow .h {
     font-family: var(--mono); font-size: .78rem; color: var(--cyan);
     font-variant-numeric: tabular-nums; min-width: 1.2rem; text-align: right;
   }
 
-  .crew { display: flex; flex-direction: column; gap: .18rem; }
+  /* The whole blue-options box is the toggle: a summary-only control can be opened
+     from the rows above it but never closed from the rows it reveals. */
+  .gtoggle { cursor: pointer; }
+  .gtoggle > summary { list-style: none; display: flex; flex-direction: column; gap: .55rem; }
+  .gtoggle > summary::-webkit-details-marker { display: none; }
+  .gtoggle:hover { border-color: var(--rail); }
+  .gtoggle:hover .morehint { color: var(--cyan); }
+  .morehint {
+    font-family: var(--mono); font-size: .62rem; letter-spacing: .12em;
+    text-transform: uppercase; color: var(--faint);
+  }
+  .morehint::after { content: " \203A"; }
+  .gtoggle[open] .morehint::after { content: " \2039"; }
+  .gtoggle[open] .morehint { visibility: hidden; height: 0; }
+  .gates.rest { padding-top: .3rem; border-top: 1px solid var(--sunk); }
+
+  /* The crew list folded down the middle: two columns, each with its own sub-header so
+     the labels sit over their own numbers, and the title riding in the first one's
+     empty label cell so the heading costs no line. */
   .crow {
-    display: grid; grid-template-columns: 1fr 1.1rem 4.5rem 2.9rem 2.6rem;
-    gap: .45rem; align-items: center; font-size: .8rem;
+    display: grid; grid-template-columns: 1fr 2.9rem 2.9rem;
+    gap: .3rem; align-items: center; font-size: .8rem;
   }
   .crow .cl { overflow-wrap: anywhere; }
-  .crow .cw, .crow .cp, .crow .cs {
+  .crow .cp, .crow .cs {
     font-family: var(--mono); font-variant-numeric: tabular-nums; text-align: right;
   }
-  .crow .cw { font-size: .62rem; color: var(--faint); }
   .crow .cp { font-size: .74rem; color: var(--cyan); }
   .crow .cs { font-size: .68rem; color: var(--dim); }
-  .cbar { height: .34rem; background: var(--sunk); border-radius: 1px; overflow: hidden; }
-  .cbar i { display: block; height: 100%; background: var(--cyan); border-radius: 1px; }
   .crow.chead {
     font-family: var(--mono); font-size: .56rem; letter-spacing: .1em;
     text-transform: uppercase; color: var(--faint); padding-bottom: .1rem;
     border-bottom: 1px solid var(--edge); margin-bottom: .12rem;
   }
-  .crow.chead .cw, .crow.chead .cp, .crow.chead .cs { font-size: .56rem; color: var(--faint); }
-
-  .rar { display: flex; flex-direction: column; gap: .22rem; }
-  .rgroup {
-    font-family: var(--mono); font-size: .58rem; letter-spacing: .14em;
-    text-transform: uppercase; color: var(--faint); margin-top: .35rem;
+  .crow.chead .cp, .crow.chead .cs { font-size: .56rem; color: var(--faint); }
+  .crow.chead .cl h3 {
+    margin: 0; font-family: var(--mono); font-size: .66rem; letter-spacing: .15em;
+    text-transform: uppercase; color: var(--dim); font-weight: 600; white-space: nowrap;
   }
-  .rgroup:first-child { margin-top: 0; }
-  .rrow { display: grid; grid-template-columns: 1fr 3.4rem 6.2rem; gap: .5rem; align-items: baseline; font-size: .8rem; }
-  .rrow .rl { overflow-wrap: anywhere; }
-  .rrow .v {
-    font-family: var(--mono); font-size: .7rem; color: var(--dim);
-    font-variant-numeric: tabular-nums; text-align: right; white-space: nowrap;
-  }
-  .chip {
-    font-family: var(--sans); font-size: .58rem; letter-spacing: .08em; text-transform: uppercase;
-    border: 1px solid currentColor; border-radius: 2px; padding: .04rem .28rem;
-    justify-self: start; white-space: nowrap;
-  }
-  /* The provenance half of a block's note: what a source says rather than what the
-     game files say. Set apart so the two are not read as one claim. */
-  .note.src { color: var(--faint); font-size: .78rem; border-left: 1px solid var(--edge); padding-left: .6rem; }
-  .chip.good { color: var(--green); }
-  .chip.warn { color: var(--amber); }
-  .chip.bad  { color: var(--red); }
+  /* A species a store here cannot offer, kept in the table at 0%: rarity 0 is a flag
+     meaning "not in the pool", and the zero row says so where a player is looking. */
+  .crow.out .cl, .crow.out .cp, .crow.out .cs { color: var(--faint); }
+  .two { display: grid; grid-template-columns: 1fr 1fr; gap: .18rem 1.1rem; }
+  .tcol { display: flex; flex-direction: column; gap: .18rem; }
+  .crewpanel { justify-content: flex-start; }
+  @media (max-width: 40rem) { .two { grid-template-columns: 1fr; } }
 
   .chain { display: flex; flex-direction: column; gap: 0; }
   .step { display: grid; grid-template-columns: 1.6rem 1fr; gap: .7rem; }
@@ -318,19 +328,8 @@
   .step .body .id { font-family: var(--mono); font-size: .63rem; color: var(--faint); margin-top: .12rem; }
   .step.end .dot { border-color: var(--green); color: var(--green); }
 
-  .callout {
-    border: 1px solid var(--edge); border-left: 2px solid var(--amber);
-    background: var(--sunk); border-radius: 2px; padding: .7rem .9rem;
-    font-size: .84rem; color: var(--dim);
-  }
-  .callout b { color: var(--ink); font-weight: 600; }
   .ref { color: var(--ink); font-weight: 500; }
   code { font-family: var(--mono); font-size: .92em; color: var(--ink); }
-  footer {
-    border-top: 1px solid var(--edge); padding-top: .8rem;
-    font-family: var(--mono); font-size: .66rem; color: var(--faint); line-height: 1.8;
-  }
-  footer p { margin: 0; }
   @media (max-width: 40rem) {
     .brow { grid-template-columns: 1.4rem 1fr 3.4rem .9rem; }
     .brow .track { grid-column: 1 / -1; grid-row: 2; }

@@ -121,6 +121,16 @@
         "share": 14.3,
         "in_store": 37.0
       }
+    ],
+    "excluded": [
+      {
+        "id": "crystal",
+        "label": "Crystal"
+      },
+      {
+        "id": "anaerobic",
+        "label": "Lanius"
+      }
     ]
   },
   "start_event": {
@@ -205,7 +215,8 @@
           "title": "Store (Zoltan)",
           "card": true,
           "tags": [
-            "store"
+            "store",
+            "store-marker"
           ],
           "marker": {
             "store": true
@@ -275,7 +286,8 @@
           "card": true,
           "tags": [
             "may-fight",
-            "unique"
+            "unique",
+            "distress"
           ],
           "marker": {
             "beacon": "distress",
@@ -296,7 +308,8 @@
           "card": true,
           "tags": [
             "reward",
-            "unique"
+            "unique",
+            "distress"
           ],
           "marker": {
             "beacon": "distress"
@@ -316,7 +329,8 @@
           "card": true,
           "tags": [
             "may-fight",
-            "cost"
+            "cost",
+            "distress"
           ],
           "marker": {
             "beacon": "distress"
@@ -336,7 +350,8 @@
           "card": true,
           "tags": [
             "reward",
-            "unique"
+            "unique",
+            "distress"
           ],
           "marker": {
             "beacon": "distress"
@@ -382,7 +397,8 @@
             "crew-loss",
             "crew",
             "reward",
-            "unique"
+            "unique",
+            "distress"
           ],
           "marker": {
             "beacon": "distress"
@@ -412,7 +428,8 @@
           "tags": [
             "crew",
             "reward",
-            "cost"
+            "cost",
+            "distress"
           ],
           "marker": {
             "beacon": "distress"
@@ -433,7 +450,8 @@
           "tags": [
             "fight",
             "crew",
-            "unique"
+            "unique",
+            "distress"
           ],
           "marker": {
             "beacon": "distress"
@@ -455,7 +473,8 @@
             "crew-loss",
             "crew",
             "reward",
-            "unique"
+            "unique",
+            "distress"
           ],
           "marker": {
             "beacon": "distress"
@@ -1362,7 +1381,8 @@
             "store",
             "quest",
             "cost",
-            "unique"
+            "unique",
+            "store-marker"
           ],
           "marker": {
             "store": true
@@ -1690,7 +1710,8 @@
           "tags": [
             "may-fight",
             "store",
-            "unique"
+            "unique",
+            "store-marker"
           ],
           "marker": {
             "store": true
@@ -1914,7 +1935,8 @@
         "tags": [
           "may-fight",
           "store",
-          "unique"
+          "unique",
+          "store-marker"
         ],
         "marker": {
           "store": true
@@ -2454,6 +2476,7 @@
           "cloaking"
         ],
         "req": "cloaking",
+        "system": true,
         "levels": [
           "1",
           "2",
@@ -2464,6 +2487,30 @@
           "NEBULA_AUTO_DEFENSE_ITEM",
           "STORM_AUTO",
           "NEBULA_REBEL_UNDETECTED"
+        ],
+        "levels_detail": [
+          {
+            "lvl": "1",
+            "events": [
+              "DISTRESS_SATELLITE_DEFENSE",
+              "NEBULA_AUTO_DEFENSE_ITEM",
+              "STORM_AUTO",
+              "NEBULA_REBEL_UNDETECTED"
+            ]
+          },
+          {
+            "lvl": "2",
+            "events": [
+              "DISTRESS_SATELLITE_DEFENSE",
+              "NEBULA_AUTO_DEFENSE_ITEM"
+            ]
+          },
+          {
+            "lvl": "3",
+            "events": [
+              "DISTRESS_SATELLITE_DEFENSE"
+            ]
+          }
         ]
       },
       {
@@ -2472,6 +2519,7 @@
           "teleporter"
         ],
         "req": "teleporter",
+        "system": true,
         "levels": [
           "1",
           "2"
@@ -2481,6 +2529,22 @@
           "ZOLTAN_TRADE_HUB",
           "QUEST_CREWDEAD_START",
           "FRIENDLY_SLAVER"
+        ],
+        "levels_detail": [
+          {
+            "lvl": "1",
+            "events": [
+              "NEBULA_LOST_SHIP",
+              "ZOLTAN_TRADE_HUB",
+              "QUEST_CREWDEAD_START"
+            ]
+          },
+          {
+            "lvl": "2",
+            "events": [
+              "FRIENDLY_SLAVER"
+            ]
+          }
         ]
       },
       {
@@ -2489,6 +2553,7 @@
           "engines"
         ],
         "req": "engines",
+        "system": true,
         "levels": [
           "3",
           "6",
@@ -2497,6 +2562,26 @@
         "events": [
           "STORM_AUTO",
           "NEBULA_REBEL_UNDETECTED"
+        ],
+        "levels_detail": [
+          {
+            "lvl": "3",
+            "events": [
+              "STORM_AUTO"
+            ]
+          },
+          {
+            "lvl": "4",
+            "events": [
+              "NEBULA_REBEL_UNDETECTED"
+            ]
+          },
+          {
+            "lvl": "6",
+            "events": [
+              "STORM_AUTO"
+            ]
+          }
         ]
       },
       {
@@ -2505,10 +2590,20 @@
           "BOMB_FIRE"
         ],
         "req": "BOMB_FIRE",
+        "system": false,
         "levels": [],
         "events": [
           "QUEST_MANTIS_INVASION_START",
           "QUEST_CREWDEAD_START"
+        ],
+        "levels_detail": [
+          {
+            "lvl": null,
+            "events": [
+              "QUEST_MANTIS_INVASION_START",
+              "QUEST_CREWDEAD_START"
+            ]
+          }
         ]
       },
       {
@@ -2517,6 +2612,7 @@
           "hacking"
         ],
         "req": "hacking",
+        "system": true,
         "levels": [
           "1",
           "2"
@@ -2524,6 +2620,21 @@
         "events": [
           "NEBULA_AUTO_DEFENSE_ITEM",
           "BOARDERS_HACKING"
+        ],
+        "levels_detail": [
+          {
+            "lvl": "1",
+            "events": [
+              "NEBULA_AUTO_DEFENSE_ITEM",
+              "BOARDERS_HACKING"
+            ]
+          },
+          {
+            "lvl": "2",
+            "events": [
+              "NEBULA_AUTO_DEFENSE_ITEM"
+            ]
+          }
         ]
       },
       {
@@ -2532,10 +2643,20 @@
           "ADV_SCANNERS"
         ],
         "req": "ADV_SCANNERS",
+        "system": false,
         "levels": [],
         "events": [
           "NEBULA_LOST_SHIP",
           "FEDERATION_PLANET_SIGNAL"
+        ],
+        "levels_detail": [
+          {
+            "lvl": null,
+            "events": [
+              "NEBULA_LOST_SHIP",
+              "FEDERATION_PLANET_SIGNAL"
+            ]
+          }
         ]
       },
       {
@@ -2544,6 +2665,7 @@
           "medbay"
         ],
         "req": "medbay",
+        "system": true,
         "levels": [
           "3",
           "2"
@@ -2551,6 +2673,21 @@
         "events": [
           "ZOLTAN_CREW_STUDY",
           "STRANDED_BEACON"
+        ],
+        "levels_detail": [
+          {
+            "lvl": "2",
+            "events": [
+              "STRANDED_BEACON"
+            ]
+          },
+          {
+            "lvl": "3",
+            "events": [
+              "ZOLTAN_CREW_STUDY",
+              "STRANDED_BEACON"
+            ]
+          }
         ]
       },
       {
@@ -2559,10 +2696,20 @@
           "slug"
         ],
         "req": "slug",
+        "system": false,
         "levels": [],
         "events": [
           "STRANDED_BEACON",
           "ZOLTAN_CREW_SCAN"
+        ],
+        "levels_detail": [
+          {
+            "lvl": null,
+            "events": [
+              "STRANDED_BEACON",
+              "ZOLTAN_CREW_SCAN"
+            ]
+          }
         ]
       },
       {
@@ -2571,9 +2718,18 @@
           "BEAM_BIO"
         ],
         "req": "BEAM_BIO",
+        "system": false,
         "levels": [],
         "events": [
           "QUEST_CREWDEAD_START"
+        ],
+        "levels_detail": [
+          {
+            "lvl": null,
+            "events": [
+              "QUEST_CREWDEAD_START"
+            ]
+          }
         ]
       },
       {
@@ -2582,9 +2738,18 @@
           "BOARDER"
         ],
         "req": "BOARDER",
+        "system": false,
         "levels": [],
         "events": [
           "ZOLTAN_ODD_MOON"
+        ],
+        "levels_detail": [
+          {
+            "lvl": null,
+            "events": [
+              "ZOLTAN_ODD_MOON"
+            ]
+          }
         ]
       },
       {
@@ -2593,11 +2758,20 @@
           "clonebay"
         ],
         "req": "clonebay",
+        "system": true,
         "levels": [
           "2"
         ],
         "events": [
           "STRANDED_BEACON"
+        ],
+        "levels_detail": [
+          {
+            "lvl": "2",
+            "events": [
+              "STRANDED_BEACON"
+            ]
+          }
         ]
       },
       {
@@ -2606,9 +2780,18 @@
           "STASIS_POD"
         ],
         "req": "STASIS_POD",
+        "system": false,
         "levels": [],
         "events": [
           "ZOLTAN_CREW_STUDY"
+        ],
+        "levels_detail": [
+          {
+            "lvl": null,
+            "events": [
+              "ZOLTAN_CREW_STUDY"
+            ]
+          }
         ]
       },
       {
@@ -2617,9 +2800,18 @@
           "engi"
         ],
         "req": "engi",
+        "system": false,
         "levels": [],
         "events": [
           "DISTRESS_SATELLITE_DEFENSE"
+        ],
+        "levels_detail": [
+          {
+            "lvl": null,
+            "events": [
+              "DISTRESS_SATELLITE_DEFENSE"
+            ]
+          }
         ]
       },
       {
@@ -2628,9 +2820,18 @@
           "WEAPONS_ION"
         ],
         "req": "WEAPONS_ION",
+        "system": false,
         "levels": [],
         "events": [
           "DISTRESS_SATELLITE_DEFENSE"
+        ],
+        "levels_detail": [
+          {
+            "lvl": null,
+            "events": [
+              "DISTRESS_SATELLITE_DEFENSE"
+            ]
+          }
         ]
       },
       {
@@ -2639,9 +2840,18 @@
           "mind"
         ],
         "req": "mind",
+        "system": true,
         "levels": [],
         "events": [
           "ZOLTAN_CREW_SCAN"
+        ],
+        "levels_detail": [
+          {
+            "lvl": "1",
+            "events": [
+              "ZOLTAN_CREW_SCAN"
+            ]
+          }
         ]
       },
       {
@@ -2650,9 +2860,18 @@
           "WEAPONS_MISSILES"
         ],
         "req": "WEAPONS_MISSILES",
+        "system": false,
         "levels": [],
         "events": [
           "QUEST_MANTIS_INVASION_START"
+        ],
+        "levels_detail": [
+          {
+            "lvl": null,
+            "events": [
+              "QUEST_MANTIS_INVASION_START"
+            ]
+          }
         ]
       },
       {
@@ -2661,11 +2880,20 @@
           "pilot"
         ],
         "req": "pilot",
+        "system": true,
         "levels": [
           "2"
         ],
         "events": [
           "STORM_ITEMS"
+        ],
+        "levels_detail": [
+          {
+            "lvl": "2",
+            "events": [
+              "STORM_ITEMS"
+            ]
+          }
         ]
       },
       {
@@ -2674,9 +2902,18 @@
           "rock"
         ],
         "req": "rock",
+        "system": false,
         "levels": [],
         "events": [
           "DISTRESS_STATION_FIRE"
+        ],
+        "levels_detail": [
+          {
+            "lvl": null,
+            "events": [
+              "DISTRESS_STATION_FIRE"
+            ]
+          }
         ]
       },
       {
@@ -2685,9 +2922,18 @@
           "SCRAP_COLLECTOR"
         ],
         "req": "SCRAP_COLLECTOR",
+        "system": false,
         "levels": [],
         "events": [
           "ASTEROID_EXPLORE"
+        ],
+        "levels_detail": [
+          {
+            "lvl": null,
+            "events": [
+              "ASTEROID_EXPLORE"
+            ]
+          }
         ]
       },
       {
@@ -2696,12 +2942,27 @@
           "sensors"
         ],
         "req": "sensors",
+        "system": true,
         "levels": [
           "2",
           "3"
         ],
         "events": [
           "FEDERATION_PLANET_SIGNAL"
+        ],
+        "levels_detail": [
+          {
+            "lvl": "2",
+            "events": [
+              "FEDERATION_PLANET_SIGNAL"
+            ]
+          },
+          {
+            "lvl": "3",
+            "events": [
+              "FEDERATION_PLANET_SIGNAL"
+            ]
+          }
         ]
       },
       {
@@ -2710,9 +2971,18 @@
           "REPAIR"
         ],
         "req": "REPAIR",
+        "system": false,
         "levels": [],
         "events": [
           "DISTRESS_STATION_FIRE"
+        ],
+        "levels_detail": [
+          {
+            "lvl": null,
+            "events": [
+              "DISTRESS_STATION_FIRE"
+            ]
+          }
         ]
       },
       {
@@ -2721,9 +2991,18 @@
           "energy"
         ],
         "req": "energy",
+        "system": false,
         "levels": [],
         "events": [
           "ZOLTAN_TRADE_HUB"
+        ],
+        "levels_detail": [
+          {
+            "lvl": null,
+            "events": [
+              "ZOLTAN_TRADE_HUB"
+            ]
+          }
         ]
       }
     ],

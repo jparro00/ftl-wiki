@@ -1,17 +1,7 @@
 {
   "slug": "rebel-stronghold",
 
-  "lede": "A Rebel sector with **one extra beacon**, and that beacon is a second Flagship sitting half-built in its own shipyard. Killing the unfinished hull pays a weapon, 5 fuel, 5 missiles, 5 drone parts, **two jumps of breathing room** and a ship unlock, for a fight against 10 hull, shields running at 2 power of a possible 8, and no weapons at all. Everything else is the ordinary Rebel pool: six to eight beacons that open shooting, one guaranteed boarding, and seven events that can put the fleet a jump closer.",
-
-  "stats": [
-    { "metric": "beacons_min..beacons_max", "label": "Beacon spread" },
-    { "metric": "entry:FLAGSHIP_CONSTRUCTION:min..entry:FLAGSHIP_CONSTRUCTION:max", "label": "Shipyard beacons" },
-    { "metric": "section:hostile:min..section:hostile:max", "label": "Forced fights" },
-    { "metric": "section:nebula:min..section:nebula:max", "label": "Nebula beacons" },
-    { "metric": "distinct_events", "label": "Events in pool" }
-  ],
-
-  "callout": "**Versus a plain Rebel Controlled Sector: one row.** The same nine lists, the same minimums and maximums, the same start beacon — `FLAGSHIP_CONSTRUCTION` at 1–1 is the whole difference, and it is what makes this sector `unique` and keeps it out of the early game. The nebula line is the reason the spread looks so wide, and it is also the line that decides how much room the rest of the table gets: it is drawn before any of them, and it can come out at nothing or at a fifth of the map.",
+  "lede": "A Rebel sector with **one extra beacon**, and that beacon is a second Flagship sitting half-built in its own shipyard — a weapon, supplies, **two jumps of breathing room** and a ship unlock, for a fight against 10 hull, shields at 2 power of a possible 8, and no weapons at all. Everything else is the ordinary Rebel pool.",
 
   "section_notes": {
     "FLAGSHIP_CONSTRUCTION": "The one look at the Flagship before the Federation base, and the sector never starves it — it is the first line filled off the table, ahead of the fights, the stores and the fillers. Arriving costs nothing: the decline branch has no effects at all, so the beacon is a free look and a decision. What it will not survive is the fleet reaching it first, which rewrites whatever event was on a beacon.",
@@ -86,16 +76,6 @@
         { "lead": "Crew loss ×4", "text": "{{DISTRESS_STATION_FIRE}} and {{STORM_ITEMS}} can each kill someone outright, and both have a blue option that skips the risk entirely. The other two, {{ALISON_DEFECTOR}} and {{MERCHANT_REQUEST}}, both lose the crew member to someone you took aboard on purpose." },
         { "lead": "The defector", "text": "Six written outcomes once you take him aboard: three are the crew member you were promised, one gutted engines and a jump of pursuit, one two more boarders and a hole in the hull, one a dead crew member. Rejecting him is not free either — one of those outcomes leaves him loose on your ship as an intruder." },
         { "lead": "The station guards", "text": "{{AUTO_DEFENSE_ITEM}}, {{AUTO_DEFENSE_MAP}} and {{AUTO_DEFENSE_RADAR}} all look optional and all turn hostile if the sneaky route rolls badly. Without the matching system the only ways in are a fight or a shrug." }
-      ]
-    },
-    {
-      "title": "Reading the map here",
-      "items": [
-        { "lead": "The shipyard hides in plain sight", "text": "Nothing labels it: no store icon, no distress icon, and Long-Ranged Scanners report no ship there. The one beacon worth planning a route around is the one the map refuses to point at, so plan the route from the sector's shape rather than from its markers." },
-        { "lead": "The red edge deletes content", "text": "A beacon the fleet takes is rewritten — the event that was waiting there and any hazard with it, replaced by an Elite Fighter that pays 1 fuel and no scrap, and outside the cloud by an anti-ship battery firing 3 damage and a breach. Everything in these pools is only on offer until the shading arrives, the shipyard included." },
-        { "lead": "Clouds are the brake", "text": "Sitting in a cloud halves the fleet's advance for that jump here, which is the only repeatable delay the sector sells — but sensors go dark inside, and a cloud beacon the fleet has already taken always comes with an ion storm on top." },
-        { "lead": "Quests late are quests lost", "text": "A marker planted with few jumps left is pushed into the next sector rather than this one, it will not be placed inside the cloud, and if this sector is your seventh the pushed quest is cancelled instead — no sector 8 quests. Take the quest events early or treat them as pure combat encounters." },
-        { "lead": "Hazards other than cloud", "text": "Only two things in this pool bring a hazard the cloud did not: the asteroid field at {{AUTO_ASTEROID}} and the red giant at {{BOARDERS_SUN}} — one a forced fight, one a forced boarding, and both readable one jump ahead with Long-Ranged Scanners." }
       ]
     }
   ]

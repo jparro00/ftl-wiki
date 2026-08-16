@@ -1,18 +1,6 @@
 {
   "slug": "federation-space",
-
-  "lede": "The sector every run opens in, and the only table in the game with a line switched off: `HOSTILE_BOARDING` is allocated **0–0**, eight boarding events with no beacon to put them on. The rest is the plainest pool there is — pirates, Rebel patrols and auto-scouts, with **nothing named** in any reward. Its maxima come to exactly the 24 beacons a map can hold, so a map that comes up even one beacon short starts eating the bottom of the table.",
-
-  "stats": [
-    { "metric": "beacons_min..beacons_max", "label": "Slots allocated" },
-    { "metric": "section:hostile:min..section:hostile:max", "label": "Hostile beacons" },
-    { "metric": "entry:HOSTILE_BOARDING:max", "label": "Boarding beacons" },
-    { "metric": "quest_start_events", "label": "Events that plant a quest" },
-    { "metric": "distinct_events", "label": "Events in pool" }
-  ],
-
-  "callout": "**Versus the Civilian Sector**, which draws the same lists at almost every line: that one gets 2–3 stores and 2–3 item beacons against this sector's 1–2 and 1, and up to 8 nebula beacons against 4, and its maxima run well past anything a map can hold. This is the trimmed-down version of that sector — less of everything except the quest line, which is 1–1 here against the Civilian Sector's 0–2, and a boarding line that exists but is empty where the Civilian Sector's is commented out of the file entirely.",
-
+  "lede": "The sector every run starts in — the game calls it **Sector 1: Civilian Sector**.",
   "section_notes": {
     "HOSTILE1": "The last line that places anything, and the pair is fixed at two. {{SQUAT_WARNING}} and {{AUTO_WARNING}} both call the fleet a jump closer if the ship gets away, and {{PIRATE_CHOICE}} sells you a way past for 15–25 scrap.",
     "HOSTILE_BOARDING": "Eight events, zero beacons — no other sector in the file has an entry with a maximum of zero. The chip above is moot here: the line has nothing to lose. Whether the engine reaches this list by some route outside sector allocation is not something the files answer, so it is shown rather than dropped.",
@@ -21,7 +9,6 @@
     "ITEMS": "One beacon — but only three of these thirteen hand over anything free: {{FIND_DRONE}}, {{FIND_WEAPON}} and {{FREE_ITEMS}}. The rest are trades, and {{TAVERN_HIRE}} is a crew shop that happens to sit in the item pool.",
     "QUESTS": "One beacon asked for, out of six, and asked for late: everything above it is placed first, so a map that fills before the bottom of the table simply has no quest beacon. {{QUEST_CREWDEAD_START}} is the one you cannot accept empty-handed: every branch that plants its marker is behind a Teleporter, an Anti-Bio Beam or a Fire Bomb."
   },
-
   "chain": {
     "title": "The hidden Federation base",
     "steps": [
@@ -45,46 +32,80 @@
       }
     ]
   },
-
   "panels": [
     {
       "title": "Blue options that pay here",
       "items": [
-        { "lead": "Crew Teleporter ×8", "text": "The most-used gate in the sector. It is one of three keys into {{QUEST_CREWDEAD_START}}, lifts a survivor off {{CIVILIAN_ASTEROIDS_BEACON}}, and at level 2 tries to take a slave from {{FRIENDLY_SLAVER}} without paying — which can turn him hostile instead. One of the eight, {{STATION_SICK}}, sits on the boarding line that places nothing; every gate count on this page includes those." },
-        { "lead": "Cloaking ×5", "text": "Graded at {{DISTRESS_SATELLITE_DEFENSE}}: the same choice pays low, medium or high at levels 1, 2 and 3." },
-        { "lead": "Hacking ×4", "text": "{{AUTO_HACKER}} halves your shield system if you have no answer. Hacking cancels the virus and turns it into an ordinary fight." },
-        { "lead": "Engines ×4", "text": "Level 6 is the alternative to handing a crew member over at {{PIRATE_SLAVER}} — it starts the fight on your terms rather than avoiding it." },
-        { "lead": "Medbay ×4", "text": "Both levels matter at {{STRANDED_BEACON}}: level 2 saves the man, level 3 returns him with a level in **every** skill." },
-        { "lead": "Rockman / Engi ×2", "text": "{{DISTRESS_STATION_FIRE}} pays a high-tier augment for a Rock crew member; {{DISTRESS_STATION_DISEASE}} takes either species. In both events it is the plain choice that risks a crew member." }
+        {
+          "lead": "Crew Teleporter ×8",
+          "text": "The most-used gate in the sector. It is one of three keys into {{QUEST_CREWDEAD_START}}, lifts a survivor off {{CIVILIAN_ASTEROIDS_BEACON}}, and at level 2 tries to take a slave from {{FRIENDLY_SLAVER}} without paying — which can turn him hostile instead. One of the eight, {{STATION_SICK}}, sits on the boarding line that places nothing; every gate count on this page includes those."
+        },
+        {
+          "lead": "Cloaking ×5",
+          "text": "Graded at {{DISTRESS_SATELLITE_DEFENSE}}: the same choice pays low, medium or high at levels 1, 2 and 3."
+        },
+        {
+          "lead": "Hacking ×4",
+          "text": "{{AUTO_HACKER}} halves your shield system if you have no answer. Hacking cancels the virus and turns it into an ordinary fight."
+        },
+        {
+          "lead": "Engines ×4",
+          "text": "Level 6 is the alternative to handing a crew member over at {{PIRATE_SLAVER}} — it starts the fight on your terms rather than avoiding it."
+        },
+        {
+          "lead": "Medbay ×4",
+          "text": "Both levels matter at {{STRANDED_BEACON}}: level 2 saves the man, level 3 returns him with a level in **every** skill."
+        },
+        {
+          "lead": "Rockman / Engi ×2",
+          "text": "{{DISTRESS_STATION_FIRE}} pays a high-tier augment for a Rock crew member; {{DISTRESS_STATION_DISEASE}} takes either species. In both events it is the plain choice that risks a crew member."
+        }
       ]
     },
     {
       "title": "What you can leave with",
       "items": [
-        { "lead": "Nothing named", "text": "No event in this pool hands over a specific weapon, drone or augment — every reward is a generic tier roll. Crew and fleet time are what is actually worth routing for." },
-        { "lead": "Crew, bought", "text": "{{TAVERN_HIRE}} sells crew outright at 25–45 and 25–55 scrap. {{FRIENDLY_SLAVER}} sells one for 25–45." },
-        { "lead": "Crew, free", "text": "{{STRANDED_BEACON}} is a free hand with a level in one skill — unless the roll gives you the madman instead, which costs a crew member." },
-        { "lead": "Fleet time", "text": "{{MERCENARY}} sells two jumps of delay for 10–25 scrap, or the whole sector map for 10–20; beat the pirate at {{PIRATE_BRIBER}} and the ship you saved can be leaned on for a jump instead of scrap. Those two are the only bought delay in the pool." },
-        { "lead": "Hull", "text": "The biggest repair in reach is on the hidden-base chain: one of its outcomes puts 35 hull back." }
+        {
+          "lead": "Nothing named",
+          "text": "No event in this pool hands over a specific weapon, drone or augment — every reward is a generic tier roll. Crew and fleet time are what is actually worth routing for."
+        },
+        {
+          "lead": "Crew, bought",
+          "text": "{{TAVERN_HIRE}} sells crew outright at 25–45 and 25–55 scrap. {{FRIENDLY_SLAVER}} sells one for 25–45."
+        },
+        {
+          "lead": "Crew, free",
+          "text": "{{STRANDED_BEACON}} is a free hand with a level in one skill — unless the roll gives you the madman instead, which costs a crew member."
+        },
+        {
+          "lead": "Fleet time",
+          "text": "{{MERCENARY}} sells two jumps of delay for 10–25 scrap, or the whole sector map for 10–20; beat the pirate at {{PIRATE_BRIBER}} and the ship you saved can be leaned on for a jump instead of scrap. Those two are the only bought delay in the pool."
+        },
+        {
+          "lead": "Hull",
+          "text": "The biggest repair in reach is on the hidden-base chain: one of its outcomes puts 35 hull back."
+        }
       ]
     },
     {
       "title": "What can bite",
       "items": [
-        { "lead": "Boarders", "text": "14 events in the pool put boarders aboard, and 8 of them sit in the 0–0 list. The six that remain are {{FEDERATION_PLANET_SIGNAL}}, {{REFUGEE_GHOST}}, {{MERCHANT_REQUEST}} and three nebula beacons." },
-        { "lead": "Crew", "text": "10 events can kill a crew member. Only two of them specify no clone: {{PIRATE_SLAVER}}, where you hand one over, and {{DISTRESS_STATION_DISEASE}}." },
-        { "lead": "The fleet", "text": "Five things in the pool push the fleet a jump closer: {{SQUAT_WARNING}} and {{AUTO_WARNING}} on the fixed hostile pair, {{NEBULA_AUTO_WARNING}} and {{NEBULA_REBEL_UNDETECTED}} in the cloud, and walking away from {{CIVILIAN_ASTEROIDS_BEACON}} if the civilians survive to report you." },
-        { "lead": "Systems", "text": "{{QUEST_CREWDEAD_START}} asks you to take a ship intact. Destroying it instead costs 13 hull, a system, and fires — the payout only comes from killing the crew." }
-      ]
-    },
-    {
-      "title": "Reading the map here",
-      "items": [
-        { "lead": "Stores", "text": "One to two, and the store line is filled before anything else, so it is the one part of the table that never gets squeezed. Four events can open a shop on top of that — {{PIRATE_BRIBER}}, {{MERCENARY_WORK_START}}, {{QUEST_ESCORT}} and {{ESCORT_BEACON}} — and they are the only route to a third." },
-        { "lead": "Distress markers", "text": "The 1–2 distress line does not determine how many markers you see. The same twelve tagged events also sit on the neutral line, which is filled earlier, so a map can carry more distress markers than the distress line allocates — and two events allocated **as** distress, {{PIRATE_CIVILIAN_BEACON}} and {{REBEL_VS_FEDERATION}}, carry no tag and never show one. Behind a marker here: a free crew member, a refuelling ship, a pirate trap, or {{DISTRESS_INFESTATION}}." },
-        { "lead": "The quest beacon", "text": "Nine events in the pool plant a quest marker and only six of them are on the quest line, so more quests than the line's single beacon is normal. Fewer is also normal: it is the last line before the empty boarding entry, so a map that fills early leaves the sector with no quest beacon at all. A marker also cannot be placed inside cloud, and with no room it is pushed into the next sector instead." },
-        { "lead": "Inside a cloud", "text": "Clouds are drawn over the map, and an ordinary beacon caught under one is converted and drawn from this same nebula list — so cloud cover only ever deepens these sixteen. Each stop in cloud blinds your sensors and halves the fleet's advance for that jump; four of the sixteen are plasma storms, which cut your reactor in half on arrival, {{STORM_ITEMS}} among them." },
-        { "lead": "Where the squeeze lands", "text": "The table's maxima stop exactly at the 24 beacons a map can hold, which is why only the empty boarding line is chipped as at-risk. That assumes every grid cell fills, which is the exception rather than the rule — on a smaller map the shortfall lands on whatever is at the bottom, which here is the quest beacon and the fixed hostile pair." }
+        {
+          "lead": "Boarders",
+          "text": "14 events in the pool put boarders aboard, and 8 of them sit in the 0–0 list. The six that remain are {{FEDERATION_PLANET_SIGNAL}}, {{REFUGEE_GHOST}}, {{MERCHANT_REQUEST}} and three nebula beacons."
+        },
+        {
+          "lead": "Crew",
+          "text": "10 events can kill a crew member. Only two of them specify no clone: {{PIRATE_SLAVER}}, where you hand one over, and {{DISTRESS_STATION_DISEASE}}."
+        },
+        {
+          "lead": "The fleet",
+          "text": "Five things in the pool push the fleet a jump closer: {{SQUAT_WARNING}} and {{AUTO_WARNING}} on the fixed hostile pair, {{NEBULA_AUTO_WARNING}} and {{NEBULA_REBEL_UNDETECTED}} in the cloud, and walking away from {{CIVILIAN_ASTEROIDS_BEACON}} if the civilians survive to report you."
+        },
+        {
+          "lead": "Systems",
+          "text": "{{QUEST_CREWDEAD_START}} asks you to take a ship intact. Destroying it instead costs 13 hull, a system, and fires — the payout only comes from killing the crew."
+        }
       ]
     }
   ]

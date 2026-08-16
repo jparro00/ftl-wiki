@@ -1,17 +1,7 @@
 {
   "slug": "mantis-homeworlds",
 
-  "lede": "The Mantis sector with a name in it. Six or seven beacons open in combat before you can choose anything, one or two more skip the ship fight entirely and drop **2–4 boarders straight onto your deck**, and one beacon is always {{MANTIS_NAMED_THIEF}} — the only ship unlock either Mantis sector can hand you. Arrive repaired and stocked: shops are as scarce here as in pirate or Rebel space, and no beacon in this sector slows the Rebel fleet.",
-
-  "stats": [
-    { "metric": "beacons_min..beacons_max", "label": "Beacon spread" },
-    { "metric": "section:hostile:min..section:hostile:max", "label": "Guaranteed fights" },
-    { "metric": "section:boarders:min..section:boarders:max", "label": "Boarding beacons" },
-    { "metric": "entry:STORE_MANTIS:min..entry:STORE_MANTIS:max", "label": "Stores" },
-    { "metric": "distinct_events", "label": "Events in pool" }
-  ],
-
-  "callout": "**Versus a plain Mantis Controlled Sector:** every list is the same list and every count is the same count — 6–7 hostile, 6–7 neutral, 1–2 boarding, 1–3 distress, 1–2 items, 1–2 stores, 2–3 empty. The whole difference is the guaranteed `MANTIS_NAMED_THIEF` beacon, and because it is taken at the top of the table it costs nothing above it — what it displaces, on a full map, is one more neutral encounter at the bottom. One more event in the pool, and with it the sector's only ship unlock, its only named augment and its third quest start.",
+  "lede": "The Mantis sector with a name in it: beacons that open in combat before you can choose anything, boarding parties that skip the ship fight and land **2–4 on your deck**, and one beacon that is always {{MANTIS_NAMED_THIEF}} — the only ship unlock either Mantis sector can hand you. Arrive repaired and stocked; no beacon in this sector slows the Rebel fleet.",
 
   "section_notes": {
     "MANTIS_NAMED_THIEF": "One beacon wide and first in the queue, so no roll above it can crowd it off the map. It is a fight either way — the Mantis blue option is a greeting, not a way out — and everything it is worth comes after the shooting stops.",
@@ -88,16 +78,8 @@
         { "lead": "Crew", "text": "Four events can kill a crew member outright: {{DISTRESS_INFESTATION}}, {{DISTRESS_STATION_FIRE}}, {{DISTRESS_STATION_DISEASE}}, and {{MANTIS_CREW}}, which kills **and** leaves the killer aboard." },
         { "lead": "Fights", "text": "Seven events in the pool open in combat and eight more can turn into it from a choice — and that is before the boarding pool, which never involves an enemy ship at all." },
         { "lead": "Stars", "text": "{{MANTIS_SUN_FIGHT}} and {{BOARDERS_SUN}} both stage next to a star, with the solar hazard running on your ship while you fight or repel." },
-        { "lead": "Traps", "text": "{{TRAP_BEACON}} is a distress call that opens hostile, and siding with the fugitive in {{ALISON_MANTIS_CREW}} can cost hull and a system before the Engi ship even opens fire." }
-      ]
-    },
-    {
-      "title": "Reading the map here",
-      "items": [
-        { "lead": "Distress", "text": "One of the few sectors whose distress markers are honest: every event in the distress list carries the tag and no event outside it does, so what the table allocates is exactly what the map can show you." },
-        { "lead": "A marked shop", "text": "{{ESCORT_BEACON}} is the sector's one unplanned store, and it is a distress beacon — so the shop you did not expect arrives wearing the distress marker, not the store marker." },
-        { "lead": "The fleet", "text": "No nebula line anywhere in the table, so nothing here halves the Rebel advance and every jump costs full pursuit. The compensation is that sensors work at every beacon in the sector." },
-        { "lead": "Quest markers", "text": "Three events plant one, and a marker can only take over an ordinary unvisited beacon — never a store, a distress beacon or the exit. Trigger them early: with the fleet close behind, the marker is pushed into the next sector instead." }
+        { "lead": "Traps", "text": "{{TRAP_BEACON}} is a distress call that opens hostile, and siding with the fugitive in {{ALISON_MANTIS_CREW}} can cost hull and a system before the Engi ship even opens fire." },
+        { "lead": "The clock", "text": "No nebula line anywhere in the table, so nothing here halves the Rebel advance and every jump costs full pursuit. The compensation is that sensors work at every beacon in the sector." }
       ]
     }
   ]

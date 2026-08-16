@@ -380,8 +380,12 @@ The same shell also serves `/sector/<slug>`, the built sector profile
 
 | `view` | When | Frame shows |
 |---|---|---|
-| `card` | a card resolved, it is not an entry beacon, and the map is not open | `/card/<slug>` |
-| `sector` | **the star map is open** (§5c), **or** the resolved event is a `START_BEACON_*`, **or** no card resolves at all, **or** within `--sector-hold` seconds of arriving in a new sector | `/sector/<slug>` |
+| `choose` | **the sector map is open** — the screen that offers the next sectors (§5d) | `/sectors/index.html?pick=…`, the offer already pinned |
+| `sector` | the beacon map is open (§5c), **or** the resolved event is a `START_BEACON_*`, **or** no card resolves at all, **or** within `--sector-hold` seconds of arriving in a new sector | `/sector/<slug>` |
+| `card` | none of the above | `/card/<slug>` |
+
+The order is the priority: choosing a sector outranks everything, because it is the one
+moment the player is asked a question the wiki can answer.
 
 **The entry beacon is the good trigger.** A `START_BEACON_*` card says "you jump in" and
 nothing more, and it is on screen at exactly the moment the question is *what is this
@@ -486,6 +490,35 @@ no card to show anyway, so the sector page is what `view` would choose regardles
 
 Installing costs a Slipstream patch and a restart (`mods/map-signal/README.md`). Without it
 the watcher still works, on §5b's rules.
+
+### 5d. The sector map — the chooser, with the offer already pinned
+
+The same mod reports the *sector* map, which is a different screen from the beacon map and
+a different question: not "what is here" but "which of these two do I fly to". It logs the
+screen **and the offer**, because the offer is the part nothing else holds:
+
+```
+map-signal: choosing 4 -> Rock Homeworlds | Slug Home Nebula
+map-signal: chosen
+```
+
+`bChoosingNewSector` is the screen; `currentSector.neighbors` is the offer — the engine's
+own adjacency, which is what "can travel to" means. The next *column* of the sector map is
+not the same set.
+
+The watcher resolves each name against `display_name` / `title` / `short_name` in the
+profiles and serves `/sectors/index.html?pick=<slug>,<slug>` — the chooser (`SECTOR-PAGE.md`
+§7b) with those sectors already in the comparison panel. A name that resolves to nothing is
+**dropped, never guessed**, so a renamed sector shows a short offer rather than a wrong one;
+an offer that cannot be read at all still shows the chooser, unpinned, because the screen
+being up is itself the fact.
+
+Three or two: the map usually offers two and the panel is built for two, but it can offer
+three, and `?pick=` accepts three — the panel grows a column. Pinning by hand stays capped
+at two.
+
+**Why the URL beats what was pinned by hand.** The chooser remembers pins in `localStorage`;
+`?pick=` overrides them. The offer is not a preference to be remembered over.
 
 ### The last card stays up — except when we know it is wrong
 

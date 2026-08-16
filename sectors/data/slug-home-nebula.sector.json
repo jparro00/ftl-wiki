@@ -123,6 +123,16 @@
         "share": 12.5,
         "in_store": 33.0
       }
+    ],
+    "excluded": [
+      {
+        "id": "crystal",
+        "label": "Crystal"
+      },
+      {
+        "id": "anaerobic",
+        "label": "Lanius"
+      }
     ]
   },
   "start_event": {
@@ -218,7 +228,8 @@
           "title": "Store",
           "card": true,
           "tags": [
-            "store"
+            "store",
+            "store-marker"
           ],
           "marker": {
             "store": true
@@ -255,7 +266,8 @@
           "title": "Store in nebula (Slug)",
           "card": true,
           "tags": [
-            "store"
+            "store",
+            "store-marker"
           ],
           "marker": {
             "store": true,
@@ -549,7 +561,8 @@
               "may-fight",
               "crew",
               "store",
-              "unique"
+              "unique",
+              "store-marker"
             ],
             "marker": {
               "store": true
@@ -756,7 +769,8 @@
           "tags": [
             "may-fight",
             "crew",
-            "unique"
+            "unique",
+            "distress"
           ],
           "marker": {
             "beacon": "distress",
@@ -778,7 +792,8 @@
           "tags": [
             "crew",
             "cost",
-            "unique"
+            "unique",
+            "distress"
           ],
           "marker": {
             "beacon": "distress",
@@ -801,7 +816,8 @@
           "card": true,
           "tags": [
             "may-fight",
-            "unique"
+            "unique",
+            "distress"
           ],
           "marker": {
             "beacon": "distress"
@@ -878,7 +894,8 @@
           "card": true,
           "tags": [
             "may-fight",
-            "cost"
+            "cost",
+            "distress"
           ],
           "marker": {
             "beacon": "distress"
@@ -922,7 +939,8 @@
           "tags": [
             "fight",
             "crew",
-            "unique"
+            "unique",
+            "distress"
           ],
           "marker": {
             "beacon": "distress"
@@ -1304,7 +1322,8 @@
             "boarders",
             "crew",
             "store",
-            "unique"
+            "unique",
+            "store-marker"
           ],
           "marker": {
             "store": true,
@@ -1344,7 +1363,8 @@
             "crew",
             "store",
             "cost",
-            "unique"
+            "unique",
+            "store-marker"
           ],
           "marker": {
             "store": true,
@@ -1819,7 +1839,8 @@
           "tags": [
             "may-fight",
             "store",
-            "unique"
+            "unique",
+            "store-marker"
           ],
           "marker": {
             "store": true
@@ -2351,7 +2372,8 @@
         "tags": [
           "may-fight",
           "store",
-          "unique"
+          "unique",
+          "store-marker"
         ],
         "marker": {
           "store": true
@@ -2930,6 +2952,7 @@
           "sensors"
         ],
         "req": "sensors",
+        "system": true,
         "levels": [
           "2",
           "3"
@@ -2942,6 +2965,32 @@
           "WRECKAGE_EVENT",
           "TERRAFORMING_SCAN",
           "ROGUE_REBEL"
+        ],
+        "levels_detail": [
+          {
+            "lvl": "1",
+            "events": [
+              "TRADER_UPGRADES"
+            ]
+          },
+          {
+            "lvl": "2",
+            "events": [
+              "NEBULA_SLUG_FIGHT_UNLOCK",
+              "WRECKAGE_EVENT",
+              "TERRAFORMING_SCAN",
+              "ROGUE_REBEL"
+            ]
+          },
+          {
+            "lvl": "3",
+            "events": [
+              "NEBULA_REBEL_CHASE",
+              "BROKEN_REBEL_DRONE",
+              "WRECKAGE_EVENT",
+              "ROGUE_REBEL"
+            ]
+          }
         ]
       },
       {
@@ -2950,6 +2999,7 @@
           "hacking"
         ],
         "req": "hacking",
+        "system": true,
         "levels": [
           "1",
           "2"
@@ -2961,6 +3011,25 @@
           "NEBULA_SLUG_CHOOSE_DEATH",
           "NEBULA_AUTO_DEFENSE_ITEM",
           "PIRATE_SALESMAN"
+        ],
+        "levels_detail": [
+          {
+            "lvl": "1",
+            "events": [
+              "NEBULA_SLUG_DOORS",
+              "NEBULA_SLUG_OXYGEN",
+              "NEBULA_SLUG_MEDBAY",
+              "NEBULA_SLUG_CHOOSE_DEATH",
+              "NEBULA_AUTO_DEFENSE_ITEM",
+              "PIRATE_SALESMAN"
+            ]
+          },
+          {
+            "lvl": "2",
+            "events": [
+              "NEBULA_AUTO_DEFENSE_ITEM"
+            ]
+          }
         ]
       },
       {
@@ -2969,6 +3038,7 @@
           "slug"
         ],
         "req": "slug",
+        "system": false,
         "levels": [],
         "events": [
           "NEBULA_SLUG_FIGHT_UNLOCK",
@@ -2977,6 +3047,19 @@
           "NEBULA_BATTLEFIELD",
           "DONOR_PONY",
           "PIRATE_SALESMAN"
+        ],
+        "levels_detail": [
+          {
+            "lvl": null,
+            "events": [
+              "NEBULA_SLUG_FIGHT_UNLOCK",
+              "DONOR_BLACK_RAVEN",
+              "NEBULA_SLUG_FAKE_STORE",
+              "NEBULA_BATTLEFIELD",
+              "DONOR_PONY",
+              "PIRATE_SALESMAN"
+            ]
+          }
         ]
       },
       {
@@ -2985,6 +3068,7 @@
           "cloaking"
         ],
         "req": "cloaking",
+        "system": true,
         "levels": [
           "1",
           "2"
@@ -2993,6 +3077,22 @@
           "NEBULA_REBEL_UNDETECTED",
           "NEBULA_AUTO_DEFENSE_ITEM",
           "AUTO_DEFENSE_ITEM"
+        ],
+        "levels_detail": [
+          {
+            "lvl": "1",
+            "events": [
+              "NEBULA_REBEL_UNDETECTED",
+              "NEBULA_AUTO_DEFENSE_ITEM",
+              "AUTO_DEFENSE_ITEM"
+            ]
+          },
+          {
+            "lvl": "2",
+            "events": [
+              "NEBULA_AUTO_DEFENSE_ITEM"
+            ]
+          }
         ]
       },
       {
@@ -3001,6 +3101,7 @@
           "medbay"
         ],
         "req": "medbay",
+        "system": true,
         "levels": [
           "2"
         ],
@@ -3008,6 +3109,16 @@
           "NEBULA_SLUG_MEDBAY",
           "NEBULA_BATTLEFIELD",
           "DONOR_PLAGUE"
+        ],
+        "levels_detail": [
+          {
+            "lvl": "2",
+            "events": [
+              "NEBULA_SLUG_MEDBAY",
+              "NEBULA_BATTLEFIELD",
+              "DONOR_PLAGUE"
+            ]
+          }
         ]
       },
       {
@@ -3016,12 +3127,27 @@
           "doors"
         ],
         "req": "doors",
+        "system": true,
         "levels": [
           "2"
         ],
         "events": [
           "TRADER_UPGRADES",
           "FUELING_STATION"
+        ],
+        "levels_detail": [
+          {
+            "lvl": "1",
+            "events": [
+              "TRADER_UPGRADES"
+            ]
+          },
+          {
+            "lvl": "2",
+            "events": [
+              "FUELING_STATION"
+            ]
+          }
         ]
       },
       {
@@ -3030,10 +3156,20 @@
           "ADV_SCANNERS"
         ],
         "req": "ADV_SCANNERS",
+        "system": false,
         "levels": [],
         "events": [
           "NEBULA_LOST_SHIP",
           "NEBULA_REBEL_CHASE"
+        ],
+        "levels_detail": [
+          {
+            "lvl": null,
+            "events": [
+              "NEBULA_LOST_SHIP",
+              "NEBULA_REBEL_CHASE"
+            ]
+          }
         ]
       },
       {
@@ -3042,12 +3178,27 @@
           "oxygen"
         ],
         "req": "oxygen",
+        "system": true,
         "levels": [
           "2"
         ],
         "events": [
           "TRADER_UPGRADES",
           "NEBULA_SLUG_OXYGEN"
+        ],
+        "levels_detail": [
+          {
+            "lvl": "1",
+            "events": [
+              "TRADER_UPGRADES"
+            ]
+          },
+          {
+            "lvl": "2",
+            "events": [
+              "NEBULA_SLUG_OXYGEN"
+            ]
+          }
         ]
       },
       {
@@ -3056,10 +3207,20 @@
           "reactor"
         ],
         "req": "reactor",
+        "system": false,
         "levels": [],
         "events": [
           "TRADER_UPGRADES",
           "ROCK_SLUG_ARGUMENT_NEBULA"
+        ],
+        "levels_detail": [
+          {
+            "lvl": null,
+            "events": [
+              "TRADER_UPGRADES",
+              "ROCK_SLUG_ARGUMENT_NEBULA"
+            ]
+          }
         ]
       },
       {
@@ -3068,12 +3229,27 @@
           "teleporter"
         ],
         "req": "teleporter",
+        "system": true,
         "levels": [
           "2"
         ],
         "events": [
           "NEBULA_LOST_SHIP",
           "FRIENDLY_SLAVER"
+        ],
+        "levels_detail": [
+          {
+            "lvl": "1",
+            "events": [
+              "NEBULA_LOST_SHIP"
+            ]
+          },
+          {
+            "lvl": "2",
+            "events": [
+              "FRIENDLY_SLAVER"
+            ]
+          }
         ]
       },
       {
@@ -3082,9 +3258,18 @@
           "clonebay"
         ],
         "req": "clonebay",
+        "system": true,
         "levels": [],
         "events": [
           "NEBULA_BATTLEFIELD"
+        ],
+        "levels_detail": [
+          {
+            "lvl": "1",
+            "events": [
+              "NEBULA_BATTLEFIELD"
+            ]
+          }
         ]
       },
       {
@@ -3093,9 +3278,18 @@
           "drones"
         ],
         "req": "drones",
+        "system": true,
         "levels": [],
         "events": [
           "PIRATE_SALESMAN"
+        ],
+        "levels_detail": [
+          {
+            "lvl": "1",
+            "events": [
+              "PIRATE_SALESMAN"
+            ]
+          }
         ]
       },
       {
@@ -3104,9 +3298,18 @@
           "engi"
         ],
         "req": "engi",
+        "system": false,
         "levels": [],
         "events": [
           "NEBULA_BATTLEFIELD"
+        ],
+        "levels_detail": [
+          {
+            "lvl": null,
+            "events": [
+              "NEBULA_BATTLEFIELD"
+            ]
+          }
         ]
       },
       {
@@ -3115,11 +3318,20 @@
           "engines"
         ],
         "req": "engines",
+        "system": true,
         "levels": [
           "4"
         ],
         "events": [
           "NEBULA_REBEL_UNDETECTED"
+        ],
+        "levels_detail": [
+          {
+            "lvl": "4",
+            "events": [
+              "NEBULA_REBEL_UNDETECTED"
+            ]
+          }
         ]
       },
       {
@@ -3128,9 +3340,18 @@
           "LIFE_SCANNER"
         ],
         "req": "LIFE_SCANNER",
+        "system": false,
         "levels": [],
         "events": [
           "NEBULA_REBEL_CHASE"
+        ],
+        "levels_detail": [
+          {
+            "lvl": null,
+            "events": [
+              "NEBULA_REBEL_CHASE"
+            ]
+          }
         ]
       },
       {
@@ -3139,9 +3360,18 @@
           "mantis"
         ],
         "req": "mantis",
+        "system": false,
         "levels": [],
         "events": [
           "SLUG_DISTRESS_TRICK"
+        ],
+        "levels_detail": [
+          {
+            "lvl": null,
+            "events": [
+              "SLUG_DISTRESS_TRICK"
+            ]
+          }
         ]
       },
       {
@@ -3150,9 +3380,18 @@
           "mind"
         ],
         "req": "mind",
+        "system": true,
         "levels": [],
         "events": [
           "NEBULA_WEAPONS_TRADER"
+        ],
+        "levels_detail": [
+          {
+            "lvl": "1",
+            "events": [
+              "NEBULA_WEAPONS_TRADER"
+            ]
+          }
         ]
       },
       {
@@ -3161,9 +3400,18 @@
           "WEAPONS_MISSILES_EVENTS"
         ],
         "req": "WEAPONS_MISSILES_EVENTS",
+        "system": false,
         "levels": [],
         "events": [
           "HELP_MINERS"
+        ],
+        "levels_detail": [
+          {
+            "lvl": null,
+            "events": [
+              "HELP_MINERS"
+            ]
+          }
         ]
       },
       {
@@ -3172,9 +3420,18 @@
           "pilot"
         ],
         "req": "pilot",
+        "system": true,
         "levels": [],
         "events": [
           "TRADER_UPGRADES"
+        ],
+        "levels_detail": [
+          {
+            "lvl": "1",
+            "events": [
+              "TRADER_UPGRADES"
+            ]
+          }
         ]
       },
       {
@@ -3183,9 +3440,18 @@
           "rock"
         ],
         "req": "rock",
+        "system": false,
         "levels": [],
         "events": [
           "SLUG_DRINK"
+        ],
+        "levels_detail": [
+          {
+            "lvl": null,
+            "events": [
+              "SLUG_DRINK"
+            ]
+          }
         ]
       },
       {
@@ -3194,9 +3460,18 @@
           "SCRAP_COLLECTOR"
         ],
         "req": "SCRAP_COLLECTOR",
+        "system": false,
         "levels": [],
         "events": [
           "ASTEROID_EXPLORE"
+        ],
+        "levels_detail": [
+          {
+            "lvl": null,
+            "events": [
+              "ASTEROID_EXPLORE"
+            ]
+          }
         ]
       },
       {
@@ -3205,11 +3480,20 @@
           "weapons"
         ],
         "req": "weapons",
+        "system": true,
         "levels": [
           "6"
         ],
         "events": [
           "PIRATE_CIVILIAN_BEACON"
+        ],
+        "levels_detail": [
+          {
+            "lvl": "6",
+            "events": [
+              "PIRATE_CIVILIAN_BEACON"
+            ]
+          }
         ]
       },
       {
@@ -3218,9 +3502,18 @@
           "energy"
         ],
         "req": "energy",
+        "system": false,
         "levels": [],
         "events": [
           "TERRAFORMING_SCAN"
+        ],
+        "levels_detail": [
+          {
+            "lvl": null,
+            "events": [
+              "TERRAFORMING_SCAN"
+            ]
+          }
         ]
       }
     ],

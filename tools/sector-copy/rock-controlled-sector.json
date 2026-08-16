@@ -1,17 +1,7 @@
 {
   "slug": "rock-controlled-sector",
 
-  "lede": "**Nothing here is placed by name** — no unlock beacon, no wormhole — so what you get is decided entirely by the order the lines are filled. The stores and the distress beacons land before a single fight is placed and are effectively certain; the deep neutral pool at the bottom, the one carrying the **Damaged Stasis Pod**, is where a full map runs out of room. Rock space is generous at the top of the table and thin at the bottom.",
-
-  "stats": [
-    { "metric": "beacons_min..beacons_max", "label": "Beacon spread" },
-    { "metric": "section:hostile:min..section:hostile:max", "label": "Guaranteed fights" },
-    { "metric": "entry:STORE_ROCK:min..entry:STORE_ROCK:max", "label": "Stores" },
-    { "metric": "gated_events", "label": "Events with a blue option" },
-    { "metric": "distinct_events", "label": "Events in pool" }
-  ],
-
-  "callout": "**Versus the Rock Homeworlds:** the same eight entries in the same order, the same pools, the same numbers. The homeworlds bolt two named beacons on top — the Rock Cruiser test and the Crystal wormhole — and because those sit above everything else in the definition, they are the two things that sector can never fail to place. This one repeats and names nothing; the homeworlds arrive at most once a run and no earlier than sector 5.",
+  "lede": "**Nothing here is placed by name** — no unlock beacon, no wormhole — so what you get is decided entirely by the order the lines are filled. Rock space is generous at the top of the table and thin at the bottom, and the bottom is where the **Damaged Stasis Pod** sits.",
 
   "section_notes": {
     "STORE_ROCK": "First in the queue, so this is the one line nothing can squeeze out: whatever else the sector fails to place, the resupply happens. Three other events can open a shop on top of it — {{ESCORT_BEACON}} from the distress line, {{QUEST_ESCORT}} and {{MERCENARY_WORK_START}} from the 0–1 quest line near the bottom.",
@@ -77,16 +67,8 @@
         { "lead": "Environment", "text": "Five of the eight hostile and boarding events open inside a hazard — three asteroid fields, two suns — and a hazard freezes the ship menu while you sit in it: no upgrades, no cargo swaps, no crew reassignment until you jump. At the suns, holding shields up keeps a flare to one or two fires instead of three to six." },
         { "lead": "Boarders", "text": "Four events put someone aboard. Three are Rockmen, up to three of them at {{ROCK_BOARDERS_SHIP}} and at {{ROCK_BOARDERS_SUN}}; {{FEDERATION_PLANET_SIGNAL}} sends two to three humans." },
         { "lead": "Hull", "text": "{{QUEST_CREWDEAD_START}} is a job to take a ship **intact**. Destroy the target instead and the wreck costs you 13 hull, a random system, and one room hit with every effect at once." },
-        { "lead": "Ammo", "text": "{{ROCK_STARSHIP_MINE}} chews through the hull while you decide: a missile detonation costs 3 hull, a beam drone costs a drone part, and defusing it by hand can drop into a red-wire/blue-wire flip where the wrong end kills the volunteer, takes 5 hull and opens a breach. Engines 5 backs you out of the whole thing for nothing." }
-      ]
-    },
-    {
-      "title": "Reading the map here",
-      "items": [
-        { "lead": "Distress", "text": "Rock is the exception to the note above: the distress line is filled **before** the neutral pool, not after, so the extra marker that {{ASTEROID_DERELICT_SHIP}} carries comes from the very bottom of the table and is the first one a full map loses. Two events in the distress line show no marker at all, so an ordinary-looking beacon can still be one of them." },
-        { "lead": "Scanners", "text": "Long-Ranged Scanners split the marked beacons exactly one way here: a possible-ship reading means {{FRIENDLY_BEACON}}, {{ESCORT_BEACON}} or {{TRAP_BEACON}} — two payouts and one ambush. Every other distress beacon in the sector reports as a plain unvisited location." },
-        { "lead": "Stores", "text": "Two, fixed, no roll, and first in the fill order — the shopping is the one guarantee this sector makes. Anything beyond it is an event opening a shop, and two of the three that can are in the 0–1 quest line." },
-        { "lead": "No cloud cover", "text": "The sector allocates no nebula line, so no purple clouds are drawn on the map: sensors work at every beacon, no jump you make slows the pursuit, and every hazard here is a sun or an asteroid field you can see coming with scanners." }
+        { "lead": "Ammo", "text": "{{ROCK_STARSHIP_MINE}} chews through the hull while you decide: a missile detonation costs 3 hull, a beam drone costs a drone part, and defusing it by hand can drop into a red-wire/blue-wire flip where the wrong end kills the volunteer, takes 5 hull and opens a breach. Engines 5 backs you out of the whole thing for nothing." },
+        { "lead": "The clock", "text": "No nebula line in the table, so no jump you make here slows the pursuit — every hazard is a sun or an asteroid field instead, and Long-Ranged Scanners will name it before you commit." }
       ]
     }
   ]

@@ -89,7 +89,8 @@ LUA = '''-- map-signal: tell the save watcher which screen the player is on.
 
 local PREFIX = "%%PREFIX%%"
 
-local last_open = nil     -- nil until the first read, so the first state is announced
+local last_open = nil      -- nil until the first read, so the first state is announced
+local last_choosing = nil  -- ...same for the sector-choice screen
 local reported = {}       -- failure sites already logged, so a fault cannot spam
 
 local function report(key, msg)
@@ -125,17 +126,136 @@ local function sector_of(map)
     return string.format("%d", n)
 end
 
+-- What the SWIG bindings actually expose on an object, logged once per label.
+--
+-- Which StarMap and Sector members Hyperspace exposes is not stated by anything in
+-- this repo -- `raw/modding/2026-08-15-beacon-name-labels-mod.md` lists the ones it
+-- verified and leaves the sector-choice screen an open question. Rather than guess in
+-- a loop, the script asks: SWIG keeps attributes in the metatable's `.get`/`.set`
+-- tables and methods in `.fn`, so reading those names *is* the API surface. This fires
+-- only when an attempt below fails, and only once, so a working install logs nothing.
+-- `rawget` is NOT available: Hyperspace's sandbox strips it along with io, os, package
+-- and debug. Measured 2026-08-16 -- the first version of this probe called it and threw
+-- "attempt to call a nil value (global 'rawget')" out of the render hook, which aborted
+-- the tick before it could log anything useful. Plain indexing, guarded, only.
+local CANDIDATE_FIELDS = {
+    "neighbors", "neighbours", "reachable", "visited", "level", "type",
+    "description", "location", "sectors", "currentSector", "worldLevel",
+    "bChoosingNewSector", "bOpen", "locations", "currentLoc", "potentialLoc",
+}
+
+local dumped = {}
+local function probe(label, obj)
+    if dumped[label] then return end
+    dumped[label] = true
+
+    -- 1. The binding's own member tables. SWIG keeps attributes in `.get`/`.set` and
+    --    methods in `.fn`, so these names *are* the API surface -- no guessing.
+    local ok, mt = pcall(getmetatable, obj)
+    if ok and type(mt) == "table" then
+        local top = {}
+        for k in pairs(mt) do top[#top + 1] = tostring(k) end
+        table.sort(top)
+        log(PREFIX .. "probe " .. label .. " meta: " .. table.concat(top, ","))
+        for _, key in ipairs({".get", ".set", ".fn"}) do
+            local got, tbl = pcall(function() return mt[key] end)
+            if got and type(tbl) == "table" then
+                local names = {}
+                for k in pairs(tbl) do names[#names + 1] = tostring(k) end
+                table.sort(names)
+                log(PREFIX .. "probe " .. label .. " " .. key .. ": "
+                    .. table.concat(names, ","))
+            end
+        end
+    else
+        log(PREFIX .. "probe " .. label .. ": no metatable")
+    end
+
+    -- 2. ...and what actually reads, in case the tables above are empty or hidden.
+    --    Reported as name:type, since a vector and a number need different handling.
+    local found = {}
+    for _, field in ipairs(CANDIDATE_FIELDS) do
+        local got, value = pcall(function() return obj[field] end)
+        if got and value ~= nil then
+            found[#found + 1] = field .. ":" .. type(value)
+        end
+    end
+    log(PREFIX .. "probe " .. label .. " reads: " .. table.concat(found, ","))
+end
+
+-- A diagnostic must never be the thing that breaks the hook it is diagnosing.
+local function safe_probe(label, obj)
+    pcall(probe, label, obj)
+end
+
+local function name_of(sector)
+    local ok, name = pcall(function() return sector.description.name:GetText() end)
+    if ok and name ~= nil and name ~= "" then return name end
+    return nil
+end
+
+-- The sectors the map is offering. `neighbors` is the engine's own adjacency, which is
+-- exactly the question -- the next column is not the same as the reachable ones.
+local function offer(map)
+    local ok, current = pcall(function() return map.currentSector end)
+    if not ok or current == nil then
+        report("currentSector", "currentSector unreadable")
+        safe_probe("starMap", map)
+        return nil
+    end
+    local got, neighbors = pcall(function() return current.neighbors end)
+    if not got or neighbors == nil then
+        report("neighbors", "currentSector.neighbors unreadable")
+        safe_probe("starMap", map)
+        safe_probe("sector", current)
+        return nil
+    end
+    local size
+    got, size = pcall(function() return neighbors:size() end)
+    if not got then
+        report("neighbors_size", "neighbors is not a vector")
+        safe_probe("neighbors", neighbors)
+        return nil
+    end
+    local names = {}
+    for i = 0, size - 1 do
+        local name = name_of(neighbors[i])
+        if name then names[#names + 1] = name end
+    end
+    return names
+end
+
 local function tick()
     local map = star_map()
     if map == nil then return end
+
     local ok, open = pcall(function() return map.bOpen and true or false end)
     if not ok then
         report("bopen", "bOpen unreadable: " .. tostring(open))
         return
     end
-    if open == last_open then return end
-    last_open = open
-    log(PREFIX .. (open and "open" or "closed") .. " sector " .. sector_of(map))
+    if open ~= last_open then
+        last_open = open
+        log(PREFIX .. (open and "open" or "closed") .. " sector " .. sector_of(map))
+    end
+
+    -- The sector map -- the screen that offers the next sectors -- is a different
+    -- screen from the beacon map, and the watcher wants the offer, not just the fact.
+    local got, choosing = pcall(function() return map.bChoosingNewSector and true or false end)
+    if not got then
+        report("choosing", "bChoosingNewSector unreadable: " .. tostring(choosing))
+        safe_probe("starMap", map)
+        return
+    end
+    if choosing == last_choosing then return end
+    last_choosing = choosing
+    if not choosing then
+        log(PREFIX .. "chosen")
+        return
+    end
+    local names = offer(map)
+    log(PREFIX .. "choosing " .. sector_of(map) .. " -> "
+        .. ((names and #names > 0) and table.concat(names, " | ") or "?"))
 end
 
 -- MOUSE_CONTROL is the one render hook that fires on every screen including the map
@@ -168,7 +288,7 @@ def watcher_pattern():
     module = importlib.util.module_from_spec(spec)
     sys.path.insert(0, str(ROOT / "tools"))
     spec.loader.exec_module(module)
-    return getattr(module, "MAP_SIGNAL", None)
+    return module
 
 
 def verify():
@@ -195,15 +315,26 @@ def verify():
         if banned in lua:
             problems.append("draws or mutates (%s) -- this mod must only log" % banned)
 
+    # Hyperspace's sandbox has no io/os/package/debug -- and no rawget/rawset either,
+    # measured the hard way: a probe that called rawget threw out of the render hook.
+    # Comments are stripped first, or the note explaining that trips the check.
+    code = "\n".join(line.split("--", 1)[0] for line in lua.splitlines())
+    for absent in ("rawget", "rawset", "io.", "os.", "require", "debug."):
+        if absent in code:
+            problems.append("uses %r, which Hyperspace's Lua sandbox does not provide"
+                            % absent)
+
     # Every failure path has to be survivable: a raw field read inside the per-frame
     # hook could take the game down with it.
     if lua.count("pcall") < 3:
         problems.append("fewer than 3 pcall guards; the render hook must not throw")
 
-    # The contract with the watcher, checked against the watcher's real regex.
-    pattern = watcher_pattern()
-    if pattern is None:
-        problems.append("save-watch.py exposes no MAP_SIGNAL pattern to check against")
+    # The contract with the watcher, checked against the watcher's real regexes.
+    watcher = watcher_pattern()
+    pattern = getattr(watcher, "MAP_SIGNAL", None)
+    choice = getattr(watcher, "SECTOR_CHOICE", None)
+    if pattern is None or choice is None:
+        problems.append("save-watch.py exposes no MAP_SIGNAL / SECTOR_CHOICE to check against")
     else:
         # Both forms: what the mod emits, and what the log actually receives --
         # Hyperspace stamps `[Lua]: ` on every scripted line, and testing only the
@@ -224,6 +355,22 @@ def verify():
                      "[Lua]: " + PREFIX + "loaded"):
             if pattern.search(line):
                 problems.append("watcher regex wrongly matches %r" % line)
+
+        # ...and the same for the sector-choice pair, which is a separate pattern and
+        # must not be confused with the open/closed one in either direction.
+        offer = "[Lua]: " + PREFIX + "choosing 4 -> Rock Homeworlds | Slug Home Nebula   "
+        done = "[Lua]: " + PREFIX + "chosen"
+        for line, verb in ((offer, "choosing"), (done, "chosen")):
+            match = choice.search(line)
+            if not match or match.group(1) != verb:
+                problems.append("SECTOR_CHOICE does not read %r as %r" % (line, verb))
+            if pattern.search(line):
+                problems.append("MAP_SIGNAL wrongly matches the choice line %r" % line)
+        if choice.search(PREFIX + "open sector 3"):
+            problems.append("SECTOR_CHOICE wrongly matches an open/closed line")
+        names = choice.search(offer).group(2).split("->", 1)[1]
+        if [n.strip() for n in names.split(watcher.CHOICE_SPLIT)] !=                 ["Rock Homeworlds", "Slug Home Nebula"]:
+            problems.append("the watcher's CHOICE_SPLIT does not recover the offer")
 
     # Slipstream adds the <FTL> root itself; a wrapper here nests it twice.
     if "<FTL>" in append:

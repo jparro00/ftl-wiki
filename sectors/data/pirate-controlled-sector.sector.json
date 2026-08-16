@@ -65,6 +65,20 @@
         "share": 5.9,
         "in_store": 16.6
       }
+    ],
+    "excluded": [
+      {
+        "id": "crystal",
+        "label": "Crystal"
+      },
+      {
+        "id": "anaerobic",
+        "label": "Lanius"
+      },
+      {
+        "id": "slug",
+        "label": "Slug"
+      }
     ]
   },
   "start_event": {
@@ -95,7 +109,8 @@
           "title": "Store (Pirate)",
           "card": true,
           "tags": [
-            "store"
+            "store",
+            "store-marker"
           ],
           "marker": {
             "store": true
@@ -388,7 +403,8 @@
               "may-fight",
               "crew",
               "store",
-              "unique"
+              "unique",
+              "store-marker"
             ],
             "marker": {
               "store": true
@@ -819,7 +835,8 @@
             "crew-loss",
             "crew",
             "reward",
-            "unique"
+            "unique",
+            "distress"
           ],
           "marker": {
             "beacon": "distress"
@@ -864,7 +881,8 @@
             "crew",
             "quest",
             "cost",
-            "unique"
+            "unique",
+            "distress"
           ],
           "marker": {
             "beacon": "distress"
@@ -922,7 +940,9 @@
             "crew",
             "store",
             "quest",
-            "unique"
+            "unique",
+            "distress",
+            "store-marker"
           ],
           "marker": {
             "beacon": "distress",
@@ -974,7 +994,8 @@
           "tags": [
             "crew",
             "reward",
-            "cost"
+            "cost",
+            "distress"
           ],
           "marker": {
             "beacon": "distress"
@@ -995,7 +1016,8 @@
           "tags": [
             "fight",
             "crew",
-            "unique"
+            "unique",
+            "distress"
           ],
           "marker": {
             "beacon": "distress"
@@ -1017,7 +1039,8 @@
             "may-fight",
             "crew",
             "cost",
-            "unique"
+            "unique",
+            "distress"
           ],
           "marker": {
             "beacon": "distress"
@@ -1048,7 +1071,8 @@
             "crew-loss",
             "crew",
             "reward",
-            "unique"
+            "unique",
+            "distress"
           ],
           "marker": {
             "beacon": "distress"
@@ -1078,7 +1102,8 @@
           "tags": [
             "crew-loss",
             "reward",
-            "unique"
+            "unique",
+            "distress"
           ],
           "marker": {
             "beacon": "distress"
@@ -1116,7 +1141,8 @@
           "card": true,
           "tags": [
             "may-fight",
-            "cost"
+            "cost",
+            "distress"
           ],
           "marker": {
             "beacon": "distress"
@@ -1631,7 +1657,8 @@
             "may-fight",
             "store",
             "quest",
-            "unique"
+            "unique",
+            "store-marker"
           ],
           "marker": {
             "store": true
@@ -1655,7 +1682,8 @@
             "may-fight",
             "crew",
             "store",
-            "quest"
+            "quest",
+            "store-marker"
           ],
           "marker": {
             "store": true
@@ -1751,7 +1779,8 @@
           "tags": [
             "crew",
             "reward",
-            "cost"
+            "cost",
+            "distress"
           ],
           "marker": {
             "beacon": "distress"
@@ -1773,7 +1802,8 @@
           "tags": [
             "fight",
             "crew",
-            "unique"
+            "unique",
+            "distress"
           ],
           "marker": {
             "beacon": "distress"
@@ -1796,7 +1826,8 @@
             "crew-loss",
             "crew",
             "reward",
-            "unique"
+            "unique",
+            "distress"
           ],
           "marker": {
             "beacon": "distress"
@@ -1866,7 +1897,8 @@
             "crew",
             "quest",
             "cost",
-            "unique"
+            "unique",
+            "distress"
           ],
           "marker": {
             "beacon": "distress"
@@ -1975,7 +2007,9 @@
             "crew",
             "store",
             "quest",
-            "unique"
+            "unique",
+            "distress",
+            "store-marker"
           ],
           "marker": {
             "beacon": "distress",
@@ -2006,7 +2040,8 @@
             "may-fight",
             "crew",
             "cost",
-            "unique"
+            "unique",
+            "distress"
           ],
           "marker": {
             "beacon": "distress"
@@ -2038,7 +2073,8 @@
             "crew-loss",
             "reward",
             "cost",
-            "unique"
+            "unique",
+            "distress"
           ],
           "marker": {
             "beacon": "distress"
@@ -2072,7 +2108,8 @@
           "card": true,
           "tags": [
             "reward",
-            "unique"
+            "unique",
+            "distress"
           ],
           "marker": {
             "beacon": "distress"
@@ -2119,7 +2156,8 @@
             "crew-loss",
             "crew",
             "reward",
-            "unique"
+            "unique",
+            "distress"
           ],
           "marker": {
             "beacon": "distress"
@@ -2150,7 +2188,8 @@
           "tags": [
             "crew-loss",
             "reward",
-            "unique"
+            "unique",
+            "distress"
           ],
           "marker": {
             "beacon": "distress"
@@ -2191,7 +2230,8 @@
             "boarders",
             "crew-loss",
             "crew",
-            "reward"
+            "reward",
+            "distress"
           ],
           "marker": {
             "beacon": "distress"
@@ -2219,7 +2259,8 @@
           "tags": [
             "may-fight",
             "crew",
-            "cost"
+            "cost",
+            "distress"
           ],
           "marker": {
             "beacon": "distress"
@@ -2270,7 +2311,8 @@
           "tags": [
             "may-fight",
             "store",
-            "unique"
+            "unique",
+            "store-marker"
           ],
           "marker": {
             "store": true
@@ -2315,7 +2357,8 @@
           "card": true,
           "tags": [
             "reward",
-            "unique"
+            "unique",
+            "distress"
           ],
           "marker": {
             "beacon": "distress"
@@ -2539,7 +2582,8 @@
         "tags": [
           "may-fight",
           "store",
-          "unique"
+          "unique",
+          "store-marker"
         ],
         "marker": {
           "store": true
@@ -3105,6 +3149,7 @@
           "teleporter"
         ],
         "req": "teleporter",
+        "system": true,
         "levels": [
           "2"
         ],
@@ -3115,6 +3160,24 @@
           "MERCHANT_REQUEST",
           "REBEL_VS_FEDERATION",
           "FRIENDLY_SLAVER"
+        ],
+        "levels_detail": [
+          {
+            "lvl": "1",
+            "events": [
+              "STATION_SICK",
+              "CIVILIAN_ASTEROIDS_BEACON",
+              "NEBULA_LOST_SHIP",
+              "MERCHANT_REQUEST",
+              "REBEL_VS_FEDERATION"
+            ]
+          },
+          {
+            "lvl": "2",
+            "events": [
+              "FRIENDLY_SLAVER"
+            ]
+          }
         ]
       },
       {
@@ -3123,6 +3186,7 @@
           "cloaking"
         ],
         "req": "cloaking",
+        "system": true,
         "levels": [
           "1",
           "2",
@@ -3133,6 +3197,30 @@
           "STORM_AUTO",
           "NEBULA_REBEL_UNDETECTED",
           "DISTRESS_SATELLITE_DEFENSE"
+        ],
+        "levels_detail": [
+          {
+            "lvl": "1",
+            "events": [
+              "NEBULA_AUTO_DEFENSE_ITEM",
+              "STORM_AUTO",
+              "NEBULA_REBEL_UNDETECTED",
+              "DISTRESS_SATELLITE_DEFENSE"
+            ]
+          },
+          {
+            "lvl": "2",
+            "events": [
+              "NEBULA_AUTO_DEFENSE_ITEM",
+              "DISTRESS_SATELLITE_DEFENSE"
+            ]
+          },
+          {
+            "lvl": "3",
+            "events": [
+              "DISTRESS_SATELLITE_DEFENSE"
+            ]
+          }
         ]
       },
       {
@@ -3141,12 +3229,24 @@
           "ADV_SCANNERS"
         ],
         "req": "ADV_SCANNERS",
+        "system": false,
         "levels": [],
         "events": [
           "FLOATING_CARGO",
           "CIVILIAN_ASTEROIDS_BEACON",
           "NEBULA_LOST_SHIP",
           "REBEL_VS_FEDERATION"
+        ],
+        "levels_detail": [
+          {
+            "lvl": null,
+            "events": [
+              "FLOATING_CARGO",
+              "CIVILIAN_ASTEROIDS_BEACON",
+              "NEBULA_LOST_SHIP",
+              "REBEL_VS_FEDERATION"
+            ]
+          }
         ]
       },
       {
@@ -3155,6 +3255,7 @@
           "medbay"
         ],
         "req": "medbay",
+        "system": true,
         "levels": [
           "3",
           "2"
@@ -3164,6 +3265,25 @@
           "STRANDED_BEACON",
           "DISTRESS_STATION_DISEASE",
           "MERCHANT_REQUEST"
+        ],
+        "levels_detail": [
+          {
+            "lvl": "2",
+            "events": [
+              "STATION_SICK",
+              "STRANDED_BEACON",
+              "DISTRESS_STATION_DISEASE",
+              "MERCHANT_REQUEST"
+            ]
+          },
+          {
+            "lvl": "3",
+            "events": [
+              "STATION_SICK",
+              "STRANDED_BEACON",
+              "MERCHANT_REQUEST"
+            ]
+          }
         ]
       },
       {
@@ -3172,6 +3292,7 @@
           "sensors"
         ],
         "req": "sensors",
+        "system": true,
         "levels": [
           "2",
           "3"
@@ -3181,6 +3302,29 @@
           "FLOATING_CARGO",
           "CIVILIAN_ASTEROIDS_BEACON",
           "REBEL_VS_FEDERATION"
+        ],
+        "levels_detail": [
+          {
+            "lvl": "1",
+            "events": [
+              "TRADER_UPGRADES"
+            ]
+          },
+          {
+            "lvl": "2",
+            "events": [
+              "FLOATING_CARGO",
+              "CIVILIAN_ASTEROIDS_BEACON",
+              "REBEL_VS_FEDERATION"
+            ]
+          },
+          {
+            "lvl": "3",
+            "events": [
+              "CIVILIAN_ASTEROIDS_BEACON",
+              "REBEL_VS_FEDERATION"
+            ]
+          }
         ]
       },
       {
@@ -3189,11 +3333,22 @@
           "BATTLE"
         ],
         "req": "BATTLE",
+        "system": false,
         "levels": [],
         "events": [
           "STATION_SICK",
           "MERCHANT_REQUEST",
           "DISTRESS_INFESTATION"
+        ],
+        "levels_detail": [
+          {
+            "lvl": null,
+            "events": [
+              "STATION_SICK",
+              "MERCHANT_REQUEST",
+              "DISTRESS_INFESTATION"
+            ]
+          }
         ]
       },
       {
@@ -3202,6 +3357,7 @@
           "engines"
         ],
         "req": "engines",
+        "system": true,
         "levels": [
           "6",
           "3",
@@ -3211,6 +3367,27 @@
           "PIRATE_SLAVER",
           "STORM_AUTO",
           "NEBULA_REBEL_UNDETECTED"
+        ],
+        "levels_detail": [
+          {
+            "lvl": "3",
+            "events": [
+              "STORM_AUTO"
+            ]
+          },
+          {
+            "lvl": "4",
+            "events": [
+              "NEBULA_REBEL_UNDETECTED"
+            ]
+          },
+          {
+            "lvl": "6",
+            "events": [
+              "PIRATE_SLAVER",
+              "STORM_AUTO"
+            ]
+          }
         ]
       },
       {
@@ -3219,6 +3396,7 @@
           "hacking"
         ],
         "req": "hacking",
+        "system": true,
         "levels": [
           "1",
           "2"
@@ -3227,6 +3405,22 @@
           "PIRATE_NO_ESCAPE",
           "BOARDERS_HACKING",
           "NEBULA_AUTO_DEFENSE_ITEM"
+        ],
+        "levels_detail": [
+          {
+            "lvl": "1",
+            "events": [
+              "PIRATE_NO_ESCAPE",
+              "BOARDERS_HACKING",
+              "NEBULA_AUTO_DEFENSE_ITEM"
+            ]
+          },
+          {
+            "lvl": "2",
+            "events": [
+              "NEBULA_AUTO_DEFENSE_ITEM"
+            ]
+          }
         ]
       },
       {
@@ -3235,6 +3429,7 @@
           "weapons"
         ],
         "req": "weapons",
+        "system": true,
         "levels": [
           "6"
         ],
@@ -3242,6 +3437,16 @@
           "PIRATE_CIVILIAN_BEACON",
           "NEBULA_PIRATE_SMUGGLE",
           "MERCHANT_REQUEST"
+        ],
+        "levels_detail": [
+          {
+            "lvl": "6",
+            "events": [
+              "PIRATE_CIVILIAN_BEACON",
+              "NEBULA_PIRATE_SMUGGLE",
+              "MERCHANT_REQUEST"
+            ]
+          }
         ]
       },
       {
@@ -3250,10 +3455,20 @@
           "engi"
         ],
         "req": "engi",
+        "system": false,
         "levels": [],
         "events": [
           "DISTRESS_STATION_DISEASE",
           "DISTRESS_SATELLITE_DEFENSE"
+        ],
+        "levels_detail": [
+          {
+            "lvl": null,
+            "events": [
+              "DISTRESS_STATION_DISEASE",
+              "DISTRESS_SATELLITE_DEFENSE"
+            ]
+          }
         ]
       },
       {
@@ -3262,10 +3477,20 @@
           "NANO_MEDBAY"
         ],
         "req": "NANO_MEDBAY",
+        "system": false,
         "levels": [],
         "events": [
           "DISTRESS_STATION_DISEASE",
           "REBEL_VS_FEDERATION"
+        ],
+        "levels_detail": [
+          {
+            "lvl": null,
+            "events": [
+              "DISTRESS_STATION_DISEASE",
+              "REBEL_VS_FEDERATION"
+            ]
+          }
         ]
       },
       {
@@ -3274,12 +3499,27 @@
           "pilot"
         ],
         "req": "pilot",
+        "system": true,
         "levels": [
           "2"
         ],
         "events": [
           "TRADER_UPGRADES",
           "STORM_ITEMS"
+        ],
+        "levels_detail": [
+          {
+            "lvl": "1",
+            "events": [
+              "TRADER_UPGRADES"
+            ]
+          },
+          {
+            "lvl": "2",
+            "events": [
+              "STORM_ITEMS"
+            ]
+          }
         ]
       },
       {
@@ -3288,10 +3528,20 @@
           "rock"
         ],
         "req": "rock",
+        "system": false,
         "levels": [],
         "events": [
           "DISTRESS_STATION_FIRE",
           "DISTRESS_STATION_DISEASE"
+        ],
+        "levels_detail": [
+          {
+            "lvl": null,
+            "events": [
+              "DISTRESS_STATION_FIRE",
+              "DISTRESS_STATION_DISEASE"
+            ]
+          }
         ]
       },
       {
@@ -3300,10 +3550,20 @@
           "ROCK_ARMOR"
         ],
         "req": "ROCK_ARMOR",
+        "system": false,
         "levels": [],
         "events": [
           "CIVILIAN_ASTEROIDS_BEACON",
           "ASTEROID_DERELICT_SHIP"
+        ],
+        "levels_detail": [
+          {
+            "lvl": null,
+            "events": [
+              "CIVILIAN_ASTEROIDS_BEACON",
+              "ASTEROID_DERELICT_SHIP"
+            ]
+          }
         ]
       },
       {
@@ -3312,10 +3572,20 @@
           "REPAIR"
         ],
         "req": "REPAIR",
+        "system": false,
         "levels": [],
         "events": [
           "CIVILIAN_ASTEROIDS_BEACON",
           "DISTRESS_STATION_FIRE"
+        ],
+        "levels_detail": [
+          {
+            "lvl": null,
+            "events": [
+              "CIVILIAN_ASTEROIDS_BEACON",
+              "DISTRESS_STATION_FIRE"
+            ]
+          }
         ]
       },
       {
@@ -3324,9 +3594,18 @@
           "FTL_JUMPER"
         ],
         "req": "FTL_JUMPER",
+        "system": false,
         "levels": [],
         "events": [
           "ESCORT_BEACON"
+        ],
+        "levels_detail": [
+          {
+            "lvl": null,
+            "events": [
+              "ESCORT_BEACON"
+            ]
+          }
         ]
       },
       {
@@ -3335,9 +3614,18 @@
           "BEAM_BIO"
         ],
         "req": "BEAM_BIO",
+        "system": false,
         "levels": [],
         "events": [
           "DISTRESS_INFESTATION"
+        ],
+        "levels_detail": [
+          {
+            "lvl": null,
+            "events": [
+              "DISTRESS_INFESTATION"
+            ]
+          }
         ]
       },
       {
@@ -3346,9 +3634,18 @@
           "COMBAT_BEAM_DRONE_LIST"
         ],
         "req": "COMBAT_BEAM_DRONE_LIST",
+        "system": false,
         "levels": [],
         "events": [
           "DISTRESS_TRAPPED_MINER"
+        ],
+        "levels_detail": [
+          {
+            "lvl": null,
+            "events": [
+              "DISTRESS_TRAPPED_MINER"
+            ]
+          }
         ]
       },
       {
@@ -3357,9 +3654,18 @@
           "WEAPONS_BEAM_DAMAGE"
         ],
         "req": "WEAPONS_BEAM_DAMAGE",
+        "system": false,
         "levels": [],
         "events": [
           "DISTRESS_TRAPPED_MINER"
+        ],
+        "levels_detail": [
+          {
+            "lvl": null,
+            "events": [
+              "DISTRESS_TRAPPED_MINER"
+            ]
+          }
         ]
       },
       {
@@ -3368,9 +3674,18 @@
           "BOARDER"
         ],
         "req": "BOARDER",
+        "system": false,
         "levels": [],
         "events": [
           "DISTRESS_INFESTATION"
+        ],
+        "levels_detail": [
+          {
+            "lvl": null,
+            "events": [
+              "DISTRESS_INFESTATION"
+            ]
+          }
         ]
       },
       {
@@ -3379,11 +3694,20 @@
           "clonebay"
         ],
         "req": "clonebay",
+        "system": true,
         "levels": [
           "2"
         ],
         "events": [
           "STRANDED_BEACON"
+        ],
+        "levels_detail": [
+          {
+            "lvl": "2",
+            "events": [
+              "STRANDED_BEACON"
+            ]
+          }
         ]
       },
       {
@@ -3392,9 +3716,18 @@
           "DRONES_DEFENSE_LIST"
         ],
         "req": "DRONES_DEFENSE_LIST",
+        "system": false,
         "levels": [],
         "events": [
           "CIVILIAN_ASTEROIDS_BEACON"
+        ],
+        "levels_detail": [
+          {
+            "lvl": null,
+            "events": [
+              "CIVILIAN_ASTEROIDS_BEACON"
+            ]
+          }
         ]
       },
       {
@@ -3403,9 +3736,18 @@
           "doors"
         ],
         "req": "doors",
+        "system": true,
         "levels": [],
         "events": [
           "TRADER_UPGRADES"
+        ],
+        "levels_detail": [
+          {
+            "lvl": "1",
+            "events": [
+              "TRADER_UPGRADES"
+            ]
+          }
         ]
       },
       {
@@ -3414,9 +3756,18 @@
           "BOMB_HEAL"
         ],
         "req": "BOMB_HEAL",
+        "system": false,
         "levels": [],
         "events": [
           "REBEL_VS_FEDERATION"
+        ],
+        "levels_detail": [
+          {
+            "lvl": null,
+            "events": [
+              "REBEL_VS_FEDERATION"
+            ]
+          }
         ]
       },
       {
@@ -3425,9 +3776,18 @@
           "WEAPONS_ION"
         ],
         "req": "WEAPONS_ION",
+        "system": false,
         "levels": [],
         "events": [
           "DISTRESS_SATELLITE_DEFENSE"
+        ],
+        "levels_detail": [
+          {
+            "lvl": null,
+            "events": [
+              "DISTRESS_SATELLITE_DEFENSE"
+            ]
+          }
         ]
       },
       {
@@ -3436,9 +3796,18 @@
           "LIFE_SCANNER"
         ],
         "req": "LIFE_SCANNER",
+        "system": false,
         "levels": [],
         "events": [
           "STATION_SICK"
+        ],
+        "levels_detail": [
+          {
+            "lvl": null,
+            "events": [
+              "STATION_SICK"
+            ]
+          }
         ]
       },
       {
@@ -3447,9 +3816,18 @@
           "mind"
         ],
         "req": "mind",
+        "system": true,
         "levels": [],
         "events": [
           "MERCHANT_REQUEST"
+        ],
+        "levels_detail": [
+          {
+            "lvl": "1",
+            "events": [
+              "MERCHANT_REQUEST"
+            ]
+          }
         ]
       },
       {
@@ -3458,9 +3836,18 @@
           "WEAPONS_MISSILES_EVENTS"
         ],
         "req": "WEAPONS_MISSILES_EVENTS",
+        "system": false,
         "levels": [],
         "events": [
           "HELP_MINERS"
+        ],
+        "levels_detail": [
+          {
+            "lvl": null,
+            "events": [
+              "HELP_MINERS"
+            ]
+          }
         ]
       },
       {
@@ -3469,9 +3856,18 @@
           "oxygen"
         ],
         "req": "oxygen",
+        "system": true,
         "levels": [],
         "events": [
           "TRADER_UPGRADES"
+        ],
+        "levels_detail": [
+          {
+            "lvl": "1",
+            "events": [
+              "TRADER_UPGRADES"
+            ]
+          }
         ]
       },
       {
@@ -3480,9 +3876,18 @@
           "reactor"
         ],
         "req": "reactor",
+        "system": false,
         "levels": [],
         "events": [
           "TRADER_UPGRADES"
+        ],
+        "levels_detail": [
+          {
+            "lvl": null,
+            "events": [
+              "TRADER_UPGRADES"
+            ]
+          }
         ]
       },
       {
@@ -3491,9 +3896,18 @@
           "SCRAP_COLLECTOR"
         ],
         "req": "SCRAP_COLLECTOR",
+        "system": false,
         "levels": [],
         "events": [
           "ASTEROID_EXPLORE"
+        ],
+        "levels_detail": [
+          {
+            "lvl": null,
+            "events": [
+              "ASTEROID_EXPLORE"
+            ]
+          }
         ]
       },
       {
@@ -3502,9 +3916,18 @@
           "slug"
         ],
         "req": "slug",
+        "system": false,
         "levels": [],
         "events": [
           "STRANDED_BEACON"
+        ],
+        "levels_detail": [
+          {
+            "lvl": null,
+            "events": [
+              "STRANDED_BEACON"
+            ]
+          }
         ]
       }
     ],

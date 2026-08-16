@@ -373,6 +373,36 @@
         "share": 100.0,
         "in_store": 100.0
       }
+    ],
+    "excluded": [
+      {
+        "id": "engi",
+        "label": "Engi"
+      },
+      {
+        "id": "human",
+        "label": "Human"
+      },
+      {
+        "id": "anaerobic",
+        "label": "Lanius"
+      },
+      {
+        "id": "mantis",
+        "label": "Mantis"
+      },
+      {
+        "id": "rock",
+        "label": "Rockman"
+      },
+      {
+        "id": "slug",
+        "label": "Slug"
+      },
+      {
+        "id": "energy",
+        "label": "Zoltan"
+      }
     ]
   },
   "start_event": {
@@ -416,7 +446,8 @@
           "title": "Store (Crystal)",
           "card": true,
           "tags": [
-            "store"
+            "store",
+            "store-marker"
           ],
           "marker": {
             "store": true
@@ -1213,7 +1244,8 @@
         "tags": [
           "may-fight",
           "store",
-          "unique"
+          "unique",
+          "store-marker"
         ],
         "marker": {
           "store": true
@@ -1637,10 +1669,20 @@
           "crystal"
         ],
         "req": "crystal",
+        "system": false,
         "levels": [],
         "events": [
           "CRYSTAL_CACHE",
           "CRYSTAL_CHATTY"
+        ],
+        "levels_detail": [
+          {
+            "lvl": null,
+            "events": [
+              "CRYSTAL_CACHE",
+              "CRYSTAL_CHATTY"
+            ]
+          }
         ]
       },
       {
@@ -1649,9 +1691,18 @@
           "BACKUP_DNA"
         ],
         "req": "BACKUP_DNA",
+        "system": false,
         "levels": [],
         "events": [
           "CRYSTAL_HUMAN_TESTS"
+        ],
+        "levels_detail": [
+          {
+            "lvl": null,
+            "events": [
+              "CRYSTAL_HUMAN_TESTS"
+            ]
+          }
         ]
       },
       {
@@ -1660,9 +1711,18 @@
           "MISSILES_BREACH"
         ],
         "req": "MISSILES_BREACH",
+        "system": false,
         "levels": [],
         "events": [
           "CRYSTAL_CACHE"
+        ],
+        "levels_detail": [
+          {
+            "lvl": null,
+            "events": [
+              "CRYSTAL_CACHE"
+            ]
+          }
         ]
       },
       {
@@ -1671,9 +1731,18 @@
           "FLEET_DISTRACTION"
         ],
         "req": "FLEET_DISTRACTION",
+        "system": false,
         "levels": [],
         "events": [
           "CRYSTAL_REQUEST"
+        ],
+        "levels_detail": [
+          {
+            "lvl": null,
+            "events": [
+              "CRYSTAL_REQUEST"
+            ]
+          }
         ]
       },
       {
@@ -1682,11 +1751,20 @@
           "engines"
         ],
         "req": "engines",
+        "system": true,
         "levels": [
           "7"
         ],
         "events": [
           "CRYSTAL_CACHE"
+        ],
+        "levels_detail": [
+          {
+            "lvl": "7",
+            "events": [
+              "CRYSTAL_CACHE"
+            ]
+          }
         ]
       },
       {
@@ -1695,9 +1773,18 @@
           "rock"
         ],
         "req": "rock",
+        "system": false,
         "levels": [],
         "events": [
           "CRYSTAL_HUMAN_TESTS"
+        ],
+        "levels_detail": [
+          {
+            "lvl": null,
+            "events": [
+              "CRYSTAL_HUMAN_TESTS"
+            ]
+          }
         ]
       },
       {
@@ -1706,11 +1793,20 @@
           "teleporter"
         ],
         "req": "teleporter",
+        "system": true,
         "levels": [
           "2"
         ],
         "events": [
           "CRYSTAL_CACHE"
+        ],
+        "levels_detail": [
+          {
+            "lvl": "2",
+            "events": [
+              "CRYSTAL_CACHE"
+            ]
+          }
         ]
       }
     ],

@@ -1,17 +1,7 @@
 {
   "slug": "zoltan-controlled-sector",
 
-  "lede": "One beacon here is fixed: the **Zoltan research facility**, where a Damaged Stasis Pod becomes a Crystal crew member. Everything else is Zoltan bureaucracy — checkpoints, customs sweeps, docking permits, entry fees — and the fights that come out of it are mostly ones you agreed to. Only two of the seven events on the guaranteed-hostile list are actually Zoltan; the rest are pirates, Mantis, a jumpy Engi escort and the Rebel fleet flying under Zoltan flavour text.",
-
-  "stats": [
-    { "metric": "beacons_min..beacons_max", "label": "Beacon spread" },
-    { "metric": "section:hostile:min..section:hostile:max", "label": "Guaranteed fights" },
-    { "metric": "entry:STORE_ZOLTAN:min..entry:STORE_ZOLTAN:max", "label": "Stores" },
-    { "metric": "section:nebula:min..section:nebula:max", "label": "Nebula beacons" },
-    { "metric": "distinct_events", "label": "Events in pool" }
-  ],
-
-  "callout": "**The two lines at risk are the two that make this sector Zoltan.** `NEUTRAL_ZOLTAN` is the checkpoints, the wise man, the docking requests and the briber; `QUESTS_ZOLTAN` is every quest that can start here. Roll high on clouds and hostiles and what is left is a shooting sector with two stores. Roll low instead — the table's floor is 20 slots — and the beacons nobody claimed do not come back to this list; they take generic filler.",
+  "lede": "One beacon here is fixed: the **Zoltan research facility**, where a Damaged Stasis Pod becomes a Crystal crew member. Everything else is Zoltan bureaucracy — checkpoints, customs sweeps, docking permits, entry fees — and the fights that come out of it are mostly ones you agreed to.",
 
   "section_notes": {
     "ZOLTAN_CREW_STUDY": "The one beacon the sector must place, and nothing above it can crowd it out. Two of the three ways the scan goes are a polite thank-you and a little scrap; the third is pirates holding the station hostage — two boarders aboard and a pirate ship on the radar. An **Advanced Medbay** trades your medical records for a drone. The **Damaged Stasis Pod** option consumes the pod: they repair it, the crystal inside reassembles, and Ruwen steps out asking to be taken to a hidden wormhole near the Rock home-worlds.",
@@ -76,16 +66,7 @@
         { "lead": "Crew", "text": "Five events in the pool can take a crew member. Two of them — {{ZOLTAN_CREW_SCAN}} and {{NEBULA_ZOLTAN_EYE}} — do it in a way a Clone Bay cannot undo." },
         { "lead": "Boarders", "text": "Eight events put someone aboard, and three are Zoltan: 3–4 at {{ZOLTAN_BOARDERS}}, 2–4 at both {{ZOLTAN_CREW_SCAN}} and {{ZOLTAN_TRADE_HUB}}." },
         { "lead": "Systems", "text": "Refusing to hand over a crew member at {{ZOLTAN_CREW_SCAN}} costs you half your weapons before the shooting starts." },
-        { "lead": "Fleet", "text": "{{PIRATE_BRIBER}} is the only event here that can buy a jump back from the pursuit — and it sits in the line most likely to be cut. {{NEBULA_AUTO_WARNING}} and {{NEBULA_REBEL_UNDETECTED}} each cost you one." }
-      ]
-    },
-    {
-      "title": "Reading the map here",
-      "items": [
-        { "lead": "Stores", "text": "Both fixed stores are settled early enough that nothing can squeeze them out. The two events that can open a shop on top of them — {{PIRATE_BRIBER}} and {{ZOLTAN_TRADE_HUB}} — are in the two lines that get cut, and neither is marked in advance." },
-        { "lead": "Distress", "text": "Nothing leaks a distress marker in from another line here, so the markers you see are the distress line and nothing else. Eight events can be behind one, two of which can cost a crew member and one of which is {{TRAP_BEACON}}." },
-        { "lead": "Clouds", "text": "Sensors go dark inside one, but this is not a nebula sector, so a cloud beacon halves the fleet's advance for that jump. It is the cheapest delay on the map — and the clouds are drawn before the sector is populated, so their footprint is set before anything else is." },
-        { "lead": "The exit", "text": "Never one of the beacons below — exits draw from a list shared by every sector. If the clouds happen to cover it, the exit is simply empty." }
+        { "lead": "Fleet", "text": "{{PIRATE_BRIBER}} is the only event here that can buy a jump back from the pursuit — and it sits in the line most likely to be cut. {{NEBULA_AUTO_WARNING}} and {{NEBULA_REBEL_UNDETECTED}} each cost you one. Against them the clouds are the cheapest brake: this is not a nebula sector, so a cloud beacon halves the advance for the jump into it, at the price of blind sensors while you sit there." }
       ]
     }
   ]

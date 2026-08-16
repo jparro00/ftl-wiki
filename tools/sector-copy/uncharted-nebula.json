@@ -1,17 +1,7 @@
 {
   "slug": "uncharted-nebula",
 
-  "lede": "Almost everything this sector is required to place sits **inside the cloud**, and the events are written around the blackout: your Sensors do nothing, and you cannot tell whether the intruders are already aboard, what is inside the derelict station, or where the damaged Federation ship went. The fog is supposed to buy time — but the Rebels came into this sector prepared for it, so a nebula jump here shortens their advance by only about **a fifth** where the same beacon elsewhere would halve it, and four events in the pool hand them a whole extra jump while nothing gives one back.",
-
-  "stats": [
-    { "metric": "beacons_min..beacons_max", "label": "Beacon spread" },
-    { "metric": "section:hostile:min..section:hostile:max", "label": "Hostile pool" },
-    { "metric": "section:neutral:min..section:neutral:max", "label": "Neutral pool" },
-    { "metric": "entry:NEBULA_EMPTY:min..entry:NEBULA_EMPTY:max", "label": "Beacons of pure fog" },
-    { "metric": "section:distress:min..section:distress:max", "label": "Distress calls" }
-  ],
-
-  "callout": "**Versus the Slug nebulas:** they ask for up to 34 slots on a map that holds 24, so their bottom lines routinely get nothing. This sector asks for 26, which means nearly everything it lists actually reaches a beacon — and the only line with real slack is the last one, the distress calls. What you give up for that tidiness is a shop: the Slugs guarantee two nebula stores, this sector guarantees one.",
+  "lede": "Almost everything this sector is required to place sits **inside the cloud**, and the events are written around the blackout — you cannot tell whether the intruders are already aboard, what is inside the derelict station, or where the damaged Federation ship went. The fog is supposed to buy time, but the Rebels came prepared for it: a nebula jump here shortens their advance by only about **a fifth** where the same beacon elsewhere would halve it, and four events hand them a whole extra jump while nothing gives one back.",
 
   "section_notes": {
     "NEBULA_HOSTILE": "Assembled out of the Rebel and pirate nebula lists, which is why {{NEBULA_EMPTY}} sits in it twice — a hostile allocation can land on nothing at all. Three of the rest are plasma storms, where your reactor runs at half capacity.",
@@ -47,18 +37,9 @@
         { "lead": "Decisions made blind", "text": "You cannot confirm you have been boarded at {{NEBULA_BOARDING}}, cannot see inside the hull at {{NEBULA_AUTO_DEFENSE_ITEM}}, and cannot find the Federation ship at {{NEBULA_LOST_SHIP}} without help. The writing assumes the blackout." },
         { "lead": "Plasma storms ×4", "text": "{{STORM_REBEL}}, {{STORM_AUTO}}, {{STORM_ITEMS}} and {{NEBULA_ROCK_RACIST}} trade fog for a storm and half a reactor; {{STORM_REBEL}} starts shooting on arrival. Zoltan crew and a Backup Battery are the only power the storm does not touch." },
         { "lead": "Boarders ×3", "text": "{{NEBULA_BOARDING}} (2–4 humans) and {{NEBULA_REBEL_BOARDING}} (3–4) open with an alarm and no ship to shoot back at. {{REFUGEE_GHOST}} is the third." },
-        { "lead": "Crew loss ×6", "text": "Six events can cost a crew member outright. {{STORM_ITEMS}} is the sector's own: searching the wrecks blind also risks 4 hull damage and a breach." }
-      ]
-    },
-    {
-      "title": "Reading the map here",
-      "items": [
-        { "lead": "A clear beacon is not a promise", "text": "The clouds are laid down before a single event is allocated, and one drawn across an ordinary beacon takes it over. So you can jump to a beacon that shows no fog and arrive in one anyway, running an event from a shared list that appears in no pool below." },
-        { "lead": "Sensors are dead weight", "text": "Inside a cloud the system does nothing — no enemy interiors, no charge bars, whatever level you bought. **Slug crew**, which these stores carry more readily than any other non-human, and the **Lifeform Scanner** are the only two things that still see." },
-        { "lead": "The fleet clock", "text": "A jump from a nebula beacon here cuts the fleet's advance by about **a fifth**; the same jump in an ordinary sector cuts it by **half**. That thin discount is the whole payoff for flying blind — and {{NEBULA_AUTO_WARNING}}, {{NEBULA_REBEL_UNDETECTED}}, {{NEBULA_REBEL_CHASE}} and {{CIVILIAN_ASTEROIDS_BEACON}} each hand back a full extra jump, with nothing in the pool to offset them." },
-        { "lead": "If they catch you", "text": "A nebula beacon never carries an Anti-Ship Battery, so an overtaken beacon here is an Elite fighter and nothing else — unless you are sitting on it out of fuel, which strips the cloud and brings the battery. Every nebula beacon the fleet takes gets an ion storm instead, so you fight on half a reactor; the exit beacon is the exception." },
-        { "lead": "Shops", "text": "One store is guaranteed and placed before anything can crowd it out, with a second only sometimes — and roughly 0.8% of these sectors generate with none at all. {{ESCORT_BEACON}}, in the distress pool, can open one more." },
-        { "lead": "Quest markers", "text": "A marker will only land on a beacon that is not a nebula, not a store, not a distress call, not the exit and not already taken by the fleet — and this sector is almost all cloud. Start a quest at {{REBEL_VS_FEDERATION}} or {{CIVILIAN_ASTEROIDS_BEACON}} and there is often nowhere legal to put it, so it follows you into the next sector instead." }
+        { "lead": "Crew loss ×6", "text": "Six events can cost a crew member outright. {{STORM_ITEMS}} is the sector's own: searching the wrecks blind also risks 4 hull damage and a breach." },
+        { "lead": "The clock ×4", "text": "{{NEBULA_AUTO_WARNING}}, {{NEBULA_REBEL_UNDETECTED}}, {{NEBULA_REBEL_CHASE}} and {{CIVILIAN_ASTEROIDS_BEACON}} each hand the fleet a full extra jump, and nothing in the pool gives one back. The thin nebula discount is the only counterweight there is." },
+        { "lead": "Sensors are dead weight", "text": "Inside a cloud the system does nothing — no enemy interiors, no charge bars, whatever level you bought. **Slug crew**, which these stores carry more readily than any other non-human, and the **Lifeform Scanner** are the only two things that still see." }
       ]
     }
   ]

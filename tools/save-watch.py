@@ -96,6 +96,16 @@ CREATED_EVENT = re.compile(r"^Creating event: ([A-Za-z0-9_]+)", re.M)
 # lines the mod emits rather than the lines the log receives.
 MAP_SIGNAL = re.compile(r"^(?:\[[^\]]*\]:\s*)?map-signal:\s+(open|closed)\b", re.M)
 
+# The same mod reports the *sector* map — the screen that offers the next sectors — and
+# names what is on offer, which is the one thing neither the save nor the engine's own
+# log holds before the jump is taken:
+#
+#   map-signal: choosing 4 -> Rock Homeworlds | Slug Home Nebula
+#   map-signal: chosen
+SECTOR_CHOICE = re.compile(
+    r"^(?:\[[^\]]*\]:\s*)?map-signal:\s+(choosing|chosen)\b([^\n]*)", re.M)
+CHOICE_SPLIT = " | "
+
 # Only the tail matters and the log is small (a few KB per sector), but a long
 # session appends, so the read is bounded rather than trusting that.
 LOG_TAIL_BYTES = 256 * 1024
@@ -130,7 +140,7 @@ class HyperspaceLog:
 
     def __init__(self, log_path, by_id=None):
         self.log_path = log_path
-        self.index, self.start_slugs = self._load_index()
+        self.index, self.start_slugs, self.by_display_name = self._load_index()
         # Event id -> card slug, from the same trees the text index is built from.
         self.by_id = by_id or {}
         self._id = None
@@ -139,6 +149,7 @@ class HyperspaceLog:
         self._stamp = None          # (mtime_ns, size) of the last read
         self._map_open = None       # None = the map-signal mod is not installed
         self._event = None          # (event id, slug) of the last event with a card
+        self._choosing = None       # slugs on offer at the sector map, or None
 
     @staticmethod
     def _load_index():
@@ -150,11 +161,11 @@ class HyperspaceLog:
         than an event, so it has no card slug — and its members are real fights that
         must keep showing their own cards.
         """
-        out, starts = {}, set()
+        out, starts, by_name = {}, set(), {}
         try:
             names = sorted(os.listdir(SECTOR_DATA))
         except OSError:
-            return out, starts
+            return out, starts, by_name
         for name in names:
             if not name.endswith(".sector.json"):
                 continue
@@ -165,10 +176,15 @@ class HyperspaceLog:
                 continue
             if data.get("id") and data.get("slug"):
                 out[data["id"]] = data["slug"]
+            # The sector-choice screen can only give the *display* name — that is what
+            # the engine hands Lua — so the name is a second key into the same pages.
+            for key in ("display_name", "title", "short_name"):
+                if data.get(key) and data.get("slug"):
+                    by_name.setdefault(data[key].strip().lower(), data["slug"])
             start = data.get("start_event") or {}
             if start.get("slug") and str(start.get("id", "")).startswith("START_BEACON"):
                 starts.add(start["slug"])
-        return out, starts
+        return out, starts, by_name
 
     def poll(self):
         try:
@@ -178,6 +194,13 @@ class HyperspaceLog:
         stamp = (st.st_mtime_ns, st.st_size)
         if stamp == self._stamp:
             return
+        # A shrinking file is the game restarting: Hyperspace truncates its log at
+        # launch. Everything read from it belongs to the previous session and must go,
+        # or a fresh menu keeps reporting the sector the last run ended in. Measured:
+        # a watcher left running across a relaunch reported ENGI_HOME at the main menu.
+        if self._stamp and st.st_size < self._stamp[1]:
+            self._id, self._since, self._seen = None, None, False
+            self._map_open, self._event, self._choosing = None, None, None
         self._stamp = stamp
         try:
             with open(self.log_path, "rb") as fh:
@@ -190,6 +213,22 @@ class HyperspaceLog:
         # not installed, which is a different state from "closed" and stays None.
         signals = MAP_SIGNAL.findall(text)
         self._map_open = (signals[-1] == "open") if signals else None
+
+        # Sector choice, from the last `choosing`/`chosen` pair. Names are resolved
+        # against the profiles; one that resolves to nothing is dropped rather than
+        # guessed at, so a renamed sector shows as a short offer, never a wrong one.
+        choices = SECTOR_CHOICE.findall(text)
+        if not choices or choices[-1][0] == "chosen":
+            self._choosing = None
+        else:
+            _, tail = choices[-1]
+            offered = tail.split("->", 1)[1] if "->" in tail else ""
+            slugs = []
+            for name in offered.split(CHOICE_SPLIT):
+                slug = self.by_display_name.get(name.strip().lower())
+                if slug and slug not in slugs:
+                    slugs.append(slug)
+            self._choosing = slugs
 
         # The most recent created event that has a card. Scanning back past the ones
         # that do not is what makes this work without any tree of sub-events: an
@@ -223,6 +262,7 @@ class HyperspaceLog:
             "age": None if self._since is None else time.monotonic() - self._since,
             "map_open": self._map_open,
             "event": self._event,
+            "choosing": self._choosing,
         }
 
 
@@ -546,8 +586,17 @@ class Watcher:
         state["sector_slug"] = info["slug"]
         state["sector_age"] = None if info["age"] is None else round(info["age"], 1)
         state["map_open"] = info["map_open"]
+        state["next_sectors"] = info["choosing"]
         start = state.get("slug") in self.hs_log.start_slugs
         state["at_start_beacon"] = start
+
+        # The sector map outranks everything: the player is choosing where to fly, and
+        # the chooser is the page for that question, with the offer already pinned.
+        # An empty list still means that screen is up — the offer could not be named,
+        # which is a reason to show the chooser unpinned, not to show a card.
+        if info["choosing"] is not None:
+            state["view"] = "choose"
+            return
         # A guess is only worth making where nothing is being reported.
         fresh = (info["map_open"] is None
                  and info["age"] is not None and info["age"] <= self.sector_hold)
@@ -690,7 +739,9 @@ async function tick() {
     // to show, or just after arriving in a new sector; otherwise the card does.
     // Any slug at all means a card is worth showing -- held or current. Only
     // reload when the source actually changes, so neither page flickers.
-    const want = (s.view === 'sector' && s.sector_slug) ? '/sector/' + s.sector_slug
+    const want = (s.view === 'choose')
+                   ? '/sectors/index.html?pick=' + (s.next_sectors || []).join(',')
+               : (s.view === 'sector' && s.sector_slug) ? '/sector/' + s.sector_slug
                : s.slug ? '/card/' + s.slug
                : null;
     if (want) {
@@ -781,22 +832,27 @@ def make_handler(watcher):
                     return
                 with open(path, "rb") as fh:
                     self._send(fh.read(), "text/html; charset=utf-8")
+            elif self.path.startswith("/sectors/"):
+                # The chooser and the profiles, served from their own directory so the
+                # page's own relative links (sector-<slug>.html, ../cards/...) resolve
+                # exactly as they do off disk.
+                self._send_static(SECTOR_PAGES, self.path[len("/sectors/"):])
             elif self.path.startswith("/cards/"):
                 # A sector page opens its beacon boxes onto cards, loading
                 # ../cards/runtime/*.js and ../cards/data/<slug>.js at that moment
                 # (SECTOR-PAGE.md 6.1). Served at /sector/<slug>, those resolve to
                 # /cards/... -- so the boxes work here exactly as they do off disk.
-                self._send_static(self.path[len("/cards/"):])
+                self._send_static(CARDS, self.path[len("/cards/"):])
             else:
                 self._send("not found", "text/plain", 404)
 
-        def _send_static(self, rel):
+        def _send_static(self, root, rel):
             rel = rel.split("?", 1)[0]
             if not re.fullmatch(r"[A-Za-z0-9._/-]+", rel) or ".." in rel:
                 self._send("bad path", "text/plain", 400)
                 return
-            path = os.path.normpath(os.path.join(CARDS, rel))
-            if os.path.commonpath([path, CARDS]) != CARDS or not os.path.isfile(path):
+            path = os.path.normpath(os.path.join(root, rel))
+            if os.path.commonpath([path, root]) != root or not os.path.isfile(path):
                 self._send("not found", "text/plain", 404)
                 return
             ctype, _ = mimetypes.guess_type(path)

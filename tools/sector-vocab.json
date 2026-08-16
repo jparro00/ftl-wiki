@@ -3,88 +3,34 @@
   "facts": {
     "unique": "at most one per run",
     "repeatable": "can repeat in a run",
-    "min_sector": "minSector",
-    "tracks": "tracks",
-    "data": "Advanced Edition data",
-    "start": "entry beacon",
+    "tracks": "music",
+    "data": "built from Advanced Edition files",
     "earliest": "earliest sector"
   },
   "headings": {
     "glance": "At a glance",
-    "glance_meta": "what this sector changes, and what it pays",
     "budget": "Beacon budget",
-    "budget_meta": "what the sector is required to place",
+    "budget_meta": "{spread} slots allocated · {events} events in pool",
     "chain": "Quest chain",
-    "rarity": "Crew in stores",
-    "panels": "Notes",
-    "markers": "Beacon markers",
-    "markers_meta": "what the map can tell you before you jump"
+    "distress": "Distress signals",
+    "stores": "Stores"
   },
   "generation": {
-    "order": "Lines are filled in this order, and the map holds at most {grid} beacons ({grid_min}–{grid} by the community wiki's count). When they run out, generation stops — a line near the bottom can receive nothing at all.",
-    "exhaust": "This sector allocates up to {max} slots against {grid} beacons, so the bottom of the table is a wish list rather than a promise.",
-    "at_risk": "Could be cut entirely if everything above rolls high: {names}.",
-    "nebula": "Placed before everything else, whatever the file order, because the cloud graphics come first: {names}. A cloud drawn over an ordinary beacon converts it, and that beacon draws from the shared NEBULA list instead.",
-    "fallback": "Beacons still empty at the end of the table are filled from the shared {list} list ({ae} under Advanced Edition). That line is not in the file — the engine reaches the list by name — so it is marked rather than numbered in the table above.",
-    "fallback_count": "Here that is up to {max} beacons: a full {grid}-beacon map, less the {allocated_min} this table must place.",
-    "fallback_guaranteed": "At least {least} of them are certain on a full map — the table allocates at most {allocated_max} of the {grid}.",
-    "fallback_none": "Not here: this sector's minimum allocation of {allocated_min} already covers a {grid}-beacon map, so no beacon can fall through to it.",
-    "fallback_also_allocated": "{list} appears twice above because this sector is one of the few that also names it as a numbered line — the same pool, reached two ways.",
-    "exit": "The exit beacon is not in this table at all — it draws from the shared {list}, and an exit inside a cloud is always empty.",
-    "source": "Generation rules per the community's reverse-engineering of the map generator; the game files state none of them.",
-    "always_short": "Cannot be filled even in the best case — the minima above it already use up the map: {names}.",
-    "cannot_meet_minimum": "This sector's minimum allocation is {min} against {grid} beacons, so it can never place everything it asks for."
+    "order": "The map is a 6×4 grid and each cell has an **80% chance** of holding a beacon, so a sector has at most **{grid}** of them. The lines above are then filled in that order, each rolling its own count, until the beacons run out — so a line near the bottom can get nothing. Whatever is still empty at the end is filled from the shared `{list}` list.",
+    "clouds": "Clouds are drawn before any of it. A beacon under one is converted and draws from `NEBULA` instead.",
+    "clouds_storms": "Clouds are drawn before any of it. A beacon under one is converted and draws from `NEBULA` instead — and {storms} of that list's {events} events are plasma storms, which halve your reactor on arrival. Which of them you land on is a draw from the list like any other, not a fixed slot.",
+    "cannot_meet_minimum": "This table asks for **{min}** beacons against the **{grid}** a map can hold, so the bottom of it is cut every time.",
+    "fallback_also_allocated": "`{list}` is a numbered line here as well as the fill-in row — one pool, reached two ways, not a doubled row."
+  },
+  "legend": {
+    "must": "**Must be placed** — every solid block is filled, as long as the map still has a free beacon when the line comes up.",
+    "may": "**May be placed** — the line rolls one count between its minimum and its maximum and every outcome is equally likely. {name} rolls {low}–{high}, so each of those {counts} counts is {each}%. A faded block is the chance of **at least** that many: {first}% for one, {last}% for all {high}. Hover any block for its own figure.",
+    "may_offset": "**May be placed** — the line rolls one count between its minimum and its maximum and every outcome is equally likely. {name} rolls {low}–{high}, so each of those {counts} counts is {each}%. A faded block is the chance of **at least** that many: {first}% for the first faded one, {last}% for all {high}. Hover any block for its own figure.",
+    "may_plain": "**May be placed** — the line rolls one count between its minimum and its maximum and every outcome is equally likely. A faded block is the chance of **at least** that many. Hover any block for its own figure.",
+    "fight": "Beacons that always put you in a fight."
   },
   "markers": {
-    "distress": "Events here that carry the distress tag, so the beacon shows a distress marker. The map only draws distress and store markers on beacons adjacent to you, so this is a next-jump signal, not a plan for the sector:",
-    "outside": "Drawn from other lists but still carrying the distress tag, so they show the marker too — which is how a sector can show more distress beacons than its distress count: {names}.",
-    "unmarked": "The reverse case: allocated from the distress list but carrying no distress tag, so they do not show the marker — {names}.",
-    "store": "Events that open a store. A store beacon is marked only once you are within one jump of it, and an event that opens a shop as a reward is not marked at all until you arrive:",
-    "scanners": "Long-Ranged Scanners add a hazard reading and a possible-ship reading, still only for adjacent beacons. They never name the event, and a no-ship reading can still be a fight.",
-    "outside_earlier": "They are also filled before the distress line, so they take their beacons first. This is the case Fandom uses as its worked example.",
-    "outside_later": "They are filled after the distress line, so they add markers on top of it rather than competing with it for beacons."
-  },
-  "sections": {
-    "special": {
-      "label": "Named beacons",
-      "hint": "placed by name, not drawn from a pool"
-    },
-    "hostile": {
-      "label": "Hostile",
-      "hint": "combat unless the row says otherwise"
-    },
-    "boarders": {
-      "label": "Boarders",
-      "hint": "something comes aboard"
-    },
-    "neutral": {
-      "label": "Neutral",
-      "hint": "a choice, sometimes a fight"
-    },
-    "nebula": {
-      "label": "Nebula",
-      "hint": "inside the cloud"
-    },
-    "distress": {
-      "label": "Distress",
-      "hint": "someone is calling for help"
-    },
-    "items": {
-      "label": "Items",
-      "hint": "free kit, trades and stations"
-    },
-    "store": {
-      "label": "Stores",
-      "hint": ""
-    },
-    "quests": {
-      "label": "Quest starts",
-      "hint": "marks a beacon elsewhere on the map"
-    },
-    "empty": {
-      "label": "Empty",
-      "hint": "flavour text, nothing happens"
-    }
+    "distress_note": "Note: not every beacon from the `DISTRESS` pool broadcasts a distress signal, and some of these show up in the neutral pools too."
   },
   "tags": {
     "fight": "Fight",
@@ -96,7 +42,9 @@
     "quest": "Quest",
     "reward": "Reward",
     "cost": "Cost",
-    "unique": "Unique"
+    "unique": "Unique",
+    "distress": "Distress signal",
+    "store-marker": "Store marker"
   },
   "tag_order": [
     "fight",
@@ -111,6 +59,10 @@
     "unique"
   ],
   "tag_limit": 3,
+  "marker_tags": [
+    "distress",
+    "store-marker"
+  ],
   "rail": {
     "fight": "fight",
     "may-fight": "may",
@@ -121,69 +73,36 @@
     "store": "good"
   },
   "delta": {
-    "head": "Advanced Edition also defines {list}",
-    "added": "It adds:",
-    "removed": "It drops:",
-    "unconfirmed": "Whether the engine substitutes this list for {name} is not stated by any file here."
+    "head": "Advanced Edition adds — {list}",
+    "removed": "Not in the AE list:",
+    "unconfirmed": "Whether the engine uses this list instead is not stated by any file here."
   },
   "gates": {
     "title": "Blue options in the pool",
     "meta": "{options} options · {hits} hits",
-    "note": "A hit is one event in this pool that offers that option, not one beacon: an event can be placed more than once, or not at all. Level numbers are the system level the choice asks for.",
-    "level_join": "/"
+    "level_name": "{label} {lvl}+",
+    "more": "Show all {n}"
   },
   "crew_odds": {
-    "title": "Crew a store can sell here",
-    "meta": "{types} types · {slots} slots",
-    "head_weight": "wt",
-    "head_slot": "per slot",
-    "head_store": "in a store",
-    "note": "The engine builds its candidate list from every species whose rarity here is not 0, weights each one 6 − rarity, and fills each of the three crew slots with its own independent draw — so a store can offer the same species twice. \"Per slot\" is that species' share of the total weight; \"in a store\" is the chance it turns up in at least one of the three slots.",
-    "note_source": "Weighting read out of FTLGame_orig.exe, not from any data file: the candidate loop skips rarity 0 and computes 6 − rarity as the weight. The three-slot count is the Advanced Edition figure, which is the data these pages are built from; vanilla rolls two or three."
-  },
-  "rarity": {
-    "title": "Store rarity — where this sector differs",
-    "meta": "{changed} of {listed} changed",
-    "arrow": "→",
-    "crew": "Crew",
-    "other": "Also changed",
-    "note": "Left of the arrow is the blueprint's base rarity, right of it is this sector's. 1 is the commonest and 5 the rarest; 0 is a flag rather than a low number — that entry is not offered here at all. A sector that declares no rarity list of its own uses the base values throughout.",
-    "note_source": "Per the community wiki, the number does two jobs: it weights what a store offers, and it gates event rewards without weighting them — nonzero here means a crew-kill reward can hand you that species, 0 means it never can. The game files state neither. No file anywhere on this machine gives the weighting function, so nothing on this page turns a rarity into odds.",
-    "change": {
-      "unlocked": "unlocked",
-      "excluded": "excluded",
-      "more-common": "more common",
-      "rarer": "rarer"
-    }
+    "title": "Crew in stores",
+    "head_slot": "slot",
+    "head_store": "store",
+    "head_slot_title": "per slot",
+    "head_store_title": "in at least one of the three slots"
   },
   "budget": {
-    "legend": "Solid blocks are the minimum the sector must place; faded blocks are the optional extra.",
     "nebula_mark": "placed first",
     "risk_mark": "may be cut",
-    "entry": "entry beacon is always {event}.",
-    "zero": "allocated 0–0 — the sector reserves the list but places none.",
     "short_mark": "always short",
     "fallback_mark": "fill-in",
     "fallback_rank": "+",
-    "expand": "Open a line to see every event it can place; open an event to read its card here."
-  },
-  "footnotes": {
-    "sources": "Built from {files}.",
-    "unique": "\"Unique\" is the files' own unique=\"true\". Whether that means once per sector or once per run is not stated in any file here; the wiki's better bet is once per sector.",
-    "unweighted": "The shipped event lists carry no weights, so no beacon here has stated odds. A pool entry listed twice is counted as ×2 and marked.",
-    "ambiguous": "Defined in the files both as an event list and as a single event, and read here as the list: {names}.",
-    "anonymous": "{count} outcome(s) in these lists are written inline with no event id of their own, so they have no row here.",
-    "no_card": "No event tree was found for {names}, so those rows carry no tags.",
-    "min_sector": "minSector in the files is zero-indexed, so the \"earliest sector\" chip is that value plus one — the number a player counts from the start of a run. The community wiki states the same offset.",
-    "floor": "The 24-beacon ceiling follows from the 6×4 grid; the 19-beacon floor is stated by the community wiki alone and is not derivable from anything else here, so the at-risk marks use the ceiling."
+    "block_always": "always placed, if the map has room",
+    "block_chance": "{pct}% chance",
+    "block_fill": "filled only if the table leaves room"
   },
   "format": {
     "range_join": "–",
-    "meta_join": " · ",
-    "weight": "×{n}",
-    "beacons": "{min}–{max} beacons",
-    "beacons_fixed": "{min} beacons",
-    "beacons_one": "1 beacon"
+    "weight": "×{n}"
   },
   "index": {
     "title": "FTL sectors",

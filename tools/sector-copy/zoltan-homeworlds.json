@@ -1,17 +1,7 @@
 {
   "slug": "zoltan-homeworlds",
 
-  "lede": "Both named beacons sit at the head of the queue and are placed before anything is rolled: a **Zoltan peace envoy** that opens a ship unlock with no crew, system or equipment requirement anywhere in it, and a **research facility** that turns a Damaged Stasis Pod into a Crystal crew member. What the sector cannot promise is everything underneath them — it asks for more slots than any sector except the two Slug nebulas, and the three lines it can lose whole are its items, its quests and its neutral pool. Two stores are guaranteed, Zoltan is the most common crew on their shelves, and the rest is bureaucracy with guns.",
-
-  "stats": [
-    { "metric": "beacons_min..beacons_max", "label": "Beacon spread" },
-    { "metric": "section:special:min..section:special:max", "label": "Named beacons" },
-    { "metric": "section:hostile:min..section:hostile:max", "label": "Guaranteed fights" },
-    { "metric": "entry:STORE_ZOLTAN:min..entry:STORE_ZOLTAN:max", "label": "Stores" },
-    { "metric": "distinct_events", "label": "Events in pool" }
-  ],
-
-  "callout": "**Versus a plain Zoltan Controlled Sector:** the allocation tables are otherwise identical — every other entry appears in both at the same min and the same max. `ZOLTAN_HOME` adds exactly one thing, the guaranteed {{ZOLTAN_PEACE_QUEST}} beacon, and is `unique=\"true\"` with `minSector=\"2\"` where the plain sector is neither. {{ZOLTAN_CREW_STUDY}} is guaranteed in both, so the Crystal step is not what makes this sector special — the envoy is. That one extra beacon is also what costs the bottom of the table: the plain sector puts only its quests and its neutral pool at risk, this one puts its item line there too.",
+  "lede": "Both named beacons sit at the head of the queue and are placed before anything is rolled: a **Zoltan peace envoy** that opens a ship unlock with no crew, system or equipment requirement anywhere in it, and a **research facility** that turns a Damaged Stasis Pod into a Crystal crew member. What the sector cannot promise is everything underneath them — the rest is bureaucracy with guns, and three whole lines of it can go unplaced.",
 
   "section_notes": {
     "ZOLTAN_CREW_STUDY": "The **Damaged Stasis Pod** blue option consumes the augment and a Crystal crew member steps out of the pod. Without it, one of the three entries in its list is a pirate ambush with two boarders already aboard; an Advanced Medbay just pays a drone for your medical records.",
@@ -85,16 +75,8 @@
         { "lead": "Fights", "text": "Fourteen events open fire on arrival and another twenty-three can turn into a fight below a choice — most of the pool ends in combat if you engage with it." },
         { "lead": "Crew", "text": "Five events can cost a crew member. {{ZOLTAN_CREW_SCAN}} asks you to hand one to Zoltan law and {{NEBULA_ZOLTAN_EYE}} simply unmakes one; both losses are flagged `clone=\"false\"`." },
         { "lead": "Boarders", "text": "Eight events put someone aboard — three to four Zoltan at {{ZOLTAN_BOARDERS}} alongside a warship, up to five humans at {{BOARDERS_HACKING}}." },
-        { "lead": "Systems", "text": "Refusing to surrender the flagged crew member at {{ZOLTAN_CREW_SCAN}} halves your weapon system and beams two to four Zoltan aboard in the same breath." }
-      ]
-    },
-    {
-      "title": "Reading the map here",
-      "items": [
-        { "lead": "Distress", "text": "Honest for once: nothing outside the distress line carries the tag in this sector, so a distress marker is one of exactly eight events — and the line is filled early enough that at least one always exists." },
-        { "lead": "Stores", "text": "Two are labelled from the start and cannot be squeezed out. A third can come from {{ZOLTAN_TRADE_HUB}} or {{PIRATE_BRIBER}}, both on lines that may never be placed, or from a trade station at the exit, which is drawn from a list shared with every sector." },
-        { "lead": "Nebula", "text": "Two to six beacons of cloud, and this is not a nebula sector — so each one halves the Rebel advance for the jump into it, the full slowdown rather than the reduced one. The price is blind sensors, and an ion storm on any cloud beacon the fleet takes." },
-        { "lead": "Quest markers", "text": "A marker can never be planted on a nebula beacon, a store, a distress beacon or one you have already visited. With cloud, two stores and a distress beacon all spoken for, a marker planted late — the envoy's included — can run out of candidates and surface in the next sector instead." }
+        { "lead": "Systems", "text": "Refusing to surrender the flagged crew member at {{ZOLTAN_CREW_SCAN}} halves your weapon system and beams two to four Zoltan aboard in the same breath." },
+        { "lead": "The clock", "text": "This is not a nebula sector, so every cloud beacon here halves the Rebel advance for the jump into it — the full slowdown rather than the reduced one a nebula sector gives. The price is blind sensors, and an ion storm on any cloud beacon the fleet has already taken." }
       ]
     }
   ]

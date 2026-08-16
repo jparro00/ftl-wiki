@@ -44,6 +44,7 @@ comes from the join in §4.6 — use the path the extractor prints rather than a
 | `tools/card-vocab.json` | read for `gate_labels` only — blue-option names, shared with the card pipeline | yes, but it belongs to `EVENT-CARD.md` |
 | `tools/sector-copy/<slug>.json` | the words for one sector | **yes — this is the authoring surface** |
 | `tools/sector-cards.js` | the loader that opens a beacon box onto its card (§6.1) | code only — **no English, no paths** |
+| `tools/sector-toggle.js` | makes the blue-options box toggle from anywhere in the box, not only its summary | code only — **no English, no paths** |
 | `tools/smoke-sector.py` | renders a built page as text and checks it | code only |
 | `tools/smoke-inline.py` | drives a built page in a real browser and checks the boxes open | code only |
 | `sectors/data/<slug>.sector.json` | generated profile (regenerable data, not a page) | never |
@@ -501,12 +502,16 @@ python tools/smoke-sector.py sectors/sector-<slug>.html   # required before publ
 python tools/smoke-inline.py sectors/sector-<slug>.html   # or --all; needs playwright
 ```
 
-Parses the built page, prints **everything it can show** — title, facts, tiles, the glance
-blocks, budget rows, every pool row with its tags, notes, chain steps, panels and footnotes —
-and fails on: unbalanced tags, an unstamped title, a stat tile that is not a number, an empty
-event row, a missing budget, a blue-option row with no hit count, a rarity row missing its
-move or its verdict, a beacon box whose card link does not resolve on disk, and any `{{…}}` or
+Parses the built page, prints **everything it can show** — title, facts, the glance blocks,
+budget rows, every event row with its tags, notes, chain steps and panels — and fails on:
+unbalanced tags, an unstamped title, an empty event row, a missing budget, a blue-option row
+with no hit count, a beacon box whose card link does not resolve on disk, and any `{{…}}` or
 `**` that survived into the output.
+
+> The `no stat tiles`, `stat tile is not a number` and `rarity row missing its move or its
+> verdict` checks were removed on 2026-08-16 with the blocks they guarded: the stat tiles, the
+> footnotes and the rarity block are all cut from the design (`SECTOR-PAGE-REDESIGN.md` §2.2,
+> §2.3, §2.9). A check that requires a block the page no longer has is a false failure.
 
 It does not check CSS, layout, colour or theming. It cannot check whether a sentence is true —
 that is what rule 1 in §5 is for. And it cannot see a card at all: those are rendered into a

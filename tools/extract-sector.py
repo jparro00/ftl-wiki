@@ -50,6 +50,11 @@ GRID_BEACONS_MIN = 19
 CREW_WEIGHT_BASE = 6
 CREW_SLOTS = 3
 
+# Which blueprint files are read for the two questions the event index does not answer:
+# which ids name a ship *system* (so a gate's `lvl` means something), and which
+# crewBlueprints are the engine's own dummies rather than a species a player can hire.
+BLUEPRINT_FILES = ("blueprints.xml", "dlcBlueprints.xml")
+
 
 def _load_extractor():
     """Reuse extract-event.py's XML index; its module name is not importable."""
@@ -152,6 +157,36 @@ def sector_names():
     return {k: tuple(v) for k, v in out.items()}
 
 
+def blueprint_kinds():
+    """(system ids, dummy crew ids) read from the blueprint files, never listed by hand.
+
+    A gate's `req` may name a system, a crew species, an augment or a blueprintList,
+    and only a system has a level to ask for — `lvl` is a floor on that system's level
+    (wiki/concepts/blue-options.md), and every other kind of req carries none. The one
+    thing in the files that says "this id is a system" is `<systemBlueprint name=…>`.
+
+    The dummy set is the second half of the same question for crew: `battle` and
+    `repair` are `crewBlueprint`s carrying `NOLOC="1"` and the desc "Dummy blueprint
+    needed now." — the drone stand-ins the engine needs, not species a store could
+    sell. `NOLOC` is the files' own mark that a blueprint is never shown to a player,
+    so it is what separates them from Slug, Crystal and Lanius, which are real species
+    a store simply may not stock.
+    """
+    systems, dummy_crew = set(), set()
+    for name in BLUEPRINT_FILES:
+        path = GAMEDATA / name
+        if not path.exists():
+            continue
+        for el in EE.definitions(EE.parse_fragment(path)):
+            if not isinstance(el.tag, str) or not el.get("name"):
+                continue
+            if el.tag == "systemBlueprint":
+                systems.add(el.attrib["name"])
+            elif el.tag == "crewBlueprint" and el.get("NOLOC") == "1":
+                dummy_crew.add(el.attrib["name"])
+    return systems, dummy_crew
+
+
 class Trees:
     """The built event trees, indexed by event id — the source of every per-event tag."""
 
@@ -251,6 +286,21 @@ class Trees:
         # what makes a multi-stage unlock (ENGI_UNLOCK_1 → 2 → 3 → 4) visible as a whole.
         walk(doc.get("chain"))
 
+        # Root flags describe the beacon itself rather than an outcome: <distressBeacon/>,
+        # <store/> and <environment/> are properties of the stop, not of a branch. They are
+        # what the map can mark a beacon with, so they are kept separate from `tags` —
+        # and mirrored into `tags` as `distress` / `store-marker`, so a row anywhere on a
+        # page can say what the map will show without cross-referencing rollup.markers.
+        # Both are computed here, once, which is what keeps the two in step.
+        root_flags = doc.get("flags") or {}
+        marker = {}
+        if root_flags.get("beacon"):
+            marker["beacon"] = root_flags["beacon"]
+        if root_flags.get("store") or flags["store"]:
+            marker["store"] = True
+        if root_flags.get("environment"):
+            marker["environment"] = root_flags["environment"]
+
         root = doc.get("node") or {}
         tags = []
         # "fight" means arriving starts one. A root <ship hostile="false"> does not:
@@ -273,8 +323,16 @@ class Trees:
             tags.append("reward")
         if flags["cost"]:
             tags.append("cost")
-        if (doc.get("flags") or {}).get("unique"):
+        if root_flags.get("unique"):
             tags.append("unique")
+        # The two marker tags, derived from the same marker dict the rollup counts, so the
+        # per-event tag and rollup.markers can never disagree. `store-marker` is not the
+        # `store` tag above: that one means a store opens somewhere in the tree, this one
+        # means the beacon is marked as a store on the map, which is the wider set.
+        if marker.get("beacon") == "distress":
+            tags.append("distress")
+        if marker.get("store"):
+            tags.append("store-marker")
 
         def uniq(seq):
             seen, out = set(), []
@@ -284,18 +342,6 @@ class Trees:
                     seen.add(key)
                     out.append(x)
             return out
-
-        # Root flags describe the beacon itself rather than an outcome: <distressBeacon/>,
-        # <store/> and <environment/> are properties of the stop, not of a branch. They are
-        # what the map can mark a beacon with, so they are kept separate from `tags`.
-        root_flags = doc.get("flags") or {}
-        marker = {}
-        if root_flags.get("beacon"):
-            marker["beacon"] = root_flags["beacon"]
-        if root_flags.get("store") or flags["store"]:
-            marker["store"] = True
-        if root_flags.get("environment"):
-            marker["environment"] = root_flags["environment"]
 
         return {
             "card": True,
@@ -320,6 +366,7 @@ class SectorExtractor:
         self.pages = sector_pages()
         self.event_pages = EE.page_index()
         self.names = sector_names()
+        self.systems, self.dummy_crew = blueprint_kinds()
         self.descriptions = {}
         for el in EE.definitions(EE.parse_fragment(GAMEDATA / "sector_data.xml")):
             if isinstance(el.tag, str) and el.tag == "sectorDescription" and el.get("name"):
@@ -527,17 +574,47 @@ class SectorExtractor:
         # redefines the vanilla list), so two rows reading "Missile weapon" would be one
         # option counted twice. Every req that merged in is kept in `reqs`.
         gates = {}
+        # `levels` says which levels an option is asked for; it does not say how many
+        # events ask for each, so Sensors 2 and Sensors 3 collapse into one row of 7
+        # where the page wants two rows of 4 and 5. `levels_detail` is that breakdown,
+        # de-duplicated by event id within each level — a count here is always "distinct
+        # events that offer it", never a sum, so the same event gated twice at one level
+        # still counts once and the rows do not have to add up to `events`.
+        #
+        # A system gate with no `lvl` folds into level 1: `lvl` is a floor, and a system
+        # you merely have is at level 1. A non-system gate — crew, augment, weapon list —
+        # has no level to ask for at all and gets a single row with `lvl: null`.
+        detail = {}
         for record in events.values():
             for gate in record.get("gates") or []:
                 label = GATE_LABELS.get(gate["req"]) or gate.get("label") or gate["req"]
+                is_system = gate["req"] in self.systems
                 slot = gates.setdefault(label, {"label": label, "reqs": [], "req": gate["req"],
-                                                "levels": [], "events": []})
+                                                "system": False, "levels": [], "events": []})
                 if gate["req"] not in slot["reqs"]:
                     slot["reqs"].append(gate["req"])
+                slot["system"] = slot["system"] or is_system
                 if gate.get("lvl") and gate["lvl"] not in slot["levels"]:
                     slot["levels"].append(gate["lvl"])
                 if record["id"] not in slot["events"]:
                     slot["events"].append(record["id"])
+                level = (gate.get("lvl") or "1") if is_system else None
+                ids = detail.setdefault(label, {}).setdefault(level, [])
+                if record["id"] not in ids:
+                    ids.append(record["id"])
+
+        def level_key(level):
+            # Levels are numeric strings in every shipped file; anything else sorts by
+            # its text rather than being coerced. A null level (non-system) leads.
+            if level is None:
+                return (0, 0, "")
+            return (1, int(level) if level.isdigit() else 0, level)
+
+        for label, rows in detail.items():
+            gates[label]["levels_detail"] = [
+                {"lvl": level, "events": rows[level]}
+                for level in sorted(rows, key=level_key)
+            ]
 
         def tagged(tag):
             return sorted(r["id"] for r in events.values() if tag in (r.get("tags") or []))
@@ -673,9 +750,19 @@ class SectorExtractor:
         # the sector lists, so an unlisted species keeps its base value.
         here = {r["id"]: r["rarity"] for r in rarity}
         crew_odds = []
+        # The other side of the same filter: a species whose effective rarity here is
+        # exactly 0 is not in the pool at all, so a store in this sector can never offer
+        # it. Emitted beside the candidates so a page can show it without reading XML.
+        # Rarity 0 is a flag, not a low value (wiki/concepts/blueprint-rarity.md), which
+        # is why this is `== 0` and not "smallest". A species the files give no <rarity>
+        # at all would be unknown rather than excluded, and is listed in neither.
+        excluded = []
         for name in sorted(self.idx.crew_blueprints):
             value = here.get(name, self.idx.blueprint_rarity.get(name))
             if not value:  # 0 or unknown -- filtered out before weighting
+                if value == 0 and name not in self.dummy_crew:
+                    excluded.append({"id": name,
+                                     "label": self.idx.blueprint_titles.get(name) or name.title()})
                 continue
             crew_odds.append({
                 "id": name,
@@ -691,6 +778,7 @@ class SectorExtractor:
             # Three slots, each an independent count=1 draw, so a species can repeat.
             crew["in_store"] = round((1 - (1 - share) ** CREW_SLOTS) * 100, 1)
         crew_odds.sort(key=lambda c: (-c["weight"], c["label"].lower()))
+        excluded.sort(key=lambda c: c["label"].lower())
 
         start = el.findtext("startEvent")
         start = start.strip() if start else None
@@ -713,7 +801,7 @@ class SectorExtractor:
             "tracks": tracks,
             "crew_rarity": rarity,
             "crew_store_odds": {"slots": CREW_SLOTS, "total_weight": total_weight,
-                                "crew": crew_odds},
+                                "crew": crew_odds, "excluded": excluded},
             "start_event": self.event_record(start) if start else None,
             "entries": entries,
             "generation": {

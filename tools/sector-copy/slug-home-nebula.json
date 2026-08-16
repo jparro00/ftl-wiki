@@ -1,17 +1,7 @@
 {
   "slug": "slug-home-nebula",
 
-  "lede": "Purple usually means a breather. Here a cloud beacon shaves only about a fifth off the Rebel advance instead of halving it, your sensors are dead across most of the map, and the Slugs open a fight by switching one of your systems off before they shoot. The table asks for more than the map can hold, and what goes hungry is the clear-space half of it — the straight fights, the distress calls, the storms — while the clouds and the one guaranteed unlock beacon are placed regardless.",
-
-  "stats": [
-    { "metric": "beacons_min..beacons_max", "label": "Beacon spread" },
-    { "metric": "section:hostile:min..section:hostile:max", "label": "Hostile beacons" },
-    { "metric": "entry:STORM_SLUG:min..entry:STORM_SLUG:max", "label": "Plasma storms" },
-    { "metric": "section:store:min..section:store:max", "label": "Stores" },
-    { "metric": "distinct_events", "label": "Events in pool" }
-  ],
-
-  "callout": "**Versus a plain Slug Controlled Nebula:** the two definitions are identical apart from the unlock beacon — same lists, same minimums, same maximums, same rarity table, same start beacon. That one extra beacon is spent before the rest of the table gets a look in, so the sibling sector is this one with a beacon more of slack at the bottom: whatever gets squeezed out here is squeezed a little later there. Both are gated to **sector 4 at the earliest** — the file's `minSector=\"3\"` counts from zero — and only this one is once per run.",
+  "lede": "Purple usually means a breather. Here a cloud beacon shaves only about a fifth off the Rebel advance instead of halving it, your sensors are dead across most of the map, and the Slugs open a fight by switching one of your systems off before they shoot.",
 
   "section_notes": {
     "NEBULA_SLUG_FIGHT_UNLOCK": "Placed exactly once, and it is a fight from the moment you arrive — the ambusher is invisible to your sensors until it fires. Everything downstream of it hangs on the ship offering to surrender, because the quest marker only exists inside that offer. That marker lands on ordinary clear space and turns out to be cloud when you get there; the nebula comes from the event, not the beacon.",
@@ -83,17 +73,8 @@
         { "lead": "Boarders", "text": "Six events put someone on your ship. {{NEBULA_SLUG_MEDBAY}} lands two Slugs while your medbay is off, and {{STORM_BOARDING}} drops three to four humans on you with no ship fight attached." },
         { "lead": "Scrap", "text": "{{NEBULA_SLUG_HULLFIX}} patches your hull and then clamps you to the station: 15 fuel or 50 scrap. Refusing means a planted bomb, damage and a fight anyway." },
         { "lead": "Crew", "text": "Only three events in the pool can kill a crew member — {{SLUG_DISTRESS_TRICK}}, {{DONOR_PONY}} and {{DONOR_PLAGUE}}. This sector takes systems and scrap far more often than it takes people." },
-        { "lead": "Fuel", "text": "The empty entries can take up a lot of the map between them, and {{NEBULA_NOTHING_SLUG}} is the larger of the two. Every one of those is a jump spent for nothing, in a sector with two stores you can rely on." }
-      ]
-    },
-    {
-      "title": "Reading the map here",
-      "items": [
-        { "lead": "Stores", "text": "Two of the three are the pair inside the clouds, and they are rolled before the table can run dry — the only stores here you can plan a route around. Of the counters that open out of an event instead, {{NEBULA_SLUG_FAKE_STORE}} is an ambush wearing a shopfront and {{PIRATE_BRIBER}} is a toll booth that happens to sell things." },
-        { "lead": "Distress", "text": "Every distress call this sector can advertise comes from the one line at the bottom that the map is most likely to starve — nothing else in the pool leaks a distress-tagged event in to pad the count. Three of that line's own events carry no tag either, so a quiet map is not evidence of a quiet sector." },
-        { "lead": "Flying blind", "text": "Sensors do nothing at a cloud beacon, and most of this map is cloud: no enemy rooms, no enemy crew, no weapon charge bars. A Slug in the crew or a Lifeform Scanner is what puts the enemy back on your screen — both are written specifically to work where sensors do not." },
-        { "lead": "Quest markers", "text": "A marker can never be planted on a cloud beacon, a store, a distress beacon or the exit, so this sector has far fewer legal spots for one than it has beacons. A quest that finds nowhere to land waits for the next sector instead, and from sector 7 there is no next sector willing to take it." },
-        { "lead": "The fleet behind you", "text": "A cloud beacon the Rebels take always turns into an ion storm, so backtracking behind the front costs half your reactor as well as the jump. The compensation is that cloud beacons never carry anti-ship batteries, unless you are sitting at one out of fuel." }
+        { "lead": "Fuel", "text": "The empty entries can take up a lot of the map between them, and {{NEBULA_NOTHING_SLUG}} is the larger of the two. Every one of those is a jump spent for nothing, in a sector with two stores you can rely on." },
+        { "lead": "Flying blind", "text": "Sensors do nothing at a cloud beacon, and most of this map is cloud: no enemy rooms, no enemy crew, no weapon charge bars. A Slug in the crew or a Lifeform Scanner is what puts the enemy back on your screen — both are written specifically to work where sensors do not." }
       ]
     }
   ]

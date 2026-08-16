@@ -65,6 +65,20 @@
         "share": 5.9,
         "in_store": 16.6
       }
+    ],
+    "excluded": [
+      {
+        "id": "crystal",
+        "label": "Crystal"
+      },
+      {
+        "id": "anaerobic",
+        "label": "Lanius"
+      },
+      {
+        "id": "slug",
+        "label": "Slug"
+      }
     ]
   },
   "start_event": {
@@ -95,7 +109,8 @@
           "title": "Store (Rebel)",
           "card": true,
           "tags": [
-            "store"
+            "store",
+            "store-marker"
           ],
           "marker": {
             "store": true
@@ -388,7 +403,8 @@
               "may-fight",
               "crew",
               "store",
-              "unique"
+              "unique",
+              "store-marker"
             ],
             "marker": {
               "store": true
@@ -654,7 +670,8 @@
             "crew",
             "quest",
             "cost",
-            "unique"
+            "unique",
+            "distress"
           ],
           "marker": {
             "beacon": "distress"
@@ -761,7 +778,9 @@
             "crew",
             "store",
             "quest",
-            "unique"
+            "unique",
+            "distress",
+            "store-marker"
           ],
           "marker": {
             "beacon": "distress",
@@ -790,7 +809,8 @@
           "tags": [
             "crew",
             "reward",
-            "cost"
+            "cost",
+            "distress"
           ],
           "marker": {
             "beacon": "distress"
@@ -811,7 +831,8 @@
           "tags": [
             "fight",
             "crew",
-            "unique"
+            "unique",
+            "distress"
           ],
           "marker": {
             "beacon": "distress"
@@ -833,7 +854,8 @@
             "crew-loss",
             "crew",
             "reward",
-            "unique"
+            "unique",
+            "distress"
           ],
           "marker": {
             "beacon": "distress"
@@ -1720,7 +1742,8 @@
         "tags": [
           "may-fight",
           "store",
-          "unique"
+          "unique",
+          "store-marker"
         ],
         "marker": {
           "store": true
@@ -2231,6 +2254,7 @@
           "sensors"
         ],
         "req": "sensors",
+        "system": true,
         "levels": [
           "2",
           "3"
@@ -2242,6 +2266,32 @@
           "FEDERATION_PLANET_SIGNAL",
           "AUTO_DEFENSE_MAP",
           "BROKEN_REBEL_DRONE"
+        ],
+        "levels_detail": [
+          {
+            "lvl": "1",
+            "events": [
+              "TRADER_UPGRADES"
+            ]
+          },
+          {
+            "lvl": "2",
+            "events": [
+              "CIVILIAN_ASTEROIDS_BEACON",
+              "REBEL_VS_FEDERATION",
+              "FEDERATION_PLANET_SIGNAL"
+            ]
+          },
+          {
+            "lvl": "3",
+            "events": [
+              "CIVILIAN_ASTEROIDS_BEACON",
+              "REBEL_VS_FEDERATION",
+              "FEDERATION_PLANET_SIGNAL",
+              "AUTO_DEFENSE_MAP",
+              "BROKEN_REBEL_DRONE"
+            ]
+          }
         ]
       },
       {
@@ -2250,6 +2300,7 @@
           "teleporter"
         ],
         "req": "teleporter",
+        "system": true,
         "levels": [],
         "events": [
           "CIVILIAN_ASTEROIDS_BEACON",
@@ -2257,6 +2308,18 @@
           "NEBULA_LOST_SHIP",
           "MERCHANT_REQUEST",
           "AUTO_DEFENSE_MAP"
+        ],
+        "levels_detail": [
+          {
+            "lvl": "1",
+            "events": [
+              "CIVILIAN_ASTEROIDS_BEACON",
+              "REBEL_VS_FEDERATION",
+              "NEBULA_LOST_SHIP",
+              "MERCHANT_REQUEST",
+              "AUTO_DEFENSE_MAP"
+            ]
+          }
         ]
       },
       {
@@ -2265,6 +2328,7 @@
           "cloaking"
         ],
         "req": "cloaking",
+        "system": true,
         "levels": [
           "1",
           "2"
@@ -2274,6 +2338,23 @@
           "STORM_AUTO",
           "NEBULA_REBEL_UNDETECTED",
           "AUTO_DEFENSE_ITEM"
+        ],
+        "levels_detail": [
+          {
+            "lvl": "1",
+            "events": [
+              "NEBULA_AUTO_DEFENSE_ITEM",
+              "STORM_AUTO",
+              "NEBULA_REBEL_UNDETECTED",
+              "AUTO_DEFENSE_ITEM"
+            ]
+          },
+          {
+            "lvl": "2",
+            "events": [
+              "NEBULA_AUTO_DEFENSE_ITEM"
+            ]
+          }
         ]
       },
       {
@@ -2282,12 +2363,24 @@
           "ADV_SCANNERS"
         ],
         "req": "ADV_SCANNERS",
+        "system": false,
         "levels": [],
         "events": [
           "CIVILIAN_ASTEROIDS_BEACON",
           "REBEL_VS_FEDERATION",
           "NEBULA_LOST_SHIP",
           "FEDERATION_PLANET_SIGNAL"
+        ],
+        "levels_detail": [
+          {
+            "lvl": null,
+            "events": [
+              "CIVILIAN_ASTEROIDS_BEACON",
+              "REBEL_VS_FEDERATION",
+              "NEBULA_LOST_SHIP",
+              "FEDERATION_PLANET_SIGNAL"
+            ]
+          }
         ]
       },
       {
@@ -2296,6 +2389,7 @@
           "engines"
         ],
         "req": "engines",
+        "system": true,
         "levels": [
           "3",
           "6",
@@ -2304,6 +2398,26 @@
         "events": [
           "STORM_AUTO",
           "NEBULA_REBEL_UNDETECTED"
+        ],
+        "levels_detail": [
+          {
+            "lvl": "3",
+            "events": [
+              "STORM_AUTO"
+            ]
+          },
+          {
+            "lvl": "4",
+            "events": [
+              "NEBULA_REBEL_UNDETECTED"
+            ]
+          },
+          {
+            "lvl": "6",
+            "events": [
+              "STORM_AUTO"
+            ]
+          }
         ]
       },
       {
@@ -2312,6 +2426,7 @@
           "hacking"
         ],
         "req": "hacking",
+        "system": true,
         "levels": [
           "1",
           "2"
@@ -2319,6 +2434,21 @@
         "events": [
           "NEBULA_AUTO_DEFENSE_ITEM",
           "AUTO_DEFENSE_RADAR"
+        ],
+        "levels_detail": [
+          {
+            "lvl": "1",
+            "events": [
+              "NEBULA_AUTO_DEFENSE_ITEM",
+              "AUTO_DEFENSE_RADAR"
+            ]
+          },
+          {
+            "lvl": "2",
+            "events": [
+              "NEBULA_AUTO_DEFENSE_ITEM"
+            ]
+          }
         ]
       },
       {
@@ -2327,12 +2457,27 @@
           "pilot"
         ],
         "req": "pilot",
+        "system": true,
         "levels": [
           "2"
         ],
         "events": [
           "TRADER_UPGRADES",
           "STORM_ITEMS"
+        ],
+        "levels_detail": [
+          {
+            "lvl": "1",
+            "events": [
+              "TRADER_UPGRADES"
+            ]
+          },
+          {
+            "lvl": "2",
+            "events": [
+              "STORM_ITEMS"
+            ]
+          }
         ]
       },
       {
@@ -2341,10 +2486,20 @@
           "REPAIR"
         ],
         "req": "REPAIR",
+        "system": false,
         "levels": [],
         "events": [
           "CIVILIAN_ASTEROIDS_BEACON",
           "DISTRESS_STATION_FIRE"
+        ],
+        "levels_detail": [
+          {
+            "lvl": null,
+            "events": [
+              "CIVILIAN_ASTEROIDS_BEACON",
+              "DISTRESS_STATION_FIRE"
+            ]
+          }
         ]
       },
       {
@@ -2353,9 +2508,18 @@
           "FTL_JUMPER"
         ],
         "req": "FTL_JUMPER",
+        "system": false,
         "levels": [],
         "events": [
           "ESCORT_BEACON"
+        ],
+        "levels_detail": [
+          {
+            "lvl": null,
+            "events": [
+              "ESCORT_BEACON"
+            ]
+          }
         ]
       },
       {
@@ -2364,9 +2528,18 @@
           "BATTLE"
         ],
         "req": "BATTLE",
+        "system": false,
         "levels": [],
         "events": [
           "MERCHANT_REQUEST"
+        ],
+        "levels_detail": [
+          {
+            "lvl": null,
+            "events": [
+              "MERCHANT_REQUEST"
+            ]
+          }
         ]
       },
       {
@@ -2375,9 +2548,18 @@
           "COMBAT_DRONE_LIST"
         ],
         "req": "COMBAT_DRONE_LIST",
+        "system": false,
         "levels": [],
         "events": [
           "AUTO_DEFENSE_RADAR"
+        ],
+        "levels_detail": [
+          {
+            "lvl": null,
+            "events": [
+              "AUTO_DEFENSE_RADAR"
+            ]
+          }
         ]
       },
       {
@@ -2386,9 +2568,18 @@
           "DRONES_DEFENSE_LIST"
         ],
         "req": "DRONES_DEFENSE_LIST",
+        "system": false,
         "levels": [],
         "events": [
           "CIVILIAN_ASTEROIDS_BEACON"
+        ],
+        "levels_detail": [
+          {
+            "lvl": null,
+            "events": [
+              "CIVILIAN_ASTEROIDS_BEACON"
+            ]
+          }
         ]
       },
       {
@@ -2397,9 +2588,18 @@
           "doors"
         ],
         "req": "doors",
+        "system": true,
         "levels": [],
         "events": [
           "TRADER_UPGRADES"
+        ],
+        "levels_detail": [
+          {
+            "lvl": "1",
+            "events": [
+              "TRADER_UPGRADES"
+            ]
+          }
         ]
       },
       {
@@ -2408,9 +2608,18 @@
           "NANO_MEDBAY"
         ],
         "req": "NANO_MEDBAY",
+        "system": false,
         "levels": [],
         "events": [
           "REBEL_VS_FEDERATION"
+        ],
+        "levels_detail": [
+          {
+            "lvl": null,
+            "events": [
+              "REBEL_VS_FEDERATION"
+            ]
+          }
         ]
       },
       {
@@ -2419,9 +2628,18 @@
           "BOMB_HEAL"
         ],
         "req": "BOMB_HEAL",
+        "system": false,
         "levels": [],
         "events": [
           "REBEL_VS_FEDERATION"
+        ],
+        "levels_detail": [
+          {
+            "lvl": null,
+            "events": [
+              "REBEL_VS_FEDERATION"
+            ]
+          }
         ]
       },
       {
@@ -2430,12 +2648,27 @@
           "medbay"
         ],
         "req": "medbay",
+        "system": true,
         "levels": [
           "3",
           "2"
         ],
         "events": [
           "MERCHANT_REQUEST"
+        ],
+        "levels_detail": [
+          {
+            "lvl": "2",
+            "events": [
+              "MERCHANT_REQUEST"
+            ]
+          },
+          {
+            "lvl": "3",
+            "events": [
+              "MERCHANT_REQUEST"
+            ]
+          }
         ]
       },
       {
@@ -2444,9 +2677,18 @@
           "mind"
         ],
         "req": "mind",
+        "system": true,
         "levels": [],
         "events": [
           "MERCHANT_REQUEST"
+        ],
+        "levels_detail": [
+          {
+            "lvl": "1",
+            "events": [
+              "MERCHANT_REQUEST"
+            ]
+          }
         ]
       },
       {
@@ -2455,9 +2697,18 @@
           "WEAPONS_MISSILES_EVENTS"
         ],
         "req": "WEAPONS_MISSILES_EVENTS",
+        "system": false,
         "levels": [],
         "events": [
           "HELP_MINERS"
+        ],
+        "levels_detail": [
+          {
+            "lvl": null,
+            "events": [
+              "HELP_MINERS"
+            ]
+          }
         ]
       },
       {
@@ -2466,9 +2717,18 @@
           "oxygen"
         ],
         "req": "oxygen",
+        "system": true,
         "levels": [],
         "events": [
           "TRADER_UPGRADES"
+        ],
+        "levels_detail": [
+          {
+            "lvl": "1",
+            "events": [
+              "TRADER_UPGRADES"
+            ]
+          }
         ]
       },
       {
@@ -2477,9 +2737,18 @@
           "reactor"
         ],
         "req": "reactor",
+        "system": false,
         "levels": [],
         "events": [
           "TRADER_UPGRADES"
+        ],
+        "levels_detail": [
+          {
+            "lvl": null,
+            "events": [
+              "TRADER_UPGRADES"
+            ]
+          }
         ]
       },
       {
@@ -2488,9 +2757,18 @@
           "rock"
         ],
         "req": "rock",
+        "system": false,
         "levels": [],
         "events": [
           "DISTRESS_STATION_FIRE"
+        ],
+        "levels_detail": [
+          {
+            "lvl": null,
+            "events": [
+              "DISTRESS_STATION_FIRE"
+            ]
+          }
         ]
       },
       {
@@ -2499,9 +2777,18 @@
           "ROCK_ARMOR"
         ],
         "req": "ROCK_ARMOR",
+        "system": false,
         "levels": [],
         "events": [
           "CIVILIAN_ASTEROIDS_BEACON"
+        ],
+        "levels_detail": [
+          {
+            "lvl": null,
+            "events": [
+              "CIVILIAN_ASTEROIDS_BEACON"
+            ]
+          }
         ]
       },
       {
@@ -2510,11 +2797,20 @@
           "weapons"
         ],
         "req": "weapons",
+        "system": true,
         "levels": [
           "6"
         ],
         "events": [
           "MERCHANT_REQUEST"
+        ],
+        "levels_detail": [
+          {
+            "lvl": "6",
+            "events": [
+              "MERCHANT_REQUEST"
+            ]
+          }
         ]
       }
     ],

@@ -1,17 +1,7 @@
 {
   "slug": "pirate-controlled-sector",
 
-  "lede": "Six to eight beacons here are a fight — the biggest single line the sector asks for — and exactly one more puts boarders on your ship, every run, no exceptions. The rest of the table is a wish list: it asks for more events than the map has room for, and because the neutral line is filled **last**, the deepest and most interesting pool in the sector is the one that gets cut. What is guaranteed is the shooting.",
-
-  "stats": [
-    { "metric": "beacons_min..beacons_max", "label": "Event slots asked for" },
-    { "metric": "grid_beacons", "label": "Beacons the map can hold" },
-    { "metric": "section:hostile:min..section:hostile:max", "label": "Hostile beacons" },
-    { "metric": "entry:BOARDERS_PIRATE:min..entry:BOARDERS_PIRATE:max", "label": "Boarding beacons" },
-    { "metric": "section:nebula:min..section:nebula:max", "label": "Nebula beacons" }
-  ],
-
-  "callout": "**Versus Rebel Controlled space:** the same nine lines, in the same order, with the same numbers — one difference, Rebel space allocates 0–2 quests against this sector's 0–1. What changes between them is which lists those lines point at, not how many beacons anything gets.",
+  "lede": "The biggest single line this sector asks for is its fights, and exactly one more beacon puts boarders on your ship, every run, no exceptions. The rest of the table is a wish list — it asks for more events than the map has room for, and because the neutral line is filled **last**, the deepest and most interesting pool in the sector is the one that gets cut.",
 
   "section_notes": {
     "HOSTILE_PIRATE": "Four of the seven open with weapons already hot, and the three marked may-fight are not really escapes: {{PIRATE_ASTEROID}} offers one button, \"Turn and fight\"; {{PIRATE_NO_ESCAPE}} fights either way and the **Hacking** option only chooses whether your engines sit pinned at 1 for the whole fight or your Hacking system goes dark instead; {{PIRATE_SLAVER}} takes a crew member, or an **Engines 6** run that fails back into the fight one time in three.",
@@ -82,18 +72,9 @@
         { "lead": "Boarders", "text": "9 events put people inside your hull and one of them is guaranteed. {{REFUGEE_GHOST}} is the worst-value version: five outcomes behind one \"prepare to board\", one of which is 2–4 humans and another of which just kills a crew member." },
         { "lead": "Crew", "text": "9 events can cost you someone. {{DISTRESS_INFESTATION}}, {{DISTRESS_STATION_FIRE}} and {{STORM_ITEMS}} are the ones with no cheap way out if you arrive unequipped." },
         { "lead": "Ransom", "text": "{{PIRATE_CHOICE}} charges 15–25 scrap to be allowed to leave, and {{PIRATE_SLAVER}} charges a crew member. Refusing either is a fight you did not choose the ground for." },
-        { "lead": "Bait", "text": "{{TRAP_BEACON}} is a distress call that is a pirate, {{FLOATING_CARGO}} is free cargo that is boarders, and {{PIRATE_BRIBER}} pays you to watch someone else get robbed. The distress channel is not information in this sector." }
-      ]
-    },
-    {
-      "title": "Reading the map here",
-      "items": [
-        { "lead": "The squeeze", "text": "On a map that fills all 24 cells, every line above the neutral pool rolling its maximum still leaves one beacon for a line that wants five or six. The stores, the fights and the boarding beacon are never the ones cut; the variance in this sector lives in its last two lines." },
-        { "lead": "Distress", "text": "The surplus distress markers all ride on the neutral line, which is filled after the distress line rather than before it — so here the extras are exactly what gets cut when the map fills. What you can see from one jump away is most often one of the ten drawn from the distress list itself, and {{TRAP_BEACON}} sits in both." },
-        { "lead": "The cloud", "text": "0–5 beacons are drawn into nebula before any other line is placed. In a sector that is not itself a nebula, sitting in one halves the Rebel advance for that jump — a cloud-heavy roll is free time on the clock, paid for with dead sensors while you are in it." },
-        { "lead": "Quest markers", "text": "A marker has to land on a beacon that is not a store, not a distress beacon, not already visited and not inside the cloud. Roll the nebula line high and that shortlist can come up empty, at which point the quest is handed to the next sector instead of this one." },
-        { "lead": "Buying time", "text": "{{MERCENARY}} sells 2 jumps of delay for 10–25 scrap, or a revealed map for 10–20; {{PIRATE_BRIBER}} can talk a rescued Rebel scout into 1. Against them, {{NEBULA_AUTO_WARNING}} and {{NEBULA_REBEL_UNDETECTED}} advance the fleet if the scout gets its message out, and {{CIVILIAN_ASTEROIDS_BEACON}} costs a jump to take." },
-        { "lead": "Hazards", "text": "Four beacons in the pool sit in an asteroid field or beside a sun, three more in a plasma storm that halves your reactor, and Advanced Edition adds a pulsar. While any of those is live the ship menu is locked — no upgrades, no weapon swaps, no moving crew — so the power you jumped in with is the power you fight with." }
+        { "lead": "Bait", "text": "{{TRAP_BEACON}} is a distress call that is a pirate, {{FLOATING_CARGO}} is free cargo that is boarders, and {{PIRATE_BRIBER}} pays you to watch someone else get robbed. The distress channel is not information in this sector." },
+        { "lead": "Hazards", "text": "Four beacons in the pool sit in an asteroid field or beside a sun, three more in a plasma storm that halves your reactor, and Advanced Edition adds a pulsar. While any of those is live the ship menu is locked — no upgrades, no weapon swaps, no moving crew — so the power you jumped in with is the power you fight with." },
+        { "lead": "The clock", "text": "{{NEBULA_AUTO_WARNING}} and {{NEBULA_REBEL_UNDETECTED}} advance the fleet if the scout gets its message out, and {{CIVILIAN_ASTEROIDS_BEACON}} costs a jump to take. Against them {{MERCENARY}} sells 2 jumps of delay for 10–25 scrap, or a revealed map for 10–20, and {{PIRATE_BRIBER}} can talk a rescued Rebel scout into 1." }
       ]
     }
   ]

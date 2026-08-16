@@ -1,17 +1,7 @@
 {
   "slug": "slug-controlled-nebula",
 
-  "lede": "Slug space does not open a fight, it opens with one of your systems already switched off — your doors, your oxygen, your medbay, or whichever of shields, oxygen and weapons you are made to nominate. **A Hacking system is the one blue option that answers all four**, and the clouds take your sensors away before you can see any of it coming. The usual consolation for flying blind is cut down here too: a nebula beacon in a nebula sector shaves only about a fifth off the Rebel advance, where the same beacon anywhere else would halve it.",
-
-  "stats": [
-    { "metric": "beacons_min..beacons_max", "label": "Beacon spread" },
-    { "metric": "section:hostile:min..section:hostile:max", "label": "Hostile beacons" },
-    { "metric": "section:distress:min..section:distress:max", "label": "Distress beacons" },
-    { "metric": "entry:STORM_SLUG:min..entry:STORM_SLUG:max", "label": "Plasma storms" },
-    { "metric": "gated_events", "label": "Events with blue options" }
-  ],
-
-  "callout": "**Versus Slug Home Nebula:** the same eleven lines with the same counts, plus one guaranteed `NEBULA_SLUG_FIGHT_UNLOCK` beacon — and that sector is once per run where this one can repeat. Everything on this page otherwise describes both.",
+  "lede": "Slug space does not open a fight, it opens with one of your systems already switched off — doors, oxygen, medbay, or whichever of shields, oxygen and weapons you are made to nominate; **a Hacking system is the one blue option that answers all four**. The clouds take your sensors with them and give less back than clouds elsewhere: a nebula beacon in a nebula sector shaves only about a fifth off the Rebel advance, where the same beacon anywhere else would halve it.",
 
   "section_notes": {
     "NEBULA_STORE_SLUG": "Two guaranteed stores, and the first thing the sector places, so no roll above them can take them away. Both sit inside the clouds — you shop with your sensors down.",
@@ -86,17 +76,6 @@
         { "lead": "Crew", "text": "Only three events can kill a crew member outright: {{SLUG_DISTRESS_TRICK}}, {{DONOR_PLAGUE}} and {{DONOR_PONY}} — and the last two sit in `NEUTRAL`, which also mops up every beacon the table failed to fill, so they turn up more often than a 1–2 line suggests." },
         { "lead": "Scrap", "text": "{{NEBULA_SLUG_HULLFIX}} repairs you and then presents a bill for 50 scrap or 15 fuel. Refusing to pay starts a fight with your weapons halved or 4 hull already gone, and a third docking outcome caps your engines at 1 before the shooting even begins." },
         { "lead": "Sales", "text": "{{NEBULA_SLUG_FAKE_STORE}} is a real store on one of three outcomes. The other two board you, and one of them locks your weapons off first." }
-      ]
-    },
-    {
-      "title": "Reading the map here",
-      "items": [
-        { "lead": "Stores", "text": "Two of the three are guaranteed and are placed before anything else, so the squeeze never reaches them. Three more events can open a shop on top of that — {{PIRATE_BRIBER}}, {{SLUG_DRINK}} and {{NEBULA_SLUG_FAKE_STORE}}." },
-        { "lead": "Quests", "text": "A quest marker cannot be placed on a nebula beacon, a store, a distress beacon or the exit — and the four cloud lines claim twelve to eighteen beacons before anything else is placed. {{NEBULA_BATTLEFIELD}} and {{QUEST_SLUG_PIRATE_TRAP}} are both inside the clouds, and a marker with nowhere to land is pushed into the next sector instead." },
-        { "lead": "The fleet", "text": "Nebula cover is worth less at home than abroad. A cloud beacon here leaves the Rebels advancing about four fifths of a normal jump; the same beacon in a non-nebula sector cuts them to a half." },
-        { "lead": "Distress", "text": "Of the five distress events that raise a marker here, only {{TRAP_BEACON}} reads as a possible ship on Long-Ranged Scanners. The other four read as an unvisited location — which is not the same as safe: two of them can still end in a fight." },
-        { "lead": "Caught in a cloud", "text": "A nebula beacon taken by the fleet always gains an ion storm, but never an Anti-Ship Battery unless you are sitting there out of fuel. Being overtaken in the fog costs you your reactor rather than your hull." },
-        { "lead": "The exit", "text": "Exits draw from a list shared by every sector, and an exit that ends up under the cloud graphics is simply empty — no event, and no ion storm even once the fleet has taken it." }
       ]
     }
   ]

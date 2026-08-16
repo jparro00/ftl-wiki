@@ -139,6 +139,12 @@
         "share": 9.5,
         "in_store": 25.9
       }
+    ],
+    "excluded": [
+      {
+        "id": "crystal",
+        "label": "Crystal"
+      }
     ]
   },
   "start_event": {
@@ -169,7 +175,8 @@
           "title": "Store (Lanius)",
           "card": true,
           "tags": [
-            "store"
+            "store",
+            "store-marker"
           ],
           "marker": {
             "store": true
@@ -240,7 +247,8 @@
           "tags": [
             "may-fight",
             "crew",
-            "unique"
+            "unique",
+            "distress"
           ],
           "marker": {
             "beacon": "distress"
@@ -264,7 +272,8 @@
           "title": "Lanius empty distress beacon 1",
           "card": true,
           "tags": [
-            "unique"
+            "unique",
+            "distress"
           ],
           "marker": {
             "beacon": "distress"
@@ -283,7 +292,8 @@
           "title": "Lanius empty distress beacon 2",
           "card": true,
           "tags": [
-            "unique"
+            "unique",
+            "distress"
           ],
           "marker": {
             "beacon": "distress"
@@ -304,7 +314,8 @@
           "tags": [
             "fight",
             "crew",
-            "unique"
+            "unique",
+            "distress"
           ],
           "marker": {
             "beacon": "distress"
@@ -324,7 +335,8 @@
           "card": true,
           "tags": [
             "may-fight",
-            "unique"
+            "unique",
+            "distress"
           ],
           "marker": {
             "beacon": "distress"
@@ -344,7 +356,8 @@
           "card": true,
           "tags": [
             "may-fight",
-            "unique"
+            "unique",
+            "distress"
           ],
           "marker": {
             "beacon": "distress"
@@ -364,7 +377,8 @@
           "card": true,
           "tags": [
             "may-fight",
-            "unique"
+            "unique",
+            "distress"
           ],
           "marker": {
             "beacon": "distress"
@@ -384,7 +398,8 @@
           "card": true,
           "tags": [
             "reward",
-            "unique"
+            "unique",
+            "distress"
           ],
           "marker": {
             "beacon": "distress"
@@ -430,7 +445,8 @@
             "crew-loss",
             "crew",
             "reward",
-            "unique"
+            "unique",
+            "distress"
           ],
           "marker": {
             "beacon": "distress"
@@ -460,7 +476,8 @@
           "tags": [
             "crew",
             "reward",
-            "cost"
+            "cost",
+            "distress"
           ],
           "marker": {
             "beacon": "distress"
@@ -481,7 +498,8 @@
           "tags": [
             "fight",
             "crew",
-            "unique"
+            "unique",
+            "distress"
           ],
           "marker": {
             "beacon": "distress"
@@ -503,7 +521,8 @@
             "crew-loss",
             "crew",
             "reward",
-            "unique"
+            "unique",
+            "distress"
           ],
           "marker": {
             "beacon": "distress"
@@ -1074,7 +1093,8 @@
             "may-fight",
             "crew",
             "store",
-            "unique"
+            "unique",
+            "store-marker"
           ],
           "marker": {
             "store": true
@@ -1271,7 +1291,8 @@
           "tags": [
             "may-fight",
             "store",
-            "unique"
+            "unique",
+            "store-marker"
           ],
           "marker": {
             "store": true
@@ -1514,7 +1535,8 @@
         "tags": [
           "may-fight",
           "store",
-          "unique"
+          "unique",
+          "store-marker"
         ],
         "marker": {
           "store": true
@@ -2011,6 +2033,7 @@
           "anaerobic"
         ],
         "req": "anaerobic",
+        "system": false,
         "levels": [],
         "events": [
           "LANIUS_DISTRESS_FIGHT",
@@ -2022,6 +2045,22 @@
           "LANIUS_GROUP_AUTO",
           "LANIUS_BEACON_EATER",
           "LANIUS_DORMANT_EVENT"
+        ],
+        "levels_detail": [
+          {
+            "lvl": null,
+            "events": [
+              "LANIUS_DISTRESS_FIGHT",
+              "LANIUS_TRADER",
+              "LANIUS_RESEARCHER_CRAFT",
+              "LANIUS_RESEARCHER_CONTACT",
+              "LANIUS_SOLO_SALVAGE",
+              "LANIUS_SCARED_CIVILIAN",
+              "LANIUS_GROUP_AUTO",
+              "LANIUS_BEACON_EATER",
+              "LANIUS_DORMANT_EVENT"
+            ]
+          }
         ]
       },
       {
@@ -2030,6 +2069,7 @@
           "sensors"
         ],
         "req": "sensors",
+        "system": true,
         "levels": [
           "2",
           "3"
@@ -2038,6 +2078,23 @@
           "FEDERATION_PLANET_SIGNAL",
           "LANIUS_FUELING_STATION",
           "BROKEN_REBEL_DRONE"
+        ],
+        "levels_detail": [
+          {
+            "lvl": "2",
+            "events": [
+              "FEDERATION_PLANET_SIGNAL",
+              "LANIUS_FUELING_STATION"
+            ]
+          },
+          {
+            "lvl": "3",
+            "events": [
+              "FEDERATION_PLANET_SIGNAL",
+              "LANIUS_FUELING_STATION",
+              "BROKEN_REBEL_DRONE"
+            ]
+          }
         ]
       },
       {
@@ -2046,6 +2103,7 @@
           "pilot"
         ],
         "req": "pilot",
+        "system": true,
         "levels": [
           "2",
           "3"
@@ -2053,6 +2111,21 @@
         "events": [
           "LANIUS_HARVESTER",
           "LANIUS_DORMANT_EVENT"
+        ],
+        "levels_detail": [
+          {
+            "lvl": "2",
+            "events": [
+              "LANIUS_HARVESTER",
+              "LANIUS_DORMANT_EVENT"
+            ]
+          },
+          {
+            "lvl": "3",
+            "events": [
+              "LANIUS_HARVESTER"
+            ]
+          }
         ]
       },
       {
@@ -2061,6 +2134,7 @@
           "cloaking"
         ],
         "req": "cloaking",
+        "system": true,
         "levels": [
           "1",
           "2",
@@ -2068,6 +2142,26 @@
         ],
         "events": [
           "DISTRESS_SATELLITE_DEFENSE"
+        ],
+        "levels_detail": [
+          {
+            "lvl": "1",
+            "events": [
+              "DISTRESS_SATELLITE_DEFENSE"
+            ]
+          },
+          {
+            "lvl": "2",
+            "events": [
+              "DISTRESS_SATELLITE_DEFENSE"
+            ]
+          },
+          {
+            "lvl": "3",
+            "events": [
+              "DISTRESS_SATELLITE_DEFENSE"
+            ]
+          }
         ]
       },
       {
@@ -2076,11 +2170,20 @@
           "clonebay"
         ],
         "req": "clonebay",
+        "system": true,
         "levels": [
           "2"
         ],
         "events": [
           "STRANDED_BEACON"
+        ],
+        "levels_detail": [
+          {
+            "lvl": "2",
+            "events": [
+              "STRANDED_BEACON"
+            ]
+          }
         ]
       },
       {
@@ -2089,11 +2192,20 @@
           "doors"
         ],
         "req": "doors",
+        "system": true,
         "levels": [
           "2"
         ],
         "events": [
           "LANIUS_FUELING_STATION"
+        ],
+        "levels_detail": [
+          {
+            "lvl": "2",
+            "events": [
+              "LANIUS_FUELING_STATION"
+            ]
+          }
         ]
       },
       {
@@ -2102,9 +2214,18 @@
           "engi"
         ],
         "req": "engi",
+        "system": false,
         "levels": [],
         "events": [
           "DISTRESS_SATELLITE_DEFENSE"
+        ],
+        "levels_detail": [
+          {
+            "lvl": null,
+            "events": [
+              "DISTRESS_SATELLITE_DEFENSE"
+            ]
+          }
         ]
       },
       {
@@ -2113,9 +2234,18 @@
           "SHIP_REPAIR"
         ],
         "req": "SHIP_REPAIR",
+        "system": false,
         "levels": [],
         "events": [
           "LANIUS_BEACON_EATER"
+        ],
+        "levels_detail": [
+          {
+            "lvl": null,
+            "events": [
+              "LANIUS_BEACON_EATER"
+            ]
+          }
         ]
       },
       {
@@ -2124,9 +2254,18 @@
           "WEAPONS_ION"
         ],
         "req": "WEAPONS_ION",
+        "system": false,
         "levels": [],
         "events": [
           "DISTRESS_SATELLITE_DEFENSE"
+        ],
+        "levels_detail": [
+          {
+            "lvl": null,
+            "events": [
+              "DISTRESS_SATELLITE_DEFENSE"
+            ]
+          }
         ]
       },
       {
@@ -2135,9 +2274,18 @@
           "ADV_SCANNERS"
         ],
         "req": "ADV_SCANNERS",
+        "system": false,
         "levels": [],
         "events": [
           "FEDERATION_PLANET_SIGNAL"
+        ],
+        "levels_detail": [
+          {
+            "lvl": null,
+            "events": [
+              "FEDERATION_PLANET_SIGNAL"
+            ]
+          }
         ]
       },
       {
@@ -2146,12 +2294,27 @@
           "medbay"
         ],
         "req": "medbay",
+        "system": true,
         "levels": [
           "2",
           "3"
         ],
         "events": [
           "STRANDED_BEACON"
+        ],
+        "levels_detail": [
+          {
+            "lvl": "2",
+            "events": [
+              "STRANDED_BEACON"
+            ]
+          },
+          {
+            "lvl": "3",
+            "events": [
+              "STRANDED_BEACON"
+            ]
+          }
         ]
       },
       {
@@ -2160,9 +2323,18 @@
           "rock"
         ],
         "req": "rock",
+        "system": false,
         "levels": [],
         "events": [
           "DISTRESS_STATION_FIRE"
+        ],
+        "levels_detail": [
+          {
+            "lvl": null,
+            "events": [
+              "DISTRESS_STATION_FIRE"
+            ]
+          }
         ]
       },
       {
@@ -2171,9 +2343,18 @@
           "SCRAP_COLLECTOR"
         ],
         "req": "SCRAP_COLLECTOR",
+        "system": false,
         "levels": [],
         "events": [
           "ASTEROID_EXPLORE"
+        ],
+        "levels_detail": [
+          {
+            "lvl": null,
+            "events": [
+              "ASTEROID_EXPLORE"
+            ]
+          }
         ]
       },
       {
@@ -2182,9 +2363,18 @@
           "slug"
         ],
         "req": "slug",
+        "system": false,
         "levels": [],
         "events": [
           "STRANDED_BEACON"
+        ],
+        "levels_detail": [
+          {
+            "lvl": null,
+            "events": [
+              "STRANDED_BEACON"
+            ]
+          }
         ]
       },
       {
@@ -2193,9 +2383,18 @@
           "REPAIR"
         ],
         "req": "REPAIR",
+        "system": false,
         "levels": [],
         "events": [
           "DISTRESS_STATION_FIRE"
+        ],
+        "levels_detail": [
+          {
+            "lvl": null,
+            "events": [
+              "DISTRESS_STATION_FIRE"
+            ]
+          }
         ]
       },
       {
@@ -2204,11 +2403,20 @@
           "teleporter"
         ],
         "req": "teleporter",
+        "system": true,
         "levels": [
           "2"
         ],
         "events": [
           "FRIENDLY_SLAVER"
+        ],
+        "levels_detail": [
+          {
+            "lvl": "2",
+            "events": [
+              "FRIENDLY_SLAVER"
+            ]
+          }
         ]
       }
     ],
