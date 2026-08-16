@@ -26,6 +26,13 @@ GAMEDATA = ROOT / "raw" / "gamedata"
 TREES = ROOT / "cards" / "trees"
 SCHEMA = "ftl-sector-profile/1"
 
+# Blue-option names, shared with the card pipeline rather than duplicated: a gate can
+# name a blueprintList (WEAPONS_ION, COMBAT_BEAM_DRONE_LIST) and a list has no <title>
+# in the game files, so its player-facing name is authored in one place and read here.
+GATE_LABELS = json.loads(
+    (TOOLS / "card-vocab.json").read_text(encoding="utf-8")
+).get("gate_labels", {})
+
 MAX_LIST_DEPTH = 4  # a sector list nesting deeper than this is a data bug, not a pool
 
 # The sector map is a 6x4 grid with an 80% chance of a beacon per cell, so 24 is the
@@ -35,6 +42,13 @@ GRID_BEACONS = 24
 # The community wiki states a floor of 19 ("between 19 and 24 beacons"). Nothing else here
 # derives it, so it is carried as data and reported, but never used to mark a line at risk.
 GRID_BEACONS_MIN = 19
+
+# The store's crew draw, read out of the game binary rather than any data file:
+# weight = 6 - rarity, rarity 0 excluded before weighting, and the crew section is always
+# three slots (all three hireable under AE, which is the data this pipeline reads).
+# raw/modding/2026-08-16-store-crew-selection-disassembly.md
+CREW_WEIGHT_BASE = 6
+CREW_SLOTS = 3
 
 
 def _load_extractor():
@@ -71,6 +85,26 @@ def section_of(name):
         if any(re.match(p, name) for p in patterns):
             return section
     return "special"
+
+
+def rarity_change(base, here):
+    """How a sector's <rarityList> moves one blueprint off its base rarity.
+
+    Reported as a verdict rather than a signed number, because the scale is not
+    linear: 0 is a flag meaning "not in the random pool", not the low end of
+    1–5 (wiki/concepts/blueprint-rarity.md). So base 2 → 0 is an exclusion and
+    base 0 → 2 is the opposite, and a ±2 on both would say the same thing twice.
+    A blueprint the files give no <rarity> at all answers "unknown", never a guess.
+    """
+    if base is None:
+        return "unknown"
+    if base == here:
+        return "same"
+    if base == 0:
+        return "unlocked"
+    if here == 0:
+        return "excluded"
+    return "more-common" if here < base else "rarer"
 
 
 def sector_pages():
@@ -488,11 +522,18 @@ class SectorExtractor:
                     out[key]["events"].append(record["id"])
             return sorted(out.values(), key=lambda x: (-len(x["events"]), json.dumps(x["value"], sort_keys=True)))
 
+        # Keyed by the name a player sees, not by req: WEAPONS_MISSILES and
+        # WEAPONS_MISSILES_EVENTS are the same seven weapons under two ids (the AE file
+        # redefines the vanilla list), so two rows reading "Missile weapon" would be one
+        # option counted twice. Every req that merged in is kept in `reqs`.
         gates = {}
         for record in events.values():
             for gate in record.get("gates") or []:
-                slot = gates.setdefault(gate["req"], {"req": gate["req"], "label": gate["label"],
-                                                      "levels": [], "events": []})
+                label = GATE_LABELS.get(gate["req"]) or gate.get("label") or gate["req"]
+                slot = gates.setdefault(label, {"label": label, "reqs": [], "req": gate["req"],
+                                                "levels": [], "events": []})
+                if gate["req"] not in slot["reqs"]:
+                    slot["reqs"].append(gate["req"])
                 if gate.get("lvl") and gate["lvl"] not in slot["levels"]:
                     slot["levels"].append(gate["lvl"])
                 if record["id"] not in slot["events"]:
@@ -540,20 +581,26 @@ class SectorExtractor:
             "boarders": tagged("boarders"),
             "unique": tagged("unique"),
             "quest_starts": tagged("quest"),
-            "gates": sorted(gates.values(), key=lambda g: (-len(g["events"]), g["req"])),
+            "gates": sorted(gates.values(), key=lambda g: (-len(g["events"]), g["label"].lower())),
             "named_items": collect("items"),
             "crew_classes": collect("crew_classes"),
             "unlock_ships": collect("unlock_ship"),
             "quest_targets": collect("quests"),
         }
 
-    def metrics(self, entries, rollup):
+    def metrics(self, entries, rollup, rarity, crew_odds):
         """Every number a stat tile is allowed to show, precomputed and named.
 
         The page's copy picks tiles by metric id and supplies only the label, so a
         number on a sector page can never be typed by hand.
         """
+        shifted = [r for r in rarity if r["change"] not in ("same", "unknown")]
         out = {
+            "blue_options": len(rollup["gates"]),
+            "blue_option_hits": sum(len(g["events"]) for g in rollup["gates"]),
+            "store_rarity_changes": len(shifted),
+            "crew_rarity_changes": sum(1 for r in shifted if r["crew"]),
+            "crew_types_sold": len(crew_odds),
             "grid_beacons": GRID_BEACONS,
             "at_risk_entries": sum(1 for e in entries if e["placement"]["at_risk"]),
             "beacons_min": sum(e["min"] for e in entries),
@@ -606,11 +653,44 @@ class SectorExtractor:
         rarity = []
         for bp in el.findall("rarityList/blueprint"):
             name = bp.get("name")
+            here = int(bp.get("rarity", 0) or 0)
+            base = self.idx.blueprint_rarity.get(name)
             rarity.append({
                 "id": name,
                 "label": self.idx.blueprint_titles.get(name) or name.title(),
-                "rarity": int(bp.get("rarity", 0) or 0),
+                "crew": name in self.idx.crew_blueprints,
+                "rarity": here,
+                "base": base,
+                "change": rarity_change(base, here),
             })
+
+        # What a store here can actually sell, and how often. The engine builds its candidate
+        # list from every crewBlueprint whose effective rarity is non-zero and weights each
+        # one 6 - rarity, then draws one per slot -- read out of FTLGame_orig.exe, see
+        # raw/modding/2026-08-16-store-crew-selection-disassembly.md. Effective rarity is the
+        # sector's value where it names the species and the blueprint's base otherwise:
+        # ResetRarities() restores base on sector entry and SetRarity() writes only the names
+        # the sector lists, so an unlisted species keeps its base value.
+        here = {r["id"]: r["rarity"] for r in rarity}
+        crew_odds = []
+        for name in sorted(self.idx.crew_blueprints):
+            value = here.get(name, self.idx.blueprint_rarity.get(name))
+            if not value:  # 0 or unknown -- filtered out before weighting
+                continue
+            crew_odds.append({
+                "id": name,
+                "label": self.idx.blueprint_titles.get(name) or name.title(),
+                "rarity": value,
+                "listed": name in here,
+                "weight": CREW_WEIGHT_BASE - value,
+            })
+        total_weight = sum(c["weight"] for c in crew_odds)
+        for crew in crew_odds:
+            share = crew["weight"] / total_weight
+            crew["share"] = round(share * 100, 1)
+            # Three slots, each an independent count=1 draw, so a species can repeat.
+            crew["in_store"] = round((1 - (1 - share) ** CREW_SLOTS) * 100, 1)
+        crew_odds.sort(key=lambda c: (-c["weight"], c["label"].lower()))
 
         start = el.findtext("startEvent")
         start = start.strip() if start else None
@@ -632,6 +712,8 @@ class SectorExtractor:
             "unique": el.get("unique") == "true",
             "tracks": tracks,
             "crew_rarity": rarity,
+            "crew_store_odds": {"slots": CREW_SLOTS, "total_weight": total_weight,
+                                "crew": crew_odds},
             "start_event": self.event_record(start) if start else None,
             "entries": entries,
             "generation": {
@@ -655,11 +737,27 @@ class SectorExtractor:
                 # without this it is the one pool a consumer cannot see. Emitted as
                 # event records so downstream can treat it like any other pool.
                 "fallback_events": self.fallback_events(),
+                # How many beacons the fallback can actually be asked to fill here. The
+                # table never states this -- it is the gap the table leaves -- but those
+                # beacons are as real as any allocated one, so the budget has to show it.
+                #   max: a full map minus the smallest total the table can roll. A sector
+                #        whose minima already cover the map leaves nothing, and clamps to 0
+                #        (Hidden Crystal Worlds, 25 against 24).
+                #   min: the smallest map minus the largest total the table can roll --
+                #        what the fallback fills even on a bad roll. 0 for every shipped
+                #        sector; computed rather than assumed, because a mod can change it.
+                #   on_full_map: what it must fill when the grid comes out at 24. The Last
+                #        Stand is the one sector where this is non-zero.
+                "fallback_beacons": {
+                    "min": max(0, GRID_BEACONS_MIN - sum(e["max"] for e in entries)),
+                    "max": max(0, GRID_BEACONS - sum(e["min"] for e in entries)),
+                    "on_full_map": max(0, GRID_BEACONS - sum(e["max"] for e in entries)),
+                },
                 "exit_list": "EXIT_LIST",
                 "source": "raw/wiki/sectors.md",
             },
             "rollup": rollup,
-            "metrics": self.metrics(entries, rollup),
+            "metrics": self.metrics(entries, rollup, rarity, crew_odds),
         }
 
 

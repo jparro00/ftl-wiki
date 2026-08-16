@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata>
+	<title><![CDATA[ Map Signal ]]></title>
+	<threadUrl><![CDATA[ https://subsetgames.com/ftl_mods.html ]]></threadUrl>
+	<author><![CDATA[ generated from an FTL event wiki ]]></author>
+	<version><![CDATA[ 1.0 ]]></version>
+	<description>
+<![CDATA[
+Logs one line to FTL_HS.log whenever the star map is opened or closed, so a program
+outside the game can tell which screen the player is on. Nothing is drawn and nothing
+about the game changes.
+
+Written for the save watcher in this repo, which shows an event card on a second
+monitor and wants to show the sector profile while the map is up.
+
+Requires FTL Hyperspace.
+]]>
+	</description>
+</metadata>

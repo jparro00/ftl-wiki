@@ -8,7 +8,7 @@ min_sector: 1
 unique: false
 version: ae
 first_seen: 2026-08-09
-last_updated: 2026-08-15
+last_updated: 2026-08-16
 sources: 12
 tags: [advanced-edition, lanius, hazard]
 ---
@@ -30,6 +30,12 @@ tags the whole section as Advanced Edition Content
 > earlier value rather than deleting it.
 
 ### Version
+The draw lists settle it without needing a source that *says* so: `LANIUS_SECTOR` is in
+`<sectorType name="OVERRIDE_HOSTILE">` and **not** in `<sectorType name="HOSTILE">`, the
+only difference between those two lists ([[source-sector-data-xml]]). With the DLC off the
+map has no list that can roll this sector at all. That is the same `OVERRIDE_X` substitution
+[[concept-sector-event-allocation]] resolves for event lists, applied to sector selection.
+
 Both sources that discuss the sector directly call it Advanced Edition content:
 [[source-fandom-sectors]] flags the section with the AE banner, and
 [[source-fandom-ftl-advanced-edition]] (per raw/wiki/ftl-advanced-edition.md) records

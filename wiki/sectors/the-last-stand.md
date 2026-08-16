@@ -8,7 +8,7 @@ min_sector: 7
 unique: true
 version: ae
 first_seen: 2026-08-09
-last_updated: 2026-08-15
+last_updated: 2026-08-16
 sources: 13
 tags: [endgame, flagship]
 ---
@@ -207,6 +207,15 @@ identical across editions; only the Flagship's loadout changes. The one edition-
 part of this sector's generation is the fallback: `NEUTRAL` in vanilla,
 `OVERRIDE_NEUTRAL` under AE ([[source-fandom-sectors]], [[source-dlceventsoverwrite]]).
 
+That edition split moves one beacon's worth of pool at most. `OVERRIDE_NEUTRAL` is
+`NEUTRAL` plus exactly one event — `EMPTY_STATION2` ([[event-abandoned-station]]; 19 → 20
+members, nothing removed or reordered) — and it appears in no other list anywhere, so
+it is AE-only content that can only arrive as filler. Since this sector always has
+leftovers to fill on a map above 20 beacons, it is one of the places it can turn up. The
+rest of the fallback pool is identical in both editions; the eight AE events in it sit in
+the base `NEUTRAL` list too, tagged `<!--DLC-->` in the file. Tabulated in
+[[concept-sector-event-allocation]].
+
 ## Strategy Notes
 - Routing to reach all three repair stations before engaging a Flagship phase is the
   obvious play; the fleet taking beacons at random is what puts a clock on it.
@@ -225,8 +234,14 @@ part of this sector's generation is the fallback: `NEUTRAL` in vanilla,
       map" ([[source-events-boss]]) — but no file or source states that the engine loads
       `BOSS_WARNING_NODE` for it.
 - [ ] Whether the AE `OVERRIDE_NEUTRAL` list actually substitutes for `NEUTRAL` in the
-      engine. [[source-fandom-sectors]] says it does; the game files state no substitution
-      mechanism ([[concept-sector-event-allocation]]).
+      engine. Narrowed 2026-08-16: the fallback mechanic itself is no longer wiki-only —
+      both list definitions carry Subset's comment "This event list is hardcoded to fill
+      out a sector if it ran out of all other calls for that sector"
+      ([[source-newevents]], [[source-dlceventsoverwrite]]). The comment on both copies
+      points at substitution but does not prove it, and the same comment is mis-copied onto
+      `OVERRIDE_NEUTRAL_EXIT`. This sector is the best place in the game to settle it in
+      play: it always has fallback beacons, and one `EMPTY_STATION2` sighting here would
+      decide it ([[concept-sector-event-allocation]]).
 - [ ] What the store here stocks in crew. `sector_data.xml` declares **no `rarityList`** for
       `FINAL`, yet [[source-fandom-sectors]] lists a full crew rarity spread for this sector
       (Human 1; Engi, Mantis 2; Rockmen 3; Zoltan 5) — identical to the Civilian sector's.

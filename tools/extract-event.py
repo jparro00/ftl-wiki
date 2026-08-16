@@ -104,6 +104,12 @@ class Index:
                         strings[el.attrib["name"]] = (el.text or "").strip()
 
         self.blueprint_titles = {}
+        # <rarity> on a blueprint is the base value a sector's <rarityList> overrides.
+        # Sector pages need both halves to say what a sector *changes* — see
+        # SECTOR-PAGE.md §4.8 — and crewBlueprint is the only thing in the files that
+        # distinguishes a hireable species from any other blueprint in that list.
+        self.blueprint_rarity = {}
+        self.crew_blueprints = set()
         # A <ship auto_blueprint="X"> naming a single shipBlueprint carries the class
         # name the player sees ("Energy Fighter"); a blueprintList has no single name.
         self.ship_classes = {}
@@ -135,6 +141,11 @@ class Index:
                         if value.strip():
                             self.ship_classes[name] = collapse(value)
                     continue
+                if el.tag == "crewBlueprint":
+                    self.crew_blueprints.add(name)
+                rarity = el.findtext("rarity")
+                if rarity and rarity.strip().lstrip("-").isdigit():
+                    self.blueprint_rarity[name] = int(rarity.strip())
                 title = el.find("title")
                 if title is None:
                     continue

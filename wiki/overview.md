@@ -93,9 +93,12 @@ settled by evidence rather than by picking a side:
   Exactly **two** unresolved `[[…]]` strings remain, both inside `log.md`: a schema
   placeholder and a slug that was renamed after the entry quoting it was written. `log.md` is
   append-only, so historical entries are left as written.
-- **The biggest remaining unknowns are quantities, not coverage.** What `LOW`/`MED`/`HIGH`
-  are worth in scrap ([[concept-autoreward-tiers]]), the damage rate of any of the six
-  hazards ([[concept-hazards]]), and store prices. None of these is in `raw/gamedata/`.
+- **The biggest remaining unknowns are quantities, not coverage.** The damage rate of any of
+  the six hazards ([[concept-hazards]]) and store prices. None of these is in `raw/gamedata/`.
+  **The largest of them closed on 2026-08-16**: what `LOW`/`MED`/`HIGH` are worth in scrap and
+  resources, from [[source-fandom-rewards]] — but only at `medium` reliability (the figures are
+  community-derived, not datamined here) and only for **Normal difficulty**. See
+  [[concept-autoreward-tiers]].
 
 ## Watch List — open questions that matter
 - **What does `unique="true"` scope to — a sector, or a run?** It sits on **194** events, and

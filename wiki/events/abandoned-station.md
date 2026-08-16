@@ -9,7 +9,7 @@ blue_options: [[[item-clone-bay]]]
 chain: []
 version: ae
 first_seen: 2026-08-09
-last_updated: 2026-08-09
+last_updated: 2026-08-16
 sources: 6
 tags: [filler, unique, boarding-risk, pds, clone-bay, blue-option, crew-reward, pirate, ae]
 ---
@@ -143,6 +143,12 @@ member and 1/3 a single boarder**. Fandom marks the two crew outcomes with its
 - [[item-clone-bay]], [[entity-pirates]]
 - [[concept-anti-ship-battery]], [[concept-blue-options]]
 - [[sector-slug-controlled-nebula]], [[sector-slug-home-nebula]]
+- [[concept-sector-event-allocation]] — the leftover-beacon fallback that puts this event in
+  any sector, and the `NEUTRAL` → `OVERRIDE_NEUTRAL` delta, of which this event *is* the
+  whole delta
+- [[sector-the-last-stand]] — the one sector whose table always leaves beacons for the
+  fallback, so a sighting here would prove AE substitutes `OVERRIDE_NEUTRAL` at that call
+  site
 
 ## Open Questions
 - [ ] Whether `eventList` selection is uniform (the 1/6 and 2/3 figures depend on it).

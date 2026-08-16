@@ -7,6 +7,9 @@
 -->
 <title>EDIT — sector name</title>
 <style>
+  /* TOKENS-START — sliced verbatim into sectors/index.html by build-sector-index.py,
+     so the chooser and the profiles cannot drift apart in colour. Keep the four
+     blocks (bare :root, the media query, and both data-theme overrides) together. */
   :root {
     --void:   #070B10;
     --panel:  #101822;
@@ -50,6 +53,8 @@
     --hex: rgba(18,112,138,.045); --barlo: rgba(18,112,138,.18);
     --barred: rgba(175,59,46,.22);
   }
+
+  /* TOKENS-END */
 
   * { box-sizing: border-box; }
   body {
@@ -151,6 +156,11 @@
   .brow.hostile .blk { background: var(--red); }
   .brow.hostile .blk.maybe { background: var(--barred); }
   .brow.zero .cnt { color: var(--faint); }
+  /* The fill-in line is not in the file — dashed, so it reads as the gap the table
+     leaves rather than another row of it. */
+  .brow.fill { border-left: 2px dashed var(--rail); background: transparent; }
+  .brow.fill .rank, .brow.fill .name { color: var(--dim); }
+  .mark.fill { color: var(--faint); }
 
   .pool { display: grid; grid-template-columns: repeat(auto-fill, minmax(16.5rem, 1fr)); gap: .4rem; align-items: start; }
   .ev, .evbox {
@@ -223,13 +233,74 @@
     min-width: 4.6rem; font-variant-numeric: tabular-nums;
   }
 
-  .rar { display: flex; flex-direction: column; gap: .3rem; }
-  .rrow { display: grid; grid-template-columns: 5.2rem 1fr 3rem; gap: .55rem; align-items: center; font-size: .8rem; }
-  .pips { display: flex; gap: 2px; }
-  .pip { width: .52rem; height: .52rem; border-radius: 50%; background: var(--cyan); flex: none; }
-  .pip.off { background: var(--rail); }
-  .rrow .v { font-family: var(--mono); font-size: .68rem; color: var(--dim); text-align: right; }
-  .rrow.zero .v { color: var(--red); }
+  /* The two generated blocks above the budget: every blue option the pool gates,
+     and every blueprint whose rarity this sector moves off its base value. */
+  .glance { display: grid; grid-template-columns: repeat(auto-fit, minmax(19rem, 1fr)); gap: .9rem; align-items: start; }
+  .panel h3 .cnt {
+    font-family: var(--mono); font-size: .62rem; letter-spacing: .08em;
+    text-transform: none; color: var(--faint); font-weight: 400;
+  }
+  .gp h3 { display: flex; justify-content: space-between; align-items: baseline; gap: .8rem; }
+
+  .gates { display: grid; grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr)); gap: .1rem .9rem; }
+  .grow {
+    display: grid; grid-template-columns: 1fr auto auto; gap: .4rem; align-items: baseline;
+    font-size: .8rem; padding: .12rem 0; border-bottom: 1px solid var(--sunk);
+  }
+  .grow .g { overflow-wrap: anywhere; }
+  .grow .lv {
+    font-family: var(--mono); font-size: .6rem; color: var(--faint);
+    border: 1px solid var(--edge); border-radius: 2px; padding: 0 .22rem;
+  }
+  .grow .h {
+    font-family: var(--mono); font-size: .78rem; color: var(--cyan);
+    font-variant-numeric: tabular-nums; min-width: 1.2rem; text-align: right;
+  }
+
+  .crew { display: flex; flex-direction: column; gap: .18rem; }
+  .crow {
+    display: grid; grid-template-columns: 1fr 1.1rem 4.5rem 2.9rem 2.6rem;
+    gap: .45rem; align-items: center; font-size: .8rem;
+  }
+  .crow .cl { overflow-wrap: anywhere; }
+  .crow .cw, .crow .cp, .crow .cs {
+    font-family: var(--mono); font-variant-numeric: tabular-nums; text-align: right;
+  }
+  .crow .cw { font-size: .62rem; color: var(--faint); }
+  .crow .cp { font-size: .74rem; color: var(--cyan); }
+  .crow .cs { font-size: .68rem; color: var(--dim); }
+  .cbar { height: .34rem; background: var(--sunk); border-radius: 1px; overflow: hidden; }
+  .cbar i { display: block; height: 100%; background: var(--cyan); border-radius: 1px; }
+  .crow.chead {
+    font-family: var(--mono); font-size: .56rem; letter-spacing: .1em;
+    text-transform: uppercase; color: var(--faint); padding-bottom: .1rem;
+    border-bottom: 1px solid var(--edge); margin-bottom: .12rem;
+  }
+  .crow.chead .cw, .crow.chead .cp, .crow.chead .cs { font-size: .56rem; color: var(--faint); }
+
+  .rar { display: flex; flex-direction: column; gap: .22rem; }
+  .rgroup {
+    font-family: var(--mono); font-size: .58rem; letter-spacing: .14em;
+    text-transform: uppercase; color: var(--faint); margin-top: .35rem;
+  }
+  .rgroup:first-child { margin-top: 0; }
+  .rrow { display: grid; grid-template-columns: 1fr 3.4rem 6.2rem; gap: .5rem; align-items: baseline; font-size: .8rem; }
+  .rrow .rl { overflow-wrap: anywhere; }
+  .rrow .v {
+    font-family: var(--mono); font-size: .7rem; color: var(--dim);
+    font-variant-numeric: tabular-nums; text-align: right; white-space: nowrap;
+  }
+  .chip {
+    font-family: var(--sans); font-size: .58rem; letter-spacing: .08em; text-transform: uppercase;
+    border: 1px solid currentColor; border-radius: 2px; padding: .04rem .28rem;
+    justify-self: start; white-space: nowrap;
+  }
+  /* The provenance half of a block's note: what a source says rather than what the
+     game files say. Set apart so the two are not read as one claim. */
+  .note.src { color: var(--faint); font-size: .78rem; border-left: 1px solid var(--edge); padding-left: .6rem; }
+  .chip.good { color: var(--green); }
+  .chip.warn { color: var(--amber); }
+  .chip.bad  { color: var(--red); }
 
   .chain { display: flex; flex-direction: column; gap: 0; }
   .step { display: grid; grid-template-columns: 1.6rem 1fr; gap: .7rem; }

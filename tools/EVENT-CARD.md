@@ -250,7 +250,7 @@ The renderer holds no wording. Every key is a lookup it performs.
 | `leads` | what a row says when it has no effects of its own (`combat`, `chance`, `decision`, `ref`) |
 | `block_labels` | headings above a nested block |
 | `branches` | `destroyed` → "You destroy it", etc. |
-| `gate_labels` | overrides for systems and species; blueprint gates resolve their own title |
+| `gate_labels` | overrides for systems and species; blueprint gates resolve their own title. **Also read by `extract-sector.py`** — a sector page's blue-option list uses the same names, and merges two `req`s that share one, so an edit here changes both pipelines (SECTOR-PAGE.md §4.3) |
 | `ship_labels` | overrides where a blueprint list is too broad to name |
 | `attached_combat.hostile` | the row for a ship that arrives hostile |
 | `chain_step`, `chain_heading`, `chain_loop` | quest-stage headings |

@@ -15,12 +15,18 @@ raw/gamedata, then maps that event id to a card slug via cards/trees/*.tree.json
 Some strings are shared by more than one event, so the index is one-to-many and
 resolution can be ambiguous; `--index-report` measures exactly how often. Ambiguity
 is reported, never silently resolved to a guess.
+
+Under Hyperspace there is a better channel and the watcher prefers it: the engine logs
+`Creating event: <ID>` to FTL_HS.log as each event is instantiated. That names the event
+outright, and names it when it appears -- where the save is not rewritten at all for an
+event a hidden choice chains into, so it can be a whole event behind. SAVE-WATCH.md 4b.
 """
 
 import argparse
 import html
 import http.server
 import json
+import mimetypes
 import os
 import re
 import socketserver
@@ -38,6 +44,8 @@ buildmod = importlib.import_module("build-mod")
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 CARDS = os.path.join(ROOT, "cards")
 TREES = os.path.join(CARDS, "trees")
+SECTOR_PAGES = os.path.join(ROOT, "sectors")
+SECTOR_DATA = os.path.join(SECTOR_PAGES, "data")
 
 SAVE_DIRS = [
     os.path.expandvars(r"%USERPROFILE%\Documents\My Games\FasterThanLight"),
@@ -64,6 +72,158 @@ def find_save():
     if existing:
         return max(existing, key=lambda p: os.stat(p).st_mtime_ns)
     return SAVE_CANDIDATES[0]
+
+
+# --------------------------------------------------------------------------
+# Which sector — from Hyperspace's log, because the save cannot say
+# --------------------------------------------------------------------------
+
+# Hyperspace prints one of these before the beacon lines of every generation.
+SECTOR_LINE = re.compile(r"^Sector:\s*([A-Z0-9_]+)\s*$", re.M)
+
+# And one of these as each event is instantiated -- on arrival at a beacon, and again
+# for every event a choice chains into. `Creating ShipEvent:` lines are ship spawns and
+# deliberately not matched.
+CREATED_EVENT = re.compile(r"^Creating event: ([A-Za-z0-9_]+)", re.M)
+
+# And the `map-signal` mod (tools/build-map-signal-mod.py) prints one of these each
+# time the star map opens or closes. Only the two state words match: the mod's
+# `loaded` and its error lines share the prefix and must not read as transitions.
+#
+# Hyperspace stamps its own tag on anything a script logs, so what lands in the file is
+# `[Lua]: map-signal: open sector 2` -- the optional group is that tag, and leaving it
+# out was the one thing the synthetic test could not catch, because the test wrote the
+# lines the mod emits rather than the lines the log receives.
+MAP_SIGNAL = re.compile(r"^(?:\[[^\]]*\]:\s*)?map-signal:\s+(open|closed)\b", re.M)
+
+# Only the tail matters and the log is small (a few KB per sector), but a long
+# session appends, so the read is bounded rather than trusting that.
+LOG_TAIL_BYTES = 256 * 1024
+
+
+def default_hs_log(ftl_dat):
+    """Hyperspace writes FTL_HS.log beside the game, so ftl.dat locates it."""
+    return os.path.join(os.path.dirname(os.path.abspath(ftl_dat)), "FTL_HS.log")
+
+
+class HyperspaceLog:
+    """What `FTL_HS.log` knows that the save does not: the sector, the screen, the event.
+
+    The save cannot answer this. A vanilla parse yields a sector *number*; the
+    Hyperspace scan yields not even that; and neither yields the sector *type*,
+    which is what names a page — the type is regenerated from `sectorTreeSeed` and
+    never stored (`SAVE-WATCH.md` §3). Hyperspace prints it: every sector
+    generation logs `Sector: CIVILIAN_SECTOR`, and `sectors/data/*.sector.json`
+    carries that same id. So this costs no mod and is read, not inferred.
+
+    The star map being *open* is `starMap.bOpen`, which only a Hyperspace script can
+    read. The `map-signal` mod logs its transitions to the same file, so when that mod
+    is installed this class reports the real screen and the watcher drops its
+    heuristic. When it is not, `map_open` stays None and nothing pretends otherwise.
+
+    And the **event on screen** — which the save does hold, but late. `Creating event:
+    <ID>` is written the instant an event is instantiated, including one a hidden
+    choice chains into, where the save is not rewritten at all (§4b). The id is also
+    better evidence than the text: it names the event outright, where prose shared by
+    sixty cards cannot.
+    """
+
+    def __init__(self, log_path, by_id=None):
+        self.log_path = log_path
+        self.index, self.start_slugs = self._load_index()
+        # Event id -> card slug, from the same trees the text index is built from.
+        self.by_id = by_id or {}
+        self._id = None
+        self._since = None          # monotonic stamp of the last arrival, if known
+        self._seen = False          # whether any sector has been read yet
+        self._stamp = None          # (mtime_ns, size) of the last read
+        self._map_open = None       # None = the map-signal mod is not installed
+        self._event = None          # (event id, slug) of the last event with a card
+
+    @staticmethod
+    def _load_index():
+        """Engine sector id -> page slug, and the entry-beacon cards, off the profiles.
+
+        The start-beacon set is read from each sector's `<startEvent>` rather than
+        listed here, so a sector whose entry event changes needs no edit. The Last
+        Stand drops out on its own: its `startEvent` is `BOSS_NEUTRAL`, a list rather
+        than an event, so it has no card slug — and its members are real fights that
+        must keep showing their own cards.
+        """
+        out, starts = {}, set()
+        try:
+            names = sorted(os.listdir(SECTOR_DATA))
+        except OSError:
+            return out, starts
+        for name in names:
+            if not name.endswith(".sector.json"):
+                continue
+            try:
+                with open(os.path.join(SECTOR_DATA, name), encoding="utf-8") as fh:
+                    data = json.load(fh)
+            except (OSError, ValueError):
+                continue
+            if data.get("id") and data.get("slug"):
+                out[data["id"]] = data["slug"]
+            start = data.get("start_event") or {}
+            if start.get("slug") and str(start.get("id", "")).startswith("START_BEACON"):
+                starts.add(start["slug"])
+        return out, starts
+
+    def poll(self):
+        try:
+            st = os.stat(self.log_path)
+        except OSError:
+            return
+        stamp = (st.st_mtime_ns, st.st_size)
+        if stamp == self._stamp:
+            return
+        self._stamp = stamp
+        try:
+            with open(self.log_path, "rb") as fh:
+                if st.st_size > LOG_TAIL_BYTES:
+                    fh.seek(-LOG_TAIL_BYTES, os.SEEK_END)
+                text = fh.read().decode("utf-8", "replace")
+        except OSError:
+            return
+        # The last transition is the current screen. Absent entirely means the mod is
+        # not installed, which is a different state from "closed" and stays None.
+        signals = MAP_SIGNAL.findall(text)
+        self._map_open = (signals[-1] == "open") if signals else None
+
+        # The most recent created event that has a card. Scanning back past the ones
+        # that do not is what makes this work without any tree of sub-events: an
+        # outcome node (DESTROYED_DEFAULT, LANIUS_TRADER_LIST) has no card of its own,
+        # and the card that should be on screen is its parent -- the last id before it
+        # that does. Which is exactly what the text index's stickiness computes the
+        # long way round.
+        for eid in reversed(CREATED_EVENT.findall(text)):
+            if eid in self.by_id:
+                self._event = (eid, self.by_id[eid])
+                break
+
+        hits = SECTOR_LINE.findall(text)
+        if not hits:
+            return
+        # The last generation block is the current sector; earlier ones are history.
+        if hits[-1] != self._id:
+            first = self._id is None and not self._seen
+            self._id = hits[-1]
+            self._seen = True
+            # Starting the watcher is not arriving anywhere. On the first read the
+            # sector is known but its age is not, so it counts as no arrival at all --
+            # otherwise every restart would seize the screen for the hold window,
+            # mid-event, on the strength of a log line written an hour ago.
+            self._since = None if first else time.monotonic()
+
+    def current(self):
+        return {
+            "id": self._id,
+            "slug": self.index.get(self._id) if self._id else None,
+            "age": None if self._since is None else time.monotonic() - self._since,
+            "map_open": self._map_open,
+            "event": self._event,
+        }
 
 
 # --------------------------------------------------------------------------
@@ -192,12 +352,14 @@ def load_textlists():
 def build_index():
     """Build the text -> card indexes from cards/trees.
 
-    Returns (anywhere, roots, titles):
+    Returns (anywhere, roots, titles, by_id):
       anywhere  text key -> set of slugs whose tree contains that text
       roots     text key -> set of slugs whose *root* text is that text
       titles    slug -> card title
+      by_id     in-game event id -> slug, for the log channel (§4b), where the
+                event is named outright and no text matching is needed
     """
-    anywhere, roots, titles = {}, {}, {}
+    anywhere, roots, titles, by_id = {}, {}, {}, {}
     textlists = load_textlists()
 
     for name in sorted(os.listdir(TREES)):
@@ -208,6 +370,8 @@ def build_index():
 
         slug = tree["slug"]
         titles[slug] = tree.get("title", tree["id"])
+        if tree.get("id"):
+            by_id[tree["id"]] = slug
 
         if isinstance(tree.get("text"), dict):
             for key in _keys_of(tree["text"], textlists):
@@ -219,7 +383,7 @@ def build_index():
             for key in _keys_of(text, textlists):
                 anywhere.setdefault(key, set()).add(slug)
 
-    return anywhere, roots, titles
+    return anywhere, roots, titles, by_id
 
 
 class Resolver:
@@ -235,7 +399,7 @@ class Resolver:
     """
 
     def __init__(self):
-        self.anywhere, self.roots, self.titles = build_index()
+        self.anywhere, self.roots, self.titles, self.by_id = build_index()
 
     def resolve(self, encounter, current_slug=None):
         key = _norm(encounter.get("text"))
@@ -280,11 +444,16 @@ class Resolver:
 # --------------------------------------------------------------------------
 
 class Watcher:
-    def __init__(self, save_path, ftl_dat, resolver, verbose=False, pinned_save=False):
+    def __init__(self, save_path, ftl_dat, resolver, verbose=False, pinned_save=False,
+                 hs_log=None, sector_hold=40.0):
         self.save_path = save_path
         self.ftl_dat = ftl_dat
         self.resolver = resolver
         self.verbose = verbose
+        # Optional: the sector page takes the screen when there is no card to show,
+        # and for `sector_hold` seconds after arriving somewhere new.
+        self.hs_log = hs_log
+        self.sector_hold = sector_hold
         # An explicit --save is obeyed; an auto-detected one is re-resolved each poll
         # so the watcher follows the game between continue.sav and hs_continue.sav.
         self._pinned_save = pinned_save
@@ -298,6 +467,7 @@ class Watcher:
         # capture a shared text in the next one.
         self._displayed = None
         self._anchor = None
+        self._log_event = None
 
     def _scan_encounter(self):
         """An encounter-shaped dict from a content scan, or None.
@@ -316,7 +486,11 @@ class Watcher:
 
     def snapshot(self):
         with self.lock:
-            return dict(self.state)
+            state = dict(self.state)
+        # Decided per request, not per save write: the hold window expires on the
+        # clock, and the save is silent exactly while it is running down.
+        self._decorate_sector(state)
+        return state
 
     # Hold the last card only while we cannot tell what the player is looking at.
     # `nocard` is excluded deliberately: there we *have* identified the event and
@@ -346,7 +520,48 @@ class Watcher:
         with self.lock:
             self.state = state
 
+    def _decorate_sector(self, state):
+        """Attach the sector, and decide which of the two pages to show.
+
+        Where the sector profile is the better answer:
+
+        0. **The star map is open** — but only when the `map-signal` mod is installed
+           to say so (§5c). This is the exact answer, and when it is available it
+           replaces the timed guess in 3 entirely: an open map means the profile, a
+           closed one means the card, and no window is invented around either.
+        1. **The entry beacon.** A `START_BEACON_*` card says "you jump in" and
+           nothing else, and it is on screen at exactly the moment the question is
+           *what is this sector*. It also stays the last resolved event for as long
+           as the player sits on the map planning the route, which is why this alone
+           gets most of the way without the mod.
+        2. There is no card to show at all.
+        3. The player has just arrived somewhere new — the timed window, and the one
+           heuristic in the watcher. Dropped the moment the signal exists.
+        """
+        if not self.hs_log:
+            state["view"] = "card"
+            return
+        info = self.hs_log.current()
+        state["sector_id"] = info["id"]
+        state["sector_slug"] = info["slug"]
+        state["sector_age"] = None if info["age"] is None else round(info["age"], 1)
+        state["map_open"] = info["map_open"]
+        start = state.get("slug") in self.hs_log.start_slugs
+        state["at_start_beacon"] = start
+        # A guess is only worth making where nothing is being reported.
+        fresh = (info["map_open"] is None
+                 and info["age"] is not None and info["age"] <= self.sector_hold)
+        want = info["map_open"] or start or fresh or not state.get("slug")
+        state["view"] = "sector" if info["slug"] and want else "card"
+
     def poll_once(self, force=False):
+        # Before the early return below: the log moves on its own schedule, and both
+        # a sector change and a new event are worth seeing on a poll where the save
+        # has not moved -- which is precisely the case the log exists to cover.
+        log_event = None
+        if self.hs_log:
+            self.hs_log.poll()
+            log_event = self.hs_log.current()["event"]
         # Which file is live can change under us: installing Hyperspace moves the run
         # save to hs_continue.sav, uninstalling moves it back. Re-resolving each poll
         # costs two stats and means neither transition needs a restart.
@@ -364,9 +579,10 @@ class Watcher:
             return
 
         stamp = (st.st_mtime_ns, st.st_size)
-        if stamp == self._stamp and not force:
+        if stamp == self._stamp and log_event == self._log_event and not force:
             return
         self._stamp = stamp
+        self._log_event = log_event
 
         source = "parse"
         try:
@@ -385,7 +601,19 @@ class Watcher:
                 return
 
         resolved = self.resolver.resolve(encounter, current_slug=self._anchor)
-        if resolved is None:
+
+        # The log names the event outright, and names it sooner. FTL does not rewrite
+        # the save when a hidden choice chains into the rolled event -- measured at the
+        # exit beacon, where the save sat on FINISH_BEACON while the screen showed the
+        # event it rolled (§4b) -- so the save can be a whole event behind. An id also
+        # beats prose sixty cards share. Where the log has an answer, it wins.
+        if log_event:
+            eid, slug = log_event
+            resolved = dict(resolved or {"text_key": None, "candidates": []},
+                            slug=slug, title=self.resolver.titles.get(slug),
+                            reason="logged", event_id=eid)
+            source = "log"
+        elif resolved is None:
             self._set({"status": "noevent", "detail": "no event text in the save"})
             return
 
@@ -450,7 +678,7 @@ SHELL = """<!doctype html>
 <div id="msg"><div><h1>Waiting for FTL</h1><p>Jump to a beacon.</p></div></div>
 <iframe id="frame" style="display:none"></iframe>
 <script>
-let shownSlug = null, shownMsg = null;
+let shownSrc = null, shownMsg = null;
 async function tick() {
   try {
     const r = await fetch('/current', {cache: 'no-store'});
@@ -458,13 +686,18 @@ async function tick() {
     const frame = document.getElementById('frame');
     const msg = document.getElementById('msg');
 
+    // Two pages, one frame. The sector profile wins when the watcher has no card
+    // to show, or just after arriving in a new sector; otherwise the card does.
     // Any slug at all means a card is worth showing -- held or current. Only
-    // reload when it actually changes, so a held card never flickers.
-    if (s.slug) {
-      if (s.slug !== shownSlug) {
-        shownSlug = s.slug;
+    // reload when the source actually changes, so neither page flickers.
+    const want = (s.view === 'sector' && s.sector_slug) ? '/sector/' + s.sector_slug
+               : s.slug ? '/card/' + s.slug
+               : null;
+    if (want) {
+      if (want !== shownSrc) {
+        shownSrc = want;
         shownMsg = null;
-        frame.src = '/card/' + s.slug;
+        frame.src = want;
       }
       frame.style.display = 'block';
       msg.style.display = 'none';
@@ -474,7 +707,7 @@ async function tick() {
     const key = s.status + ':' + (s.text_key || s.detail || '');
     if (key !== shownMsg) {
       shownMsg = key;
-      shownSlug = null;
+      shownSrc = null;
       {
         frame.style.display = 'none';
         msg.style.display = 'flex';
@@ -537,8 +770,38 @@ def make_handler(watcher):
                     return
                 with open(path, "rb") as fh:
                     self._send(fh.read(), "text/html; charset=utf-8")
+            elif self.path.startswith("/sector/"):
+                slug = self.path[len("/sector/"):]
+                if not re.fullmatch(r"[a-z0-9-]+", slug):
+                    self._send("bad slug", "text/plain", 400)
+                    return
+                path = os.path.join(SECTOR_PAGES, "sector-%s.html" % slug)
+                if not os.path.exists(path):
+                    self._send("no sector page %s" % html.escape(slug), "text/plain", 404)
+                    return
+                with open(path, "rb") as fh:
+                    self._send(fh.read(), "text/html; charset=utf-8")
+            elif self.path.startswith("/cards/"):
+                # A sector page opens its beacon boxes onto cards, loading
+                # ../cards/runtime/*.js and ../cards/data/<slug>.js at that moment
+                # (SECTOR-PAGE.md 6.1). Served at /sector/<slug>, those resolve to
+                # /cards/... -- so the boxes work here exactly as they do off disk.
+                self._send_static(self.path[len("/cards/"):])
             else:
                 self._send("not found", "text/plain", 404)
+
+        def _send_static(self, rel):
+            rel = rel.split("?", 1)[0]
+            if not re.fullmatch(r"[A-Za-z0-9._/-]+", rel) or ".." in rel:
+                self._send("bad path", "text/plain", 400)
+                return
+            path = os.path.normpath(os.path.join(CARDS, rel))
+            if os.path.commonpath([path, CARDS]) != CARDS or not os.path.isfile(path):
+                self._send("not found", "text/plain", 404)
+                return
+            ctype, _ = mimetypes.guess_type(path)
+            with open(path, "rb") as fh:
+                self._send(fh.read(), ctype or "application/octet-stream")
 
     return Handler
 
@@ -589,6 +852,14 @@ def main():
     ap.add_argument("--once", action="store_true", help="resolve once, print, exit")
     ap.add_argument("--index-report", action="store_true",
                     help="measure how ambiguous the text index is, then exit")
+    ap.add_argument("--hs-log", default=None,
+                    help="Hyperspace's FTL_HS.log; defaults to beside ftl.dat. It is "
+                         "where the current sector comes from — the save does not hold it")
+    ap.add_argument("--sector-hold", type=float, default=40.0, metavar="SECONDS",
+                    help="show the sector profile for this long after arriving in a new "
+                         "sector (default 40; 0 shows it only when no card resolves)")
+    ap.add_argument("--no-sector", action="store_true",
+                    help="cards only; never show a sector profile")
     ap.add_argument("--quiet", action="store_true")
     args = ap.parse_args()
 
@@ -601,8 +872,15 @@ def main():
         index_report(resolver)
         return 0
 
+    hs_log = None
+    if not args.no_sector:
+        hs_log = HyperspaceLog(args.hs_log or default_hs_log(args.ftl_dat),
+                               by_id=resolver.by_id)
+        hs_log.poll()      # so startup can report what it found, not what it will find
+
     watcher = Watcher(args.save or find_save(), args.ftl_dat, resolver,
-                      verbose=not args.quiet, pinned_save=bool(args.save))
+                      verbose=not args.quiet, pinned_save=bool(args.save),
+                      hs_log=hs_log, sector_hold=args.sector_hold)
 
     if args.once:
         watcher.poll_once(force=True)
@@ -622,6 +900,13 @@ def main():
                                      "" if args.save else "   (auto, re-resolved each poll)"),
                   flush=True)
             print("serving  %s   (ctrl-c to stop)" % url, flush=True)
+            if hs_log:
+                found = hs_log.current()["id"]
+                print("sectors  %s   (%s)" % (
+                    hs_log.log_path,
+                    "reading %s" % found if found else
+                    "no Sector: line yet — needs Hyperspace, and a sector generated "
+                    "since the log was last truncated"), flush=True)
         if args.open:
             webbrowser.open(url)
         try:

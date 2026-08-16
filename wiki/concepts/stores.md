@@ -3,8 +3,8 @@ id: concept-stores
 type: concept
 version: both
 first_seen: 2026-08-09
-last_updated: 2026-08-13
-sources: 9
+last_updated: 2026-08-16
+sources: 11
 related_events: []
 tags: [mechanics, store, economy]
 ---
@@ -98,7 +98,23 @@ store has a **buy and a sell side and two pages**. Repair comes in two granulari
 ([[source-blueprints]]): fuel (3 scrap), missiles (6), drone parts (8).
 
 **How many of each category a given store rolls is not in the data.** Nothing in
-`raw/gamedata/` describes store layout, stock size, or which subframes appear.
+`raw/gamedata/` describes store layout, stock size, or which subframes appear — but the
+binary does ([[source-store-crew-selection-disassembly]]):
+
+- **The crew section is always 3 slots.** Under Advanced Edition all three are hireable;
+  in vanilla the count is 2 or 3, uniform, and the remainder render as blank filler boxes.
+- **Crew slots are independent draws.** Each is a separate `count = 1` call that rebuilds
+  the candidate list, so **a store can offer the same species three times** — which is
+  what [[source-fandom-stores-and-resources]] observed and this confirms from the code.
+- **Weapons, drones and augments are not independent.** They are drawn in a single
+  `count = N` call *without* replacement, so one section cannot list the same weapon twice.
+  [[source-fandom-stores-and-resources]] states the same asymmetry from observation —
+  *"Each slot contains three random items (or crewmembers) of that type… A store will never
+  sell duplicate weapons, drone schematics, augmentations"* — so the binary corroborates the
+  community wiki here rather than adding to it.
+- The number of *sections* (2–4, with rules about systems and drones) is
+  [[source-xftl-stores]]; the per-species odds within the crew section are
+  [[concept-blueprint-rarity]].
 
 ## Where stores come from: the allocation table
 Stores are allocated **directly by the sector**, never through an `<eventList>`
@@ -176,14 +192,34 @@ named blueprints — and its content is unmistakably about shop stock:
 
 **So store stock is sector-dependent, and this is the mechanism** — which answers the open
 question left on [[event-store]] ("Does `STORE` roll generic stock, or is stock influenced by
-the sector it appears in?"). The eight sectors with **no** `rarityList` — Federation Space,
+the sector it appears in?").
+
+[[source-fandom-sectors]] states it directly, once per sector, 17 times: crew are listed
+*"By rarity (**only affects the store assortment probability**), from common to rare"*. Two
+things follow that are worth keeping apart:
+
+- **The shelves are rarity-weighted.** That is what the number is for, and the only thing it
+  is for.
+- **Rewards are gated by the same number, not weighted by it.**
+  [[source-fandom-stores-and-resources]] puts both halves in one sentence: rarity sets
+  *"the likelihood of a specific item or a crew race to be found in stores **and the
+  possibility (without the likelihood tiers)** for an item or a crew race to be received as an
+  event reward in certain sector types"*. So nonzero here means a crew-kill reward can produce
+  that species, 0 means it never can — and the Crystal sector's entry confirms it: *"only
+  Crystal crewmembers can be purchased or received as a crew kill reward"*.
+
+This is why the 38 class-less `<crewMember amount="1"/>` rewards in `raw/gamedata/` need no
+species in the XML: the sector already decides the candidate set. The eight sectors with **no** `rarityList` — Federation Space,
 Civilian, Pirate, both Rebel sectors, the Last Stand and the two stubs — presumably fall back
 to base blueprint rarity. Full analysis: [[concept-blueprint-rarity]].
 
 ## Implications For Play
-- **Buy species crew where they live.** Slug, Crystal and Lanius crew are excluded from every
-  store outside their home sector. Zoltan are base rarity 5 (the scarcest) and rarity 1 in
-  Zoltan space.
+- **Buy species crew where they live.** Crystal crew appear only in `CRYSTAL_HOME` and Lanius
+  crew only in `LANIUS_SECTOR` — those are the only sectors whose `rarityList` raises them off
+  base 0. **Slug is the exception to the "home sector only" rule**: base 0, but raised to 2 in
+  both Slug sectors, **3 in `ZOLTAN_SECTOR` / `ZOLTAN_HOME`, 3 in `NEBULA_SECTOR` and 4 in
+  `LANIUS_SECTOR`** — so Slug crew are buyable in four sector families, not one. Zoltan are
+  base rarity 5 (the scarcest) and rarity 1 in Zoltan space.
 - **Do not enter [[sector-hidden-crystal-worlds]] expecting to re-arm.** Its stores stock
   Crystal weapons and `BOMB_LOCK`, and nothing else.
 - **Rock sectors are the second source of `BOMB_LOCK`.**
@@ -224,3 +260,8 @@ to base blueprint rarity. Full analysis: [[concept-blueprint-rarity]].
 - [[source-fandom-store-crystal]] (per raw/wiki/store-crystal.md)
 - [[source-fandom-random-events]] (per raw/wiki/random-events.md) — the meaning of `LRSmap`
   and the per-sector reading of `unique`
+- [[source-fandom-sectors]] (per raw/wiki/sectors.md) — rarity affects store assortment
+  only, and the per-sector species list bounds crew-kill rewards too
+- [[source-store-crew-selection-disassembly]] (per
+  raw/modding/2026-08-16-store-crew-selection-disassembly.md) — slot counts, the
+  crew/item replacement asymmetry, and the `6 − rarity` weighting

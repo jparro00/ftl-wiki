@@ -173,6 +173,20 @@ def main():
     for value, label in zip(numbers, labels):
         out.append(f"  {value:>9}  {label}")
     out.append("")
+    # The two generated blocks above the budget. They carry no copy at all, so the only
+    # way a wrong label or a missing count shows up is by being printed here.
+    glance = [n for n in page.nodes if "gp" in n["classes"]]
+    if glance:
+        out.append("GLANCE")
+        for node in glance:
+            out.append("  " + " | ".join(node["text"]))
+        out.append("")
+    for node in page.nodes:
+        if "grow" in node["classes"]:
+            if not re.fullmatch(r"\d+", node["text"][-1] if node["text"] else ""):
+                problems.append(f"blue-option row without a hit count: {node['text']}")
+        if "rrow" in node["classes"] and len(node["text"]) < 3:
+            problems.append(f"rarity row missing its move or verdict: {node['text']}")
     out.append("BUDGET")
     for node in rows:
         out.append("  " + "  ".join(node["text"]))
@@ -189,7 +203,7 @@ def main():
     out.append("")
     out.append("PANELS")
     for node in page.nodes:
-        if "panel" in node["classes"]:
+        if "panel" in node["classes"] and "gp" not in node["classes"]:
             out.append("  " + " | ".join(node["text"]))
     out.append("")
     out.append("FOOTER")

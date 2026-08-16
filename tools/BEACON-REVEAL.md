@@ -55,6 +55,46 @@ vanilla, copy `Slipstream\backup\ftl.dat.bak` over the game's `ftl.dat`.
 
 ---
 
+## 1a. Turning it on and off
+
+**There is no in-game toggle.** No hotkey, no config file, no menu entry — the script draws
+whenever the star map is open, and the only switch is whether it is patched into `ftl.dat`.
+Toggling is therefore a Slipstream re-patch, and **FTL must be closed** for it: Slipstream
+cannot rewrite `ftl.dat` underneath a running game.
+
+**On** — from the repo root:
+
+```
+python tools\build-beacon-mod.py --install
+```
+
+**Off** — from `C:\Users\jparr\Documents\Slipstream`, the same patch minus this mod:
+
+```
+java -jar modman.jar --patch Hyperspace.ftl event-labels.ftl
+```
+
+`--patch` reverts to vanilla *first* and then applies exactly the mods named, so omitting
+`beacon-reveal.ftl` removes it while leaving Hyperspace and the event-labels mod in place.
+`PATCH_ORDER` in `tools/build-beacon-mod.py` is the authoritative list of what a full install
+applies — read it rather than trusting the command above if the two ever differ.
+
+Do **not** run `--patch` with no mods at all (NullPointerException, §1). To reach true vanilla,
+copy `Slipstream\backup\ftl.dat.bak` over the game's `ftl.dat`.
+
+Before toggling, two checks that cost a run if skipped:
+
+- **Is FTL running?** `Get-Process FTLGame`. If it is, the game may be holding an unsaved run —
+  confirm `hs_continue.sav` exists (Hyperspace's run save) before closing it, and ask the user.
+- **Relaunch through `mods\fullscreen-no-minimize\launch-ftl.cmd`**, never `FTLGame.exe`
+  directly, or the two-monitor fix is lost (CLAUDE.md §5.2d).
+
+Toggling is safe mid-run: the mod is draw-only (invariant B2) and writes no save byte, so a run
+in progress survives being switched either way. Confirm the result in `FTL_HS.log` — a
+`beacon-reveal: loaded, N names` line after the next launch means on, its absence means off.
+
+---
+
 ## 1b. Where the category comes from
 
 The runtime gives an event id (`DISTRESS_ENGI_REBEL`), not a category. The category is the

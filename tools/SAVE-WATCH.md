@@ -21,6 +21,7 @@ Two ways in, because there are two save layouts. Section 3b says which runs when
 ```bash
 python tools/save-watch.py --open          # watch + serve + open the page
 python tools/save-watch.py --once          # resolve the current save once, print JSON
+python tools/save-watch.py --no-sector     # cards only; never show a sector profile (§5b)
 python tools/save-watch.py --index-report  # measure how well texts pin to cards
 python tools/ftlsave.py <continue.sav>     # dump the parsed encounter
 python tools/ftlsave.py <continue.sav> --beacons   # what the save gives away about the sector
@@ -218,6 +219,11 @@ shrinking 6909 → 6212 bytes, while its encounter text changed from
 The watcher's responsiveness rests on this: FTL flushes the save as an encounter
 progresses, not only on beacon arrival.
 
+> ⚠️ **Superseded for the hidden-choice case — see §4b.** On 2026-08-16, under Hyperspace,
+> the save was *not* rewritten at that transition: the screen showed the rolled event while
+> the save still held `FINISH_BEACON`. The observation below stands as recorded (vanilla
+> `continue.sav`, pre-Hyperspace); it is no longer safe to rely on.
+
 Confirmed again on 2026-08-14 for the case that matters most, a `<choice hidden="true">`
 chaining into another event. At the sector exit beacon the save held
 `event_FINISH_BEACON_text` with `choices []`; one write later it held
@@ -307,10 +313,57 @@ where any of the siblings is a fair reading of the screen.
 
 ---
 
+## 4b. The log channel — because the save can be a whole event behind
+
+**Measured 2026-08-16, at the exit beacon.** The screen showed *Refueling platform*
+(`FUELING_STATION`); `hs_continue.sav`, last written two minutes earlier, still held
+`event_FINISH_BEACON_text`, and the watcher was faithfully showing the finish-beacon card.
+The save is not rewritten when a `<choice hidden="true">` chains into the event it rolls.
+
+> ⚠️ This **contradicts** §3b, which recorded the opposite for the same transition on
+> 2026-08-14: `event_FINISH_BEACON_text` → `event_REBEL_TRANSPORT_text`, "one write later".
+> That observation was on a **vanilla `continue.sav`, before Hyperspace was installed**;
+> this one is on `hs_continue.sav` under Hyperspace v1.22.2. Both are recorded. Which
+> component changed the flush behaviour is not established here — only that the guarantee
+> §3b rested on does not hold on the current install.
+
+`FTL_HS.log` does not have the problem. The engine logs every event as it instantiates it:
+
+```
+Creating event: FINISH_BEACON
+Creating event: FUELING_STATION      <- what is actually on screen
+```
+
+So the watcher reads the log too, and **where the log has an answer it wins**. Two reasons,
+and the second matters as much as the first:
+
+1. **It is not late.** The line is written when the event is created, not when the game
+   next decides to flush a save.
+2. **It is an id, not prose.** `event_DESTROYED_DEFAULT_1_text` is shared by sixty cards
+   and resolves to `ambiguous`; `Creating event: PIRATE_ESCAPE` names one event outright.
+
+### The rule: the most recent created event that has a card
+
+Sub-events are logged too — `DESTROYED_DEFAULT`, `LANIUS_TRADER_LIST`, `DOWNLOAD_DRONE_DATA`
+— and have no cards of their own. Scanning backwards past them lands on the parent, which is
+the card that should be on screen. That is the same answer the text index's stickiness rule
+computes the long way round, from one line of the log. `Creating ShipEvent:` lines are ship
+spawns and are not matched.
+
+The id → slug index is built from `cards/trees/*.tree.json` alongside the text index — 386
+cards, same source, no second list to maintain.
+
+**What still comes from the save:** whether a run exists at all (no save, no card, and the
+log's last event is the previous run's), the `text_key` reported for debugging, and — on the
+vanilla parse path — the sector and beacon numbers. `source` says which channel decided:
+`log`, `parse` or `scan`.
+
+**Without Hyperspace there is no log**, and everything falls back to §4 exactly as before.
+
 ## 5. The page
 
 A single shell at `http://127.0.0.1:8787/` polls `/current` twice a second and swaps an
-iframe to `/card/<slug>`. Serving locally rather than launching a browser per event is what
+iframe to `/card/<slug>` — or to `/sector/<slug>`, per §5b. Serving locally rather than launching a browser per event is what
 keeps it to one window that never steals focus — relevant because the point of the second
 monitor is that FTL stays drawn on the first (see `mods/fullscreen-no-minimize/`).
 
@@ -319,6 +372,120 @@ inlined, which browsers render directly; no publish step and no network access i
 
 Non-event states render as a short message rather than a blank page. A save caught
 mid-write raises `SaveFormatError`; the next poll retries, so a torn read is invisible.
+
+### 5b. Two pages in one frame — the sector profile
+
+The same shell also serves `/sector/<slug>`, the built sector profile
+(`tools/SECTOR-PAGE.md`), and `view` in `/current` says which of the two belongs on screen:
+
+| `view` | When | Frame shows |
+|---|---|---|
+| `card` | a card resolved, it is not an entry beacon, and the map is not open | `/card/<slug>` |
+| `sector` | **the star map is open** (§5c), **or** the resolved event is a `START_BEACON_*`, **or** no card resolves at all, **or** within `--sector-hold` seconds of arriving in a new sector | `/sector/<slug>` |
+
+**The entry beacon is the good trigger.** A `START_BEACON_*` card says "you jump in" and
+nothing more, and it is on screen at exactly the moment the question is *what is this
+sector* — so the sector profile replaces it. Better still, it stays the last resolved event
+for as long as the player sits on the map planning a route, since nothing writes the save
+in between. **That covers the map screen, by reading state rather than guessing at it** —
+which is most of what the timed window below was for.
+
+The set is read from each sector's `<startEvent>` (`start_event.slug` in the profiles),
+never listed in code, so a sector whose entry event changes needs no edit here. Eleven
+slugs today. The Last Stand drops out on its own: its `startEvent` is `BOSS_NEUTRAL`, a
+*list* rather than an event, so it carries no card slug — and its members are real fights
+that must keep showing their own cards. `at_start_beacon` in `/current` reports the test.
+
+**Which sector, and where it comes from.** Not the save — a vanilla parse yields a sector
+*number*, the Hyperspace scan not even that, and neither yields the sector *type*, which is
+what names a page: the type is regenerated from `sectorTreeSeed` and never stored (§3).
+Hyperspace prints it instead. Every generation logs
+
+```
+-- Generating Events --
+Sector: CIVILIAN_SECTOR
+```
+
+to `FTL_HS.log`, and `sectors/data/<slug>.sector.json` carries that same `id`, so the
+mapping is a dict lookup over the built profiles — no mod, no inference. `SectorLog` reads
+the tail of the log on any mtime change and takes the **last** `Sector:` line; earlier
+blocks are the sectors already flown. `--hs-log` overrides the path, which defaults to
+beside `ftl.dat`.
+
+**Beacon boxes still open onto cards.** A sector page loads `../cards/runtime/*.js` and
+`../cards/data/<slug>.js` when a box is opened (`SECTOR-PAGE.md` §6.1). Served at
+`/sector/<slug>`, those resolve to `/cards/...`, which the server serves out of `cards/`.
+So the watcher gets the full local behaviour — the version a published artifact cannot have.
+
+**The one heuristic in the whole watcher, stated as such.** *Is the star map open* is not
+in the save, and cannot be: the save is written during encounters and is silent while the
+player sits on the map. So the arrival window is a guess about attention, not a reading of
+state. Two consequences kept deliberately:
+
+- The window is **time-boxed** (`--sector-hold`, default 40s, `0` disables), because
+  nothing signals its end either. With the entry-beacon rule above it is now a backstop
+  rather than the main path — it earns its keep in The Last Stand, whose entry event is a
+  `BOSS_NEUTRAL` fight and therefore triggers nothing. Install `map-signal` (§5c) and it
+  is suppressed entirely.
+- **Starting the watcher is not an arrival.** On the first read the sector is known but its
+  age is not, so it counts as no arrival at all — otherwise every restart would seize the
+  screen mid-event on the strength of a log line written an hour ago. Only a *change*
+  starts the window.
+
+`--no-sector` turns the whole thing off and restores card-only behaviour.
+
+### 5c. `map-signal` — the exact answer, when the mod is installed
+
+`tools/build-map-signal-mod.py` builds a Hyperspace mod whose only job is to say which
+screen the player is on. It reads `starMap.bOpen` — the flag the game itself uses — in a
+`MOUSE_CONTROL` render hook, draws nothing, and logs one line per transition:
+
+```
+map-signal: loaded
+map-signal: open sector 3
+map-signal: closed sector 3
+```
+
+Lua cannot write files: `io`, `os`, `package` and `debug` are cut from Hyperspace's sandbox
+(§2). `log()` is the exception that makes this work — it writes to `FTL_HS.log`, which is
+already the file this watcher tails for the sector. So the channel costs nothing new.
+
+**What it changes here.** `SectorLog` takes the **last** `open`/`closed` line as the current
+screen and publishes `map_open`. Three states, deliberately distinct:
+
+| `map_open` | Means |
+|---|---|
+| `true` / `false` | the mod is installed and reporting; `view` follows it exactly |
+| `null` | no `map-signal` line in the log — the mod is not installed, and §5b's rules apply unchanged |
+
+The timed window is **suppressed** whenever `map_open` is non-null: a guess is only worth
+making where nothing is being reported. The entry-beacon rule stays either way — a
+`START_BEACON_*` card is useless whether or not the map is up.
+
+**Only the two state words match.** `map-signal: loaded` and the mod's error lines share the
+prefix and must not read as transitions; the regex requires `open` or `closed`. The build
+checks its own emitted lines against `save-watch.py`'s actual `MAP_SIGNAL` pattern — imported,
+not restated — because a drift between the two halves fails silently: the mod would log
+happily and the watcher would ignore every line.
+
+**Hyperspace stamps `[Lua]: ` on every scripted line**, so what reaches the file is
+
+```
+[Lua]: map-signal: open sector 2
+```
+
+with trailing spaces. The pattern allows that tag and the build tests both forms. This is
+worth stating because it is exactly what the first version got wrong: a regex anchored at
+`^map-signal:` passed a synthetic test written from the mod's `log()` calls and matched
+nothing at all in the real log. **Test the line the file receives, not the line the code
+emits.**
+
+**Known limit:** if the game exits with the map open, the last line still says `open` and the
+watcher believes it until the next launch truncates the log. Harmless — between runs there is
+no card to show anyway, so the sector page is what `view` would choose regardless.
+
+Installing costs a Slipstream patch and a restart (`mods/map-signal/README.md`). Without it
+the watcher still works, on §5b's rules.
 
 ### The last card stays up — except when we know it is wrong
 
@@ -347,7 +514,7 @@ outcome of a new run silently continue the old run's card.
 
 | status | Means | Is it a fault? |
 |---|---|---|
-| `ok` | A card was resolved; `slug` names it. `source` says whether it came from the structured parse or the Hyperspace scan (§3b) | no |
+| `ok` | A card was resolved; `slug` names it. `source` says which channel decided — `log` (§4b), or the structured `parse` / Hyperspace `scan` of the save (§3b) | no |
 | `ambiguous` | Shared outcome text, nothing to continue from | no — resolves at the next beacon |
 | `nocard` | Event identified, but no card exists for it | no — 386 of 449 events have one |
 

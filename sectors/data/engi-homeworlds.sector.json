@@ -18,34 +18,85 @@
     {
       "id": "engi",
       "label": "Engi",
-      "rarity": 1
+      "crew": true,
+      "rarity": 1,
+      "base": 2,
+      "change": "more-common"
     },
     {
       "id": "mantis",
       "label": "Mantis",
-      "rarity": 0
+      "crew": true,
+      "rarity": 0,
+      "base": 2,
+      "change": "excluded"
     },
     {
       "id": "energy",
       "label": "Zoltan",
-      "rarity": 4
+      "crew": true,
+      "rarity": 4,
+      "base": 5,
+      "change": "more-common"
     },
     {
       "id": "slug",
       "label": "Slug",
-      "rarity": 0
+      "crew": true,
+      "rarity": 0,
+      "base": 0,
+      "change": "same"
     },
     {
       "id": "rock",
       "label": "Rockman",
-      "rarity": 0
+      "crew": true,
+      "rarity": 0,
+      "base": 3,
+      "change": "excluded"
     },
     {
       "id": "human",
       "label": "Human",
-      "rarity": 3
+      "crew": true,
+      "rarity": 3,
+      "base": 1,
+      "change": "rarer"
     }
   ],
+  "crew_store_odds": {
+    "slots": 3,
+    "total_weight": 10,
+    "crew": [
+      {
+        "id": "engi",
+        "label": "Engi",
+        "rarity": 1,
+        "listed": true,
+        "weight": 5,
+        "share": 50.0,
+        "in_store": 87.5
+      },
+      {
+        "id": "human",
+        "label": "Human",
+        "rarity": 3,
+        "listed": true,
+        "weight": 3,
+        "share": 30.0,
+        "in_store": 65.7
+      },
+      {
+        "id": "energy",
+        "label": "Zoltan",
+        "rarity": 4,
+        "listed": true,
+        "weight": 2,
+        "share": 20.0,
+        "in_store": 48.8
+      }
+    ]
+  },
   "start_event": {
     "id": "START_BEACON_ENGI",
     "slug": "start-beacon-engi",
@@ -2341,6 +2392,11 @@
         "fleet_delay": []
       }
     ],
+    "fallback_beacons": {
+      "min": 0,
+      "max": 3,
+      "on_full_map": 0
+    },
     "exit_list": "EXIT_LIST",
     "source": "raw/wiki/sectors.md"
   },
@@ -2515,8 +2571,11 @@
     ],
     "gates": [
       {
-        "req": "sensors",
         "label": "Sensors",
+        "reqs": [
+          "sensors"
+        ],
+        "req": "sensors",
         "levels": [
           "2",
           "3"
@@ -2532,8 +2591,11 @@
         ]
       },
       {
+        "label": "Engi crew",
+        "reqs": [
+          "engi"
+        ],
         "req": "engi",
-        "label": "Engi",
         "levels": [],
         "events": [
           "ENGI_UNLOCK_1",
@@ -2544,8 +2606,11 @@
         ]
       },
       {
-        "req": "ADV_SCANNERS",
         "label": "Long-Ranged Scanners",
+        "reqs": [
+          "ADV_SCANNERS"
+        ],
+        "req": "ADV_SCANNERS",
         "levels": [],
         "events": [
           "ENGI_STATION_DISTRESS",
@@ -2555,8 +2620,11 @@
         ]
       },
       {
-        "req": "cloaking",
         "label": "Cloaking",
+        "reqs": [
+          "cloaking"
+        ],
+        "req": "cloaking",
         "levels": [
           "1",
           "2",
@@ -2569,8 +2637,11 @@
         ]
       },
       {
-        "req": "BATTLE",
         "label": "Anti-Personnel Drone",
+        "reqs": [
+          "BATTLE"
+        ],
+        "req": "BATTLE",
         "levels": [],
         "events": [
           "DISTRESS_INFESTATION",
@@ -2578,17 +2649,11 @@
         ]
       },
       {
-        "req": "ROCK_ARMOR",
-        "label": "Rock Plating",
-        "levels": [],
-        "events": [
-          "CIVILIAN_ASTEROIDS_BEACON",
-          "ASTEROID_DERELICT_SHIP"
-        ]
-      },
-      {
+        "label": "Doors",
+        "reqs": [
+          "doors"
+        ],
         "req": "doors",
-        "label": "Door System",
         "levels": [
           "2"
         ],
@@ -2598,8 +2663,11 @@
         ]
       },
       {
-        "req": "hacking",
         "label": "Hacking",
+        "reqs": [
+          "hacking"
+        ],
+        "req": "hacking",
         "levels": [
           "1",
           "2",
@@ -2611,8 +2679,11 @@
         ]
       },
       {
-        "req": "medbay",
         "label": "Medbay",
+        "reqs": [
+          "medbay"
+        ],
+        "req": "medbay",
         "levels": [
           "3",
           "2"
@@ -2623,8 +2694,11 @@
         ]
       },
       {
-        "req": "mind",
         "label": "Mind Control",
+        "reqs": [
+          "mind"
+        ],
+        "req": "mind",
         "levels": [
           "1"
         ],
@@ -2634,8 +2708,23 @@
         ]
       },
       {
+        "label": "Rock Plating",
+        "reqs": [
+          "ROCK_ARMOR"
+        ],
+        "req": "ROCK_ARMOR",
+        "levels": [],
+        "events": [
+          "CIVILIAN_ASTEROIDS_BEACON",
+          "ASTEROID_DERELICT_SHIP"
+        ]
+      },
+      {
+        "label": "Teleporter",
+        "reqs": [
+          "teleporter"
+        ],
         "req": "teleporter",
-        "label": "Crew Teleporter",
         "levels": [],
         "events": [
           "CIVILIAN_ASTEROIDS_BEACON",
@@ -2643,136 +2732,187 @@
         ]
       },
       {
-        "req": "BEAM_BIO",
         "label": "Anti-Bio Beam",
+        "reqs": [
+          "BEAM_BIO"
+        ],
+        "req": "BEAM_BIO",
         "levels": [],
         "events": [
           "DISTRESS_INFESTATION"
         ]
       },
       {
-        "req": "BOARDER",
-        "label": "Boarding Drone",
-        "levels": [],
-        "events": [
-          "DISTRESS_INFESTATION"
-        ]
-      },
-      {
+        "label": "Beam drone",
+        "reqs": [
+          "COMBAT_BEAM_DRONE_LIST"
+        ],
         "req": "COMBAT_BEAM_DRONE_LIST",
-        "label": "COMBAT_BEAM_DRONE_LIST",
         "levels": [],
         "events": [
           "DISTRESS_TRAPPED_MINER"
         ]
       },
       {
-        "req": "DRONES_DEFENSE_LIST",
-        "label": "DRONES_DEFENSE_LIST",
+        "label": "Beam weapon",
+        "reqs": [
+          "WEAPONS_BEAM_DAMAGE"
+        ],
+        "req": "WEAPONS_BEAM_DAMAGE",
         "levels": [],
         "events": [
-          "CIVILIAN_ASTEROIDS_BEACON"
+          "DISTRESS_TRAPPED_MINER"
         ]
       },
       {
-        "req": "REPAIR",
-        "label": "System Repair Drone",
+        "label": "Boarding Drone",
+        "reqs": [
+          "BOARDER"
+        ],
+        "req": "BOARDER",
         "levels": [],
         "events": [
-          "CIVILIAN_ASTEROIDS_BEACON"
+          "DISTRESS_INFESTATION"
         ]
       },
       {
-        "req": "SCRAP_COLLECTOR",
-        "label": "Scrap Recovery Arm",
-        "levels": [],
-        "events": [
-          "ASTEROID_EXPLORE"
-        ]
-      },
-      {
-        "req": "STASIS_POD",
         "label": "Damaged Stasis Pod",
+        "reqs": [
+          "STASIS_POD"
+        ],
+        "req": "STASIS_POD",
         "levels": [],
         "events": [
           "ZOLTAN_CREW_STUDY"
         ]
       },
       {
-        "req": "WEAPONS_BEAM_DAMAGE",
-        "label": "WEAPONS_BEAM_DAMAGE",
+        "label": "Defense drone",
+        "reqs": [
+          "DRONES_DEFENSE_LIST"
+        ],
+        "req": "DRONES_DEFENSE_LIST",
         "levels": [],
         "events": [
-          "DISTRESS_TRAPPED_MINER"
+          "CIVILIAN_ASTEROIDS_BEACON"
         ]
       },
       {
+        "label": "Human",
+        "reqs": [
+          "human"
+        ],
+        "req": "human",
+        "levels": [],
+        "events": [
+          "CONFUSED_MANTIS"
+        ]
+      },
+      {
+        "label": "Ion weapon",
+        "reqs": [
+          "WEAPONS_ION"
+        ],
         "req": "WEAPONS_ION",
-        "label": "WEAPONS_ION",
         "levels": [],
         "events": [
           "DISTRESS_SATELLITE_DEFENSE"
         ]
       },
       {
-        "req": "WEAPONS_MISSILES_EVENTS",
-        "label": "WEAPONS_MISSILES_EVENTS",
-        "levels": [],
-        "events": [
-          "HELP_MINERS"
-        ]
-      },
-      {
+        "label": "Lanius crew",
+        "reqs": [
+          "anaerobic"
+        ],
         "req": "anaerobic",
-        "label": "Lanius",
         "levels": [],
         "events": [
           "ENGI_VIRUS"
         ]
       },
       {
-        "req": "human",
-        "label": "Human",
-        "levels": [],
-        "events": [
-          "CONFUSED_MANTIS"
-        ]
-      },
-      {
+        "label": "Mantis crew",
+        "reqs": [
+          "mantis"
+        ],
         "req": "mantis",
-        "label": "Mantis",
         "levels": [],
         "events": [
           "CONFUSED_MANTIS"
         ]
       },
       {
-        "req": "oxygen",
+        "label": "Missile weapon",
+        "reqs": [
+          "WEAPONS_MISSILES_EVENTS"
+        ],
+        "req": "WEAPONS_MISSILES_EVENTS",
+        "levels": [],
+        "events": [
+          "HELP_MINERS"
+        ]
+      },
+      {
         "label": "Oxygen",
+        "reqs": [
+          "oxygen"
+        ],
+        "req": "oxygen",
         "levels": [],
         "events": [
           "TRADER_UPGRADES"
         ]
       },
       {
-        "req": "pilot",
         "label": "Piloting",
+        "reqs": [
+          "pilot"
+        ],
+        "req": "pilot",
         "levels": [],
         "events": [
           "TRADER_UPGRADES"
         ]
       },
       {
+        "label": "Reactor",
+        "reqs": [
+          "reactor"
+        ],
         "req": "reactor",
-        "label": "reactor",
         "levels": [],
         "events": [
           "TRADER_UPGRADES"
         ]
       },
       {
-        "req": "weapons",
+        "label": "Scrap Recovery Arm",
+        "reqs": [
+          "SCRAP_COLLECTOR"
+        ],
+        "req": "SCRAP_COLLECTOR",
+        "levels": [],
+        "events": [
+          "ASTEROID_EXPLORE"
+        ]
+      },
+      {
+        "label": "System Repair Drone",
+        "reqs": [
+          "REPAIR"
+        ],
+        "req": "REPAIR",
+        "levels": [],
+        "events": [
+          "CIVILIAN_ASTEROIDS_BEACON"
+        ]
+      },
+      {
         "label": "Weapon Control",
+        "reqs": [
+          "weapons"
+        ],
+        "req": "weapons",
         "levels": [
           "6"
         ],
@@ -2930,6 +3070,11 @@
     ]
   },
   "metrics": {
+    "blue_options": 28,
+    "blue_option_hits": 50,
+    "store_rarity_changes": 5,
+    "crew_rarity_changes": 5,
+    "crew_types_sold": 3,
     "grid_beacons": 24,
     "at_risk_entries": 0,
     "beacons_min": 21,

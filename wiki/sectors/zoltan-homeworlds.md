@@ -2,13 +2,13 @@
 id: sector-zoltan-homeworlds
 type: sector
 sector_id: ZOLTAN_HOME
-sector_class: unknown
+sector_class: civilian
 faction: [[[entity-zoltan]]]
 min_sector: 2
 unique: true
 version: ae
 first_seen: 2026-08-09
-last_updated: 2026-08-15
+last_updated: 2026-08-16
 sources: 10
 tags: [homeworld, ship-unlock]
 ---
@@ -24,6 +24,17 @@ against a map that holds **at most 24**, and allocation stops the moment the bea
 out ([[source-fandom-sectors]], [[source-xftl-sector-map]]). Both named beacons sit near
 the top of the queue and are therefore safe; what this sector actually risks losing is the
 bottom of its table — `ITEM_ZOLTAN`, `QUESTS_ZOLTAN` and `NEUTRAL_ZOLTAN`.
+
+Grouped with the **civilian** sectors: `sector_data.xml` lists `ZOLTAN_HOME` inside
+`<sectorType name="CIVILIAN">`, and Fandom files it under "Civilian Sectors" (green on the
+map). (per [[source-sector-data-xml]], [[source-fandom-sectors]])
+
+> **Correction (2026-08-16).** This page carried `sector_class: unknown`, which was wrong
+> rather than uncertain — the draw list states it outright, and the two sibling pages
+> ([[sector-engi-controlled-sector]], [[sector-zoltan-controlled-sector]]) already cited the
+> same `<sectorType>` block. Recording the earlier value rather than deleting it. Note
+> `ZOLTAN_HOME` also appears *commented out* under `<sectorType name="UNKNOWN">`, which is
+> dead text and not a second classification ([[sector-vestigial-definitions]]).
 
 ## Character & Hazards
 `unique="true"`, `minSector="2"`. Two guaranteed named beacons — `ZOLTAN_CREW_STUDY`

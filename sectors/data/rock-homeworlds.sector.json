@@ -17,39 +17,93 @@
     {
       "id": "engi",
       "label": "Engi",
-      "rarity": 0
+      "crew": true,
+      "rarity": 0,
+      "base": 2,
+      "change": "excluded"
     },
     {
       "id": "mantis",
       "label": "Mantis",
-      "rarity": 0
+      "crew": true,
+      "rarity": 0,
+      "base": 2,
+      "change": "excluded"
     },
     {
       "id": "energy",
       "label": "Zoltan",
-      "rarity": 3
+      "crew": true,
+      "rarity": 3,
+      "base": 5,
+      "change": "more-common"
     },
     {
       "id": "slug",
       "label": "Slug",
-      "rarity": 0
+      "crew": true,
+      "rarity": 0,
+      "base": 0,
+      "change": "same"
     },
     {
       "id": "rock",
       "label": "Rockman",
-      "rarity": 1
+      "crew": true,
+      "rarity": 1,
+      "base": 3,
+      "change": "more-common"
     },
     {
       "id": "human",
       "label": "Human",
-      "rarity": 2
+      "crew": true,
+      "rarity": 2,
+      "base": 1,
+      "change": "rarer"
     },
     {
       "id": "BOMB_LOCK",
       "label": "Crystal Lockdown Bomb",
-      "rarity": 2
+      "crew": false,
+      "rarity": 2,
+      "base": 0,
+      "change": "unlocked"
     }
   ],
+  "crew_store_odds": {
+    "slots": 3,
+    "total_weight": 12,
+    "crew": [
+      {
+        "id": "rock",
+        "label": "Rockman",
+        "rarity": 1,
+        "listed": true,
+        "weight": 5,
+        "share": 41.7,
+        "in_store": 80.2
+      },
+      {
+        "id": "human",
+        "label": "Human",
+        "rarity": 2,
+        "listed": true,
+        "weight": 4,
+        "share": 33.3,
+        "in_store": 70.4
+      },
+      {
+        "id": "energy",
+        "label": "Zoltan",
+        "rarity": 3,
+        "listed": true,
+        "weight": 3,
+        "share": 25.0,
+        "in_store": 57.8
+      }
+    ]
+  },
   "start_event": {
     "id": "START_BEACON_ROCK",
     "slug": "start-beacon-rock",
@@ -2136,6 +2190,11 @@
         "fleet_delay": []
       }
     ],
+    "fallback_beacons": {
+      "min": 0,
+      "max": 2,
+      "on_full_map": 0
+    },
     "exit_list": "EXIT_LIST",
     "source": "raw/wiki/sectors.md"
   },
@@ -2313,8 +2372,11 @@
     ],
     "gates": [
       {
-        "req": "sensors",
         "label": "Sensors",
+        "reqs": [
+          "sensors"
+        ],
+        "req": "sensors",
         "levels": [
           "2",
           "3"
@@ -2328,8 +2390,11 @@
         ]
       },
       {
+        "label": "Teleporter",
+        "reqs": [
+          "teleporter"
+        ],
         "req": "teleporter",
-        "label": "Crew Teleporter",
         "levels": [
           "1",
           "2"
@@ -2342,8 +2407,11 @@
         ]
       },
       {
-        "req": "ADV_SCANNERS",
         "label": "Long-Ranged Scanners",
+        "reqs": [
+          "ADV_SCANNERS"
+        ],
+        "req": "ADV_SCANNERS",
         "levels": [],
         "events": [
           "CIVILIAN_ASTEROIDS_BEACON",
@@ -2352,28 +2420,11 @@
         ]
       },
       {
-        "req": "REPAIR",
-        "label": "System Repair Drone",
-        "levels": [],
-        "events": [
-          "CIVILIAN_ASTEROIDS_BEACON",
-          "DISTRESS_STATION_FIRE",
-          "ROCK_MANTIS_FREIGHTER"
-        ]
-      },
-      {
-        "req": "ROCK_ARMOR",
-        "label": "Rock Plating",
-        "levels": [],
-        "events": [
-          "CIVILIAN_ASTEROIDS_BEACON",
-          "ROCK_MANTIS_HUNTER",
-          "ASTEROID_DERELICT_SHIP"
-        ]
-      },
-      {
+        "label": "Rock crew",
+        "reqs": [
+          "rock"
+        ],
         "req": "rock",
-        "label": "Rockman",
         "levels": [],
         "events": [
           "DISTRESS_STATION_FIRE",
@@ -2382,8 +2433,37 @@
         ]
       },
       {
-        "req": "BEAM_BIO",
+        "label": "Rock Plating",
+        "reqs": [
+          "ROCK_ARMOR"
+        ],
+        "req": "ROCK_ARMOR",
+        "levels": [],
+        "events": [
+          "CIVILIAN_ASTEROIDS_BEACON",
+          "ROCK_MANTIS_HUNTER",
+          "ASTEROID_DERELICT_SHIP"
+        ]
+      },
+      {
+        "label": "System Repair Drone",
+        "reqs": [
+          "REPAIR"
+        ],
+        "req": "REPAIR",
+        "levels": [],
+        "events": [
+          "CIVILIAN_ASTEROIDS_BEACON",
+          "DISTRESS_STATION_FIRE",
+          "ROCK_MANTIS_FREIGHTER"
+        ]
+      },
+      {
         "label": "Anti-Bio Beam",
+        "reqs": [
+          "BEAM_BIO"
+        ],
+        "req": "BEAM_BIO",
         "levels": [],
         "events": [
           "DISTRESS_INFESTATION",
@@ -2391,8 +2471,11 @@
         ]
       },
       {
+        "label": "Beam drone",
+        "reqs": [
+          "COMBAT_BEAM_DRONE_LIST"
+        ],
         "req": "COMBAT_BEAM_DRONE_LIST",
-        "label": "COMBAT_BEAM_DRONE_LIST",
         "levels": [],
         "events": [
           "DISTRESS_TRAPPED_MINER",
@@ -2400,17 +2483,11 @@
         ]
       },
       {
-        "req": "NANO_MEDBAY",
-        "label": "Engi Med-bot Dispersal",
-        "levels": [],
-        "events": [
-          "REBEL_VS_FEDERATION",
-          "DISTRESS_STATION_DISEASE"
-        ]
-      },
-      {
+        "label": "Engi crew",
+        "reqs": [
+          "engi"
+        ],
         "req": "engi",
-        "label": "Engi",
         "levels": [],
         "events": [
           "DISTRESS_SATELLITE_DEFENSE",
@@ -2418,8 +2495,23 @@
         ]
       },
       {
-        "req": "medbay",
+        "label": "Engi Med-bot Dispersal",
+        "reqs": [
+          "NANO_MEDBAY"
+        ],
+        "req": "NANO_MEDBAY",
+        "levels": [],
+        "events": [
+          "REBEL_VS_FEDERATION",
+          "DISTRESS_STATION_DISEASE"
+        ]
+      },
+      {
         "label": "Medbay",
+        "reqs": [
+          "medbay"
+        ],
+        "req": "medbay",
         "levels": [
           "2",
           "3"
@@ -2430,8 +2522,24 @@
         ]
       },
       {
+        "label": "Missile weapon",
+        "reqs": [
+          "WEAPONS_MISSILES_EVENTS",
+          "WEAPONS_MISSILES"
+        ],
+        "req": "WEAPONS_MISSILES_EVENTS",
+        "levels": [],
+        "events": [
+          "HELP_MINERS",
+          "ROCK_STARSHIP_MINE"
+        ]
+      },
+      {
+        "label": "Reactor",
+        "reqs": [
+          "reactor"
+        ],
         "req": "reactor",
-        "label": "reactor",
         "levels": [],
         "events": [
           "TRADER_UPGRADES",
@@ -2439,8 +2547,11 @@
         ]
       },
       {
+        "label": "Slug crew",
+        "reqs": [
+          "slug"
+        ],
         "req": "slug",
-        "label": "Slug",
         "levels": [],
         "events": [
           "STRANDED_BEACON",
@@ -2448,96 +2559,55 @@
         ]
       },
       {
-        "req": "BATTLE",
-        "label": "Anti-Personnel Drone",
-        "levels": [],
-        "events": [
-          "DISTRESS_INFESTATION"
-        ]
-      },
-      {
-        "req": "BOARDER",
-        "label": "Boarding Drone",
-        "levels": [],
-        "events": [
-          "DISTRESS_INFESTATION"
-        ]
-      },
-      {
-        "req": "BOMB_FIRE",
-        "label": "Fire Bomb",
-        "levels": [],
-        "events": [
-          "QUEST_CREWDEAD_START"
-        ]
-      },
-      {
-        "req": "BOMB_HEAL",
-        "label": "Healing Burst",
-        "levels": [],
-        "events": [
-          "REBEL_VS_FEDERATION"
-        ]
-      },
-      {
-        "req": "DRONES_DEFENSE_LIST",
-        "label": "DRONES_DEFENSE_LIST",
-        "levels": [],
-        "events": [
-          "CIVILIAN_ASTEROIDS_BEACON"
-        ]
-      },
-      {
-        "req": "FTL_JUMPER",
         "label": "Adv. FTL Navigation",
+        "reqs": [
+          "FTL_JUMPER"
+        ],
+        "req": "FTL_JUMPER",
         "levels": [],
         "events": [
           "ESCORT_BEACON"
         ]
       },
       {
-        "req": "SHIP_REPAIR",
-        "label": "Hull Repair",
+        "label": "Anti-Personnel Drone",
+        "reqs": [
+          "BATTLE"
+        ],
+        "req": "BATTLE",
         "levels": [],
         "events": [
-          "ROCK_MANTIS_FREIGHTER"
+          "DISTRESS_INFESTATION"
         ]
       },
       {
+        "label": "Beam weapon",
+        "reqs": [
+          "WEAPONS_BEAM_DAMAGE"
+        ],
         "req": "WEAPONS_BEAM_DAMAGE",
-        "label": "WEAPONS_BEAM_DAMAGE",
         "levels": [],
         "events": [
           "DISTRESS_TRAPPED_MINER"
         ]
       },
       {
-        "req": "WEAPONS_ION",
-        "label": "WEAPONS_ION",
+        "label": "Boarding Drone",
+        "reqs": [
+          "BOARDER"
+        ],
+        "req": "BOARDER",
         "levels": [],
         "events": [
-          "DISTRESS_SATELLITE_DEFENSE"
+          "DISTRESS_INFESTATION"
         ]
       },
       {
-        "req": "WEAPONS_MISSILES",
-        "label": "WEAPONS_MISSILES",
-        "levels": [],
-        "events": [
-          "ROCK_STARSHIP_MINE"
-        ]
-      },
-      {
-        "req": "WEAPONS_MISSILES_EVENTS",
-        "label": "WEAPONS_MISSILES_EVENTS",
-        "levels": [],
-        "events": [
-          "HELP_MINERS"
-        ]
-      },
-      {
-        "req": "cloaking",
         "label": "Cloaking",
+        "reqs": [
+          "cloaking"
+        ],
+        "req": "cloaking",
         "levels": [
           "1",
           "2",
@@ -2548,8 +2618,11 @@
         ]
       },
       {
-        "req": "clonebay",
         "label": "Clone Bay",
+        "reqs": [
+          "clonebay"
+        ],
+        "req": "clonebay",
         "levels": [
           "2"
         ],
@@ -2558,24 +2631,44 @@
         ]
       },
       {
+        "label": "Crystal crew",
+        "reqs": [
+          "crystal"
+        ],
         "req": "crystal",
-        "label": "Crystal",
         "levels": [],
         "events": [
           "ROCK_CRYSTAL_BEACON"
         ]
       },
       {
+        "label": "Defense drone",
+        "reqs": [
+          "DRONES_DEFENSE_LIST"
+        ],
+        "req": "DRONES_DEFENSE_LIST",
+        "levels": [],
+        "events": [
+          "CIVILIAN_ASTEROIDS_BEACON"
+        ]
+      },
+      {
+        "label": "Doors",
+        "reqs": [
+          "doors"
+        ],
         "req": "doors",
-        "label": "Door System",
         "levels": [],
         "events": [
           "TRADER_UPGRADES"
         ]
       },
       {
-        "req": "engines",
         "label": "Engines",
+        "reqs": [
+          "engines"
+        ],
+        "req": "engines",
         "levels": [
           "5"
         ],
@@ -2584,24 +2677,77 @@
         ]
       },
       {
-        "req": "oxygen",
+        "label": "Fire Bomb",
+        "reqs": [
+          "BOMB_FIRE"
+        ],
+        "req": "BOMB_FIRE",
+        "levels": [],
+        "events": [
+          "QUEST_CREWDEAD_START"
+        ]
+      },
+      {
+        "label": "Healing Burst",
+        "reqs": [
+          "BOMB_HEAL"
+        ],
+        "req": "BOMB_HEAL",
+        "levels": [],
+        "events": [
+          "REBEL_VS_FEDERATION"
+        ]
+      },
+      {
+        "label": "Hull Repair",
+        "reqs": [
+          "SHIP_REPAIR"
+        ],
+        "req": "SHIP_REPAIR",
+        "levels": [],
+        "events": [
+          "ROCK_MANTIS_FREIGHTER"
+        ]
+      },
+      {
+        "label": "Ion weapon",
+        "reqs": [
+          "WEAPONS_ION"
+        ],
+        "req": "WEAPONS_ION",
+        "levels": [],
+        "events": [
+          "DISTRESS_SATELLITE_DEFENSE"
+        ]
+      },
+      {
         "label": "Oxygen",
+        "reqs": [
+          "oxygen"
+        ],
+        "req": "oxygen",
         "levels": [],
         "events": [
           "TRADER_UPGRADES"
         ]
       },
       {
-        "req": "pilot",
         "label": "Piloting",
+        "reqs": [
+          "pilot"
+        ],
+        "req": "pilot",
         "levels": [],
         "events": [
           "TRADER_UPGRADES"
         ]
       },
       {
-        "req": "weapons",
         "label": "Weapon Control",
+        "reqs": [
+          "weapons"
+        ],
+        "req": "weapons",
         "levels": [
           "6"
         ],
@@ -2723,6 +2869,11 @@
     ]
   },
   "metrics": {
+    "blue_options": 31,
+    "blue_option_hits": 54,
+    "store_rarity_changes": 6,
+    "crew_rarity_changes": 5,
+    "crew_types_sold": 3,
     "grid_beacons": 24,
     "at_risk_entries": 0,
     "beacons_min": 22,

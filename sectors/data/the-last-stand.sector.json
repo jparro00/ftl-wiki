@@ -13,6 +13,57 @@
     "laststand"
   ],
   "crew_rarity": [],
+  "crew_store_odds": {
+    "slots": 3,
+    "total_weight": 17,
+    "crew": [
+      {
+        "id": "human",
+        "label": "Human",
+        "rarity": 1,
+        "listed": false,
+        "weight": 5,
+        "share": 29.4,
+        "in_store": 64.8
+      },
+      {
+        "id": "engi",
+        "label": "Engi",
+        "rarity": 2,
+        "listed": false,
+        "weight": 4,
+        "share": 23.5,
+        "in_store": 55.3
+      },
+      {
+        "id": "mantis",
+        "label": "Mantis",
+        "rarity": 2,
+        "listed": false,
+        "weight": 4,
+        "share": 23.5,
+        "in_store": 55.3
+      },
+      {
+        "id": "rock",
+        "label": "Rockman",
+        "rarity": 3,
+        "listed": false,
+        "weight": 3,
+        "share": 17.6,
+        "in_store": 44.1
+      },
+      {
+        "id": "energy",
+        "label": "Zoltan",
+        "rarity": 5,
+        "listed": false,
+        "weight": 1,
+        "share": 5.9,
+        "in_store": 16.6
+      }
+    ]
+  },
   "start_event": {
     "id": "BOSS_NEUTRAL",
     "slug": null,
@@ -729,6 +780,11 @@
         "fleet_delay": []
       }
     ],
+    "fallback_beacons": {
+      "min": 0,
+      "max": 7,
+      "on_full_map": 4
+    },
     "exit_list": "EXIT_LIST",
     "source": "raw/wiki/sectors.md"
   },
@@ -773,6 +829,11 @@
     "quest_targets": []
   },
   "metrics": {
+    "blue_options": 0,
+    "blue_option_hits": 0,
+    "store_rarity_changes": 0,
+    "crew_rarity_changes": 0,
+    "crew_types_sold": 5,
     "grid_beacons": 24,
     "at_risk_entries": 0,
     "beacons_min": 17,

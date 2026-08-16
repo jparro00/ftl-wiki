@@ -10,6 +10,8 @@
     "earliest": "earliest sector"
   },
   "headings": {
+    "glance": "At a glance",
+    "glance_meta": "what this sector changes, and what it pays",
     "budget": "Beacon budget",
     "budget_meta": "what the sector is required to place",
     "chain": "Quest chain",
@@ -23,7 +25,11 @@
     "exhaust": "This sector allocates up to {max} slots against {grid} beacons, so the bottom of the table is a wish list rather than a promise.",
     "at_risk": "Could be cut entirely if everything above rolls high: {names}.",
     "nebula": "Placed before everything else, whatever the file order, because the cloud graphics come first: {names}. A cloud drawn over an ordinary beacon converts it, and that beacon draws from the shared NEBULA list instead.",
-    "fallback": "Beacons still empty at the end of the table are filled from the shared {list} list ({ae} under Advanced Edition).",
+    "fallback": "Beacons still empty at the end of the table are filled from the shared {list} list ({ae} under Advanced Edition). That line is not in the file — the engine reaches the list by name — so it is marked rather than numbered in the table above.",
+    "fallback_count": "Here that is up to {max} beacons: a full {grid}-beacon map, less the {allocated_min} this table must place.",
+    "fallback_guaranteed": "At least {least} of them are certain on a full map — the table allocates at most {allocated_max} of the {grid}.",
+    "fallback_none": "Not here: this sector's minimum allocation of {allocated_min} already covers a {grid}-beacon map, so no beacon can fall through to it.",
+    "fallback_also_allocated": "{list} appears twice above because this sector is one of the few that also names it as a numbered line — the same pool, reached two ways.",
     "exit": "The exit beacon is not in this table at all — it draws from the shared {list}, and an exit inside a cloud is always empty.",
     "source": "Generation rules per the community's reverse-engineering of the map generator; the game files state none of them.",
     "always_short": "Cannot be filled even in the best case — the minima above it already use up the map: {names}.",
@@ -120,9 +126,35 @@
     "removed": "It drops:",
     "unconfirmed": "Whether the engine substitutes this list for {name} is not stated by any file here."
   },
+  "gates": {
+    "title": "Blue options in the pool",
+    "meta": "{options} options · {hits} hits",
+    "note": "A hit is one event in this pool that offers that option, not one beacon: an event can be placed more than once, or not at all. Level numbers are the system level the choice asks for.",
+    "level_join": "/"
+  },
+  "crew_odds": {
+    "title": "Crew a store can sell here",
+    "meta": "{types} types · {slots} slots",
+    "head_weight": "wt",
+    "head_slot": "per slot",
+    "head_store": "in a store",
+    "note": "The engine builds its candidate list from every species whose rarity here is not 0, weights each one 6 − rarity, and fills each of the three crew slots with its own independent draw — so a store can offer the same species twice. \"Per slot\" is that species' share of the total weight; \"in a store\" is the chance it turns up in at least one of the three slots.",
+    "note_source": "Weighting read out of FTLGame_orig.exe, not from any data file: the candidate loop skips rarity 0 and computes 6 − rarity as the weight. The three-slot count is the Advanced Edition figure, which is the data these pages are built from; vanilla rolls two or three."
+  },
   "rarity": {
-    "never": "never",
-    "note": "Lower number = more common. A crew type at 0 is not sold in this sector's stores."
+    "title": "Store rarity — where this sector differs",
+    "meta": "{changed} of {listed} changed",
+    "arrow": "→",
+    "crew": "Crew",
+    "other": "Also changed",
+    "note": "Left of the arrow is the blueprint's base rarity, right of it is this sector's. 1 is the commonest and 5 the rarest; 0 is a flag rather than a low number — that entry is not offered here at all. A sector that declares no rarity list of its own uses the base values throughout.",
+    "note_source": "Per the community wiki, the number does two jobs: it weights what a store offers, and it gates event rewards without weighting them — nonzero here means a crew-kill reward can hand you that species, 0 means it never can. The game files state neither. No file anywhere on this machine gives the weighting function, so nothing on this page turns a rarity into odds.",
+    "change": {
+      "unlocked": "unlocked",
+      "excluded": "excluded",
+      "more-common": "more common",
+      "rarer": "rarer"
+    }
   },
   "budget": {
     "legend": "Solid blocks are the minimum the sector must place; faded blocks are the optional extra.",
@@ -131,6 +163,8 @@
     "entry": "entry beacon is always {event}.",
     "zero": "allocated 0–0 — the sector reserves the list but places none.",
     "short_mark": "always short",
+    "fallback_mark": "fill-in",
+    "fallback_rank": "+",
     "expand": "Open a line to see every event it can place; open an event to read its card here."
   },
   "footnotes": {
@@ -150,6 +184,79 @@
     "beacons": "{min}–{max} beacons",
     "beacons_fixed": "{min} beacons",
     "beacons_one": "1 beacon"
+  },
+  "index": {
+    "title": "FTL sectors",
+    "eyebrow": "Sector profiles",
+    "heading": "Where next?",
+    "lede": "Every sector the game can offer you, by the designation the map colours it with. Open one for its full profile — what it must place, what it can pay, and what bites.",
+    "picks_heading": "This jump",
+    "picks_meta": "the map offers two — pin them here to compare",
+    "picks_empty": "Pin a sector with + to bring it up here. Two at a time, because that is what the map gives you.",
+    "picks_one": "Pin the other option to compare them.",
+    "pin": "Pin to this jump",
+    "unpin": "Unpin",
+    "pin_mark": "+",
+    "unpin_mark": "×",
+    "open": "Open profile",
+    "from": "from sector {n}",
+    "fixed": "always sector {n} — never a choice",
+    "unique": "once per run",
+    "ae_only": "Advanced Edition only",
+    "hidden": "never offered on the map",
+    "classes": {
+      "civilian": {
+        "label": "Civilian",
+        "hint": "green on the map — 48% of rolls"
+      },
+      "hostile": {
+        "label": "Hostile",
+        "hint": "red on the map — 32% of rolls"
+      },
+      "nebula": {
+        "label": "Nebula",
+        "hint": "purple on the map — 20% of rolls"
+      },
+      "special": {
+        "label": "Special",
+        "hint": "not part of the three-colour roll"
+      }
+    },
+    "compare": [
+      [
+        "beacons",
+        "Beacons on the map"
+      ],
+      [
+        "section:store:",
+        "Guaranteed stores"
+      ],
+      [
+        "always_fight_events",
+        "Events that open in a fight"
+      ],
+      [
+        "boarder_events",
+        "Events that put boarders aboard"
+      ],
+      [
+        "quest_start_events",
+        "Events that can start a quest"
+      ],
+      [
+        "blue_options",
+        "Blue options in the pool"
+      ],
+      [
+        "crew_gain_events",
+        "Events that can give you crew"
+      ],
+      [
+        "fallback",
+        "Beacons left to the fill-in list"
+      ]
+    ],
+    "source": "Designations per the community wiki's own grouping of the sector map; everything else is read from sector_data.xml and the event files."
   },
   "cards": {
     "loading": "Loading card…",

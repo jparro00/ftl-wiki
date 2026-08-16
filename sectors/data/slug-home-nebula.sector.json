@@ -19,34 +19,112 @@
     {
       "id": "engi",
       "label": "Engi",
-      "rarity": 4
+      "crew": true,
+      "rarity": 4,
+      "base": 2,
+      "change": "rarer"
     },
     {
       "id": "mantis",
       "label": "Mantis",
-      "rarity": 4
+      "crew": true,
+      "rarity": 4,
+      "base": 2,
+      "change": "rarer"
     },
     {
       "id": "energy",
       "label": "Zoltan",
-      "rarity": 4
+      "crew": true,
+      "rarity": 4,
+      "base": 5,
+      "change": "more-common"
     },
     {
       "id": "slug",
       "label": "Slug",
-      "rarity": 2
+      "crew": true,
+      "rarity": 2,
+      "base": 0,
+      "change": "unlocked"
     },
     {
       "id": "rock",
       "label": "Rockman",
-      "rarity": 4
+      "crew": true,
+      "rarity": 4,
+      "base": 3,
+      "change": "rarer"
     },
     {
       "id": "human",
       "label": "Human",
-      "rarity": 2
+      "crew": true,
+      "rarity": 2,
+      "base": 1,
+      "change": "rarer"
     }
   ],
+  "crew_store_odds": {
+    "slots": 3,
+    "total_weight": 16,
+    "crew": [
+      {
+        "id": "human",
+        "label": "Human",
+        "rarity": 2,
+        "listed": true,
+        "weight": 4,
+        "share": 25.0,
+        "in_store": 57.8
+      },
+      {
+        "id": "slug",
+        "label": "Slug",
+        "rarity": 2,
+        "listed": true,
+        "weight": 4,
+        "share": 25.0,
+        "in_store": 57.8
+      },
+      {
+        "id": "engi",
+        "label": "Engi",
+        "rarity": 4,
+        "listed": true,
+        "weight": 2,
+        "share": 12.5,
+        "in_store": 33.0
+      },
+      {
+        "id": "mantis",
+        "label": "Mantis",
+        "rarity": 4,
+        "listed": true,
+        "weight": 2,
+        "share": 12.5,
+        "in_store": 33.0
+      },
+      {
+        "id": "rock",
+        "label": "Rockman",
+        "rarity": 4,
+        "listed": true,
+        "weight": 2,
+        "share": 12.5,
+        "in_store": 33.0
+      },
+      {
+        "id": "energy",
+        "label": "Zoltan",
+        "rarity": 4,
+        "listed": true,
+        "weight": 2,
+        "share": 12.5,
+        "in_store": 33.0
+      }
+    ]
+  },
   "start_event": {
     "id": "START_BEACON_SLUG",
     "slug": "start-beacon-slug",
@@ -2607,6 +2685,11 @@
         "fleet_delay": []
       }
     ],
+    "fallback_beacons": {
+      "min": 0,
+      "max": 5,
+      "on_full_map": 0
+    },
     "exit_list": "EXIT_LIST",
     "source": "raw/wiki/sectors.md"
   },
@@ -2842,8 +2925,11 @@
     ],
     "gates": [
       {
-        "req": "sensors",
         "label": "Sensors",
+        "reqs": [
+          "sensors"
+        ],
+        "req": "sensors",
         "levels": [
           "2",
           "3"
@@ -2859,8 +2945,11 @@
         ]
       },
       {
-        "req": "hacking",
         "label": "Hacking",
+        "reqs": [
+          "hacking"
+        ],
+        "req": "hacking",
         "levels": [
           "1",
           "2"
@@ -2875,8 +2964,11 @@
         ]
       },
       {
+        "label": "Slug crew",
+        "reqs": [
+          "slug"
+        ],
         "req": "slug",
-        "label": "Slug",
         "levels": [],
         "events": [
           "NEBULA_SLUG_FIGHT_UNLOCK",
@@ -2888,8 +2980,11 @@
         ]
       },
       {
-        "req": "cloaking",
         "label": "Cloaking",
+        "reqs": [
+          "cloaking"
+        ],
+        "req": "cloaking",
         "levels": [
           "1",
           "2"
@@ -2901,8 +2996,11 @@
         ]
       },
       {
-        "req": "medbay",
         "label": "Medbay",
+        "reqs": [
+          "medbay"
+        ],
+        "req": "medbay",
         "levels": [
           "2"
         ],
@@ -2913,17 +3011,11 @@
         ]
       },
       {
-        "req": "ADV_SCANNERS",
-        "label": "Long-Ranged Scanners",
-        "levels": [],
-        "events": [
-          "NEBULA_LOST_SHIP",
-          "NEBULA_REBEL_CHASE"
-        ]
-      },
-      {
+        "label": "Doors",
+        "reqs": [
+          "doors"
+        ],
         "req": "doors",
-        "label": "Door System",
         "levels": [
           "2"
         ],
@@ -2933,8 +3025,23 @@
         ]
       },
       {
-        "req": "oxygen",
+        "label": "Long-Ranged Scanners",
+        "reqs": [
+          "ADV_SCANNERS"
+        ],
+        "req": "ADV_SCANNERS",
+        "levels": [],
+        "events": [
+          "NEBULA_LOST_SHIP",
+          "NEBULA_REBEL_CHASE"
+        ]
+      },
+      {
         "label": "Oxygen",
+        "reqs": [
+          "oxygen"
+        ],
+        "req": "oxygen",
         "levels": [
           "2"
         ],
@@ -2944,8 +3051,11 @@
         ]
       },
       {
+        "label": "Reactor",
+        "reqs": [
+          "reactor"
+        ],
         "req": "reactor",
-        "label": "reactor",
         "levels": [],
         "events": [
           "TRADER_UPGRADES",
@@ -2953,8 +3063,11 @@
         ]
       },
       {
+        "label": "Teleporter",
+        "reqs": [
+          "teleporter"
+        ],
         "req": "teleporter",
-        "label": "Crew Teleporter",
         "levels": [
           "2"
         ],
@@ -2964,64 +3077,44 @@
         ]
       },
       {
-        "req": "LIFE_SCANNER",
-        "label": "Lifeform Scanner",
-        "levels": [],
-        "events": [
-          "NEBULA_REBEL_CHASE"
-        ]
-      },
-      {
-        "req": "SCRAP_COLLECTOR",
-        "label": "Scrap Recovery Arm",
-        "levels": [],
-        "events": [
-          "ASTEROID_EXPLORE"
-        ]
-      },
-      {
-        "req": "WEAPONS_MISSILES_EVENTS",
-        "label": "WEAPONS_MISSILES_EVENTS",
-        "levels": [],
-        "events": [
-          "HELP_MINERS"
-        ]
-      },
-      {
-        "req": "clonebay",
         "label": "Clone Bay",
+        "reqs": [
+          "clonebay"
+        ],
+        "req": "clonebay",
         "levels": [],
         "events": [
           "NEBULA_BATTLEFIELD"
         ]
       },
       {
+        "label": "Drone Control",
+        "reqs": [
+          "drones"
+        ],
         "req": "drones",
-        "label": "Drone Part",
         "levels": [],
         "events": [
           "PIRATE_SALESMAN"
         ]
       },
       {
-        "req": "energy",
-        "label": "Zoltan",
-        "levels": [],
-        "events": [
-          "TERRAFORMING_SCAN"
-        ]
-      },
-      {
+        "label": "Engi crew",
+        "reqs": [
+          "engi"
+        ],
         "req": "engi",
-        "label": "Engi",
         "levels": [],
         "events": [
           "NEBULA_BATTLEFIELD"
         ]
       },
       {
-        "req": "engines",
         "label": "Engines",
+        "reqs": [
+          "engines"
+        ],
+        "req": "engines",
         "levels": [
           "4"
         ],
@@ -3030,45 +3123,104 @@
         ]
       },
       {
+        "label": "Lifeform Scanner",
+        "reqs": [
+          "LIFE_SCANNER"
+        ],
+        "req": "LIFE_SCANNER",
+        "levels": [],
+        "events": [
+          "NEBULA_REBEL_CHASE"
+        ]
+      },
+      {
+        "label": "Mantis crew",
+        "reqs": [
+          "mantis"
+        ],
         "req": "mantis",
-        "label": "Mantis",
         "levels": [],
         "events": [
           "SLUG_DISTRESS_TRICK"
         ]
       },
       {
-        "req": "mind",
         "label": "Mind Control",
+        "reqs": [
+          "mind"
+        ],
+        "req": "mind",
         "levels": [],
         "events": [
           "NEBULA_WEAPONS_TRADER"
         ]
       },
       {
-        "req": "pilot",
+        "label": "Missile weapon",
+        "reqs": [
+          "WEAPONS_MISSILES_EVENTS"
+        ],
+        "req": "WEAPONS_MISSILES_EVENTS",
+        "levels": [],
+        "events": [
+          "HELP_MINERS"
+        ]
+      },
+      {
         "label": "Piloting",
+        "reqs": [
+          "pilot"
+        ],
+        "req": "pilot",
         "levels": [],
         "events": [
           "TRADER_UPGRADES"
         ]
       },
       {
+        "label": "Rock crew",
+        "reqs": [
+          "rock"
+        ],
         "req": "rock",
-        "label": "Rockman",
         "levels": [],
         "events": [
           "SLUG_DRINK"
         ]
       },
       {
-        "req": "weapons",
+        "label": "Scrap Recovery Arm",
+        "reqs": [
+          "SCRAP_COLLECTOR"
+        ],
+        "req": "SCRAP_COLLECTOR",
+        "levels": [],
+        "events": [
+          "ASTEROID_EXPLORE"
+        ]
+      },
+      {
         "label": "Weapon Control",
+        "reqs": [
+          "weapons"
+        ],
+        "req": "weapons",
         "levels": [
           "6"
         ],
         "events": [
           "PIRATE_CIVILIAN_BEACON"
+        ]
+      },
+      {
+        "label": "Zoltan crew",
+        "reqs": [
+          "energy"
+        ],
+        "req": "energy",
+        "levels": [],
+        "events": [
+          "TERRAFORMING_SCAN"
         ]
       }
     ],
@@ -3158,6 +3310,11 @@
     ]
   },
   "metrics": {
+    "blue_options": 23,
+    "blue_option_hits": 48,
+    "store_rarity_changes": 6,
+    "crew_rarity_changes": 6,
+    "crew_types_sold": 6,
     "grid_beacons": 24,
     "at_risk_entries": 4,
     "beacons_min": 19,

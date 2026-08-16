@@ -3,10 +3,10 @@ id: concept-surrender-offers
 type: concept
 version: both
 first_seen: 2026-08-09
-last_updated: 2026-08-13
-sources: 5
+last_updated: 2026-08-16
+sources: 6
 related_events: []
-tags: [mechanics, resolves-contradictions]
+tags: [mechanics, rewards, resolves-contradictions]
 ---
 
 # Surrender offers and the `chance` attribute
@@ -98,6 +98,27 @@ and [[event-slug-home-nebula-surrender]] (`chance="0"`) had guessed correctly bu
 as unresolved, and are now closed at 100%. [[event-donor-mantis-chase2]]'s flag concerns
 `min`/`max` units, which remain genuinely open.
 
+## What a surrender pays
+
+The offer's *size* is a separate mechanism from its *probability*, and it is the `stuff` tier
+of [[concept-autoreward-tiers]] — "less scrap, mostly resources (intended for surrenders)" in
+the developers' own schema comment. From [[source-fandom-rewards]]:
+
+- **Ships in the default-reward categories offer random tier.** `LANIUS_SHIP`, `PIRATE`,
+  `REBEL`, `ROCK_SHIP` and their siblings roll the level as well as the outcome, so the same
+  ship's offer varies run to run.
+- **~6% of `stuff` rewards carry a bonus item** — a weapon, augment or drone schematic on top.
+  When that roll lands, the scrap half is **upgraded** from low to match the resources tier, so
+  a bonus item and a bigger scrap payout arrive together rather than trading off.
+- Resource amounts are flat (`LOW` 1–3 fuel / 1–2 missiles / 1 drone part, up to `HIGH` 3–6 /
+  4–8 / 1–2); the scrap half scales with sector.
+
+> **Slug ships hide the offer.** Every other surrender shows its exact reward before you decide,
+> and can be rejected once seen. Most Slug ships show the reward **only after acceptance**, and
+> it cannot then be refused. Accepting a Slug surrender is a blind trade
+> ([[source-fandom-rewards]]). The table of possible Slug rewards is transcluded on the Fandom
+> page and was **not captured** into `raw/`, so this wiki knows the rule and not the range.
+
 ## A related trap: `min` / `max`
 
 The same `<surrender>` element carries `min` and `max`. These are **hull points**, not
@@ -139,8 +160,11 @@ the wiki.
 - [ ] In-game confirmation per the test above.
 - [ ] Does `<escape chance="X">` follow the same inverted convention? Untested here.
 - [ ] Are `min`/`max` hull points or percentages?
+- [ ] What the Slug hidden-surrender reward table actually contains — the Fandom template
+      holding it was not captured into `raw/`.
 
 ## Sources
+- [[source-fandom-rewards]] (per raw/wiki/rewards.md)
 - [[source-events-ships]] (per raw/gamedata/events_ships.xml)
 - [[source-fandom-rock-fight]] (per raw/wiki/rock-fight.md)
 - [[source-fandom-crystal-fight]] (per raw/wiki/crystal-fight.md)

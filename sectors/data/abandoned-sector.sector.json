@@ -18,39 +18,129 @@
     {
       "id": "engi",
       "label": "Engi",
-      "rarity": 3
+      "crew": true,
+      "rarity": 3,
+      "base": 2,
+      "change": "rarer"
     },
     {
       "id": "mantis",
       "label": "Mantis",
-      "rarity": 3
+      "crew": true,
+      "rarity": 3,
+      "base": 2,
+      "change": "rarer"
     },
     {
       "id": "energy",
       "label": "Zoltan",
-      "rarity": 4
+      "crew": true,
+      "rarity": 4,
+      "base": 5,
+      "change": "more-common"
     },
     {
       "id": "slug",
       "label": "Slug",
-      "rarity": 4
+      "crew": true,
+      "rarity": 4,
+      "base": 0,
+      "change": "unlocked"
     },
     {
       "id": "rock",
       "label": "Rockman",
-      "rarity": 3
+      "crew": true,
+      "rarity": 3,
+      "base": 3,
+      "change": "same"
     },
     {
       "id": "human",
       "label": "Human",
-      "rarity": 2
+      "crew": true,
+      "rarity": 2,
+      "base": 1,
+      "change": "rarer"
     },
     {
       "id": "anaerobic",
       "label": "Lanius",
-      "rarity": 2
+      "crew": true,
+      "rarity": 2,
+      "base": 0,
+      "change": "unlocked"
     }
   ],
+  "crew_store_odds": {
+    "slots": 3,
+    "total_weight": 21,
+    "crew": [
+      {
+        "id": "human",
+        "label": "Human",
+        "rarity": 2,
+        "listed": true,
+        "weight": 4,
+        "share": 19.0,
+        "in_store": 46.9
+      },
+      {
+        "id": "anaerobic",
+        "label": "Lanius",
+        "rarity": 2,
+        "listed": true,
+        "weight": 4,
+        "share": 19.0,
+        "in_store": 46.9
+      },
+      {
+        "id": "engi",
+        "label": "Engi",
+        "rarity": 3,
+        "listed": true,
+        "weight": 3,
+        "share": 14.3,
+        "in_store": 37.0
+      },
+      {
+        "id": "mantis",
+        "label": "Mantis",
+        "rarity": 3,
+        "listed": true,
+        "weight": 3,
+        "share": 14.3,
+        "in_store": 37.0
+      },
+      {
+        "id": "rock",
+        "label": "Rockman",
+        "rarity": 3,
+        "listed": true,
+        "weight": 3,
+        "share": 14.3,
+        "in_store": 37.0
+      },
+      {
+        "id": "slug",
+        "label": "Slug",
+        "rarity": 4,
+        "listed": true,
+        "weight": 2,
+        "share": 9.5,
+        "in_store": 25.9
+      },
+      {
+        "id": "energy",
+        "label": "Zoltan",
+        "rarity": 4,
+        "listed": true,
+        "weight": 2,
+        "share": 9.5,
+        "in_store": 25.9
+      }
+    ]
+  },
   "start_event": {
     "id": "START_BEACON_LANIUS",
     "slug": "start-beacon-lanius",
@@ -1758,6 +1848,11 @@
         "fleet_delay": []
       }
     ],
+    "fallback_beacons": {
+      "min": 0,
+      "max": 6,
+      "on_full_map": 0
+    },
     "exit_list": "EXIT_LIST",
     "source": "raw/wiki/sectors.md"
   },
@@ -1911,8 +2006,11 @@
     ],
     "gates": [
       {
+        "label": "Lanius crew",
+        "reqs": [
+          "anaerobic"
+        ],
         "req": "anaerobic",
-        "label": "Lanius",
         "levels": [],
         "events": [
           "LANIUS_DISTRESS_FIGHT",
@@ -1927,8 +2025,11 @@
         ]
       },
       {
-        "req": "sensors",
         "label": "Sensors",
+        "reqs": [
+          "sensors"
+        ],
+        "req": "sensors",
         "levels": [
           "2",
           "3"
@@ -1940,8 +2041,11 @@
         ]
       },
       {
-        "req": "pilot",
         "label": "Piloting",
+        "reqs": [
+          "pilot"
+        ],
+        "req": "pilot",
         "levels": [
           "2",
           "3"
@@ -1952,48 +2056,11 @@
         ]
       },
       {
-        "req": "ADV_SCANNERS",
-        "label": "Long-Ranged Scanners",
-        "levels": [],
-        "events": [
-          "FEDERATION_PLANET_SIGNAL"
-        ]
-      },
-      {
-        "req": "REPAIR",
-        "label": "System Repair Drone",
-        "levels": [],
-        "events": [
-          "DISTRESS_STATION_FIRE"
-        ]
-      },
-      {
-        "req": "SCRAP_COLLECTOR",
-        "label": "Scrap Recovery Arm",
-        "levels": [],
-        "events": [
-          "ASTEROID_EXPLORE"
-        ]
-      },
-      {
-        "req": "SHIP_REPAIR",
-        "label": "Hull Repair",
-        "levels": [],
-        "events": [
-          "LANIUS_BEACON_EATER"
-        ]
-      },
-      {
-        "req": "WEAPONS_ION",
-        "label": "WEAPONS_ION",
-        "levels": [],
-        "events": [
-          "DISTRESS_SATELLITE_DEFENSE"
-        ]
-      },
-      {
-        "req": "cloaking",
         "label": "Cloaking",
+        "reqs": [
+          "cloaking"
+        ],
+        "req": "cloaking",
         "levels": [
           "1",
           "2",
@@ -2004,8 +2071,11 @@
         ]
       },
       {
-        "req": "clonebay",
         "label": "Clone Bay",
+        "reqs": [
+          "clonebay"
+        ],
+        "req": "clonebay",
         "levels": [
           "2"
         ],
@@ -2014,8 +2084,11 @@
         ]
       },
       {
+        "label": "Doors",
+        "reqs": [
+          "doors"
+        ],
         "req": "doors",
-        "label": "Door System",
         "levels": [
           "2"
         ],
@@ -2024,16 +2097,55 @@
         ]
       },
       {
+        "label": "Engi crew",
+        "reqs": [
+          "engi"
+        ],
         "req": "engi",
-        "label": "Engi",
         "levels": [],
         "events": [
           "DISTRESS_SATELLITE_DEFENSE"
         ]
       },
       {
-        "req": "medbay",
+        "label": "Hull Repair",
+        "reqs": [
+          "SHIP_REPAIR"
+        ],
+        "req": "SHIP_REPAIR",
+        "levels": [],
+        "events": [
+          "LANIUS_BEACON_EATER"
+        ]
+      },
+      {
+        "label": "Ion weapon",
+        "reqs": [
+          "WEAPONS_ION"
+        ],
+        "req": "WEAPONS_ION",
+        "levels": [],
+        "events": [
+          "DISTRESS_SATELLITE_DEFENSE"
+        ]
+      },
+      {
+        "label": "Long-Ranged Scanners",
+        "reqs": [
+          "ADV_SCANNERS"
+        ],
+        "req": "ADV_SCANNERS",
+        "levels": [],
+        "events": [
+          "FEDERATION_PLANET_SIGNAL"
+        ]
+      },
+      {
         "label": "Medbay",
+        "reqs": [
+          "medbay"
+        ],
+        "req": "medbay",
         "levels": [
           "2",
           "3"
@@ -2043,24 +2155,55 @@
         ]
       },
       {
+        "label": "Rock crew",
+        "reqs": [
+          "rock"
+        ],
         "req": "rock",
-        "label": "Rockman",
         "levels": [],
         "events": [
           "DISTRESS_STATION_FIRE"
         ]
       },
       {
+        "label": "Scrap Recovery Arm",
+        "reqs": [
+          "SCRAP_COLLECTOR"
+        ],
+        "req": "SCRAP_COLLECTOR",
+        "levels": [],
+        "events": [
+          "ASTEROID_EXPLORE"
+        ]
+      },
+      {
+        "label": "Slug crew",
+        "reqs": [
+          "slug"
+        ],
         "req": "slug",
-        "label": "Slug",
         "levels": [],
         "events": [
           "STRANDED_BEACON"
         ]
       },
       {
+        "label": "System Repair Drone",
+        "reqs": [
+          "REPAIR"
+        ],
+        "req": "REPAIR",
+        "levels": [],
+        "events": [
+          "DISTRESS_STATION_FIRE"
+        ]
+      },
+      {
+        "label": "Teleporter",
+        "reqs": [
+          "teleporter"
+        ],
         "req": "teleporter",
-        "label": "Crew Teleporter",
         "levels": [
           "2"
         ],
@@ -2151,6 +2294,11 @@
     ]
   },
   "metrics": {
+    "blue_options": 16,
+    "blue_option_hits": 27,
+    "store_rarity_changes": 6,
+    "crew_rarity_changes": 6,
+    "crew_types_sold": 7,
     "grid_beacons": 24,
     "at_risk_entries": 0,
     "beacons_min": 18,

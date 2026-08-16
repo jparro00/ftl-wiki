@@ -244,7 +244,42 @@ def budget_html(data):
             )
         else:
             rows.append(f'<div class="brow{classes}">{head}</div>')
+    rows.append(fallback_row(data))
     return f'<div class="budget">{"".join(rows)}</div>'
+
+
+def fallback_row(data):
+    """The fill-in line — last, because it is what happens after the table runs out.
+
+    It is not in `sector_data.xml`: the engine reaches `NEUTRAL` by name once the table is
+    exhausted. But it places real beacons, so a budget that stops at the table understates
+    the map. Marked rather than numbered, since the file has no such line to count.
+    """
+    gen = data["generation"]
+    span = gen.get("fallback_beacons")
+    if not span:
+        return ""
+    low, high = span["min"], span["max"]
+    classes = " fill" + (" zero" if high == 0 else "")
+    count = str(low) if low == high else \
+        f'{low}{VOC["format"]["range_join"]}{high}'
+    head = (
+        f'<div class="rank">{html.escape(VOC["budget"]["fallback_rank"])}</div>'
+        f'<div class="name">{html.escape(gen["fallback_list"])}'
+        f'<span class="mark fill">{html.escape(VOC["budget"]["fallback_mark"])}</span></div>'
+        f'<div class="cnt">{count}</div>'
+        f'<div class="track">{blocks(low, high)}</div>'
+    )
+    # A sector whose minima already cover the map can never reach the list, so there is
+    # nothing to open — the same rule the table's own zero rows follow.
+    events = gen.get("fallback_events") or []
+    if high and events:
+        pool = "".join(event_html(record) for record in events)
+        return (
+            f'<details class="bwrap"><summary class="brow expandable{classes}">{head}</summary>'
+            f'<div class="bpool"><div class="pool">{pool}</div></div></details>'
+        )
+    return f'<div class="brow{classes}">{head}</div>'
 
 
 def generation_html(data):
@@ -269,6 +304,22 @@ def generation_html(data):
             names=", ".join(gen["nebula_first"])))
     notes.append(VOC["generation"]["fallback"].format(
         list=gen["fallback_list"], ae=gen["fallback_list_ae"]))
+    span = gen.get("fallback_beacons") or {}
+    if span.get("max"):
+        notes.append(VOC["generation"]["fallback_count"].format(
+            max=span["max"], grid=gen["grid_beacons"], allocated_min=gen["allocated_min"]))
+        if span.get("on_full_map"):
+            notes.append(VOC["generation"]["fallback_guaranteed"].format(
+                least=span["on_full_map"], grid=gen["grid_beacons"],
+                allocated_max=gen["allocated_max"]))
+    elif span:
+        notes.append(VOC["generation"]["fallback_none"].format(
+            allocated_min=gen["allocated_min"], grid=gen["grid_beacons"]))
+    # The two Slug nebulas allocate the fallback list by name as well, so their budget
+    # shows it twice. Said out loud, because it reads like a duplicated row otherwise.
+    if any(e["name"] == gen["fallback_list"] for e in data["entries"]):
+        notes.append(VOC["generation"]["fallback_also_allocated"].format(
+            list=gen["fallback_list"]))
     notes.append(VOC["generation"]["exit"].format(list=gen["exit_list"]))
     return "".join(f'<p class="note">{html.escape(n)}</p>' for n in notes)
 
@@ -375,27 +426,133 @@ def pool_sections(data, copy, titles, slug):
     return "".join(out)
 
 
-def rarity_html(data):
-    # FINAL declares no rarityList at all, and an empty panel is worse than no panel:
-    # it renders as a heading and a legend explaining rows that are not there.
-    if not data.get("crew_rarity"):
+# Good news first, then the cost: what the sector adds to a store, then what it takes away.
+CHANGE_ORDER = ["unlocked", "more-common", "rarer", "excluded"]
+CHANGE_TONE = {"unlocked": "good", "more-common": "good", "rarer": "warn", "excluded": "bad"}
+
+
+def gates_html(data):
+    """Every blue option the pool can offer, and how many of its events offer it.
+
+    Derived whole from rollup.gates, which is why it carries no prose: the count is
+    events-that-offer-it, and no file states how often any of them is placed.
+    """
+    gates = data["rollup"]["gates"]
+    if not gates:
         return ""
     rows = []
-    for crew in data["crew_rarity"]:
-        filled = max(0, min(5, crew["rarity"]))
-        pips = "".join(
-            f'<i class="pip{"" if i < filled else " off"}"></i>' for i in range(5)
+    for gate in gates:
+        levels = sorted(gate.get("levels") or [], key=lambda v: (not v.isdigit(), v))
+        level = (
+            f'<span class="lv">{html.escape(VOC["gates"]["level_join"].join(levels))}</span>'
+            if levels else ""
         )
-        value = VOC["rarity"]["never"] if crew["rarity"] == 0 else str(crew["rarity"])
-        zero = " zero" if crew["rarity"] == 0 else ""
         rows.append(
-            f'<div class="rrow{zero}"><span>{html.escape(crew["label"])}</span>'
-            f'<span class="pips">{pips}</span><span class="v">{html.escape(value)}</span></div>'
+            f'<div class="grow"><span class="g">{html.escape(gate["label"])}</span>{level}'
+            f'<span class="h">{len(gate["events"])}</span></div>'
         )
+    meta = VOC["gates"]["meta"].format(
+        options=len(gates), hits=sum(len(g["events"]) for g in gates)
+    )
     return (
-        '<div class="panel"><h3>' + html.escape(VOC["headings"]["rarity"]) + "</h3>"
-        f'<div class="rar">{"".join(rows)}</div>'
-        f'<p class="note">{html.escape(VOC["rarity"]["note"])}</p></div>'
+        f'<div class="panel gp"><h3>{html.escape(VOC["gates"]["title"])}'
+        f'<span class="cnt">{html.escape(meta)}</span></h3>'
+        f'<div class="gates">{"".join(rows)}</div>'
+        f'<p class="note">{html.escape(VOC["gates"]["note"])}</p></div>'
+    )
+
+
+def crew_odds_html(data):
+    """What a store here can sell, and how likely each species is per slot.
+
+    Every number is arithmetic on the engine's own rule — candidate list = crew with
+    non-zero effective rarity, weight = 6 - rarity, one independent draw per slot —
+    read out of the binary, not inferred from the data. See the note the block carries.
+    """
+    odds = data.get("crew_store_odds") or {}
+    crew = odds.get("crew") or []
+    if not crew:
+        return ""
+    top = max(c["share"] for c in crew)
+    rows = []
+    for entry in crew:
+        # Bars are scaled against the sector's commonest species, not against 100%:
+        # at six species nothing clears 25% and every bar would read as a stub.
+        width = round(entry["share"] / top * 100, 1) if top else 0
+        rows.append(
+            f'<div class="crow"><span class="cl">{html.escape(entry["label"])}</span>'
+            f'<span class="cw">{entry["weight"]}</span>'
+            f'<span class="cbar"><i style="width:{width}%"></i></span>'
+            f'<span class="cp">{entry["share"]}%</span>'
+            f'<span class="cs">{entry["in_store"]}%</span></div>'
+        )
+    meta = VOC["crew_odds"]["meta"].format(types=len(crew), slots=odds.get("slots", 0))
+    head = (
+        f'<div class="crow chead"><span class="cl"></span>'
+        f'<span class="cw">{html.escape(VOC["crew_odds"]["head_weight"])}</span>'
+        f'<span class="cbar"></span>'
+        f'<span class="cp">{html.escape(VOC["crew_odds"]["head_slot"])}</span>'
+        f'<span class="cs">{html.escape(VOC["crew_odds"]["head_store"])}</span></div>'
+    )
+    return (
+        f'<div class="panel gp"><h3>{html.escape(VOC["crew_odds"]["title"])}'
+        f'<span class="cnt">{html.escape(meta)}</span></h3>'
+        f'<div class="crew">{head}{"".join(rows)}</div>'
+        f'<p class="note">{html.escape(VOC["crew_odds"]["note"])}</p>'
+        f'<p class="note src">{html.escape(VOC["crew_odds"]["note_source"])}</p></div>'
+    )
+
+
+def rarity_html(data):
+    """The sector's <rarityList> as a delta against base blueprint rarity.
+
+    Only rows the sector actually moves are shown — a value equal to base says
+    nothing — and crew lead, because which species a store can sell is the half of
+    this list a player acts on. A blueprint the files give no <rarity> is skipped
+    rather than guessed at.
+    """
+    listed = data.get("crew_rarity") or []
+    shifted = [r for r in listed if r["change"] not in ("same", "unknown")]
+    if not shifted:
+        return ""
+
+    def sort_key(row):
+        return (CHANGE_ORDER.index(row["change"]), row["label"].lower())
+
+    body = []
+    for is_crew, heading in ((True, VOC["rarity"]["crew"]), (False, VOC["rarity"]["other"])):
+        group = sorted((r for r in shifted if r["crew"] is is_crew), key=sort_key)
+        if not group:
+            continue
+        body.append(f'<div class="rgroup">{html.escape(heading)}</div>')
+        for row in group:
+            move = f'{row["base"]} {VOC["rarity"]["arrow"]} {row["rarity"]}'
+            verdict = VOC["rarity"]["change"][row["change"]]
+            body.append(
+                f'<div class="rrow"><span class="rl">{html.escape(row["label"])}</span>'
+                f'<span class="v">{html.escape(move)}</span>'
+                f'<span class="chip {CHANGE_TONE[row["change"]]}">{html.escape(verdict)}</span></div>'
+            )
+    meta = VOC["rarity"]["meta"].format(changed=len(shifted), listed=len(listed))
+    return (
+        f'<div class="panel gp"><h3>{html.escape(VOC["rarity"]["title"])}'
+        f'<span class="cnt">{html.escape(meta)}</span></h3>'
+        f'<div class="rar">{"".join(body)}</div>'
+        f'<p class="note">{html.escape(VOC["rarity"]["note"])}</p>'
+        f'<p class="note src">{html.escape(VOC["rarity"]["note_source"])}</p></div>'
+    )
+
+
+def glance_html(data):
+    """The two generated stat blocks, above the budget. Omitted entirely when a
+    sector has neither — the Last Stand gates nothing and overrides nothing."""
+    blocks = [b for b in (gates_html(data), crew_odds_html(data), rarity_html(data)) if b]
+    if not blocks:
+        return ""
+    return (
+        f'<section><h2>{html.escape(VOC["headings"]["glance"])}'
+        f'<span class="meta">{html.escape(VOC["headings"]["glance_meta"])}</span></h2>'
+        f'<div class="glance">{"".join(blocks)}</div></section>'
     )
 
 
@@ -411,9 +568,6 @@ def panels_html(data, copy, titles, slug):
             f'<div class="panel"><h3>{inline(panel["title"], titles, slug, "panels")}</h3>'
             f"<ul>{items}</ul></div>"
         )
-    rarity = rarity_html(data)
-    if rarity:
-        out.append(rarity)
     return f'<div class="cols">{"".join(out)}</div>'
 
 
@@ -530,7 +684,8 @@ def render(data, copy):
     for group in data["rollup"]["quest_targets"]:
         titles.setdefault(group["value"], group["value"])
 
-    parts = [header_html(data, copy, titles, slug), stats_html(data, copy)]
+    parts = [header_html(data, copy, titles, slug), stats_html(data, copy),
+             glance_html(data)]
 
     budget = [
         f'<h2>{html.escape(VOC["headings"]["budget"])}'

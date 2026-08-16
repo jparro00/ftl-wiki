@@ -18,219 +18,363 @@
     {
       "id": "engi",
       "label": "Engi",
-      "rarity": 0
+      "crew": true,
+      "rarity": 0,
+      "base": 2,
+      "change": "excluded"
     },
     {
       "id": "mantis",
       "label": "Mantis",
-      "rarity": 0
+      "crew": true,
+      "rarity": 0,
+      "base": 2,
+      "change": "excluded"
     },
     {
       "id": "energy",
       "label": "Zoltan",
-      "rarity": 0
+      "crew": true,
+      "rarity": 0,
+      "base": 5,
+      "change": "excluded"
     },
     {
       "id": "slug",
       "label": "Slug",
-      "rarity": 0
+      "crew": true,
+      "rarity": 0,
+      "base": 0,
+      "change": "same"
     },
     {
       "id": "rock",
       "label": "Rockman",
-      "rarity": 0
+      "crew": true,
+      "rarity": 0,
+      "base": 3,
+      "change": "excluded"
     },
     {
       "id": "human",
       "label": "Human",
-      "rarity": 0
+      "crew": true,
+      "rarity": 0,
+      "base": 1,
+      "change": "excluded"
     },
     {
       "id": "crystal",
       "label": "Crystal",
-      "rarity": 1
+      "crew": true,
+      "rarity": 1,
+      "base": 0,
+      "change": "unlocked"
     },
     {
       "id": "LASER_BURST_1",
       "label": "Defense Laser Mark I",
-      "rarity": 0
+      "crew": false,
+      "rarity": 0,
+      "base": 0,
+      "change": "same"
     },
     {
       "id": "LASER_BURST_2",
       "label": "Dual Shot Laser",
-      "rarity": 0
+      "crew": false,
+      "rarity": 0,
+      "base": 0,
+      "change": "same"
     },
     {
       "id": "LASER_BURST_2_A",
       "label": "Burst Laser Mark I",
-      "rarity": 0
+      "crew": false,
+      "rarity": 0,
+      "base": 1,
+      "change": "excluded"
     },
     {
       "id": "LASER_BURST_3",
       "label": "Burst Laser Mark II",
-      "rarity": 0
+      "crew": false,
+      "rarity": 0,
+      "base": 4,
+      "change": "excluded"
     },
     {
       "id": "LASER_BURST_5",
       "label": "Burst Laser Mark III",
-      "rarity": 0
+      "crew": false,
+      "rarity": 0,
+      "base": 4,
+      "change": "excluded"
     },
     {
       "id": "LASER_HEAVY_1",
       "label": "Heavy Laser Mark I",
-      "rarity": 0
+      "crew": false,
+      "rarity": 0,
+      "base": 2,
+      "change": "excluded"
     },
     {
       "id": "LASER_HEAVY_2",
       "label": "Heavy Laser Mark II",
-      "rarity": 0
+      "crew": false,
+      "rarity": 0,
+      "base": 4,
+      "change": "excluded"
     },
     {
       "id": "MISSILES_1",
       "label": "Leto Missiles",
-      "rarity": 0
+      "crew": false,
+      "rarity": 0,
+      "base": 0,
+      "change": "same"
     },
     {
       "id": "MISSILES_2",
       "label": "Artemis Missiles",
-      "rarity": 0
+      "crew": false,
+      "rarity": 0,
+      "base": 0,
+      "change": "same"
     },
     {
       "id": "MISSILES_2_PLAYER",
       "label": "Artemis Missiles",
-      "rarity": 0
+      "crew": false,
+      "rarity": 0,
+      "base": 0,
+      "change": "same"
     },
     {
       "id": "MISSILES_3",
       "label": "Hermes Missile",
-      "rarity": 0
+      "crew": false,
+      "rarity": 0,
+      "base": 2,
+      "change": "excluded"
     },
     {
       "id": "MISSILES_BURST",
       "label": "Pegasus Missile",
-      "rarity": 0
+      "crew": false,
+      "rarity": 0,
+      "base": 3,
+      "change": "excluded"
     },
     {
       "id": "MISSILES_BREACH",
       "label": "Breach Missiles",
-      "rarity": 0
+      "crew": false,
+      "rarity": 0,
+      "base": 3,
+      "change": "excluded"
     },
     {
       "id": "BEAM_1",
       "label": "Mini Beam",
-      "rarity": 0
+      "crew": false,
+      "rarity": 0,
+      "base": 0,
+      "change": "same"
     },
     {
       "id": "BEAM_2",
       "label": "Halberd Beam",
-      "rarity": 0
+      "crew": false,
+      "rarity": 0,
+      "base": 2,
+      "change": "excluded"
     },
     {
       "id": "BEAM_3",
       "label": "Glaive Beam",
-      "rarity": 0
+      "crew": false,
+      "rarity": 0,
+      "base": 5,
+      "change": "excluded"
     },
     {
       "id": "BEAM_LONG",
       "label": "Pike Beam",
-      "rarity": 0
+      "crew": false,
+      "rarity": 0,
+      "base": 2,
+      "change": "excluded"
     },
     {
       "id": "BEAM_FIRE",
       "label": "Fire Beam",
-      "rarity": 0
+      "crew": false,
+      "rarity": 0,
+      "base": 3,
+      "change": "excluded"
     },
     {
       "id": "BOMB_BREACH_1",
       "label": "Breach Bomb Mark I",
-      "rarity": 0
+      "crew": false,
+      "rarity": 0,
+      "base": 0,
+      "change": "same"
     },
     {
       "id": "BOMB_BREACH_2",
       "label": "Breach Bomb Mark II",
-      "rarity": 0
+      "crew": false,
+      "rarity": 0,
+      "base": 4,
+      "change": "excluded"
     },
     {
       "id": "ION_1",
       "label": "Ion Blast",
-      "rarity": 0
+      "crew": false,
+      "rarity": 0,
+      "base": 3,
+      "change": "excluded"
     },
     {
       "id": "ION_2",
       "label": "Heavy Ion",
-      "rarity": 0
+      "crew": false,
+      "rarity": 0,
+      "base": 3,
+      "change": "excluded"
     },
     {
       "id": "ION_4",
       "label": "Ion Blast Mark II",
-      "rarity": 0
+      "crew": false,
+      "rarity": 0,
+      "base": 4,
+      "change": "excluded"
     },
     {
       "id": "BOMB_1",
       "label": "Small Bomb",
-      "rarity": 0
+      "crew": false,
+      "rarity": 0,
+      "base": 1,
+      "change": "excluded"
     },
     {
       "id": "BOMB_FIRE",
       "label": "Fire Bomb",
-      "rarity": 0
+      "crew": false,
+      "rarity": 0,
+      "base": 2,
+      "change": "excluded"
     },
     {
       "id": "BOMB_ION",
       "label": "Ion Bomb",
-      "rarity": 0
+      "crew": false,
+      "rarity": 0,
+      "base": 3,
+      "change": "excluded"
     },
     {
       "id": "BOMB_HEAL",
       "label": "Healing Burst",
-      "rarity": 0
+      "crew": false,
+      "rarity": 0,
+      "base": 3,
+      "change": "excluded"
     },
     {
       "id": "LASER_HULL_1",
       "label": "Hull Smasher Laser",
-      "rarity": 0
+      "crew": false,
+      "rarity": 0,
+      "base": 2,
+      "change": "excluded"
     },
     {
       "id": "LASER_HULL_2",
       "label": "Hull Smasher Laser Mark II",
-      "rarity": 0
+      "crew": false,
+      "rarity": 0,
+      "base": 3,
+      "change": "excluded"
     },
     {
       "id": "BEAM_HULL",
       "label": "Hull Beam",
-      "rarity": 0
+      "crew": false,
+      "rarity": 0,
+      "base": 3,
+      "change": "excluded"
     },
     {
       "id": "MISSILES_HULL",
       "label": "Hull Missile",
-      "rarity": 0
+      "crew": false,
+      "rarity": 0,
+      "base": 3,
+      "change": "excluded"
     },
     {
       "id": "BOMB_LOCK",
       "label": "Crystal Lockdown Bomb",
-      "rarity": 3
+      "crew": false,
+      "rarity": 3,
+      "base": 0,
+      "change": "unlocked"
     },
     {
       "id": "CRYSTAL_BURST_1",
       "label": "Crystal Burst Mark I",
-      "rarity": 1
+      "crew": false,
+      "rarity": 1,
+      "base": 0,
+      "change": "unlocked"
     },
     {
       "id": "CRYSTAL_BURST_2",
       "label": "Crystal Burst Mark II",
-      "rarity": 4
+      "crew": false,
+      "rarity": 4,
+      "base": 0,
+      "change": "unlocked"
     },
     {
       "id": "CRYSTAL_HEAVY_1",
       "label": "Heavy Crystal Mark I",
-      "rarity": 2
+      "crew": false,
+      "rarity": 2,
+      "base": 0,
+      "change": "unlocked"
     },
     {
       "id": "CRYSTAL_HEAVY_2",
       "label": "Heavy Crystal Mark II",
-      "rarity": 5
+      "crew": false,
+      "rarity": 5,
+      "base": 0,
+      "change": "unlocked"
     }
   ],
+  "crew_store_odds": {
+    "slots": 3,
+    "total_weight": 5,
+    "crew": [
+      {
+        "id": "crystal",
+        "label": "Crystal",
+        "rarity": 1,
+        "listed": true,
+        "weight": 5,
+        "share": 100.0,
+        "in_store": 100.0
+      }
+    ]
+  },
   "start_event": {
     "id": "START_BEACON_CRYSTAL",
     "slug": "start-beacon-crystal",
@@ -1403,6 +1547,11 @@
         "fleet_delay": []
       }
     ],
+    "fallback_beacons": {
+      "min": 0,
+      "max": 0,
+      "on_full_map": 0
+    },
     "exit_list": "EXIT_LIST",
     "source": "raw/wiki/sectors.md"
   },
@@ -1483,8 +1632,11 @@
     "quest_starts": [],
     "gates": [
       {
+        "label": "Crystal crew",
+        "reqs": [
+          "crystal"
+        ],
         "req": "crystal",
-        "label": "Crystal",
         "levels": [],
         "events": [
           "CRYSTAL_CACHE",
@@ -1492,32 +1644,44 @@
         ]
       },
       {
-        "req": "BACKUP_DNA",
         "label": "Backup DNA Bank",
+        "reqs": [
+          "BACKUP_DNA"
+        ],
+        "req": "BACKUP_DNA",
         "levels": [],
         "events": [
           "CRYSTAL_HUMAN_TESTS"
         ]
       },
       {
-        "req": "FLEET_DISTRACTION",
-        "label": "Distraction Buoys",
-        "levels": [],
-        "events": [
-          "CRYSTAL_REQUEST"
-        ]
-      },
-      {
-        "req": "MISSILES_BREACH",
         "label": "Breach Missiles",
+        "reqs": [
+          "MISSILES_BREACH"
+        ],
+        "req": "MISSILES_BREACH",
         "levels": [],
         "events": [
           "CRYSTAL_CACHE"
         ]
       },
       {
-        "req": "engines",
+        "label": "Distraction Buoys",
+        "reqs": [
+          "FLEET_DISTRACTION"
+        ],
+        "req": "FLEET_DISTRACTION",
+        "levels": [],
+        "events": [
+          "CRYSTAL_REQUEST"
+        ]
+      },
+      {
         "label": "Engines",
+        "reqs": [
+          "engines"
+        ],
+        "req": "engines",
         "levels": [
           "7"
         ],
@@ -1526,16 +1690,22 @@
         ]
       },
       {
+        "label": "Rock crew",
+        "reqs": [
+          "rock"
+        ],
         "req": "rock",
-        "label": "Rockman",
         "levels": [],
         "events": [
           "CRYSTAL_HUMAN_TESTS"
         ]
       },
       {
+        "label": "Teleporter",
+        "reqs": [
+          "teleporter"
+        ],
         "req": "teleporter",
-        "label": "Crew Teleporter",
         "levels": [
           "2"
         ],
@@ -1608,6 +1778,11 @@
     "quest_targets": []
   },
   "metrics": {
+    "blue_options": 7,
+    "blue_option_hits": 8,
+    "store_rarity_changes": 35,
+    "crew_rarity_changes": 6,
+    "crew_types_sold": 1,
     "grid_beacons": 24,
     "at_risk_entries": 0,
     "beacons_min": 25,

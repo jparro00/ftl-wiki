@@ -40,7 +40,12 @@ GAME = pathlib.Path(r"D:\Steam\steamapps\common\FTL Faster Than Light")
 
 # Hyperspace must be patched first -- this mod adds a <script> to the <scripts>
 # element Hyperspace itself defines, so that element has to exist already.
-PATCH_ORDER = ["Hyperspace.ftl", "event-labels.ftl", "beacon-reveal.ftl"]
+#
+# `map-signal.ftl` rides along because --patch applies exactly what it is given and
+# reverts everything else: omitting it here would silently uninstall it, and the only
+# symptom would be the save watcher quietly going back to guessing which screen the
+# player is on (SAVE-WATCH.md §5c).
+PATCH_ORDER = ["Hyperspace.ftl", "event-labels.ftl", "map-signal.ftl", "beacon-reveal.ftl"]
 
 LUA_NAME = "beacon-reveal.lua"
 

@@ -148,7 +148,7 @@ Grouped by sector; events reaching several sectors are listed under **Cross-sect
 
 ### Cross-sector
 
-- [[event-abandoned-station]] — A filler beacon with an abandoned station you may examine. Six equally-likely outcomes: three are harmless… | `EMPTY_STATION2` · any · ae | Updated: 2026-08-09
+- [[event-abandoned-station]] — A filler beacon with an abandoned station you may examine. Six equally-likely outcomes: three are harmless… | `EMPTY_STATION2` · any · ae — the entire `NEUTRAL`→`OVERRIDE_NEUTRAL` delta | Updated: 2026-08-16
 - [[event-asteroid-belt-distress]] — A civilian miner is being torn apart by an asteroid belt with its shields down. It is one of the most… | `CIVILIAN_ASTEROIDS_BEACON` · distress · both | Updated: 2026-08-09
 - [[event-asteroid-mining-colony]] — A pure trade: hand over missiles, get something back. Five missiles buys one of scrap, hull repairs, or a… | `HELP_MINERS` · any · ae | Updated: 2026-08-09
 - [[event-auto-ship-attacking-civilian]] — An optional auto-ship fight with a rescue attached: intervene, kill the automated scout, and you get a roll… | `AUTO_CIVILIAN` · hostile · both | Updated: 2026-08-09
@@ -499,7 +499,7 @@ _Reached by quest marker, fleet or boss logic, or unreachable — see [[concept-
 - [[sector-rock-homeworlds]] — Unique Rock home sector, and the gateway to the Crystal route: it guarantees both the | ROCK_HOME · hostile | Updated: 2026-08-15
 - [[sector-slug-controlled-nebula]] — Slug space, and a nebula sector throughout. The widest event pool in the game at 11 | SLUG_SECTOR · nebula | Updated: 2026-08-15
 - [[sector-slug-home-nebula]] — Unique Slug home sector — the largest event pool in the game at 12 allocation lines. | SLUG_HOME · nebula | Updated: 2026-08-15
-- [[sector-the-last-stand]] — The final sector. Its pool is entirely boss-specific — no ordinary event lists appear | FINAL · special | Updated: 2026-08-15
+- [[sector-the-last-stand]] — The final sector. Its pool is entirely boss-specific — no ordinary event lists appear | FINAL · special | Updated: 2026-08-16
 - [[sector-uncharted-nebula]] — The unfactioned nebula sector. Its pool is built from dedicated NEBULA_ lists rather | NEBULA_SECTOR · nebula | Updated: 2026-08-15
 - [[sector-vestigial-definitions]] — Two <sectorDescription> entries in sector_data.xml that appear to be dead stubs. | DEEP_SPACE_SECTOR, ABANDONED_SECTOR | Updated: 2026-08-09
 - [[sector-zoltan-controlled-sector]] — Zoltan space. Guarantees a ZOLTAN_CREW_STUDY beacon even in the non-home variant — | ZOLTAN_SECTOR · civilian | Updated: 2026-08-15
@@ -603,7 +603,7 @@ _Reached by quest marker, fleet or boss logic, or unreachable — see [[concept-
 - [[concept-anti-ship-battery]] — The Anti-Ship Battery — the `PDS` hazard | both | Updated: 2026-08-13
 - [[concept-asteroid-fields]] — Asteroid fields | both | Updated: 2026-08-13
 - [[concept-augmentations]] — Augmentations | both | Updated: 2026-08-13
-- [[concept-autoreward-tiers]] — `autoReward` — the reward matrix, and what it does not tell you | both | Updated: 2026-08-13
+- [[concept-autoreward-tiers]] — `autoReward` — the reward matrix, and what it is worth: scrap by sector, flat resources, the bonus roll, precedence | both | Updated: 2026-08-16
 - [[concept-blue-options]] — Blue options — how `req=` gates work | both | Updated: 2026-08-09
 - [[concept-blueprint-rarity]] — `rarity` on blueprints — what the files do and don't say | both | Updated: 2026-08-09
 - [[concept-crew-loss-risk]] — Crew-loss risk | both | Updated: 2026-08-13
@@ -623,13 +623,13 @@ _Reached by quest marker, fleet or boss logic, or unreachable — see [[concept-
 - [[concept-power-and-reactor]] — Power — the reactor, and the two things that aren't it (cost curve, 25-bar cap) | ae | Updated: 2026-08-14
 - [[concept-quest-beacon-placement]] — Where a quest beacon lands — and when the quest is silently thrown away | unknown | Updated: 2026-08-13
 - [[concept-rebel-fleet-advance]] — The Rebel fleet advance and `modifyPursuit` | both | Updated: 2026-08-09
-- [[concept-scrap-economy]] — The scrap economy | both | Updated: 2026-08-13
-- [[concept-sector-event-allocation]] — How events get allocated to beacons — and what "unreachable" can mean; `OVERRIDE_X` substitution resolved for sector allocation | both | Updated: 2026-08-15
+- [[concept-scrap-economy]] — The scrap economy — precise about costs, tiered about rewards; scrap is the only axis that scales with depth | both | Updated: 2026-08-16
+- [[concept-sector-event-allocation]] — How events get allocated to beacons — and what "unreachable" can mean; `OVERRIDE_X` substitution resolved for sector allocation; the leftover-beacon `NEUTRAL` fallback and its one-event AE delta | both | Updated: 2026-08-16
 - [[concept-ship-unlocks]] — Ship unlocks | both | Updated: 2026-08-13
 - [[concept-solar-flares]] — Solar flares — the `sun` hazard | both | Updated: 2026-08-13
 - [[concept-start-beacons]] — Start beacons — the sector-entry events | both | Updated: 2026-08-13
 - [[concept-stores]] — Stores — the `<store/>` tag, store beacons, and what they stock | both | Updated: 2026-08-13
-- [[concept-surrender-offers]] — Surrender offers and the `chance` attribute | both | Updated: 2026-08-13
+- [[concept-surrender-offers]] — Surrender offers and the `chance` attribute; what a surrender pays, and why Slug offers are blind | both | Updated: 2026-08-16
 
 ## Sources
 
@@ -862,6 +862,7 @@ One page per ingested Fandom page, all `game_version: unknown`. Listed in `raw/w
 - [[source-fandom-plagued-station]] — raw/wiki/plagued-station.md
 - [[source-fandom-plasma-storm-incapacitated-ships]] — raw/wiki/plasma-storm-incapacitated-ships.md
 - [[source-fandom-random-events]] — raw/wiki/random-events.md — **the hub page**, not an event page: quest placement, `unique` scope, what LRS reports
+- [[source-fandom-rarity]] — raw/wiki/rarity.md | a one-line redirect to Stores and resources#Items and crew rarity; there is no separate Fandom page on rarity | both | Ingested: 2026-08-16
 - [[source-fandom-rebel-checkpoint]] — raw/wiki/rebel-checkpoint.md
 - [[source-fandom-rebel-defector]] — raw/wiki/rebel-defector.md
 - [[source-fandom-rebel-fight]] — raw/wiki/rebel-fight.md
@@ -903,6 +904,7 @@ One page per ingested Fandom page, all `game_version: unknown`. Listed in `raw/w
 - [[source-fandom-repair-station]] — raw/wiki/repair-station.md
 - [[source-fandom-repair-station-in-last-stand]] — raw/wiki/repair-station-in-last-stand.md
 - [[source-fandom-research-station-with-no-response]] — raw/wiki/research-station-with-no-response.md
+- [[source-fandom-rewards]] — raw/wiki/rewards.md | rev 74729 | both | **the numbers behind `autoReward`: scrap by sector, flat resources, the 3%/6% bonus-item roll, reward precedence, Lanius default rewards** | Ingested: 2026-08-16
 - [[source-fandom-rock-and-slug-standoff]] — raw/wiki/rock-and-slug-standoff.md
 - [[source-fandom-rock-atheists]] — raw/wiki/rock-atheists.md
 - [[source-fandom-rock-bride]] — raw/wiki/rock-bride.md
@@ -962,6 +964,8 @@ One page per ingested Fandom page, all `game_version: unknown`. Listed in `raw/w
 - [[source-fandom-template-stores-number-of-stores-by-sectors]] — raw/wiki/template-stores-number-of-stores-by-sectors.md | rev 73433 | **guaranteed stores per sector, all 13 types; matches sector_data.xml exactly** | Ingested: 2026-08-15
 - [[source-fandom-template-stores-additional-stores-from-events-by-sectors]] — raw/wiki/template-stores-additional-stores-from-events-by-sectors.md | rev 73435 | which store-spawning events reach which sector | Ingested: 2026-08-15
 - [[source-fandom-template-distress-events-by-sectors]] — raw/wiki/template-distress-events-by-sectors.md | rev 74574 | **the 30 distress-marked events + what LRS shows at each; matches the 30 `<distressBeacon/>` tags exactly** | Ingested: 2026-08-15
+- [[source-fandom-template-scrap-rewards-normal]] — raw/wiki/template-scrap-rewards-normal.md | rev 72605 | **`LOW`/`MED`/`HIGH` scrap by sector, Normal difficulty — the table that closes the wiki's largest open question** | both | Ingested: 2026-08-16
+- [[source-fandom-template-resources-rewards]] — raw/wiki/template-resources-rewards.md | rev 72607 | **fuel / missiles / drone parts per level; flat across sector and difficulty** | both | Ingested: 2026-08-16
 - [[source-fandom-the-black-raven]] — raw/wiki/the-black-raven.md
 - [[source-fandom-the-engi-virus]] — raw/wiki/the-engi-virus.md
 - [[source-fandom-the-mercenary]] — raw/wiki/the-mercenary.md
@@ -999,6 +1003,8 @@ page. `source_kind: research` and the `raw/modding/` directory are extensions be
 - [[source-xftl-oxygen-mechanics]] — raw/modding/2026-08-14-xftl-oxygen-mechanics.txt | reverse-engineered engine constants for oxygen | unknown | Ingested: 2026-08-14
 - [[source-xftl-sector-map]] — raw/modding/2026-08-15-xftl-sector-map.txt | **the sector graph, the 6×4 beacon grid, exit placement, `AddQuest`, and the fleet advance in px/jump** | unknown | Ingested: 2026-08-15
 - [[source-xftl-stores]] — raw/modding/2026-08-15-xftl-stores.txt | store section generation, system selection, resource stock ranges | both | Ingested: 2026-08-15
+- [[source-store-crew-selection-disassembly]] — raw/modding/2026-08-16-store-crew-selection-disassembly.md | the store crew-draw algorithm read out of FTLGame_orig.exe: weight = 6 − rarity, 0 excluded, 3 independent slots, rarityList overlays base | both | Ingested: 2026-08-16
+- [[source-ftl-dat-rarity-corpus-search]] — raw/modding/2026-08-16-ftl-dat-rarity-corpus-search.md | recorded negative: rarity is in only 3 data files in all of ftl.dat, all already held; the 164-entry uncopied diff; raw/gamedata verified not stale against a Hyperspace-modded install | both | Ingested: 2026-08-16
 
 ### Vendor documentation
 

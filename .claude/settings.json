@@ -22,13 +22,9 @@
       "Bash(python --version)",
       "Bash(node --version)"
     ],
-    "deny": [
-      "Write(raw/gamedata/**)",
-      "Edit(raw/gamedata/**)",
-      "Write(raw/wiki/**)",
-      "Edit(raw/wiki/**)",
-      "Write(raw/runs/**)",
-      "Edit(raw/runs/**)"
+    "ask": [
+      "Write(raw/**)",
+      "Edit(raw/**)"
     ]
   }
 }
