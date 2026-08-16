@@ -7,8 +7,8 @@ Prints the whole page — header, facts, the glance blocks, the beacon budget, e
 event row, the markers, the chain and the panels. Anything the page can show must
 appear in this dump, or a defect there is invisible.
 
-The stat tiles and the footnotes were cut from the design (SECTOR-PAGE-REDESIGN.md
-§2.2, §2.9), so the checks that required them are gone with them.
+A sector page has no stat tiles and no footnotes, so nothing here checks for them —
+see tools/SECTOR-PAGE.md §6 for the page this expects and §7 for what it checks.
 
 Exit code 1 if any check fails. Required before publishing (tools/SECTOR-PAGE.md §7).
 """

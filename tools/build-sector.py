@@ -45,10 +45,9 @@ CARD_DATA = "../cards/data/{slug}.js"
 LOADER = TOOLS / "sector-cards.js"
 TOGGLE = TOOLS / "sector-toggle.js"
 
-# `stats` and `callout` are dead keys: the stat tiles and the boxed note were both cut
-# from the page (SECTOR-PAGE-REDESIGN.md §2.2, §2.6). They are still accepted so that
-# the copy files stay buildable until the copy pass deletes them, and ignored so that
-# nothing they hold can reach a page. Drop them from this set once that pass has run.
+# Five keys, and `stats` and `callout` are deliberately not among them: the tiles and the
+# boxed note were cut from the page, so a copy file carrying either is stale rather than
+# harmless, and failing the build is how it gets found (SECTOR-PAGE.md §5).
 COPY_KEYS = {"slug", "lede", "section_notes", "panels", "chain"}
 REQUIRED = {"slug", "lede", "panels"}
 

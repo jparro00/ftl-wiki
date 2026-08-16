@@ -451,9 +451,7 @@ where these pages are read; a published page can only offer the corner link. `SE
 §6.1 has the why.
 
 **Read `tools/SECTOR-PAGE.md` and follow it** — same reasoning as the card spec: this file is
-injected at session start and can lag the working tree, so the spec is authoritative. A
-redesign of these pages is agreed on one sector and not yet built: read
-`tools/SECTOR-PAGE-REDESIGN.md` alongside it before changing anything here.
+injected at session start and can lag the working tree, so the spec is authoritative.
 
 What stays true regardless:
 

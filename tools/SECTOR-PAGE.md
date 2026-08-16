@@ -3,12 +3,6 @@
 Normative spec for the FTL sector-profile pipeline. It is self-contained: an agent with no
 prior context can build, verify and extend a sector page from this document alone.
 
-> **A redesign is agreed but not implemented.** `tools/SECTOR-PAGE-REDESIGN.md` is the delta:
-> it was reviewed to completion on Federation Space (mock at
-> `sectors/sector-federation-space-mock.html`) and changes the page order, the glance blocks,
-> the budget and the footnotes. This document still describes what the pipeline *builds today*
-> and stays normative until the rollout lands. Read both before changing a sector page.
-
 A **sector page** is a single-page, self-contained HTML profile of one FTL sector — what it
 must place, everything it can throw at you, and what is worth having when you fly in. Where
 an event card (`tools/EVENT-CARD.md`) answers *"what do I pick right now?"*, a sector page
@@ -21,11 +15,16 @@ Sector pages are **generated**. No number and no event name is ever typed into H
 ## 1. Quick start
 
 ```bash
+export PYTHONIOENCODING=utf-8                       # not optional on Windows — see §10
 python tools/extract-sector.py ENGI_HOME            # → sectors/data/engi-homeworlds.sector.json
 # write tools/sector-copy/engi-homeworlds.json      # → the words, and only the words (§5)
 python tools/build-sector.py engi-homeworlds        # → sectors/sector-engi-homeworlds.html
 python tools/smoke-sector.py sectors/sector-engi-homeworlds.html
 ```
+
+The encoding line is part of the quick start, not a footnote to it: `smoke-sector.py` prints
+the page, the page contains `↗` and `–`, and a cp1252 console kills the check mid-dump with a
+`UnicodeEncodeError` that looks like a pipeline fault and is not one.
 
 `--all` works on both scripts. The **sector id is the only input** to extraction; find it in
 `raw/gamedata/sector_data.xml` or read `sector_id:` off `wiki/sectors/<slug>.md`. The slug
@@ -47,6 +46,8 @@ comes from the join in §4.6 — use the path the extractor prints rather than a
 | `tools/sector-toggle.js` | makes the blue-options box toggle from anywhere in the box, not only its summary | code only — **no English, no paths** |
 | `tools/smoke-sector.py` | renders a built page as text and checks it | code only |
 | `tools/smoke-inline.py` | drives a built page in a real browser and checks the boxes open | code only |
+| `tools/build-sector-index.py` | the chooser above the nineteen (§7b) | code only |
+| `sectors/mockups/review-layer.html` | the in-browser commenting layer for a review round (§7c) | code only |
 | `sectors/data/<slug>.sector.json` | generated profile (regenerable data, not a page) | never |
 | `sectors/sector-<slug>.html` | the built page; publish target | never |
 
@@ -55,8 +56,11 @@ Inputs consumed:
 - `raw/gamedata/sector_data.xml` — the allocation table: every count on a page comes from here
 - `raw/gamedata/events*.xml`, `newEvents.xml`, `dlcEvents*.xml` — event-list membership
 - `raw/gamedata/text_sectorname.xml` — the sector's in-game display name
-- `raw/gamedata/blueprints.xml` + `dlcBlueprints.xml` + `text_blueprints.xml` — names, base
-  `<rarity>`, and which ids are `crewBlueprint`s, for the rarity block (§4.3b)
+- `raw/gamedata/blueprints.xml` + `dlcBlueprints.xml` + `text_blueprints.xml` — names and base
+  `<rarity>`, plus three membership questions nothing else answers: which ids are
+  `crewBlueprint`s (§4.3b, §4.3c), which are `systemBlueprint`s — the only thing that says a
+  gate's `lvl` means anything (§4.3) — and which crew carry `NOLOC="1"`, the engine's own
+  dummies (§4.3c)
 - `cards/trees/*.tree.json` — **every per-event tag, gate, item and crew fact** (§4.3)
 - `wiki/sectors/*.md` — the `sector_id:` → (slug, title) join (§4.6)
 
@@ -70,9 +74,11 @@ that already exist for those events. If an event has no tree, build it first
 
 These hold for every sector page. Breaking one is a bug, not a preference.
 
-- **S1 — Numbers come from the data, never from the copy.** A stat tile names a *metric id*
-  and supplies a label; `build-sector.py` fills in the number. There is no way to type a
-  number into a tile, and that is deliberate.
+- **S1 — Numbers come from the data, never from the copy.** Every figure a page shows — the
+  budget counts and block odds, the heading's spread and pool size, the hit counts, the store
+  percentages — is read from `sectors/data/<slug>.sector.json` by the renderer. The copy file
+  has no field that takes a number, and that is deliberate: the one thing the build cannot
+  check is a sentence (§5 rule 1), so nothing that *can* be checked is left to prose.
 - **S2 — Prose names events by id, not by title.** Copy writes `{{ENGI_VIRUS}}`; the renderer
   resolves the title. An id the sector cannot produce **fails the build**, so a page can never
   mention an event that is not in its pool.
@@ -80,11 +86,31 @@ These hold for every sector page. Breaking one is a bug, not a preference.
   root; `may-fight` means combat exists below a choice. Read from the tree, not from which
   list the event sits in.
 - **S4 — No invented odds.** The shipped event lists carry no weights (EVENT-CARD.md I2), so
-  no pool row gets a percentage. A list that names the same event twice is `×2` — that
-  repetition is the only weight the files contain.
-- **S5 — Open questions stay open.** Where the data does not say (does `OVERRIDE_X` replace
-  `X`? is `unique` per sector or per run?), the page states the uncertainty rather than
-  picking a side silently. §4.4 and §4.5.
+  **no pool row ever gets a percentage**. A list that names the same event twice is `×2` —
+  that repetition is the only weight the files contain. The two percentages a page does show
+  are arithmetic on a stated rule, not a guess about a list: the budget's faded blocks are
+  `P(roll ≥ k)` over the line's own min–max (§4.1b), and the store-crew shares are the
+  engine's `6 − rarity` weighting read out of the binary (§4.3c).
+
+  > **Sector pages are exempt from S4's disclosure half.** The card pipeline states an odds
+  > figure's provenance beside it; these pages do not, because the footer that would carry it
+  > was cut (user decision, 2026-08-16 — no sources, no disclosure, no link out). The evidence
+  > is not lost, only off the page: `wiki/concepts/blueprint-rarity.md`,
+  > `wiki/concepts/sector-event-allocation.md` and
+  > `raw/modding/2026-08-16-store-crew-selection-disassembly.md` hold it. A reader of a sector
+  > page cannot tell where a number came from; that is a known and accepted cost.
+- **S5 — Open questions stay open, in the wiki — not on the page.** The pipeline still
+  refuses to resolve what the data does not state: `OVERRIDE_X` is never merged into a pool
+  (§4.4), `unique` is never given a scope (§4.5), and the uniform min–max roll behind the
+  block odds is an assumption (§4.1b). What changed is **where the caveat is said**. Only one
+  survives on the page — the AE delta's "whether the engine uses this list instead is not
+  stated by any file here", which sits inside the block it qualifies. Every other open
+  question lives in `wiki/concepts/` (`event-uniqueness.md`, `sector-event-allocation.md`,
+  `blueprint-rarity.md`) and in §12 of this document.
+
+  > **This is an explicit exemption, not a lapse.** Sector pages carry no footer, no sources
+  > and no standing caveats. Do not add one back to a single page; if the decision is
+  > revisited it is a renderer change across all 19, and this invariant changes with it.
 - **S6 — No hand-edited HTML.** See §8 for where each class of fix belongs.
 - **S7 — Deterministic.** Same inputs → byte-identical output.
 
@@ -103,8 +129,9 @@ for exactly this reason, and Rock Controlled and the Civilian Sector both have o
 
 An entry name resolves to an `eventList` or to a single `<event>`. Three names
 (`BOARDERS_PIRATE`, `NEBULA_PIRATE`, `NEBULA_REBEL`) are defined as **both**, in different
-files. The extractor reads them as the list and marks the entry `ambiguous`; the page carries
-a footnote saying so.
+files. The extractor reads them as the list and marks the entry `ambiguous`. **Nothing on the
+page says so** — the footnote that carried it is gone (§3, S5); the flag is in the data and
+the ambiguity is here.
 
 ### 4.1b Placement order — the table is a queue, not a shopping list
 
@@ -133,17 +160,31 @@ reverse-engineering of the generator, not the game files):
   hardcoded to fill out a sector if it ran out of all other calls for that sector"*
   (`newEvents.xml`, `dlcEventsOverwrite.xml:139`). Those beacons are as real as allocated
   ones, so `generation.fallback_beacons` sizes them and the budget renders them as a
-  marked, unnumbered row (§4.1b-2, §6 item 4).
+  marked, unnumbered row (§4.1b-2, §6 item 3).
 - The **exit beacon is not in the table** — it draws from a shared `EXIT_LIST`, and an exit
   inside a cloud is always empty.
 
 So `entries` is kept in **file order** and carries `placement` (`position`, `nebula_first`,
-`before_min`, `before_max`, `at_risk`). An entry is `at_risk` when the lines placed before it
-could, at their maxima, consume all 24 beacons — a possibility, not a prediction. The
-`generation` block carries the totals and `can_exhaust_map`.
+`before_min`, `before_max`, `at_risk`, `always_short`):
+
+- **`at_risk`** — the lines placed before it could, at their maxima, consume all 24 beacons.
+  A possibility, not a prediction. Chipped `may be cut`.
+- **`always_short`** — the minima above it plus its own minimum already exceed 24, so it
+  cannot be satisfied even on the best roll. Chipped `always short`, and true on exactly one
+  line in the shipped data: `NEUTRAL_CRYSTAL`, the last line of Hidden Crystal Worlds.
+
+The `generation` block carries the totals, `can_exhaust_map`, `cannot_meet_minimum`, and the
+`at_risk_entries` / `always_short_entries` name lists.
+
+**Each line rolls its count uniformly** between its `min` and `max`, which is what lets the
+budget put a figure on a faded block: the k-th optional block lands whenever the roll reaches
+k, so it reads `P(roll ≥ k)`, a chance of *at least* that many. The source says only "randomly
+choose between the minimum and maximum (inclusive)" — uniform is the natural reading of that
+and it is what the page prints, but it is an assumption stated as a number (§12).
 
 Sorting entries into reading order — which this extractor originally did — throws that away.
-The budget section renders placement order; only the pool sections re-sort for reading.
+The budget is the only listing of the entries and it renders placement order, so nothing on a
+page re-sorts them. `entry["order"]` keeps the raw file index if anything ever needs it.
 
 > Worth knowing: the Fandom page states outright that it does **not** reflect the real file
 > order. `sector_data.xml` does, so these pages can show a placement order the community wiki
@@ -171,8 +212,18 @@ can allocate less than a small map holds, and then the fallback is not optional.
 
 Two things this row is **not**: it is not the `NEBULA` filler (a cloud drawn over an ordinary
 beacon converts it and it draws from `NEBULA` — a different list, a different cause), and it
-is not the exit beacon (`EXIT_LIST`, outside the table entirely). Both are stated separately
-in the generation notes so the three cannot be conflated.
+is not the exit beacon (`EXIT_LIST`, outside the table entirely). The cloud rule is stated in
+the generation note so the two cannot be conflated; the exit beacon is not on the page at all.
+
+**Two sectors need the row explained, and only they get a third generation line** (§6). Both
+say something no block on the page can show, which is the bar for adding one:
+
+| Condition | Where | The line says |
+|---|---|---|
+| `generation.cannot_meet_minimum` | Hidden Crystal Worlds | the table asks for 25 beacons against the 24 a map can hold, so its bottom is cut every time — and its fill-in row is a zero row |
+| the table names `NEUTRAL` as a numbered line too | both Slug nebulas | one pool reached two ways, not a doubled row — without it the budget appears to list `NEUTRAL` twice for no reason |
+
+The other 16 pages carry the two-paragraph note and nothing more.
 
 ### 4.1c Beacon markers — what the map shows before you jump
 
@@ -188,13 +239,20 @@ is the single most useful thing this pipeline can tell a player:
   > ⚠️ Fandom explains it by saying the neutral line is filled *before* the distress line.
   > That is wrong for the sectors it applies to: in `ENGI_HOME`, `ENGI_SECTOR` and both Rock
   > sectors, `sector_data.xml` places the distress line first. The *outcome* holds — the tag
-  > shows the marker wherever the event lands — but the mechanism does not, so the renderer
-  > derives the before/after clause per sector rather than asserting Fandom's version.
+  > shows the marker wherever the event lands — but the mechanism does not, so nothing on the
+  > page asserts a fill order for it. The one line under the distress section states the
+  > outcome only: some of these show up in the neutral pools, and not every beacon from the
+  > `DISTRESS` pool broadcasts a signal.
 - The reverse also happens: events allocated from a `DISTRESS_BEACON_*` list that carry no
   distress tag, and so never show the marker. Fandom calls these a mistake in the data.
 
 `rollup.markers` carries both directions (`events`, `marked_outside_allocation`,
-`allocated_but_unmarked`), plus store-marked events and an environment breakdown.
+`allocated_but_unmarked`), plus store-marked events and an environment breakdown. The same two
+facts are mirrored onto every event record as the `distress` and `store-marker` tags (§4.3),
+computed in the same place so a row and the rollup cannot drift apart — which is what lets a
+beacon box say what the map will draw *wherever it appears on the page*, not only inside the
+markers sections. The environment breakdown is not rendered as a section; the budget's cloud
+paragraph reads `storm` out of it (§6).
 
 ### 4.2 Sections
 
@@ -203,9 +261,14 @@ A section is read off the entry name, which is highly regular across all 19 sect
 distress, `ITEM*` → items, `STORE*` → store, `QUESTS*` → quests, `NOTHING*`/`NEBULA_EMPTY` →
 empty, `NEBULA*`/`STORM*` → nebula.
 
-Anything unmatched falls through to **special**, which sorts first — an unrecognised name is
-a named one-off beacon (`ENGI_UNLOCK_1`, `ROCK_UNLOCK1`, `FLAGSHIP_CONSTRUCTION`,
-`MANTIS_NAMED_THIEF`, `ZOLTAN_PEACE_QUEST`), and those are what lead a page.
+Anything unmatched falls through to **special** — an unrecognised name is a named one-off
+beacon (`ENGI_UNLOCK_1`, `ROCK_UNLOCK1`, `FLAGSHIP_CONSTRUCTION`, `MANTIS_NAMED_THIEF`,
+`ZOLTAN_PEACE_QUEST`), which is why the fallback is a category and not an error.
+
+The section drives two things and no third: the `section:<name>:min|max` metrics, and whether
+a budget row paints red (`hostile` and `boarders` do). `SECTION_ORDER` still exists in the
+extractor and orders the metrics; **nothing on the page is sorted by it**, because the budget
+renders placement order and there is no other listing of the entries.
 
 ### 4.3 Per-event facts
 
@@ -220,6 +283,26 @@ is walked — including its `chain[]`, so a multi-stage unlock is visible whole.
 | `crew` / `crew-loss` | `crew_gain` / `crew_loss`; a **negative** `crew_gain` is a loss, not a gain |
 | `store` / `quest` / `reward` / `cost` | a store opens; a quest marker is planted; something is gained; something is spent |
 | `unique` | the event's own `unique="true"` |
+| `distress` | the event's root `<distressBeacon/>` — the map draws a **distress marker** here |
+| `store-marker` | the event's root `<store/>` **or** a `store` node anywhere in its tree |
+
+The last two are the **marker tags**, and they are not ordinary tags. Ordinary tags are capped
+at three per row (`tag_limit`) and picked in `tag_order`; the marker tags sit outside that cap,
+because they say what the map shows *before you jump*, which is the fact a row is read for and
+the one that must never be squeezed off a busy row.
+
+> **The per-event marker tag is `store-marker`, not `store`.** `store` means "a store opens
+> somewhere in this tree". The two names are one character apart and are wired to different
+> things — check which one a change is about before touching the vocabulary, the `marker_tags`
+> list or the CSS.
+>
+> ⚠️ **`store-marker` is a strict superset of `store`, and that is a decision, not an
+> oversight** (user, 2026-08-16). It fires on the root `<store/>` *or* on any store node below
+> a choice, so every `store`-tagged event carries it too — `STORE_REBELSIDE` is the visible
+> case, an AE-added row tagged both. Read it as "a store can open here", not as "the map draws
+> a store on this beacon": the narrower map-marker fact is the root flag alone, and no page
+> shows it. Narrowing the tag is a one-line change in `markers()` plus a re-extract of all 19,
+> and it would change what 63 rows across the 19 sectors say.
 
 Also collected per event and rolled up per sector: gates (blue options, with levels), named
 items, crew classes, boarder counts, quest targets and `unlockShip` ids.
@@ -233,7 +316,31 @@ merged in is kept in `reqs`. `WEAPONS_MISSILES` and `WEAPONS_MISSILES_EVENTS` ar
 forces this: identical seven-weapon lists, the second being the AE file's redefinition of the
 first, which would otherwise render as "Missile weapon" twice.
 
+**Each gate row also carries `system` and `levels_detail`**, because the page shows one row per
+option *and level* and must not re-walk the pool to get there:
+
+- **`system`** — whether any `req` behind this label names a `<systemBlueprint>`. Read from
+  `blueprints.xml` + `dlcBlueprints.xml`, never a hand-written list. Only a system has a level
+  to ask for; crew, augments and weapon lists have none.
+- **`levels_detail`** — `[{lvl, events}]`, de-duplicated by event id *within* each level. A
+  count here is always "distinct events that offer it at that level", never a sum, so the rows
+  do not have to add up to `events` and the same event gated twice at one level counts once.
+  `levels` is the older, flatter field: it says which levels exist, not how many events ask for
+  each, which is why Sensors 2 and Sensors 3 collapsed into one row of 7 where the page wants
+  two rows of 4 and 5.
+- **A system gate with no `lvl` folds into level `"1"`.** `lvl` is a floor
+  (`wiki/concepts/blue-options.md`) and a system you merely *have* is at level 1, so
+  `req="teleporter"` with no level merges with `lvl="1"` and the row reads `Teleporter 1+`.
+  Sound, but no file states it (§12).
+- **A non-system gate gets one row with `lvl: null`**, rendered as the bare label.
+
 ### 4.3b Rarity as a delta — `crew_rarity`
+
+> **Extracted, not rendered.** No page shows `crew_rarity`: the block that did was cut from
+> the design (user decision, 2026-08-16 — "no page needs this"). It is still emitted because
+> it costs nothing and because `crew_store_odds` is computed from the same effective-rarity
+> logic, which is very much on the page (§4.3c). Treat it as available data with no consumer
+> in this pipeline, not as something a page is missing.
 
 Each `<rarityList>` entry carries the sector's value **and** the blueprint's base `<rarity>`
 from `blueprints.xml` / `dlcBlueprints.xml`, plus:
@@ -270,27 +377,43 @@ rule is read out of the game binary rather than inferred
   Three is `CREW_SLOTS`, the **Advanced Edition** count — all three hireable. Vanilla rolls
   two or three, and these pages are AE data, so the page says which it means.
 
+- **`excluded`** = the other side of the same filter: every `crewBlueprint` whose effective
+  rarity is exactly `0`, which is the flag meaning "not in the pool at all", so a store here
+  can never offer it. Emitted as `[{id, label}]` beside `crew`, so the renderer never reads
+  XML. A species the files give no `<rarity>` at all is `unknown`, not excluded, and appears
+  in neither list.
+- **`NOLOC="1"` crew are filtered out of `excluded`.** `battle` and `repair` are
+  `crewBlueprint`s at rarity 0 like the excluded species, but they are the engine's drone
+  stand-ins — desc "Dummy blueprint needed now." — never shown to a player. `NOLOC` is the
+  files' own mark for that, which is why `excluded` carries three species and not five. The
+  filter is derivable but is not a rule any file states (§12).
+
 Each slot is an independent `count = 1` draw, so a store can offer the same species twice.
 That is not true of weapons, drones or augments, which are drawn without replacement in a
 single call — noted here because it is a trap for anyone extending this block to items.
 
-**S4 still holds.** No *beacon* gets a percentage; this is a store's internal roll, and its
-provenance is stated on the block itself.
+**S4's no-invented-odds half still holds** — no *beacon* gets a percentage; this is a store's
+internal roll. Its **disclosure** half does not: the block used to carry a provenance line and
+no longer does (§3, S4).
 
 ### 4.4 AE override lists — a delta, never a merge
 
 `dlcEventsOverwrite.xml` defines twelve `OVERRIDE_<LIST>` twins. **Whether the engine
 substitutes them is an open question** — see `wiki/concepts/sector-event-allocation.md`. So
 the extractor never merges one into a pool. It emits the *difference* (`added`, `removed`,
-`applies: "unconfirmed"`), and the renderer shows it as a separate marked block under the
-entry it belongs to, with the uncertainty stated.
+`applies: "unconfirmed"`), and the renderer shows it as a marked block at the **foot of the
+budget line's expansion**, headed `Advanced Edition adds — OVERRIDE_<LIST>`, with the
+uncertainty stated in the block itself. That caveat is the one open question still printed on
+a sector page (§3, S5), and it earns its place by sitting inside the block it qualifies.
 
 ### 4.5 `unique` is not settled either
 
 `unique="true"` is the files' own attribute. Whether its scope is once per sector or once per
 run is contradicted between sources (`wiki/concepts/event-uniqueness.md`; the wiki's better
-bet is **per sector**). The tag says only "Unique"; a standing footnote carries the scope
-question. Do not resolve it in copy.
+bet is **per sector**). The tag says only "Unique", and the page says nothing more — the
+footnote that used to carry the scope question went with the footer (§3, S5). The question is
+live in `wiki/concepts/event-uniqueness.md` and in §12; do not resolve it in copy, and do not
+write copy that implies a scope.
 
 ### 4.6 Title and slug
 
@@ -301,7 +424,15 @@ why `DEEP_SPACE_SECTOR` and `ABANDONED_SECTOR` get no page.
 
 ### 4.7 Metrics
 
-Every number a stat tile may show is precomputed under `metrics`:
+`metrics` is a flat map of named, precomputed numbers — the only place a figure on a page may
+come from (S1). It is **wider than what any page renders**, deliberately: the cost of a metric
+is a line of arithmetic, and a number that has to be derived at render time is a number that
+can be derived differently in two places.
+
+The sector page itself reads exactly two of them, both in the budget heading —
+`beacons_min..beacons_max` and `distinct_events`. Everything else is read by the chooser
+(§7b), by the wiki when a query needs it, or by nothing at all. Do not delete an unread
+metric on that basis, and do not assume a metric is on a page because it exists.
 
 - `beacons_min`, `beacons_max` — the allocation totals, **not** the map size
 - `grid_beacons` (24, the map ceiling), `at_risk_entries`
@@ -309,10 +440,14 @@ Every number a stat tile may show is precomputed under `metrics`:
   `crew_gain_events`, `boarder_events`, `unique_events`, `gated_events`, `quest_start_events`
 - `blue_options` (distinct options after the label merge), `blue_option_hits` (events offering
   one, summed — an event gated twice by different options counts in both)
-- `store_rarity_changes`, `crew_rarity_changes` — entries this sector moves off base rarity
+- `store_rarity_changes`, `crew_rarity_changes` — entries this sector moves off base rarity.
+  Nothing renders these; the block they were computed for is gone (§4.3b)
 - `crew_types_sold` — species a store here can offer (§4.3c)
 - `section:<name>:min` / `:max` — e.g. `section:hostile:min`
 - `entry:<NAME>:min` / `:max` — e.g. `entry:STORE_ENGI:max`
+
+The copy file cannot name a metric (§5) — the days of a hand-labelled tile pointing at a
+metric id are over — so a metric only reaches a page by a renderer change.
 
 ---
 
@@ -321,23 +456,22 @@ Every number a stat tile may show is precomputed under `metrics`:
 `tools/sector-copy/<slug>.json`. Unknown keys are rejected; every constraint below is enforced
 by `build-sector.py`, so a violation is a build failure, not a review note.
 
+Five keys, and there are no others. `stats` and `callout` were keys once; they are now
+**rejected as unknown**, and a copy file carrying either fails the build. The blocks they fed
+— the stat tiles and the boxed note under the budget — are gone from the design, and an
+accepted-but-ignored key is a place for words to go quietly nowhere.
+
 ```jsonc
 {
   "slug": "engi-homeworlds",          // must match the data file
 
-  "lede": "…",                        // required. 2–3 sentences: what this sector *is*
-                                      // to a run. The one place a point of view belongs.
-
-  "stats": [                          // required, 3–5 tiles
-    { "metric": "beacons_min..beacons_max", "label": "Beacon spread" }
-  ],                                  // metric: one id from §4.7, or "a..b" for a range
-
-  "callout": "…",                     // optional. One boxed note under the budget —
-                                      // best used to contrast this sector with its sibling.
+  "lede": "…",                        // required. One or two sentences: what this sector *is*
+                                      // to a run. The one place a point of view belongs, and
+                                      // the only prose above the fold.
 
   "section_notes": {                  // optional, keyed by entry name
-    "HOSTILE_ENGI": "…"               // one line under that pool
-  },
+    "HOSTILE_ENGI": "…"               // one line inside that budget line's expansion,
+  },                                  // under its events and above the AE delta
 
   "chain": {                          // optional. Only where a real multi-jump quest starts here.
     "title": "Stealth Cruiser · The Nesasio",
@@ -347,8 +481,9 @@ by `build-sector.py`, so a violation is a build failure, not a review note.
   },                                  // ref: free text, shown in mono. Not resolved, so it may
                                       // name events outside the pool (later quest stages).
 
-  "panels": [                         // required, 2–4. The two generated blocks (§6.2) are
-    {                                 // not panels and take no copy — do not write one.
+  "panels": [                         // required, 2–4. The whole of the page's prose below
+    {                                 // the budget. The two generated blocks (§6.2) are not
+                                      // panels and take no copy — do not write one.
       "title": "Blue options that pay here",
       "items": [                      // 2–6 per panel
         { "lead": "Engi ×5", "text": "…" }
@@ -371,17 +506,25 @@ else is escaped. `{{EVENT_ID}}` must name an event in this sector's pool (S2).
    for, what the sector's trap is.
 3. **No recommendations dressed as facts.** "Cheap if you are not flying missiles" is fine.
    "Always take this" is not.
-4. **No citations, no wikilinks, no version notes** in copy. The footnotes handle provenance.
+4. **No citations, no wikilinks, no version notes** in copy — and there is nowhere else on the
+   page for them either. A sector page carries no provenance at all (§3, S5); do not smuggle
+   it back in through a panel item.
 5. **Three panels is the good shape**: what pays (gates/blue options), what you can leave with
-   (named items and crew), what can bite (crew loss, boarders, system damage). Deviate where a
-   sector genuinely differs — a nebula sector's third panel is better spent on sensor
-   blackout than on boarders.
-6. **The lede carries the page.** Lead with the thing a player would want to know before
-   jumping in, not with a restatement of the sector's name.
-7. **Do not restate what the page already renders.** The budget carries placement order and
-   the at-risk chips; the markers section carries the distress mismatch. Copy earns its place
-   by saying what those mean *here* — "the distress line is last, so the guaranteed distress
-   beacon is the first thing this sector drops" — not by repeating them.
+   (named items and crew), what can bite (crew loss, boarders, system damage). Four is the
+   ceiling and one sector uses it. Deviate where a sector genuinely differs — a nebula
+   sector's third panel is better spent on sensor blackout than on boarders. **A panel that
+   restates a generated block is the failure mode to watch for**: there is no section left on
+   the page for prose to duplicate except the budget and the two glance blocks, and every one
+   of those already reads cleanly on its own.
+6. **The lede is one or two sentences.** It is the only prose above the fold, so it says what
+   this sector is to a run and stops — not a restatement of the sector's name, not a summary
+   of the blocks below it. Where the game's own display name and the map's label disagree, the
+   lede leads with what the player sees on the map.
+7. **Do not restate what the page already renders.** The budget carries placement order, the
+   chips and the block odds; the distress section carries the marker mismatch; every event row
+   carries its own tags. Copy earns its place by saying what those mean *here* — "the distress
+   line is last, so the guaranteed distress beacon is the first thing this sector drops" — not
+   by repeating them.
 8. **The beacon totals are allocation, not map size.** A sector allocating 19–35 slots does
    not have 35 beacons; it has at most 24 and discards the rest. Never write the allocation
    range as though it were the number of stops.
@@ -392,36 +535,56 @@ else is escaped. `{{EVENT_ID}}` must name an event in this sector's pool (S2).
 
 `build-sector.py` validates the copy, renders the content, and injects it into
 `sector-page-render.html` at the `<!--SECTOR-CONTENT-->` marker, stamping the `<title>`.
-Everything is inlined; the page loads nothing at runtime, because a published artifact runs
-under a CSP that blocks network requests.
+Every asset is inlined — CSS, both scripts, the loader's config — so the page needs no network
+at load, which is what a published artifact's CSP requires. The one thing fetched later is a
+card, on demand, off disk, and only when a reader opens a box (§6.1).
 
-Page order, all of it derived except where marked:
+Page order, all of it derived except where marked. Seven blocks and two scripts — the page is
+short on purpose, and every section that survived is one a player reads *while flying the
+sector*:
 
-1. **Header** — eyebrow (`Sector profile · <ID>`), title, *lede (copy)*, fact chips
-2. **Stat tiles** — *labels from copy*, numbers from metrics
-3. **At a glance** — the three generated blocks (§6.2). No copy at all
-4. **Beacon budget** — one row per entry **in placement order**, numbered, solid blocks for
-   `min` and faded for `max − min`; hostile and boarder rows are red; `placed first` and
-   `may be cut` chips from `placement`. Each row is a `<details>` that **opens onto the events
-   that line can place** (§6.1); an entry resolving to no events stays a plain row. Last comes
-   the **fill-in row** (§4.1b-2) — `NEUTRAL`, dashed, chipped `fill-in`, and marked `+` rather
-   than numbered because the file has no such line to count; it opens onto
-   `generation.fallback_events`, or stays a plain zero row where `max` is 0. Then the
-   legend, the generation notes (§4.1b), the entry beacon, and the *callout (copy)*
-5. **Beacon markers** (§4.1c) — the distress-marked pool, the two mismatch cases, the
-   store-marked pool. Fully derived; no copy hook, because it is a data finding
-6. **Pool sections** — one per entry, in section order, each row a card-derived title, id and
-   tags; *section note (copy)*; the AE delta block where one exists (§4.4)
-7. **Quest chain** *(copy, optional)*
-8. **Panels** — *copy*
-9. **Footnotes** — sources, the note that generation rules are community-derived, and one
-   clause per condition that applies: the `unique` scope question, the no-weights rule,
-   ambiguous entries, inline outcomes with no id, missing trees
+1. **Header** — eyebrow (`Sector profile · <ID>`), title, *lede (copy)*, fact chips: earliest
+   sector, unique-or-repeatable, music tracks, and `built from Advanced Edition files`
+2. **At a glance** — the two generated blocks (§6.2). No copy at all, and **omitted entirely**
+   when a sector has neither: the Last Stand gates nothing, so it has no glance section
+3. **Beacon budget** — the spine of the page. The heading carries the two surviving metrics
+   (`13–24 slots allocated · 85 events in pool`), then:
+   - one row per entry **in placement order**, numbered, solid blocks for `min` and faded for
+     `max − min`; hostile and boarder rows are red; `placed first`, `may be cut` and
+     `always short` chips from `placement` (§4.1b). Every block carries its own chance as a
+     `title` tooltip — solid says "always placed, if the map has room", faded says `P(roll ≥ k)`
+   - each row is a `<details>` whose expansion holds **the events that line can place** (§6.1),
+     then that line's *section note (copy)*, then the **AE delta** where the list has an
+     `OVERRIDE_` twin (§4.4). An entry with none of the three stays a plain, unexpandable row
+   - the **fill-in row** last (§4.1b-2) — `NEUTRAL`, chipped `fill-in`, marked `+` rather than
+     numbered because the file has no such line to count. Its blocks carry "filled only if the
+     table leaves room" instead of a percentage, since no roll governs it. Where `max` is 0 it
+     is a plain zero row that opens onto nothing
+   - the **legend** — three rows: solid = must be placed, faded = may be placed with the odds
+     worked once on this sector's widest line, red = always a fight. The worked example has two
+     wordings, and which one is used matters: `legend.may` reads "80% for one" and is only true
+     where the example line's minimum is 0; a line that already guarantees blocks gets
+     `legend.may_offset`, which says "for the first faded one"
+   - the **generation notes** (§4.1b) — two paragraphs, plus a conditional third on three
+     sectors (§4.1b-2). The cloud paragraph counts the plasma storms in the shared `NEBULA`
+     list only where the sector allocates that list itself; elsewhere it states the conversion
+     rule alone
+4. **Distress signals** (§4.1c) — the distress-marked pool, and one italic line saying the
+   marker and the allocation list do not match in either direction. Fully derived, no copy hook
+5. **Stores** — the store-marked pool. Same, without the note
+6. **Quest chain** *(copy, optional)*
+7. **Panels** — *copy*. No heading of their own; the panel titles are the headings
+8. **The two inlined scripts** — the card loader with its JSON config (§6.1) and
+   `sector-toggle.js`, which makes the blue-options box toggle from anywhere in the box
+
+There is **no footer**. Provenance and open questions are off the page by decision, not by
+omission — §3, S4 and S5, and §12.
 
 ### 6.1 Beacon boxes open onto their card, in place
 
-Every beacon box — in a budget row's expansion, in the markers section and in the pool
-sections, all of them `event_html()` — is a `<details>` carrying `data-card="<slug>"`. Open
+Every beacon box — in a budget row's expansion, in its AE delta, in the fill-in row and in the
+two marker sections, all of them `event_html()` — is a `<details>` carrying
+`data-card="<slug>"`. Open
 one and that event's card renders underneath it, full width, in the page. The corner `↗`
 still goes to the standalone `cards/card-<slug>.html`. An event with no card stays an inert
 `<div>`. The slug is the one the extractor already carries per event (`slug`, `card`).
@@ -455,9 +618,11 @@ by the card pipeline (`tools/EVENT-CARD.md` §7.3).
   box shows the loader's failure line. The rich version is the local one — which is where
   these pages are read.
 
-The budget's expansion duplicates the pool sections' rows, deliberately: the budget answers
-"what does this line place?" where the question occurs, and the pool sections stay the place
-to read a whole section at once. Opening the same event in both costs one payload, not two.
+**The budget's expansion is the only place a pool is listed.** A page used to carry pool
+sections below the budget repeating the same rows; that duplication is what made the page too
+long for any of it to matter, and the budget is the copy that survived — it answers "what does
+this line place?" where the question is asked. An event reachable two ways (a marker section
+and a budget line) still costs one payload, not two.
 
 Two checks cover this, and they see different things (§7): `smoke-sector.py` resolves every
 path the page will ask for — corner links, runtime, and one payload per box — and fails on
@@ -466,34 +631,44 @@ does not open onto the card its own title names.
 
 ---
 
-### 6.2 At a glance — the three generated blocks
+### 6.2 At a glance — the two generated blocks
 
-Above the budget, because they answer "is this sector worth a detour?" before the placement
-detail does. Neither takes a word of copy, and both are omitted when they would be empty — the
-Last Stand gates nothing and overrides nothing, so it has no glance section at all.
+Side by side above the budget, because they answer "is this sector worth a detour?" before the
+placement detail does. Neither takes a word of copy. The section is omitted when both are
+empty — the Last Stand gates nothing, so it has no glance section at all.
 
-**Blue options in the pool** — every option the pool gates, most-gated first, with the system
-levels it asks for and a **hit count**. A hit is *one event in this pool that offers it*, not
-one beacon: no file states how often an event is placed (S4), and an event listed twice is
-still one event here. Six sectors gate more than 30 distinct options; the block is a reference
-list, so it is never truncated.
+They are laid out as a **level pair**, and nothing enforces that: the two boxes balance because
+their content happens to, at the real panel width. When a page is reviewed, look at the glance
+row on the page rather than trusting that it held on the last sector.
 
-**Crew a store can sell here** — the species a store in this sector can stock, each with its
-weight, its per-slot share and its chance of appearing in at least one of the three slots
-(§4.3c). Present on **all 19** sectors, including the six that declare no `rarityList`,
-because those fall back to base rarity. The block carries its own provenance line: the
-weighting was read out of the binary, and a page that states odds has to say so.
+**Blue options in the pool** — one row per option **and level**, most-gated first, each with a
+**hit count**. The level lives in the option's name (`Teleporter 1+`, `Sensors 3+`) in the blue
+option colour, not in a chip beside it; a non-system gate carries no level at all (§4.3). The
+top four rows are visible and the rest are behind the box, which is **its own toggle** —
+`tools/sector-toggle.js`, because a `<details>` only toggles from its `<summary>`, so an open
+box could otherwise be opened from the visible rows and never closed from the rows it revealed.
 
-**Store rarity — where this sector differs** — every `<rarityList>` entry whose value differs
-from the blueprint's base, shown as `base → here` with the §4.3b verdict. Crew lead the block
-because which species a store can sell is the half a player acts on; everything else follows
-under *Also changed*, which is what keeps the Crystal sector's 30 zeroed weapons and the Rock
-sectors' Lockdown Bomb on the page. Rows equal to base are dropped — a value that changes
-nothing says nothing — so the heading counts *changed of listed*.
+> A hit is *one event in this pool that offers it*, not one beacon: no file states how often an
+> event is placed (S4), and an event listed twice is still one event. **The page no longer says
+> this anywhere** — the note that carried the definition went with the rest of the prose. A
+> reader who assumes hits are beacons will read the block high (§12).
 
-This block replaced a panel that showed the raw `rarityList` with no base to compare against.
-Sector rarity is only meaningful as a delta: `human 3` means nothing until you know human is
-base 1.
+**Crew in stores** — the species a store in this sector can stock: two columns of rows, each
+with its per-slot share and its chance of appearing in at least one of the three slots, rounded
+to whole numbers (§4.3c). The panel's title rides in the empty label cell of the first column's
+sub-header, so the heading costs no line of its own. Weight is not shown — it is `6 − rarity`
+and nothing is played off it.
+
+Present on **all 19** sectors, including the six that declare no `rarityList`, because those
+fall back to base rarity. **Species a store cannot sell stay in the table at 0%, greyed** —
+`crew_store_odds.excluded`, the `crewBlueprint`s whose effective rarity is 0. Rarity 0 is a
+flag meaning "not in the pool", and a zero row says that where a player is already looking.
+
+The layout is **column-major**: the rows are split in half and read down, then across, which
+keeps the rank scan top-to-bottom and lands the excluded species together at the foot of the
+second column. Two things the block used to say and no longer does: that a store rolls three
+slots, and that some species are excluded at all. Both are now inferable only from a tooltip
+and a 0% row (§12).
 
 ## 7. Verification
 
@@ -504,14 +679,27 @@ python tools/smoke-inline.py sectors/sector-<slug>.html   # or --all; needs play
 
 Parses the built page, prints **everything it can show** — title, facts, the glance blocks,
 budget rows, every event row with its tags, notes, chain steps and panels — and fails on:
-unbalanced tags, an unstamped title, an empty event row, a missing budget, a blue-option row
-with no hit count, a beacon box whose card link does not resolve on disk, and any `{{…}}` or
-`**` that survived into the output.
 
-> The `no stat tiles`, `stat tile is not a number` and `rarity row missing its move or its
-> verdict` checks were removed on 2026-08-16 with the blocks they guarded: the stat tiles, the
-> footnotes and the rarity block are all cut from the design (`SECTOR-PAGE-REDESIGN.md` §2.2,
-> §2.3, §2.9). A check that requires a block the page no longer has is a false failure.
+- unbalanced tags: an unclosed or stray element
+- a title that was never stamped (still the template's placeholder)
+- an empty event row
+- no beacon-budget rows at all
+- a blue-option row whose last cell is not a hit count
+- a card link, a runtime file or a card payload the page asks for that is not on disk,
+  resolved the way the browser will resolve it — relative to the page's own directory
+- a beacon box with no `data-card` slug, or a missing card-loader config block
+- any `{{…}}`, `**` or unfilled `<!--SECTOR-CONTENT-->` that survived into the output
+- a *paired* `*…*` in the text — someone reached for italics, which the copy layer does not
+  support and renders literally. Single asterisks are legitimate and must not fire
+
+**Every check maps to something the page still has.** A check for a block the page no longer
+carries is a false failure, which is worse than no check: it trains a reader to ignore the
+output. Delete a check with the block it guarded, in the same pass.
+
+The dump prints under fixed headings — `TITLE`, `HEADING`, `LEDE`, `FACTS`, `GLANCE`,
+`BUDGET`, then the sections and `PANELS` — and the `GLANCE` block is the only way a wrong
+label or a missing count in the two generated panels ever becomes visible, since they carry
+no copy for a human to have reviewed.
 
 It does not check CSS, layout, colour or theming. It cannot check whether a sentence is true —
 that is what rule 1 in §5 is for. And it cannot see a card at all: those are rendered into a
@@ -520,6 +708,10 @@ for. That one opens boxes in Firefox over `file://` — the browser and the sche
 constrain the design — and fails on a page error, a box that never becomes ready, an empty
 shadow root, a card whose heading is not the event the box names, or a row inside a card that
 will not expand.
+
+> **`--all` globs `sectors/sector-*.html`**, so anything else parked in that directory is
+> checked as though it were a sector page. Keep the directory to the nineteen; a stray page
+> there turns a clean bulk run into a failure that is nothing to do with the pipeline.
 
 Determinism check — build twice and diff:
 
@@ -586,6 +778,33 @@ questions, which is exactly why the note stays.
 
 ---
 
+## 7c. Reviewing a page with the user
+
+Neither smoke test can tell you a page is *good*, and the user reviews in the browser, not in
+chat. `sectors/mockups/review-layer.html` is a self-contained commenting layer that can be
+appended to any built page:
+
+- Select text → **Comment** → type → save. The selection is highlighted.
+- Notes persist in `localStorage`, keyed by filename, and survive a rebuild.
+- **Copy for Claude** / **Download .md** exports them as markdown — quote plus note, in page
+  order. The user drops the file in `~/Downloads`; read the newest `review-notes*.md` there.
+
+Anchoring is by character offset into the page's visible text, not DOM paths, so a rebuild
+keeps the highlights. A note whose quoted text no longer matches is kept as an orphan — still
+exported, no longer highlighted. Two consequences when editing a page under live notes:
+**anything added above an anchor shifts it**, and CSS pseudo-element content is not a text
+node, so labels added that way do not move anchors at all.
+
+**Read a note against what the page is for.** The exports are terse and often anchor to
+whatever was nearest to what the user meant — a note on a 4,000-character selection reading
+"remove all this" meant "delete the duplicated section", not "delete these facts". Say what you
+concluded when you report back.
+
+**Review one sector at a time.** The notes come back anchored to a page and are worth more per
+page than in bulk.
+
+---
+
 ## 8. Where fixes go
 
 | Symptom | Fix in | Never in |
@@ -595,6 +814,9 @@ questions, which is exactly why the note stays.
 | A blue option is named by its raw id, or two rows share one name | `gate_labels` in `tools/card-vocab.json`, then re-extract | `extract-sector.py` |
 | A pool is missing an event, or a tag is wrong | `extract-sector.py`, then re-extract | the data JSON by hand |
 | A tag is wrong *for one event* | that event's tree — `extract-event.py` | `extract-sector.py` |
+| A blue option shows the wrong level, or one row where two belong | `levels_detail` in `extract-sector.py`, then re-extract | `build-sector.py` |
+| A marker tag is on the wrong event | `extract-sector.py` — the same `marker` dict feeds the tag and `rollup.markers`, so fix it once | the tag list in `sector-vocab.json` |
+| The blue-options box will not close from its own body | `tools/sector-toggle.js` | the built page |
 | Layout, colour, spacing | `sector-page-render.html` (changes all 19 pages) | one page |
 | A beacon box will not open onto its card | `tools/sector-cards.js`, or rebuild the payloads with `build-card.py --all` | the built page |
 | The embedded card itself looks or behaves wrong | the card pipeline — `card-runtime.js`, `event-card-render.html` (EVENT-CARD.md §7.3) | anything under `sectors/` |
@@ -631,14 +853,22 @@ where the links work.
   scripts, or the em dash and `–` raise `UnicodeEncodeError`.
 - **A number in prose is unverifiable by the build.** §5 rule 1 exists because the one thing
   this pipeline cannot check is a sentence that says "four" when the data says five.
-- **`{{ID}}` resolves against the pool only.** Later quest stages (`ENGI_UNLOCK_3`) are not in
-  the pool; put those in a chain step's `ref`, which is free text, or in `` `code` ``.
+- **`{{ID}}` resolves against what the sector can produce**, which is the allocated pool plus
+  three things easy to forget: the events an `OVERRIDE_` list *adds*, the `startEvent`, and the
+  ids named as quest targets. Later quest stages (`ENGI_UNLOCK_3`) are in none of those; put
+  those in a chain step's `ref`, which is free text, or in `` `code` ``.
 - **Do not merge an `OVERRIDE_` list into a pool** to make a page tidier. §4.4.
 - **Section classification is a naming heuristic**, not something the data states. A new or
   modded sector with unusual list names lands everything in `special` — visibly wrong rather
   than silently wrong, which is the intended failure.
 - **`min="0"`** is real: Rock Controlled allocates `QUESTS_ROCK` 0–1, and Federation Space
-  allocates `HOSTILE_BOARDING` 0–0. A zero-max entry renders with a note; it is not a bug.
+  allocates `HOSTILE_BOARDING` 0–0. A zero-max entry renders as a `zero` row, styled apart and
+  still expandable onto the events it would place; it is not a bug.
+- **`store` and `store-marker` are different tags.** §4.3.
+- **Two names for one hazard.** `always_short` (a line that cannot be satisfied) and
+  `cannot_meet_minimum` (a *table* that cannot fit the map) are related but not the same
+  field — the first is per entry, the second is per sector, and only the second drives a
+  generation note.
 
 ---
 
@@ -657,26 +887,70 @@ where the links work.
   on Hidden Crystal Worlds, where `START_BEACON_CRYSTAL` itself plants the ship-unlock quest
   marker and `quest_start_events` still reads 0. Check `start_event` in the data before
   writing that a sector has none of something.
-- **What reads `rarity` at all is not stated by any file here.** The rarity block says what a
-  sector *changes*, not what a store will stock: no file names a store, a reward roll or a
-  generator as the consumer, and no file gives the weighting either, so nothing on these pages
-  turns a rarity into odds. `wiki/concepts/blueprint-rarity.md` holds the evidence and the
-  open questions.
+- **What reads `rarity` outside the crew draw is not stated by any file here.** The store's
+  crew selection is known, out of the binary (§4.3c). Nothing says what consumes a *weapon*,
+  drone or augment rarity — no file names a store, a reward roll or a generator as the reader,
+  and no file gives that weighting — so no page here turns a non-crew rarity into anything.
+  `wiki/concepts/blueprint-rarity.md` holds the evidence and the open questions.
 - **A blueprint a sector's `rarityList` does not name is assumed to keep its base rarity.**
-  That reading is not stated anywhere; it is preferred because the alternative — unlisted
-  means excluded — would leave the eight sectors with no `rarityList` selling nothing. It
-  matters for `CRYSTAL_HOME`, which zeroes 31 vanilla weapons but names none of the AE
-  additions, so the block shows no row for them.
+  `ResetRarities()` restoring base on sector entry supports it, but the reading is not stated
+  outright; it is preferred because the alternative — unlisted means excluded — would leave
+  the six sectors with no `rarityList` selling no crew at all.
+- **`crew_rarity` has no consumer on the page.** It is extracted and shipped in the data; the
+  block that rendered it is cut (§4.3b). A sector's non-crew rarity changes — the Crystal
+  sector's zeroed weapons, the Rock sectors' Lockdown Bomb — are in the JSON and nowhere else.
 - Two allocation systems exist in the data and this pipeline reads only the first
   (`sector_data.xml`). If `<eventCounts>` in `newEvents.xml` is live, some sectors draw from
   lists no page here shows. See `wiki/concepts/sector-event-allocation.md`.
 - **The generation rules in §4.1b are not from the game files.** They come from the community's
   reverse-engineering (`raw/wiki/sectors.md`, citing an xftl teardown this repo does not hold).
   The 24-beacon ceiling, the 80%-per-cell grid and the stop-when-full rule are all inherited
-  uncertainty, and the pages say so in a footnote. `at_risk` is derived from that ceiling, so
-  it inherits it too.
+  uncertainty. `at_risk`, `always_short`, the fill-in row's size and every faded block's
+  percentage are derived from them, so they inherit it too — and **the page no longer says
+  so**, because the footnote that did went with the footer (§3, S5). A page states these
+  numbers flatly; the caveat lives here and in `wiki/concepts/sector-event-allocation.md`.
 - The map's **beacon floor is unknown**, so nothing on these pages claims a minimum number of
   stops — only the allocation minimum, which is a different quantity.
 - Whether a marker is drawn from `<distressBeacon/>` alone is Fandom's account, not something
   `raw/gamedata/` states. The *membership* data behind the markers section is exact; the claim
   about what the map draws is medium-reliability.
+- **Two definitions the page assumes its reader already has**: that a blue-option hit is one
+  event and not one beacon (§6.2), and that a store rolls three slots. Both were stated on the
+  page once. Neither is now.
+
+---
+
+## 12. Open questions
+
+The pipeline runs on five readings that no file in this repo states outright. None of them
+blocks anything; all of them would change a number or a row if answered the other way, and
+none appears on a page (§3, S5). They are listed here because this document is where a sector
+page's uncertainty lives now.
+
+1. **Is the min–max roll uniform?** The source says only "randomly choose between the minimum
+   and maximum (inclusive)" (`raw/wiki/sectors.md`, community reverse-engineering). Uniform is
+   the natural reading and is what every faded block's percentage assumes — an assumption
+   printed as a number.
+2. **Is a level-less system gate the same as level 1?** `lvl` is a floor and a system you have
+   is at level 1, so `req="teleporter"` with no level folds into the `1+` row (§4.3). Sound,
+   unstated. Answering it the other way splits several rows.
+3. **Is `NOLOC="1"` the right filter for dummy crew?** It is what keeps `battle` and `repair`
+   out of the excluded-species list, leaving three species rather than five (§4.3c). Derivable
+   from the files' own mark; not a rule any file states.
+4. **Is `unique="true"` per sector or per run?** §4.5, `wiki/concepts/event-uniqueness.md`.
+   The wiki's better bet is per sector.
+5. **Does `OVERRIDE_X` replace `X`?** §4.4, `wiki/concepts/sector-event-allocation.md`. The
+   whole delta-not-merge design exists because this is unanswered.
+
+One more that is a question for the user rather than for the files — do not settle it by
+writing spec text around it:
+
+6. **Is alphabetical the right order for the excluded species?** `crew_store_odds.excluded` is
+   sorted by label, so the 0% rows at the foot of the crew block read in no order a player
+   cares about — the candidates above them are ranked by weight. Nothing depends on the
+   current order.
+
+And one contradiction that belongs in `wiki/`, not here: the files call `STANDARD_SPACE`
+*Federation Space* (`text_sectorname.xml`) while the game shows **Sector 1: Civilian Sector**
+on the map, confirmed in game by the user. The lede leads with what the player sees. File it
+in `wiki/sectors/federation-space.md` per CLAUDE.md §4 if it is not there yet.

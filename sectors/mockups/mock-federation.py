@@ -21,7 +21,7 @@ import re
 HERE = pathlib.Path(__file__).resolve().parent
 REPO = HERE.parents[1]
 SLUG = "federation-space"
-OUT = REPO / "sectors" / f"sector-{SLUG}-mock.html"
+OUT = HERE / f"sector-{SLUG}-mock.html"
 REVIEW_LAYER = HERE / "review-layer.html"
 
 spec = importlib.util.spec_from_file_location("bs", REPO / "tools" / "build-sector.py")
@@ -516,6 +516,10 @@ page = template.replace(B.MARKER, content)
 page = B.TITLE.sub(f"<title>{data['title']} — sector profile (mock)</title>", page, count=1)
 page = page.replace("</style>\n\n<div class=\"wrap\">", "</style>\n" + EXTRA_CSS + "\n<div class=\"wrap\">", 1)
 page += REVIEW_LAYER.read_text(encoding="utf-8")
+
+# The renderer's card paths are relative to `sectors/`, and this file sits one level
+# deeper — so a box would open onto nothing without the extra hop.
+page = page.replace('"../cards/', '"../../cards/')
 
 OUT.write_text(page, encoding="utf-8")
 print(OUT)

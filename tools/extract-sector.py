@@ -666,10 +666,12 @@ class SectorExtractor:
         }
 
     def metrics(self, entries, rollup, rarity, crew_odds):
-        """Every number a stat tile is allowed to show, precomputed and named.
+        """Every countable fact about the sector, precomputed and named.
 
-        The page's copy picks tiles by metric id and supplies only the label, so a
-        number on a sector page can never be typed by hand.
+        The page itself reads only two of these — the beacon spread and the pool size,
+        both in the budget heading — but a metric costs nothing to carry and answering
+        "how many events here can kill a crew member?" from the data beats counting rows
+        by hand. Copy cannot name one: no field in a copy file takes a number.
         """
         shifted = [r for r in rarity if r["change"] not in ("same", "unknown")]
         out = {
