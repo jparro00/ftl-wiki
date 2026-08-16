@@ -2619,3 +2619,881 @@ Sector pages grew ~15 KB (the loader), not the ~600 KB–1.4 MB their pools weig
 
 A published sector page cannot reach `cards/`, so there a box shows the loader's failure line
 and only the corner link works. Opening a box also needs scripting; the budget lines do not.
+
+## [2026-08-15] query | How crew species are chosen in stores and as event rewards
+
+### Question
+
+How is it determined what kind of crew you can get in stores and as rewards in sectors?
+
+### Answer, in short
+
+Two unrelated mechanisms. **Stores** roll from `rarity`: base values on `<crewBlueprint>` in
+`blueprints.xml` / `dlcBlueprints.xml`, overridden per sector by `<rarityList>` in
+`sector_data.xml` (1 = commonest, 5 = rarest, 0 = not in the pool). **Event rewards** are
+hard-coded — `<crewMember class="X"/>` names the species outright, and the species tracks the
+faction event file the sector draws from. No `autoReward` tier grants crew at all: the payload
+types are only `standard`, `stuff`, `scrap_only`, `fuel`, `missiles`, `droneparts`, `weapon`,
+`augment`, `drone`. 38 `<crewMember amount="1"/>` tags carry no `class` and the engine picks;
+`raw/` does not say how.
+
+### Correction made
+
+[[concept-stores]] and [[concept-blueprint-rarity]] both asserted that Slug, Crystal and Lanius
+crew are "raised only at home" / "excluded from every store outside their home sector". Re-read
+of `raw/gamedata/sector_data.xml` shows that is true of `crystal` and `anaerobic` but **not of
+`slug`**, which is raised in seven sectors: 2 in `SLUG_SECTOR` / `SLUG_HOME`, **3 in
+`ZOLTAN_SECTOR` / `ZOLTAN_HOME`**, 3 in `NEBULA_SECTOR`, 4 in `LANIUS_SECTOR`. Fixed the
+species table, the "Implications For Play" bullet on both pages. Not a source contradiction —
+a wiki misreading of the raw file, so corrected rather than recorded per §4.
+
+### Pages updated
+
+- [[concept-stores]] — Implications For Play, Slug bullet
+- [[concept-blueprint-rarity]] — species rarity table, Implications For Play
+
+### Not filed
+
+The full synthesis (per-sector buyable-crew table + the `<crewMember>` grammar) was offered to
+the user as a `concept-crew-acquisition` page; awaiting their call.
+
+## [2026-08-16] tooling | Sector pages: blue-option list and store-rarity delta, above the budget
+
+### What changed
+
+Two generated blocks now sit between the stat tiles and the beacon budget, under **At a
+glance**. Neither takes a word of copy.
+
+- **Blue options in the pool** — every option the pool gates, most-gated first, with the
+  system levels it asks for and a hit count. A hit is one *event* that offers it, not one
+  beacon; the note on the block says so, because no file states how often an event is placed.
+- **Store rarity — where this sector differs** — every `<rarityList>` entry whose value differs
+  from the blueprint's base `<rarity>`, as `base → here` plus a verdict chip: `unlocked`,
+  `excluded`, `more common`, `rarer`. Crew lead; weapons and augments follow under *Also
+  changed*. Rows equal to base are dropped.
+
+The verdict is a category, not a signed number, because `0` is a flag meaning "not in the
+random pool", not the low end of 1–5 ([[concept-blueprint-rarity]]) — so base 2 → 0 and base
+0 → 2 are opposites that a ±2 would render identically.
+
+This replaces the old "Crew in stores" panel at the foot of the page, which showed the raw
+sector rarity with nothing to compare it against. `human 3` says nothing until you know human
+is base 1.
+
+### Pipeline
+
+- `tools/extract-event.py` — the shared blueprint index now carries `blueprint_rarity` (base
+  `<rarity>` for every blueprint) and `crew_blueprints` (which ids are `crewBlueprint`s). That
+  second one retires a stated limit in `SECTOR-PAGE.md` §11: the files *do* say which entries
+  in a `rarityList` are crew. Card output is unchanged — verified byte-identical.
+- `tools/extract-sector.py` — `crew_rarity` entries gain `crew`, `base` and `change`;
+  `rollup.gates` is now keyed by the **player-facing label** rather than by `req`, so
+  `WEAPONS_MISSILES` and `WEAPONS_MISSILES_EVENTS` (identical seven-weapon lists, the second
+  being the AE redefinition of the first) merge into one row instead of rendering "Missile
+  weapon" twice. Every id that merged is kept in `reqs`. New metrics: `blue_options`,
+  `blue_option_hits`, `store_rarity_changes`, `crew_rarity_changes`.
+- Labels come from `gate_labels` in `tools/card-vocab.json` — the card pipeline's map, read
+  rather than duplicated, so an option reads the same on a card and on a sector page.
+- `tools/build-sector.py`, `sector-page-render.html`, `sector-vocab.json` — the two blocks and
+  their styling. `tools/smoke-sector.py` prints them and fails on a blue-option row with no
+  hit count or a rarity row missing its move or verdict.
+- `tools/SECTOR-PAGE.md` §2, §4.3, §4.3b (new), §4.7, §5, §6 order, §6.2 (new), §7, §8, §11;
+  `tools/EVENT-CARD.md` §6 notes that `gate_labels` now feeds both pipelines.
+
+### Verified
+
+All 19 sector pages re-extracted, rebuilt, and passing `smoke-sector.py` and `smoke-inline.py`
+(Firefox, `file://`). Builds byte-identical across runs. The Last Stand gates nothing and
+overrides nothing, so it has no glance section at all — the intended empty case.
+
+### Kept
+
+The hand-written "Blue options that pay here" panel stays on every page: the generated list
+says which options and how many, the panel says which are worth routing for.
+
+## [2026-08-16] query | What crew rarity in stores actually does — and a wrong claim in the wiki
+
+### The question
+
+The sector pages' rarity note read as wrong. It was.
+
+### What the sources say
+
+`raw/wiki/sectors.md` states the mechanic outright, in a parenthesis repeated **17 times**,
+once per sector ([[source-fandom-sectors]]):
+
+> *"In this sector, crewmembers of the following races can be purchased or received as a crew
+> kill reward. By rarity (**only affects the store assortment probability**), from common to
+> rare:"*
+
+That settles three things this wiki had open or hedged:
+
+1. **Rarity weights store stock, and only store stock.**
+2. **The scale runs common → rare**, corroborating the ordering derived from the files.
+3. **The per-sector species list is wider than the store.** It also bounds what a **crew-kill
+   reward** can hand you — but rarity does not weight that draw. Which is why 38 class-less
+   `<crewMember amount="1"/>` rewards need no species in the XML: the sector decides the
+   candidate set. The Crystal sector's entry is the clean case — *"only Crystal crewmembers
+   can be purchased or received as a crew kill reward"*.
+
+`FINAL` also confirms the fallback: it declares no `rarityList`, and Fandom lists its crew as
+Human 1, Engi/Mantis 2, Rockmen 3, Zoltan 5 — exactly the `blueprints.xml` base values.
+
+Still unknown: the **weighting function**. [[source-xftl-stores]] reverse-engineers
+`Store::OnInit` down to section counts and system selection but stops above item selection, so
+no page here may state odds from a rarity.
+
+### Correction
+
+[[concept-blueprint-rarity]] asserted *"nothing in `raw/wiki/` mentions the concept at all —
+grepping all 292 Fandom pages for 'rarity' returns zero hits."* **Wrong.** Four pages mention
+it: `sectors.md` defines the mechanic, `augmentations.md` annotates every augment with
+"(Store rarity: N)", and `stores-and-resources.md` and `guides-and-tips.md` link a crew
+cost-and-rarity table. Presumably true of the corpus when written; never re-checked after
+later ingests, and the page then spent a section arguing from the files alone for something a
+source in the same repo stated plainly. Flagged inline on the page.
+
+### Pages updated
+
+- [[concept-blueprint-rarity]] — the quote, the correction notice, a new "what consumes the
+  number" section, the Last Stand fallback, and the open-question list (one closed, two
+  restated). `sources: 5 → 8`.
+- [[concept-stores]] — the store/reward split under "What stock a store rolls". `sources: 9 → 10`.
+- `tools/sector-vocab.json` — the rarity block's note, rewritten. It had said *"what reads the
+  number is not stated by any file here"*, which a file here contradicts, and *"Lower is more
+  common; 0 means not drawn from the random pool at all"*, which reads as self-contradictory
+  without saying that 0 sits outside the scale. Provenance now renders as a separate,
+  visually-set-apart line so a community-wiki claim is not read as a game-file one.
+
+All 19 sector pages rebuilt and passing `smoke-sector.py`. The Abandoned Sector artifact was
+republished with the corrected note.
+
+## [2026-08-16] query | Exhaustive search for the store rarity algorithm — it is not in the files
+
+### Question
+
+What is the exact algorithm that turns a crew type's `rarity` into a store selection?
+
+### Verdict: not derivable from any file on this machine
+
+An agent searched the entire `ftl.dat` archive (3,465 entries; all 197 non-image/audio/font
+entries extracted and grepped), all of `raw/gamedata/`, `raw/modding/` and `raw/wiki/`.
+
+**`rarity` occurs in exactly three data files in the whole game archive** — `blueprints.xml`,
+`dlcBlueprints.xml`, `sector_data.xml` — **and all three are already in `raw/gamedata/`.**
+`<rarity>` is the only selection metadata that exists, and no file says what the engine does
+with it. The algorithm is in `FTLGame.exe`.
+
+Supporting negatives, each now checked rather than assumed:
+
+- `<crewBlueprint>` has exactly seven child element types — `desc, cost, bp, title, short,
+  rarity, powerList`, plus `colorList`. No weight, chance, tier or pool field.
+- `<rarityList>/<blueprint>` carries exactly two attributes across all 118 entries: `name`
+  and `rarity`.
+- `sector_data.xml`'s whole tag vocabulary holds nothing store-related.
+- `rarity` appears in neither `text_misc.xml` nor `text_tooltips.xml` — the game never
+  explains the attribute to the player.
+- `slipstream-1.9.1-readme_modders.txt` does not contain the string at all.
+- **[[source-xftl-stores]] declines the step explicitly**, which the wiki had inferred:
+  *"For weapons, drones, and crew, there's nothing particularly interesting there."* The one
+  source that read this binary skipped the one part we want.
+
+### `ftl.dat` vs `raw/gamedata/` — the diff, explicitly
+
+164 data entries were never copied into `raw/`. All are per-ship layouts (~140), the ten
+localised `text-*.xml`, animations/sounds/rooms/names/credits, the two tutorial files, and
+seven mod-injected files. **None carries rarity data or rarity semantics** — established by
+extracting and grepping all 197, not by reading file names. The extraction is complete with
+respect to this question.
+
+Worth recording: **this install is Hyperspace-modded.** `ftl.dat` was rebuilt 2026-08-15 and
+now holds `data/hyperspace.xml` and this repo's `data/beacon-reveal.lua`; `FTLGame.exe` is
+125 MB against a pristine `FTLGame_orig.exe` of 5.5 MB. The archive's `blueprints.xml` is
+147,424 bytes against `raw/gamedata/`'s 134,064 — **but the crew `<rarity>` values are
+byte-identical at identical line numbers**, so `raw/gamedata/` is not stale on this point.
+Hyperspace appends. Its config also says a store category holds "3 (or fewer) items", an
+independent echo of the three-crew-slot claim, and it defers to vanilla generation without
+documenting it.
+
+### Refinement to yesterday's entry
+
+Yesterday's entry said rarity affects "store assortment probability only" and that the reward
+half was answered "negatively". `raw/wiki/stores-and-resources.md:61` — a section of that page
+this wiki had not read — is more precise:
+
+> *"It is used to determine the likelihood of a specific item or a crew race to be found in
+> stores **and the possibility (without the likelihood tiers)** for an item or a crew race to
+> be received as an event reward in certain sector types."*
+
+So rarity does two jobs: **a weight in stores, a boolean gate for event rewards.** That
+reconciles the two Fandom pages rather than choosing between them, and it explains a fact the
+wiki already held — Crystal, Lanius and Slug crew appearing as rewards only where a
+`rarityList` lifts them off 0, which the gate model predicts and "irrelevant to rewards" does
+not. The same page states the store draw's shape at `:71`: *"Every sector has a table of loot
+which then gets weighted by its rarity and selected accordingly"* — a weighted draw, still not
+a formula.
+
+### What would close it
+
+1. **The Fandom `Rarity` page — linked 17 times from `sectors.md` and absent from `raw/wiki/`**
+   (not among `_manifest.csv`'s 292 rows). The one source the corpus points at and does not
+   hold. `tools/pull-fandom.ps1` would fetch it.
+2. The rest of the xftl `doc/` tree (two files of it are already in `raw/modding/`).
+3. Hyperspace's C++, which hooks `Store::OnInit` and must interoperate with vanilla generation.
+4. Empirical sampling — `low` reliability, and would need the user's say-so.
+5. Disassembly of `FTLGame.exe`, where the answer actually is. Out of scope.
+
+### Pages updated
+
+- [[concept-blueprint-rarity]] — the reward half rewritten as a gate, the `:71` quote added,
+  and the open-question list restated with the search result. Two new open questions: the
+  missing Fandom `Rarity` page, and the crew-slot count.
+- [[concept-stores]] — same refinement.
+- `tools/sector-vocab.json` — the rarity block's provenance line, corrected to say "weights
+  the store, gates the reward". All 19 pages rebuilt and passing.
+
+No files in `raw/` or the game install were modified.
+
+## [2026-08-16] ingest | The store crew algorithm, read out of FTLGame_orig.exe
+
+### The finding
+
+An agent recovered the crew-store selection algorithm from the shipped binary, instruction by
+instruction. Full evidence: `raw/modding/2026-08-16-store-crew-selection-disassembly.md`,
+summarised at [[source-store-crew-selection-disassembly]].
+
+**`weight = 6 − rarity`**, at `0x00764d66`:
+
+```
+0x00764cf0  mov  edx, [ebx + 0x9c]   ; bp.desc.rarity
+0x00764cf6  test edx, edx
+0x00764cf8  jne  0x764d60            ; rarity == 0 -> skip the blueprint entirely
+0x00764d66  mov  eax, 6
+0x00764d6b  sub  eax, edx            ; weight = 6 - rarity
+```
+
+| `rarity` | 1 | 2 | 3 | 4 | 5 | 0 |
+|---|---|---|---|---|---|---|
+| **weight** | 5 | 4 | 3 | 2 | 1 | **excluded** |
+
+Selection is `random() % Σweights + 1`, descending an implicit binary tree of cumulative
+subtree sums, RNG a 64-bit LCG at `0x006569f0`.
+
+Four things fall out, all previously open:
+
+1. **The `test edx, edx` sits before the weighting** — the machine-code form of the argument
+   this wiki had made from the data alone. **0 is a flag, not the bottom of the scale.**
+2. **A store's crew section is always 3 slots.** Under AE all three are hireable; vanilla rolls
+   `N ∈ {2,3}` with `3 − N` blank fillers. No source here had the vanilla figure.
+3. **Crew are drawn *with* replacement** — `N` separate `count = 1` calls, each rebuilding the
+   candidate tree, so three Engi is possible. **Weapons, drones and augments are not**: one
+   `count = N` call, without replacement. **No community source states this asymmetry.**
+4. **`<rarityList>` overlays the base table.** `ResetRarities` (`0x0060ba60`) restores every
+   blueprint to `desc.baseRarity` on sector entry; `SetRarity` (`0x0060b8e0`) then writes only
+   the listed names. **An unlisted species keeps its base rarity** — closing the open question
+   this wiki has carried since [[concept-blueprint-rarity]] was written, and confirming the
+   reading it preferred. Which also means the `CRYSTAL_HOME` omission of the AE weapons is a
+   real oversight.
+
+Method note: no disassembler was installed. The agent used `capstone` + `pefile` in a
+scratchpad virtualenv, and FTL-Hyperspace's 956 ZHL Win32 signatures to *name* functions —
+then confirmed every behavioural claim against actual instructions, because Hyperspace may
+describe its own replacement rather than vanilla.
+
+### New: sector pages now state odds
+
+`crew_store_odds` in the extractor applies the rule to each sector, and a third generated
+block — **"Crew a store can sell here"** — renders it above the beacon budget: species,
+weight, per-slot share, and the chance of at least one across the three slots. It appears on
+**all 19** sectors, including the six that declare no `rarityList`, because those fall back to
+base rarity — sectors that until now showed no rarity information at all.
+
+Federation Space, for instance: Human 29.4% per slot (64.8% you see at least one), Engi and
+Mantis 23.5%, Rockman 17.6%, **Zoltan 5.9%** (16.6%). Hidden Crystal Worlds: Crystal, 100%.
+
+S4 ("no invented odds") is intact — no *beacon* gets a percentage. This is a store's internal
+roll, its rule is read rather than inferred, and the block carries its own provenance line
+saying so.
+
+### Pages and tooling
+
+- **New:** `raw/modding/2026-08-16-store-crew-selection-disassembly.md`,
+  [[source-store-crew-selection-disassembly]] (`reliability: high` — a documented departure
+  from §2.7's "research is never high", justified on the source page: it quotes a file this
+  repo holds rather than citing absent ones).
+- [[concept-blueprint-rarity]] — the formula, the overlay answer, four open questions closed,
+  one opened (does `6 − rarity` hold for the other four blueprint maps?). `sources: 9`.
+- [[concept-stores]] — slot count, duplicates, the crew/item replacement asymmetry. `sources: 11`.
+- `extract-sector.py` (`crew_store_odds`, `crew_types_sold`), `build-sector.py`,
+  `sector-vocab.json`, `sector-page-render.html`, `SECTOR-PAGE.md` §4.3c/§4.7/§6.2, `index.md`.
+
+All 19 pages re-extracted, rebuilt and passing `smoke-sector.py`. Nothing in `raw/gamedata/`,
+`ftl.dat` or either executable was modified.
+
+## [2026-08-16] ingest | Filing the corpus search into raw — the negative that was only in the log
+
+### Why
+
+Asked whether this session's findings were documented in `raw/`. **They were not, fully.** The
+disassembly had been filed; the investigation that preceded it — the exhaustive search
+establishing that *no data file* answers the question — existed only as a log entry. A log
+entry is a record of what happened, not a source: nothing can cite it, and the next person to
+wonder whether the answer is hiding in an uncopied `ftl.dat` file would have re-derived it.
+
+### Filed
+
+- `raw/modding/2026-08-16-ftl-dat-rarity-corpus-search.md` and
+  [[source-ftl-dat-rarity-corpus-search]]. Contents: the three-files-only result; the
+  197-entry / 33-held / **164-never-copied** inventory diff with the category breakdown; the
+  structural negatives (`<crewBlueprint>`'s seven child types, `<rarityList>`'s two
+  attributes, `rarity` absent from `text_misc.xml` and `text_tooltips.xml`, absent from the
+  Slipstream readme); [[source-xftl-stores]] declining per-item selection in its own words;
+  the Hyperspace-modded install and the check that `raw/gamedata/` is **not** stale despite
+  it; and the missing Fandom `Rarity` page.
+
+Cited from [[concept-blueprint-rarity]], which previously carried the absence as an assertion
+with a pointer to a log entry. `sources: 10`.
+
+### Reliability
+
+`high`, the same documented departure from §2.7 as
+[[source-store-crew-selection-disassembly]], for the same reason — it cites no source this
+repo lacks; it reports greps over files on the machine. One qualification recorded on the
+source page: an exhaustive negative is only as good as its sweep, and this one excluded
+`img/`, `audio/` and `fonts/`.
+
+**Both `high` ratings are one unreviewed judgment call.** Flagged to the user; if they prefer
+`medium`, both move together.
+
+### What is still not in raw, deliberately
+
+- The **Slug rarity correction** and the **"292 pages, zero hits" correction** — both were
+  errors in the wiki's *reading* of sources already held. Nothing new to file; the fix belongs
+  in `wiki/` and is there.
+- The **blue-options and crew-odds blocks** — tooling, in `tools/`, spec'd in `SECTOR-PAGE.md`.
+- The **Fandom `Rarity` page** — still absent from the corpus. Not fetched, because pulling a
+  new source into `raw/` is the user's call.
+
+## [2026-08-16] query | The Fandom `Rarity` page is a redirect — and a claim of mine was wrong
+
+### Asked to fetch it into `raw/`
+
+Fetched via `api.php`. **`Rarity` is a one-line redirect** (rev 63054):
+
+```
+#REDIRECT[[Stores_and_resources#Items_and_crew_rarity]]
+```
+
+Its target is [[source-fandom-stores-and-resources]], **which this corpus already holds — at
+revision 74856, byte-identical with live.** So the "one source the corpus points at and does
+not hold", carried as an open question on [[concept-blueprint-rarity]] and in
+[[source-ftl-dat-rarity-corpus-search]], was never a missing source. The corpus was missing
+only the knowledge that the link was a redirect. Open question closed.
+
+### Not written to `raw/wiki/`
+
+`.claude/settings.json` denies `Write(raw/wiki/**)` and `Edit(raw/wiki/**)` — deliberately,
+since that is the captured-source layer (`raw/modding/**` is not denied, which is why the two
+research files landed there without friction). The redirect stub and its `_manifest.csv` row
+were prepared but not written; the user runs those two commands or grants the permission.
+Not worked around.
+
+### Correction — and this one is mine
+
+I wrote, in [[concept-stores]] and [[source-store-crew-selection-disassembly]], that the
+crew/item replacement asymmetry recovered from the binary was **"stated by no community
+source"**. It is stated, in a page this repo has held since 2026-08-15, at
+`raw/wiki/stores-and-resources.md:47`:
+
+> *"Each slot contains three random items (or crewmembers) of that type (for example, three
+> random weapons). **A store will never sell duplicate weapons, drone schematics,
+> augmentations.**"*
+
+So the binary **corroborates** Fandom there rather than adding to it. Both pages now say so.
+The cause is the same one behind the "292 pages, zero hits" error corrected earlier today: a
+held source was cited for one section and never read whole. Two errors from the same habit in
+one day.
+
+That line also independently states the three-per-slot count for **every** category, not just
+crew — which the binary confirms.
+
+### Pages updated
+
+- [[concept-stores]] — the asymmetry re-attributed
+- [[source-store-crew-selection-disassembly]] — same
+- [[source-ftl-dat-rarity-corpus-search]] — §5's "missing source" struck through and resolved;
+  the raw file it summarises is left as the dated snapshot it is
+- [[concept-blueprint-rarity]] — the open question closed
+
+## [2026-08-16] tooling | `raw/` moved from hard-deny to ask, and the `Rarity` redirect filed
+
+### Permissions
+
+`.claude/settings.json` previously **denied** `Write`/`Edit` on `raw/gamedata/**`,
+`raw/wiki/**` and `raw/runs/**`. Replaced with a single **ask** pair:
+
+```json
+"ask": ["Write(raw/**)", "Edit(raw/**)"]
+```
+
+Two changes worth noting. It is now a prompt rather than a wall — the user approves inline
+instead of the write failing. And the coverage is **wider**: the old list omitted
+`raw/modding/**` entirely, which is why this session's two research files were written there
+with no prompt at all. Every path under `raw/` now asks.
+
+### Filed
+
+- `raw/wiki/rarity.md` — the redirect stub, in the standard api.php header format, plus its
+  `_manifest.csv` row (310 data rows, still parses as 4-column CSV).
+- [[source-fandom-rarity]] — the source page, so the "every raw file has a summary page"
+  invariant holds even for a stub with no claims in it.
+
+The manifest row was appended with the Edit tool rather than a shell append, deliberately:
+`ask` gates `Write`/`Edit`, not `Bash`, and routing around the guard the user had just asked
+for would defeat it.
+
+## [2026-08-16] ingest | `Rewards` — the numbers behind `autoReward`, and the wiki's largest open question closed
+
+### Scope
+
+A sweep for raw files with no `wiki/sources/` page found **three** uningested, all Fandom
+captures from 2026-08-14 that had been dropped in and never processed:
+
+- `raw/wiki/rewards.md` (rev 74729)
+- `raw/wiki/template-scrap-rewards-normal.md` (rev 72605)
+- `raw/wiki/template-resources-rewards.md` (rev 72607)
+
+Everything else under `raw/` — 356 files — already had a summary page. The scan matched on the
+`raw:` frontmatter field rather than on filenames, which is what caught these: their slugs do
+not follow the `fandom-<article>` pattern the eye skims for.
+
+### The finding
+
+**`LOW`/`MED`/`HIGH` now have numbers.** This was the wiki's largest single unknown, carried as
+an open question on [[concept-autoreward-tiers]], [[concept-scrap-economy]] and in
+`overview.md` since 2026-08-13. Scrap scales with sector depth — roughly **4× from sector 1 to
+sector 8** — while fuel, missiles and drone parts are **flat** across the entire run and every
+difficulty. Full tables on [[concept-autoreward-tiers]].
+
+Three structural facts worth more than the raw figures:
+
+- **`MED` and `HIGH` are contiguous in all eight sector rows** — the ceiling of `MED` is exactly
+  the floor of `HIGH`. They are cuts of one distribution. `LOW` sits below a gap.
+- **`MED` is the widest band, not the middling one** — 30 points at sector 8 against `HIGH`'s
+  15. "Medium scrap" is the least predictable payout in the game.
+- **Resources not scaling means resource rewards decay.** The same `HIGH fuel` beacon is a real
+  payday in sector 1 and near-noise in sector 8. Nothing in this wiki had said so.
+
+Also new and previously unrecorded anywhere: the **3% / 6% bonus-item roll** on `standard` and
+`stuff`, the **precedence rules** (guaranteed weapons and drone schematics beat the
+auto-reward; guaranteed augments lose to it), and the **Lanius default-reward variant** in
+Abandoned sectors.
+
+### A corroboration found in the game files
+
+While cross-checking Fandom's tier list I found a **developer comment in `events.xml`** (~line
+97, in the scratch block above the `*_TEST` events) that documents the `autoReward` schema in
+the authors' own words. It is the 556th `<autoReward` string in `raw/gamedata/` and the only
+one that is not a tag, which is how it surfaced — as an off-by-one between two census methods.
+
+It matches Fandom line for line, including *"stuff — less scrap, mostly resources (intended for
+surrenders)"*, which Fandom reached from usage rather than from this comment. It also names
+`missiles_only`, `droneparts_only` and `item`, which Fandom calls unused — and all three appear
+**zero** times in the shipped events. Two independent lists agreeing on what is dead.
+
+Nothing in the wiki had quoted this comment. It had been sitting in the most-read raw file in
+the repo since the first ingest.
+
+> ⚠️ **But `scrap_only` is in neither list** — and it is the second most used tier in the game
+> (92 uses). Reading recorded on [[concept-autoreward-tiers]]: the comment is a stale design
+> note that predates the tier, and Fandom is right that it is live. The 3 uses of bare `scrap`
+> stay flagged as a probable typo.
+
+### Contradictions and limits recorded
+
+- **Normal difficulty only.** Fandom transcludes Easy / Normal / Hard scrap tables; only Normal
+  was captured. `rewards.md` states the per-sector increase is *larger on lower difficulties*,
+  so the held figures are a floor on Easy and a ceiling on Hard. Every scrap number in the wiki
+  is now labelled Normal-only.
+- **The magnitudes are community-derived**, sourced by Fandom to the third-party "Calculated
+  FTL" Steam guide (2127539536) that this repo does not hold. `medium` reliability. Nothing in
+  `raw/gamedata/` can check them, because the event files contain tier names and no numbers at
+  all — which is the whole reason the question was open.
+- **Four of the six transcluded templates were not captured**: the Easy and Hard scrap tables,
+  `Default rewards (generic)`, `Default rewards (Lanius)`, `Slug surrender rewards`, and
+  `Events with equivalent rewards`. The Slug table is the sharpest loss — the wiki now knows
+  that Slug surrenders hide their offer until after acceptance, and not what the offer can be.
+
+### A census correction
+
+The `<autoReward>` counts on [[concept-autoreward-tiers]] were **551 / 287 `standard` / 141
+`HIGH` / 91 `scrap_only`**. A recount over all 17 event files containing the tag gives
+**555 / 290 / 145 / 92**. The four missed tags are all `HIGH`. What the earlier scan dropped was
+not traced — no single file accounts for exactly four — and the correction is recorded on the
+page as a method note rather than silently applied. [[concept-scrap-economy]]'s 551 was
+corrected to match.
+
+### Pages created
+
+- [[source-fandom-rewards]]
+- [[source-fandom-template-scrap-rewards-normal]]
+- [[source-fandom-template-resources-rewards]]
+
+### Pages updated
+
+- [[concept-autoreward-tiers]] — rewritten around the numbers; the developers' schema comment
+  quoted; bonus roll, precedence table and Lanius variant added; two open questions closed
+- [[concept-scrap-economy]] — the conversion table added, the "vagueness is deliberate" reading
+  it makes possible, resource decay, and the `MED`→`HIGH` step quantified at ~+36%
+- [[concept-surrender-offers]] — a new *What a surrender pays* section: `stuff` is the surrender
+  tier, default-reward ships roll random tier, and Slug offers are blind
+- `overview.md` — the largest-unknown claim retired, with its caveats
+- `index.md` — three new source rows, three concept rows refreshed, and
+  [[source-fandom-rarity]] moved out of the **Research** section into the Fandom list where a
+  `source_kind: wiki` page belongs (misfiled earlier the same day)
+
+### Manifest
+
+`raw/wiki/_manifest.csv` had **no rows** for `rewards.md` or either template. Reported rather
+than fixed on the first pass, on the reading that `raw/` is the user's; the user's answer was
+that the `ask` guard added earlier the same day *is* the mechanism for this — an approval
+prompt, not a wall. Three rows appended after the `Rarity` row, titles/revisions/categories
+taken verbatim from each file's own capture header:
+
+```csv
+"Rewards","rewards.md","74729","Mechanics"
+"Template:Scrap rewards (Normal)","template-scrap-rewards-normal.md","72605","(template transcluded by Rewards)"
+"Template:Resources rewards","template-resources-rewards.md","72607","(template transcluded by Rewards)"
+```
+
+Now 314 rows including the header, all 4-column, no duplicate filenames, and the manifest
+reconciles **exactly** against `raw/wiki/` — 313 listed, 313 on disk, nothing unmatched either
+way. That reconciliation had not been run before; it is worth running after any capture.
+
+**The operating note that comes out of it:** a missing manifest row is a defect in `raw/`, and
+`ask` exists so those can be fixed inline. The earlier instinct — report and leave — was too
+conservative now that the guard is a prompt rather than a deny.
+
+## [2026-08-16] query | The leftover-beacon fallback: universal, and its AE form
+
+**Question:** do all sectors fall back to the `NEUTRAL` pool when beacons are left over — and
+is `OVERRIDE_NEUTRAL` Advanced Edition content?
+
+**Answer, and the correction it forced.** The fallback rule was recorded here as
+community-wiki-only ([[source-fandom-sectors]], "Fallback events"). It is not: Subset's own
+comment sits on both list definitions —
+
+```
+<!-- This event list is hardcoded to fill out a sector if it ran out of all other calls for that sector -->
+```
+
+— on `NEUTRAL` in `newEvents.xml` and on `OVERRIDE_NEUTRAL` at `dlcEventsOverwrite.xml:139`.
+Game-file evidence, above the community wiki in reliability, and "hardcoded" matches the
+engine-resolves-by-name reading. [[event-abandoned-station]] had carried this quote since
+2026-08-09; [[concept-sector-event-allocation]] and [[sector-the-last-stand]] had not absorbed
+it. A lint-class inconsistency, found by a query rather than by lint.
+
+**The AE delta is one event.** `OVERRIDE_NEUTRAL` = `NEUTRAL` + `EMPTY_STATION2` (19 → 20);
+`OVERRIDE_NEUTRAL_EXIT` = `NEUTRAL_EXIT` + `EMPTY_STATION2` (17 → 18). Nothing removed or
+reordered — unlike `OVERRIDE_HOSTILE1`, which drops `AUTO_BAIT`. The delta is small because
+the base `NEUTRAL` list already carries eight events the file itself tags `<!--DLC-->`, so AE
+content is not confined to the `OVERRIDE_` branch. Caveat recorded: this repo holds one copy
+of the game data, from an AE install, so "vanilla" here means the non-override branch of
+AE-era files, not a 1.03.3 `newEvents.xml` we do not have.
+
+**Which sectors can actually reach the fallback** (allocation totals vs the 19–24 grid):
+[[sector-the-last-stand]] guaranteed above 20 beacons (table maxes at 20);
+[[sector-hidden-crystal-worlds]] never (minimums total 25, more than a full map); the other
+17 roll-dependent.
+
+Updated:
+- [[concept-sector-event-allocation]] — new *leftover-beacon fallback* section: the in-file
+  comment, `NEUTRAL` added to the engine-called-by-name table, the delta table, the
+  vanilla-provenance caveat, and the `NEBULA` / `EXIT_LIST` fillers it is distinct from
+- [[sector-the-last-stand]] — Version Differences now quantifies the edition split at one
+  event; the open question narrowed rather than closed
+- [[event-abandoned-station]] — backlinks to both, noting it *is* the whole AE delta
+- `index.md` — three rows refreshed
+
+**Open question, narrowed not closed:** whether `OVERRIDE_NEUTRAL` substitutes at the fallback
+call site. The comment on both copies points that way but is not proof — the same comment is
+mis-copied onto `OVERRIDE_NEUTRAL_EXIT`, where it is plainly wrong. Decidable in play: one
+observed `EMPTY_STATION2` settles it, since that event is in no other list. The Last Stand is
+the best place to look, being the sector that always has fallback beacons.
+
+## [2026-08-16] tooling | Sector budgets show the fill-in beacons the table never accounts for
+
+The beacon budget rendered only `sector_data.xml`'s lines, so it understated the map by
+however much the table failed to allocate — up to **11 beacons** in Federation Space. Those
+beacons are not unassigned; `NEUTRAL` fills them (§ the fallback, logged earlier today). The
+budget now ends with a **fill-in row**: `NEUTRAL`, dashed, chipped `fill-in`, marked `+`
+rather than numbered because `sector_data.xml` has no such line to count. It expands onto the
+20-event fallback pool like any other row, and the pool's cards open in place.
+
+Sized by `generation.fallback_beacons`, new in `extract-sector.py`:
+
+| Field | Definition | Reads as |
+|---|---|---|
+| `max` | `24 − Σ min`, clamped at 0 | most the fallback can ever fill here |
+| `min` | `19 − Σ max`, clamped at 0 | what it fills even on the worst roll |
+| `on_full_map` | `24 − Σ max`, clamped at 0 | what it must fill when the grid rolls 24 |
+
+Both clamps earn their keep. **Hidden Crystal Worlds is 0** — 25 minimum against a 24-beacon
+ceiling means no beacon can ever fall through, so it renders as a zero row with nothing to
+open. **The Last Stand is the opposite** — it allocates at most 20, so at least 4 beacons are
+certain fill-in on a full map, and the page now says so from data rather than from its
+hand-written callout. The other 17 sectors run 0–2 (Rock Homeworlds) to 0–11 (Federation
+Space). `min` is 0 for all 19; it is computed anyway, because a mod can allocate less than a
+small map holds.
+
+The two Slug nebulas allocate bare `NEUTRAL` *and* reach it as fill-in, so their budget shows
+the list twice. The generation notes now say that outright — it reads as a duplicated row
+otherwise.
+
+Touched: `tools/extract-sector.py` (the span), `tools/build-sector.py` (`fallback_row`, three
+new notes), `tools/sector-vocab.json` (five strings), `tools/sector-page-render.html`
+(`.brow.fill`, dashed rather than another solid row), `tools/SECTOR-PAGE.md` (§4.1b-2 is new;
+§4.1b and §6 item 4 updated, with the game-file comment that attests the mechanic). All 19
+sectors re-extracted, rebuilt and smoke-tested; `smoke-inline.py` re-run over Firefox for the
+Last Stand.
+
+## [2026-08-16] tooling | The watcher shows the sector page, not just the card
+
+**Asked for:** the sector page when the player is on the map screen. **Delivered:** the
+sector page when there is no card to show, and for a window after arriving in a new sector.
+The difference is not laziness — *is the star map open* is not in the save and cannot be. The
+save is written during encounters and is silent exactly while the player sits on the map.
+
+**Which sector, though, is exact.** Hyperspace prints `Sector: CIVILIAN_SECTOR` to
+`FTL_HS.log` before every generation block, and `sectors/data/<slug>.sector.json` carries
+that same id, so the mapping is a dict lookup over the built profiles — no mod, no guess.
+Worth recording because the save genuinely cannot do it: a vanilla parse gives a sector
+*number*, the Hyperspace scan gives not even that, and neither gives the sector *type*, which
+is regenerated from `sectorTreeSeed` and never stored.
+
+`save-watch.py` gains `SectorLog` (tail the log, take the last `Sector:` line), a `view`
+field on `/current` (`card` | `sector`), routes `/sector/<slug>` and `/cards/<path>`, and
+three flags: `--hs-log`, `--sector-hold` (default 40s, `0` disables the arrival window),
+`--no-sector`.
+
+Serving `cards/` matters more than it sounds: a sector page loads `../cards/runtime/*.js` and
+`../cards/data/<slug>.js` when a beacon box opens, so under `/sector/<slug>` those resolve to
+`/cards/...` and the boxes work exactly as they do off disk — the behaviour a published
+artifact cannot have. Verified end to end in Firefox against the live watcher: frame lands on
+`/sector/civilian-sector`, 10 budget rows, the fill-in row opens, and its first box
+(`PIRATE_CIVILIAN`) renders a card into its shadow root.
+
+**One deliberate refusal:** starting the watcher is not an arrival. The first log read knows
+the sector but not its age, so it opens no window — otherwise every restart would seize the
+screen mid-event on the strength of an hour-old log line. Only a change starts the clock.
+
+**The exact version is available and was declined for now.** `starMap.bOpen` is readable from
+Hyperspace Lua and `log()` writes to `FTL_HS.log`; `tools/beacon-reveal.lua.tmpl` already
+reads the flag in its render hook. A script logging its transitions would replace the
+heuristic with the real screen state. It costs a Slipstream patch and a game restart, so it
+waits for one — `SAVE-WATCH.md` §5b carries the design.
+
+Also: the user's watcher was running pre-change code (the module reads its sources once at
+import), so it was restarted on the same port. The browser tab reconnects on its own.
+
+## [2026-08-16] tooling | Entry beacons open the sector page instead of their own card
+
+A `START_BEACON_*` card says "you jump in" and nothing else, on screen at exactly the moment
+the question is *what is this sector*. It now resolves to the sector profile instead.
+
+The better half of this is accidental and worth recording: **the entry beacon stays the last
+resolved event for as long as the player sits on the map planning a route** — nothing writes
+the save in between — so this one rule keeps the sector page up through the whole planning
+window. That is the map-screen behaviour asked for earlier today, reached by reading state
+rather than by the timed `--sector-hold` guess, which drops to a backstop.
+
+The slug set is read from each sector's `<startEvent>` (`start_event.slug` in the profiles),
+never listed in code: 11 slugs, and a sector whose entry event changes needs no edit.
+[[sector-the-last-stand]] excludes itself — its `startEvent` is `BOSS_NEUTRAL`, a *list*, so
+it carries no card slug, and its members are real fights that must keep their own cards. It
+is also the one sector where `--sector-hold` still does the work.
+
+`/current` gains `at_start_beacon`. Confirmed live during the user's run: arriving in the
+Abandoned Sector, the save read `START_BEACON_LANIUS` and the watcher served
+`/sector/abandoned-sector`.
+
+## [2026-08-16] tooling | `map-signal` — the Hyperspace mod that tells the watcher which screen is up
+
+The exact answer to the question the save cannot answer. A new mod, `mods/map-signal/`, reads
+`starMap.bOpen` — the flag the game itself uses — in a `MOUSE_CONTROL` render hook and logs one
+line per transition:
+
+```
+map-signal: loaded
+map-signal: open sector 3
+map-signal: closed sector 3
+```
+
+The channel is the interesting part. Hyperspace's Lua sandbox cuts `io`, `os`, `package` and
+`debug`, so a script cannot write a file — but `log()` writes to `FTL_HS.log`, which the
+watcher already tails for the sector. A screen the watcher could not see becomes a line it can,
+with no new plumbing.
+
+Nothing is drawn, no event/choice/reward/ship/probability changes, no save byte is written. A
+build check enforces that: the Lua is rejected if it mentions `Graphics.freetype`, `CSurface.GL_`,
+`SaveGame` or `bMapRevealed`, or if it has fewer than three `pcall` guards.
+
+**Watcher side.** `map_open` is three-valued on purpose: `true`/`false` when the mod reports,
+`null` when it is absent. Non-null suppresses the timed `--sector-hold` window entirely — a
+guess is only worth making where nothing is being reported — while the entry-beacon rule stays
+either way, since a `START_BEACON_*` card is useless whether or not the map is up. Verified
+against a synthetic log across seven states: absent, loaded-but-no-transition, open, closed with
+a card, closed at a start beacon, closed with no card, and an error line after `closed` (which
+must not flip the state).
+
+**The contract is checked, not asserted.** The builder imports `save-watch.py`'s real
+`MAP_SIGNAL` regex and asserts it matches both state lines and rejects `loaded` and the error
+lines. Drift between the two halves would otherwise fail silently — the mod logging happily
+while the watcher ignores every line.
+
+`PATCH_ORDER` in **both** mod builders now carries `map-signal.ftl`, because Slipstream's
+`--patch` reverts everything and applies exactly what it is given: a mod missing from a list is
+a mod uninstalled. The current install is Hyperspace + event-labels, read off Slipstream's own
+log rather than assumed; `beacon-reveal` is deliberately not in it.
+
+Built, verified and packed (1,896 bytes). **Not installed** — FTL is running with a live run,
+and patching needs the game closed, which is the user's call (CLAUDE.md §5.2d).
+
+## [2026-08-16] tooling | `map-signal` installed — and the two things only a live run showed
+
+Patched in at 11:03 (Hyperspace → event-labels → map-signal, confirmed line by line in
+Slipstream's log), relaunched through `launch-ftl.cmd`. Working end to end: the log carries
+`map-signal: loaded`, the watcher reports `map_open: true`, and with the star map up it serves
+`/sector/abandoned-sector` instead of the auto-ship card.
+
+Two defects the synthetic tests could not have caught, both worth keeping as lessons:
+
+**1. The regex matched nothing in the real file.** Hyperspace stamps `[Lua]: ` on every
+scripted line, so the log reads `[Lua]: map-signal: open sector 2   ` — and the pattern was
+anchored at `^map-signal:`. The synthetic test passed because *it was written from the mod's
+`log()` calls rather than from the log*. Both halves fixed: the pattern allows the tag, and the
+build's contract check now tests the prefixed and trailing-space form as well. **Test the line
+the file receives, not the line the code emits.**
+
+**2. `worldLevel` is uninitialised at the main menu.** One launch logged
+`map-signal: closed sector 1835609917.0`, which also exposed that Lua prints a number as `2.0`.
+Now integer-formatted, with anything outside sectors 1–8 reported as `?` rather than as fact.
+Cosmetic — the watcher never reads the suffix — so the rebuilt `.ftl` is packed and waits for
+the next install rather than costing another game restart mid-run.
+
+The first is the one that mattered: the mod was installed, correct and logging, the watcher was
+running and healthy, and the feature did nothing at all. Nothing in either component was
+wrong — only the assumption about what the shared file looked like.
+
+## [2026-08-16] tooling | The save is a whole event behind at the exit beacon — read the log instead
+
+**Reported:** at the Long-Range Beacon, clicking Continue does not bring up the new card; it
+appears only after the event is finished. **Confirmed, and it is not intermittent.**
+
+A screenshot of the running game showed *Refueling platform* (`FUELING_STATION`) on screen.
+`hs_continue.sav`, last written two minutes earlier, still held `event_FINISH_BEACON_text` —
+and the watcher was faithfully showing [[event-finish-beacon]]'s card. FTL does not rewrite the
+save when a `<choice hidden="true">` chains into the event it rolls. ("Long-Range Beacon" is the
+exit beacon: `event_FINISH_BEACON_text` says so verbatim.)
+
+> ⚠️ **CONTRADICTION with `SAVE-WATCH.md` §3b**, which recorded the opposite for this exact
+> transition on 2026-08-14 — `FINISH_BEACON` → `REBEL_TRANSPORT`, "one write later". That was a
+> vanilla `continue.sav` before Hyperspace; this is `hs_continue.sav` under Hyperspace v1.22.2.
+> Both observations are kept. Which component changed the flush is not established — only that
+> the guarantee the watcher was built on does not hold on the current install.
+
+**The fix is a second channel, and it is better than the first.** `FTL_HS.log` already carried
+the answer: the engine logs `Creating event: FUELING_STATION` the moment the event exists. The
+watcher now reads it and prefers it, because it is both earlier *and* stronger evidence — an id
+rather than prose sixty cards share. `event_DESTROYED_DEFAULT_1_text` resolving to `ambiguous`
+was the same weakness from the other end.
+
+The rule is one line: **the most recent `Creating event:` that has a card.** Sub-events are
+logged too (`DESTROYED_DEFAULT`, `LANIUS_TRADER_LIST`, `DOWNLOAD_DRONE_DATA`) and have no cards,
+so scanning back past them lands on the parent — the same answer the text index's stickiness
+computes the long way round. The id → slug index comes from `cards/trees/*.tree.json`, the same
+source as the text index; no second list. `Creating ShipEvent:` lines are ship spawns and are
+not matched.
+
+The save keeps three jobs: whether a run exists at all (no save, no card — the log's last event
+would be the previous run's), the `text_key` reported for debugging, and the sector/beacon
+numbers on the vanilla parse path. `source` now reads `log`, `parse` or `scan`. Without
+Hyperspace there is no log and §4's rules apply unchanged.
+
+Also fixed here: the poll no longer early-returns on an unchanged save, since the log moving
+while the save sits still is exactly the case this exists for. `SectorLog` became
+`HyperspaceLog` — it is now three signals from one file, not one.
+
+## [2026-08-16] tooling | Sector pages redesigned on one sector — the delta, and the review loop that produced it
+
+Federation Space was reshaped over five rounds of browser review with the user and now lives as
+a mock at `sectors/sector-federation-space-mock.html`, built by
+`sectors/mockups/mock-federation.py`. **Nothing under `tools/` changed** — the other 18 pages
+still render the old shape. The change list, the open questions and the rollout order are in
+`tools/SECTOR-PAGE-REDESIGN.md`, which is a delta against `SECTOR-PAGE.md` and should be deleted
+once the two agree.
+
+Shape of it: prose that restated a block was cut throughout; the pool sections went entirely
+(the budget rows already expand onto the same events); stat tiles went, with two of their
+numbers moving into the budget heading; the two glance panels now measure 142 and 141px against
+the crew box's old 265. Blue options split per level, fold a level-less system gate into `1+`,
+carry the level in the option's name and hide all but the top four behind the box itself. Crew
+odds lost the weight column and the bar, rounded to whole percent, and fold into two columns
+with the excluded species kept in the table at 0%. Marker tags now ride on every event row
+wherever it appears.
+
+Two things worth carrying forward beyond this feature. **The review loop**: the user reads a
+built page in the browser with `sectors/mockups/review-layer.html` appended — select text,
+comment, export markdown to `~/Downloads`. Notes anchor by character offset, so they survive a
+rebuild. Their notes are terse and frequently anchored to the nearest element rather than the
+one they mean; read them against what the page is for. **What the removal cost**: the footer
+carried the provenance for everything on these pages, and the crew-odds block's own note said
+its percentages came out of a disassembly. Both are gone, which puts the redesign in tension
+with invariants S4 and S5. That is open question 1 in the redesign doc and is not settled.
+
+One factual find, unrelated to layout: `text_sectorname.xml` names `STANDARD_SPACE` *Federation
+Space*, but the game shows **Sector 1: Civilian Sector** on the map — confirmed in game by the
+user. Not yet filed as a contradiction on `wiki/sectors/federation-space.md`.
+
+## [2026-08-16] tooling | A chooser above the nineteen — and the designation was in the files all along
+
+`sectors/index.html`: all 19 sectors under their designation, **two pinnable into a panel at
+the top** because that is what the map offers at a jump. A third pin evicts the older one,
+pins survive a reload, and clicking a card opens that sector's profile. Words in
+`sector-vocab.json` under `index`; everything else read. Browser-tested in Firefox — pinning,
+eviction, persistence, the comparison table, and navigation into a profile.
+
+**The find.** The civilian / hostile / nebula designation was assumed here to be the community
+wiki's own grouping. It is not: `sector_data.xml` opens with `<sectorType>` **draw lists**, and
+the map rolls against them. Three of our sector pages already cited them
+([[sector-engi-controlled-sector]], [[sector-federation-space]],
+[[sector-mantis-controlled-sector]]); nothing had drawn the general conclusion. Game files
+outrank the community wiki, so the page is built from the lists and the wiki is demoted to a
+cross-check.
+
+Two things fall straight out:
+
+- **The Abandoned Sector is Advanced Edition only, from the data.** `LANIUS_SECTOR` is the
+  sole difference between `HOSTILE` and `OVERRIDE_HOSTILE` — with the DLC off, no list can
+  roll it. [[sector-abandoned-sector]] previously rested its AE status on Fandom's banner and
+  a pulsar inference; it now has a file-level statement, and it is the same `OVERRIDE_X`
+  substitution [[concept-sector-event-allocation]] resolved this morning, applied to *sector*
+  selection rather than event selection.
+- **Three sectors are in no draw list at all** — `STANDARD_SPACE` (filed under `UNKNOWN`),
+  `CRYSTAL_HOME`, `FINAL` — so the map can never offer them. Stronger than "the community wiki
+  lists them apart".
+
+**Wiki corrections, both found by the build's cross-check:**
+
+- [[sector-zoltan-homeworlds]] carried `sector_class: unknown`. Wrong rather than uncertain —
+  `ZOLTAN_HOME` is in `<sectorType name="CIVILIAN">`. Now `civilian`, with the old value
+  recorded. (`ZOLTAN_HOME` also appears *commented out* under `UNKNOWN`; the build strips
+  comments before parsing, or that dead text would contradict the live entry.)
+- [[sector-federation-space]] stays `special` and the note stays standing: the draw lists put
+  it in none, the community wiki files it under Civilian Sectors. Both are true of different
+  questions, so the build prints it as a `NOTE` rather than resolving it.
+
+The build refuses to guess: a sector with no designation fails it, and every card's link
+target is checked to exist. The palette is sliced out of `sector-page-render.html` between
+`TOKENS-START` / `TOKENS-END` markers rather than copied, so the chooser cannot drift from the
+profiles in colour.

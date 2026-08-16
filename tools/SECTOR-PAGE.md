@@ -3,6 +3,12 @@
 Normative spec for the FTL sector-profile pipeline. It is self-contained: an agent with no
 prior context can build, verify and extend a sector page from this document alone.
 
+> **A redesign is agreed but not implemented.** `tools/SECTOR-PAGE-REDESIGN.md` is the delta:
+> it was reviewed to completion on Federation Space (mock at
+> `sectors/sector-federation-space-mock.html`) and changes the page order, the glance blocks,
+> the budget and the footnotes. This document still describes what the pipeline *builds today*
+> and stays normative until the rollout lands. Read both before changing a sector page.
+
 A **sector page** is a single-page, self-contained HTML profile of one FTL sector — what it
 must place, everything it can throw at you, and what is worth having when you fly in. Where
 an event card (`tools/EVENT-CARD.md`) answers *"what do I pick right now?"*, a sector page
@@ -35,6 +41,7 @@ comes from the join in §4.6 — use the path the extractor prints rather than a
 | `tools/build-sector.py` | data + copy → the page | code only |
 | `tools/sector-page-render.html` | layout, colour, type | design only — **no English** |
 | `tools/sector-vocab.json` | every word the renderer emits that is not from the data | yes, shared by all pages |
+| `tools/card-vocab.json` | read for `gate_labels` only — blue-option names, shared with the card pipeline | yes, but it belongs to `EVENT-CARD.md` |
 | `tools/sector-copy/<slug>.json` | the words for one sector | **yes — this is the authoring surface** |
 | `tools/sector-cards.js` | the loader that opens a beacon box onto its card (§6.1) | code only — **no English, no paths** |
 | `tools/smoke-sector.py` | renders a built page as text and checks it | code only |
@@ -47,7 +54,8 @@ Inputs consumed:
 - `raw/gamedata/sector_data.xml` — the allocation table: every count on a page comes from here
 - `raw/gamedata/events*.xml`, `newEvents.xml`, `dlcEvents*.xml` — event-list membership
 - `raw/gamedata/text_sectorname.xml` — the sector's in-game display name
-- `raw/gamedata/blueprints.xml` + `text_blueprints.xml` — crew names for the rarity panel
+- `raw/gamedata/blueprints.xml` + `dlcBlueprints.xml` + `text_blueprints.xml` — names, base
+  `<rarity>`, and which ids are `crewBlueprint`s, for the rarity block (§4.3b)
 - `cards/trees/*.tree.json` — **every per-event tag, gate, item and crew fact** (§4.3)
 - `wiki/sectors/*.md` — the `sector_id:` → (slug, title) join (§4.6)
 
@@ -119,6 +127,12 @@ reverse-engineering of the generator, not the game files):
   first in the listing. The extractor therefore treats bare `NEBULA` as nebula-first too,
   which affects Federation Space and the Civilian Sector.
 - Beacons still empty at the end are filled from `NEUTRAL` (`OVERRIDE_NEUTRAL` under AE).
+  This is not a line in the file — the engine reaches the list by name, and the game files
+  say so themselves: the comment on both list definitions reads *"This event list is
+  hardcoded to fill out a sector if it ran out of all other calls for that sector"*
+  (`newEvents.xml`, `dlcEventsOverwrite.xml:139`). Those beacons are as real as allocated
+  ones, so `generation.fallback_beacons` sizes them and the budget renders them as a
+  marked, unnumbered row (§4.1b-2, §6 item 4).
 - The **exit beacon is not in the table** — it draws from a shared `EXIT_LIST`, and an exit
   inside a cloud is always empty.
 
@@ -133,6 +147,31 @@ The budget section renders placement order; only the pool sections re-sort for r
 > Worth knowing: the Fandom page states outright that it does **not** reflect the real file
 > order. `sector_data.xml` does, so these pages can show a placement order the community wiki
 > cannot.
+
+### 4.1b-2 The fill-in line — the beacons the table does not account for
+
+A budget that stops at the table understates the map, sometimes badly: whatever the table
+does not allocate, `NEUTRAL` fills. `generation.fallback_beacons` sizes that gap, in beacons:
+
+| Field | Definition | Reads as |
+|---|---|---|
+| `max` | `GRID_BEACONS − Σ min`, clamped at 0 | most the fallback can ever fill here |
+| `min` | `GRID_BEACONS_MIN − Σ max`, clamped at 0 | what it fills even on the worst roll |
+| `on_full_map` | `GRID_BEACONS − Σ max`, clamped at 0 | what it must fill when the grid rolls 24 |
+
+The clamp is the whole point at both ends. The Hidden Crystal Worlds allocates 25
+minimum against a 24-beacon ceiling, so its `max` is **0** — that sector can never reach the
+fallback, and its row is a zero row. The Last Stand is the opposite: it allocates
+at most 20, so `on_full_map` is **4** and the fallback is guaranteed on a full map. Every
+other sector sits between, `min` 0 and `max` positive.
+
+`min` is 0 for all 19 shipped sectors. It is computed rather than hardcoded because a mod
+can allocate less than a small map holds, and then the fallback is not optional.
+
+Two things this row is **not**: it is not the `NEBULA` filler (a cloud drawn over an ordinary
+beacon converts it and it draws from `NEBULA` — a different list, a different cause), and it
+is not the exit beacon (`EXIT_LIST`, outside the table entirely). Both are stated separately
+in the generation notes so the three cannot be conflated.
 
 ### 4.1c Beacon markers — what the map shows before you jump
 
@@ -184,10 +223,58 @@ is walked — including its `chain[]`, so a multi-stage unlock is visible whole.
 Also collected per event and rolled up per sector: gates (blue options, with levels), named
 items, crew classes, boarder counts, quest targets and `unlockShip` ids.
 
+**`rollup.gates` is keyed by the name a player sees, not by `req`.** A gate's `req` may name a
+`blueprintList` (`WEAPONS_ION`, `COMBAT_BEAM_DRONE_LIST`), and a list has no `<title>` in the
+game files, so the label is authored in `card-vocab.json`'s `gate_labels` — the same map the
+card runtime uses, so an option reads identically on a card and on a sector page. Two reqs that
+resolve to one label merge into one row with the union of their events, and every id that
+merged in is kept in `reqs`. `WEAPONS_MISSILES` and `WEAPONS_MISSILES_EVENTS` are the case that
+forces this: identical seven-weapon lists, the second being the AE file's redefinition of the
+first, which would otherwise render as "Missile weapon" twice.
+
+### 4.3b Rarity as a delta — `crew_rarity`
+
+Each `<rarityList>` entry carries the sector's value **and** the blueprint's base `<rarity>`
+from `blueprints.xml` / `dlcBlueprints.xml`, plus:
+
+- `crew` — whether the id is a `crewBlueprint`. That element is the only thing in the files
+  that separates a hireable species from any other blueprint in the same list.
+- `change` — `unlocked` · `excluded` · `more-common` · `rarer` · `same` · `unknown`.
+
+The verdict exists because the scale is not linear: `0` is a flag meaning "not in the random
+pool", not the low end of 1–5 (`wiki/concepts/blueprint-rarity.md`). A signed delta would call
+base 2 → 0 and base 0 → 2 the same size of change when they are opposites. A blueprint with no
+`<rarity>` of its own answers `unknown` and is never guessed at.
+
 **`fleet_delay` is signed, and the name is misleading.** It carries `modifyPursuit` verbatim:
 **negative delays the fleet (good for you), positive advances it (bad)**. `AUTO_WARNING`'s
 escape branch is `fleet_delay: 1` — the scout reporting your position, not a reprieve. Read
 the sign before writing a sentence about it (EVENT-CARD.md §6 records the same trap).
+
+### 4.3c Store crew odds — `crew_store_odds`
+
+The one place these pages state a probability, and the only reason they may is that the
+rule is read out of the game binary rather than inferred
+(`raw/modding/2026-08-16-store-crew-selection-disassembly.md`, and
+`wiki/concepts/blueprint-rarity.md`):
+
+- **Candidates** = every `crewBlueprint` whose *effective* rarity is non-zero. Effective
+  rarity is the sector's value where its `rarityList` names the species and the blueprint's
+  base otherwise — `ResetRarities()` restores base on sector entry and `SetRarity()` writes
+  only listed names, so **unlisted keeps base**. This is why the six sectors with no
+  `rarityList` still get a full block.
+- **Weight** = `6 − rarity`. `CREW_WEIGHT_BASE` in the extractor.
+- **`share`** = `weight ÷ Σweights`, the per-slot probability.
+- **`in_store`** = `1 − (1 − share)³`, the chance of at least one across the three slots.
+  Three is `CREW_SLOTS`, the **Advanced Edition** count — all three hireable. Vanilla rolls
+  two or three, and these pages are AE data, so the page says which it means.
+
+Each slot is an independent `count = 1` draw, so a store can offer the same species twice.
+That is not true of weapons, drones or augments, which are drawn without replacement in a
+single call — noted here because it is a trap for anyone extending this block to items.
+
+**S4 still holds.** No *beacon* gets a percentage; this is a store's internal roll, and its
+provenance is stated on the block itself.
 
 ### 4.4 AE override lists — a delta, never a merge
 
@@ -219,6 +306,10 @@ Every number a stat tile may show is precomputed under `metrics`:
 - `grid_beacons` (24, the map ceiling), `at_risk_entries`
 - `distinct_events`, `always_fight_events`, `may_fight_events`, `crew_loss_events`,
   `crew_gain_events`, `boarder_events`, `unique_events`, `gated_events`, `quest_start_events`
+- `blue_options` (distinct options after the label merge), `blue_option_hits` (events offering
+  one, summed — an event gated twice by different options counts in both)
+- `store_rarity_changes`, `crew_rarity_changes` — entries this sector moves off base rarity
+- `crew_types_sold` — species a store here can offer (§4.3c)
 - `section:<name>:min` / `:max` — e.g. `section:hostile:min`
 - `entry:<NAME>:min` / `:max` — e.g. `entry:STORE_ENGI:max`
 
@@ -255,8 +346,8 @@ by `build-sector.py`, so a violation is a build failure, not a review note.
   },                                  // ref: free text, shown in mono. Not resolved, so it may
                                       // name events outside the pool (later quest stages).
 
-  "panels": [                         // required, 2–4. A fifth, "Crew in stores", is added
-    {                                 // automatically from the data — do not write one.
+  "panels": [                         // required, 2–4. The two generated blocks (§6.2) are
+    {                                 // not panels and take no copy — do not write one.
       "title": "Blue options that pay here",
       "items": [                      // 2–6 per panel
         { "lead": "Engi ×5", "text": "…" }
@@ -307,18 +398,22 @@ Page order, all of it derived except where marked:
 
 1. **Header** — eyebrow (`Sector profile · <ID>`), title, *lede (copy)*, fact chips
 2. **Stat tiles** — *labels from copy*, numbers from metrics
-3. **Beacon budget** — one row per entry **in placement order**, numbered, solid blocks for
+3. **At a glance** — the three generated blocks (§6.2). No copy at all
+4. **Beacon budget** — one row per entry **in placement order**, numbered, solid blocks for
    `min` and faded for `max − min`; hostile and boarder rows are red; `placed first` and
    `may be cut` chips from `placement`. Each row is a `<details>` that **opens onto the events
-   that line can place** (§6.1); an entry resolving to no events stays a plain row. Then the
+   that line can place** (§6.1); an entry resolving to no events stays a plain row. Last comes
+   the **fill-in row** (§4.1b-2) — `NEUTRAL`, dashed, chipped `fill-in`, and marked `+` rather
+   than numbered because the file has no such line to count; it opens onto
+   `generation.fallback_events`, or stays a plain zero row where `max` is 0. Then the
    legend, the generation notes (§4.1b), the entry beacon, and the *callout (copy)*
-4. **Beacon markers** (§4.1c) — the distress-marked pool, the two mismatch cases, the
+5. **Beacon markers** (§4.1c) — the distress-marked pool, the two mismatch cases, the
    store-marked pool. Fully derived; no copy hook, because it is a data finding
-5. **Pool sections** — one per entry, in section order, each row a card-derived title, id and
+6. **Pool sections** — one per entry, in section order, each row a card-derived title, id and
    tags; *section note (copy)*; the AE delta block where one exists (§4.4)
-6. **Quest chain** *(copy, optional)*
-7. **Panels** — *copy*, plus the generated crew-rarity panel
-8. **Footnotes** — sources, the note that generation rules are community-derived, and one
+7. **Quest chain** *(copy, optional)*
+8. **Panels** — *copy*
+9. **Footnotes** — sources, the note that generation rules are community-derived, and one
    clause per condition that applies: the `unique` scope question, the no-weights rule,
    ambiguous entries, inline outcomes with no id, missing trees
 
@@ -370,6 +465,35 @@ does not open onto the card its own title names.
 
 ---
 
+### 6.2 At a glance — the three generated blocks
+
+Above the budget, because they answer "is this sector worth a detour?" before the placement
+detail does. Neither takes a word of copy, and both are omitted when they would be empty — the
+Last Stand gates nothing and overrides nothing, so it has no glance section at all.
+
+**Blue options in the pool** — every option the pool gates, most-gated first, with the system
+levels it asks for and a **hit count**. A hit is *one event in this pool that offers it*, not
+one beacon: no file states how often an event is placed (S4), and an event listed twice is
+still one event here. Six sectors gate more than 30 distinct options; the block is a reference
+list, so it is never truncated.
+
+**Crew a store can sell here** — the species a store in this sector can stock, each with its
+weight, its per-slot share and its chance of appearing in at least one of the three slots
+(§4.3c). Present on **all 19** sectors, including the six that declare no `rarityList`,
+because those fall back to base rarity. The block carries its own provenance line: the
+weighting was read out of the binary, and a page that states odds has to say so.
+
+**Store rarity — where this sector differs** — every `<rarityList>` entry whose value differs
+from the blueprint's base, shown as `base → here` with the §4.3b verdict. Crew lead the block
+because which species a store can sell is the half a player acts on; everything else follows
+under *Also changed*, which is what keeps the Crystal sector's 30 zeroed weapons and the Rock
+sectors' Lockdown Bomb on the page. Rows equal to base are dropped — a value that changes
+nothing says nothing — so the heading counts *changed of listed*.
+
+This block replaced a panel that showed the raw `rarityList` with no base to compare against.
+Sector rarity is only meaningful as a delta: `human 3` means nothing until you know human is
+base 1.
+
 ## 7. Verification
 
 ```bash
@@ -377,11 +501,12 @@ python tools/smoke-sector.py sectors/sector-<slug>.html   # required before publ
 python tools/smoke-inline.py sectors/sector-<slug>.html   # or --all; needs playwright
 ```
 
-Parses the built page, prints **everything it can show** — title, facts, tiles, budget rows,
-every pool row with its tags, notes, chain steps, panels and footnotes — and fails on:
-unbalanced tags, an unstamped title, a stat tile that is not a number, an empty event row, a
-missing budget, a beacon box whose card link does not resolve on disk, and any `{{…}}` or `**`
-that survived into the output.
+Parses the built page, prints **everything it can show** — title, facts, tiles, the glance
+blocks, budget rows, every pool row with its tags, notes, chain steps, panels and footnotes —
+and fails on: unbalanced tags, an unstamped title, a stat tile that is not a number, an empty
+event row, a missing budget, a blue-option row with no hit count, a rarity row missing its
+move or its verdict, a beacon box whose card link does not resolve on disk, and any `{{…}}` or
+`**` that survived into the output.
 
 It does not check CSS, layout, colour or theming. It cannot check whether a sentence is true —
 that is what rule 1 in §5 is for. And it cannot see a card at all: those are rendered into a
@@ -401,12 +526,68 @@ diff /tmp/a.html /tmp/b.html
 
 ---
 
+## 7b. The chooser — `sectors/index.html`
+
+One page above the nineteen, for the moment the map offers you a jump.
+
+```bash
+python tools/build-sector-index.py            # → sectors/index.html
+python tools/build-sector-index.py --verify   # check the built page
+```
+
+It lists all 19 under their designation, and **two can be pinned into a panel at the top**,
+side by side, because two is what the map gives you. A third pin pushes the older one out.
+Pins survive a reload (`localStorage`); clicking anywhere else on a card opens that sector's
+profile. No copy file — the words are in `sector-vocab.json` under `index`, and everything
+else is read.
+
+### The designation is in the game data
+
+Not a taxonomy of ours, and not the community wiki's grouping: `sector_data.xml` opens with
+`<sectorType>` draw lists, and the map rolls against them.
+
+| List | Sectors | Note |
+|---|---|---|
+| `CIVILIAN` | 5 | green |
+| `HOSTILE` | 7 | red |
+| `OVERRIDE_HOSTILE` | 8 | the AE form — `HOSTILE` **plus `LANIUS_SECTOR`** |
+| `NEBULA` | 3 | purple |
+| `UNKNOWN` | `STANDARD_SPACE` | plus four commented-out members |
+
+Three sectors are in **no** draw list — `STANDARD_SPACE` (under `UNKNOWN`), `CRYSTAL_HOME`
+and `FINAL` — and the map can never offer them. That is a stronger statement than "the
+community wiki lists them apart", and it is the file's own.
+
+Two consequences the page shows because the data does:
+
+- **The Abandoned Sector is Advanced Edition only** — `LANIUS_SECTOR` is the sole difference
+  between `HOSTILE` and `OVERRIDE_HOSTILE`, so with the DLC off nothing can roll it. Same
+  `OVERRIDE_X` substitution as the event lists (§4.4).
+- **Comments are stripped before parsing.** `UNKNOWN` carries commented-out `ZOLTAN_HOME` and
+  `ROCK_HOME` entries; reading them would contradict their live entries elsewhere.
+
+The community wiki is still read, for two things only: the cross-check, and the one fact the
+draw lists cannot state — that a sector is pinned to a position ("always and only Sector 1",
+"always sector 8"), which the page shows instead of an earliest-sector chip.
+
+### Disagreements are notes, never overrides
+
+The build prints a `NOTE` where the draw lists, the community wiki's grouping, and our own
+`sector_class:` frontmatter disagree. It never silently resolves one against another — one of
+the three is a game file and the other two are interpretations of it. The standing one:
+Federation Space is in no draw list (so: special), while the community wiki files it under
+Civilian Sectors as the "Civilian (Starting) Sector". Both readings are true of different
+questions, which is exactly why the note stays.
+
+---
+
 ## 8. Where fixes go
 
 | Symptom | Fix in | Never in |
 |---|---|---|
 | A sentence reads wrong | `tools/sector-copy/<slug>.json` | the built HTML |
 | A shared word or heading reads wrong | `tools/sector-vocab.json` | the renderer |
+| A blue option is named by its raw id, or two rows share one name | `gate_labels` in `tools/card-vocab.json`, then re-extract | `extract-sector.py` |
 | A pool is missing an event, or a tag is wrong | `extract-sector.py`, then re-extract | the data JSON by hand |
 | A tag is wrong *for one event* | that event's tree — `extract-event.py` | `extract-sector.py` |
 | Layout, colour, spacing | `sector-page-render.html` (changes all 19 pages) | one page |
@@ -471,9 +652,16 @@ where the links work.
   on Hidden Crystal Worlds, where `START_BEACON_CRYSTAL` itself plants the ship-unlock quest
   marker and `quest_start_events` still reads 0. Check `start_event` in the data before
   writing that a sector has none of something.
-- The crew-rarity panel reads `rarityList`, which also carries non-crew blueprints in some
-  sectors (`BOMB_LOCK` in Rock Controlled). They are shown as listed rather than filtered,
-  because the file gives no way to tell a crew blueprint from any other.
+- **What reads `rarity` at all is not stated by any file here.** The rarity block says what a
+  sector *changes*, not what a store will stock: no file names a store, a reward roll or a
+  generator as the consumer, and no file gives the weighting either, so nothing on these pages
+  turns a rarity into odds. `wiki/concepts/blueprint-rarity.md` holds the evidence and the
+  open questions.
+- **A blueprint a sector's `rarityList` does not name is assumed to keep its base rarity.**
+  That reading is not stated anywhere; it is preferred because the alternative — unlisted
+  means excluded — would leave the eight sectors with no `rarityList` selling nothing. It
+  matters for `CRYSTAL_HOME`, which zeroes 31 vanilla weapons but names none of the AE
+  additions, so the block shows no row for them.
 - Two allocation systems exist in the data and this pipeline reads only the first
   (`sector_data.xml`). If `<eventCounts>` in `newEvents.xml` is live, some sectors draw from
   lists no page here shows. See `wiki/concepts/sector-event-allocation.md`.

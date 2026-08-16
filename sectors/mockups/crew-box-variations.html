@@ -1,0 +1,1215 @@
+<title>Crew Box Variations</title>
+<style>
+  /* ── tokens copied verbatim from sectors/sector-federation-space-mock.html ────────── */
+  :root {
+    --void:   #070B10;
+    --panel:  #101822;
+    --sunk:   #0B1219;
+    --edge:   #1F2E3C;
+    --ink:    #D6E2EC;
+    --dim:    #7C8FA3;
+    --faint:  #55697C;
+    --cyan:   #5FD3E8;
+    --green:  #78C46B;
+    --amber:  #E8B84B;
+    --red:    #E0685C;
+    --rail:   #22384A;
+    --hex:    rgba(95,211,232,.035);
+    --barlo:  rgba(95,211,232,.22);
+    --barred: rgba(224,104,92,.28);
+
+    --sans: ui-sans-serif, system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+  }
+  @media (prefers-color-scheme: light) {
+    :root {
+      --void: #EEF1F4; --panel: #FFFFFF; --sunk: #F5F7F9; --edge: #D3DBE2;
+      --ink: #14202B; --dim: #5B6C7B; --faint: #7A8895; --cyan: #12708A;
+      --green: #3B7A31; --amber: #8A6606; --red: #AF3B2E; --rail: #C2CDD6;
+      --hex: rgba(18,112,138,.045); --barlo: rgba(18,112,138,.18);
+      --barred: rgba(175,59,46,.22);
+    }
+  }
+  :root[data-theme="dark"] {
+    --void: #070B10; --panel: #101822; --sunk: #0B1219; --edge: #1F2E3C;
+    --ink: #D6E2EC; --dim: #7C8FA3; --faint: #55697C; --cyan: #5FD3E8;
+    --green: #78C46B; --amber: #E8B84B; --red: #E0685C; --rail: #22384A;
+    --hex: rgba(95,211,232,.035); --barlo: rgba(95,211,232,.22);
+    --barred: rgba(224,104,92,.28);
+  }
+  :root[data-theme="light"] {
+    --void: #EEF1F4; --panel: #FFFFFF; --sunk: #F5F7F9; --edge: #D3DBE2;
+    --ink: #14202B; --dim: #5B6C7B; --faint: #7A8895; --cyan: #12708A;
+    --green: #3B7A31; --amber: #8A6606; --red: #AF3B2E; --rail: #C2CDD6;
+    --hex: rgba(18,112,138,.045); --barlo: rgba(18,112,138,.18);
+    --barred: rgba(175,59,46,.22);
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; padding: 2.2rem 1.15rem 4.5rem;
+    background: var(--void);
+    background-image: radial-gradient(var(--hex) 1px, transparent 1.6px);
+    background-size: 22px 22px;
+    color: var(--ink); font-family: var(--sans); line-height: 1.5;
+  }
+  .wrap { max-width: 62rem; margin: 0 auto; }
+
+  /* ── page chrome (mockup only, not part of the shell) ───────────────────────────── */
+  .eyebrow {
+    margin: 0 0 .3rem; font-family: var(--mono); font-size: .64rem;
+    letter-spacing: .18em; text-transform: uppercase; color: var(--faint);
+  }
+  h1 { margin: 0 0 .6rem; font-size: 1.7rem; letter-spacing: -.01em; line-height: 1.15; }
+  h2 {
+    margin: 2.6rem 0 .5rem; font-size: 1rem; font-family: var(--mono);
+    letter-spacing: .12em; text-transform: uppercase; color: var(--dim);
+    border-top: 1px solid var(--edge); padding-top: .9rem;
+    display: flex; flex-wrap: wrap; align-items: baseline; gap: .6rem;
+  }
+  h2.sub { border-top: 0; margin-top: 1.4rem; padding-top: 0; font-size: .82rem; }
+  h2 .h { font-family: var(--mono); font-size: .7rem; letter-spacing: .06em;
+          text-transform: none; color: var(--cyan); font-variant-numeric: tabular-nums; }
+  h2 .h .sv { color: var(--green); }
+  .note { margin: 0 0 .9rem; font-size: .84rem; color: var(--dim); max-width: 46rem; }
+  .note b { color: var(--ink); }
+  .note.src { color: var(--faint); font-size: .78rem; border-left: 1px solid var(--edge); padding-left: .6rem; }
+  .num { font-family: var(--mono); font-size: .78rem; color: var(--cyan); font-weight: 400; font-variant-numeric: tabular-nums; }
+  /* the measured width of the real panel on sector-federation-space-mock.html at 1440x900 */
+  .cell { width: 457px; max-width: 100%; }
+  .bul { margin: .8rem 0 0; padding-left: 1.05rem; max-width: 46rem; }
+  .bul li { font-size: .82rem; color: var(--dim); line-height: 1.45; margin-bottom: .18rem; }
+  .bul li b { color: var(--ink); font-weight: 600; }
+  .bul li.warn { color: var(--amber); }
+  .toggle {
+    font-family: var(--mono); font-size: .66rem; letter-spacing: .12em; text-transform: uppercase;
+    background: var(--panel); color: var(--dim); border: 1px solid var(--edge);
+    border-radius: 3px; padding: .4rem .7rem; cursor: pointer;
+  }
+  .toggle:hover { color: var(--cyan); border-color: var(--rail); }
+
+  /* ── panel shell, copied from the sector page ───────────────────────────────────── */
+  .panel {
+    background: var(--panel); border: 1px solid var(--edge); border-radius: 3px;
+    padding: .9rem 1rem 1rem; display: flex; flex-direction: column; gap: .55rem;
+  }
+  .panel h3 {
+    margin: 0; font-family: var(--mono); font-size: .66rem; letter-spacing: .15em;
+    text-transform: uppercase; color: var(--dim); font-weight: 600;
+  }
+  .panel h3 .cnt {
+    font-family: var(--mono); font-size: .62rem; letter-spacing: .08em;
+    text-transform: none; color: var(--faint); font-weight: 400;
+  }
+  .gp h3 { display: flex; justify-content: space-between; align-items: baseline; gap: .8rem; }
+
+  /* ── header treatments (§ own axis) ────────────────────────────────────────────── */
+  /* HB — one line: title and count share a baseline, count no longer pushed to the edge */
+  h3.hb { display: flex; align-items: baseline; gap: .55rem; justify-content: flex-start; }
+  h3.hb .cnt { letter-spacing: .1em; }
+  h3.hb .cnt::before { content: "· "; }
+  /* HC — title only, count dropped */
+  h3.hc { display: block; }
+  /* HD — rule-in-line: the heading and a hairline share the row, count inline */
+  h3.hd { display: flex; align-items: center; gap: .5rem; }
+  h3.hd .ln { flex: 1; height: 1px; background: var(--edge); }
+  h3.hd .cnt { flex: none; }
+
+  /* ── V0 baseline: the current five-column table, untouched ─────────────────────── */
+  .crew { display: flex; flex-direction: column; gap: .18rem; }
+  .crow {
+    display: grid; grid-template-columns: 1fr 1.1rem 4.5rem 2.9rem 2.6rem;
+    gap: .45rem; align-items: center; font-size: .8rem;
+  }
+  .crow .cl { overflow-wrap: anywhere; }
+  .crow .cw, .crow .cp, .crow .cs {
+    font-family: var(--mono); font-variant-numeric: tabular-nums; text-align: right;
+  }
+  .crow .cw { font-size: .62rem; color: var(--faint); }
+  .crow .cp { font-size: .74rem; color: var(--cyan); }
+  .crow .cs { font-size: .68rem; color: var(--dim); }
+  .cbar { height: .34rem; background: var(--sunk); border-radius: 1px; overflow: hidden; }
+  .cbar i { display: block; height: 100%; background: var(--cyan); border-radius: 1px; }
+  .crow.chead {
+    font-family: var(--mono); font-size: .56rem; letter-spacing: .1em;
+    text-transform: uppercase; color: var(--faint); padding-bottom: .1rem;
+    border-bottom: 1px solid var(--edge); margin-bottom: .12rem;
+  }
+  .crow.chead .cw, .crow.chead .cp, .crow.chead .cs { font-size: .56rem; color: var(--faint); }
+  .crow.out .cl, .crow.out .cw, .crow.out .cp, .crow.out .cs { color: var(--faint); }
+
+  /* shared trailing "never sold" line, copied from .never on the sector page */
+  .never {
+    display: flex; gap: .5rem; align-items: baseline; flex-wrap: wrap;
+    border-top: 1px solid var(--sunk); padding-top: .45rem; margin-top: .1rem;
+  }
+  .never .nk {
+    font-family: var(--mono); font-size: .58rem; letter-spacing: .1em;
+    text-transform: uppercase; color: var(--faint);
+  }
+  .never .nv { font-size: .8rem; color: var(--dim); }
+
+  /* ── V1: the current table's own rows, split into two columns ──────────────────── */
+  .two { display: grid; grid-template-columns: 1fr 1fr; gap: .18rem 1.1rem; }
+  .tcol { display: flex; flex-direction: column; gap: .18rem; }
+  .crow.t2 { grid-template-columns: 1fr 2.9rem 2.9rem; gap: .3rem; }
+
+  /* V0 is marked as the "before" picture with generated content only: the review
+     layer anchors notes to character offsets in the page's text, and pseudo-element
+     content is not a text node, so nothing already anchored moves. */
+  h2.before::after {
+    content: "before · as it ships today";
+    font-family: var(--mono); font-size: .58rem; letter-spacing: .1em; text-transform: uppercase;
+    color: var(--amber); border: 1px solid var(--amber); border-radius: 2px; padding: .08rem .35rem;
+  }
+  .panel.before { position: relative; border-color: var(--amber); }
+  .panel.before::after {
+    content: "BEFORE"; position: absolute; top: 0; right: 0;
+    font-family: var(--mono); font-size: .54rem; letter-spacing: .14em;
+    color: var(--void); background: var(--amber); padding: .06rem .4rem; border-radius: 0 2px 0 2px;
+  }
+
+  /* ── V2: no WT, both figures ───────────────────────────────────────────────────── */
+  .crow.v2 { grid-template-columns: 1fr 8rem 3rem 3rem; }
+  /* ── V3: one figure ────────────────────────────────────────────────────────────── */
+  .crow.v3 { grid-template-columns: 1fr 11rem 3rem; }
+  .cap {
+    font-family: var(--mono); font-size: .56rem; letter-spacing: .1em;
+    text-transform: uppercase; color: var(--faint);
+  }
+  .cap.r { text-align: right; }
+
+  /* ── V4: two rows of four ──────────────────────────────────────────────────────── */
+  .g4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: .32rem; }
+  .gc {
+    position: relative; overflow: hidden;
+    border: 1px solid var(--edge); border-radius: 2px; background: var(--sunk);
+    padding: .3rem .42rem .34rem;
+  }
+  .gc::before {
+    content: ""; position: absolute; inset: auto 0 0 0; height: 2px;
+    width: var(--f, 0%); background: var(--cyan);
+  }
+  .gc .n { display: block; font-size: .78rem; line-height: 1.25; overflow-wrap: anywhere; }
+  .gc .f {
+    display: flex; align-items: baseline; gap: .3rem; margin-top: .1rem;
+    font-family: var(--mono); font-variant-numeric: tabular-nums;
+  }
+  .gc .f .a { font-size: .78rem; color: var(--cyan); }
+  .gc .f .b { font-size: .6rem; color: var(--faint); }
+  .gc.dead { border-style: dashed; background: none; }
+  .gc.dead .n { color: var(--faint); text-decoration: line-through; }
+  .gc.dead .f .a { color: var(--faint); }
+  .g4key { display: flex; justify-content: space-between; gap: .8rem; }
+
+  /* ── V5: single stacked bar ────────────────────────────────────────────────────── */
+  .stack {
+    display: flex; height: .95rem; border: 1px solid var(--edge); border-radius: 2px;
+    overflow: hidden; background: var(--sunk);
+  }
+  .stack i { display: block; height: 100%; border-right: 1px solid var(--panel); }
+  .stack i:last-child { border-right: 0; }
+  .skey { display: flex; flex-wrap: wrap; gap: .1rem .9rem; }
+  .skey span { display: inline-flex; align-items: baseline; gap: .32rem; font-size: .78rem; color: var(--ink); }
+  .skey span::before {
+    content: ""; width: .5rem; height: .5rem; border-radius: 1px;
+    background: var(--cyan); opacity: var(--o, 1); align-self: center;
+  }
+  .skey b { font-family: var(--mono); font-size: .7rem; font-weight: 400; color: var(--cyan); font-variant-numeric: tabular-nums; }
+
+  /* ── V6: chips ─────────────────────────────────────────────────────────────────── */
+  .chips { display: flex; flex-wrap: wrap; gap: .3rem; }
+  .chip {
+    position: relative; display: inline-flex; align-items: baseline; gap: .38rem;
+    border: 1px solid var(--edge); border-radius: 2px; padding: .18rem .42rem;
+    font-size: .8rem; overflow: hidden; background: var(--sunk);
+  }
+  .chip::before { content: ""; position: absolute; inset: 0 auto 0 0; width: var(--f, 0%); background: var(--barlo); }
+  .chip > * { position: relative; }
+  .chip b { font-family: var(--mono); font-size: .7rem; font-weight: 400; color: var(--cyan); font-variant-numeric: tabular-nums; }
+  .chip.dead { background: none; color: var(--faint); border-style: dashed; }
+  .chip.dead span { text-decoration: line-through; }
+
+  /* ── V7: sentence + expandable detail ──────────────────────────────────────────── */
+  .oneline { margin: 0; font-size: .84rem; line-height: 1.45; color: var(--ink); }
+  .oneline b { font-family: var(--mono); font-size: .78rem; color: var(--cyan); font-weight: 400; }
+  details.more > summary {
+    list-style: none; cursor: pointer;
+    font-family: var(--mono); font-size: .6rem; letter-spacing: .12em;
+    text-transform: uppercase; color: var(--faint);
+    border-top: 1px solid var(--sunk); padding-top: .45rem;
+  }
+  details.more > summary::-webkit-details-marker { display: none; }
+  details.more > summary::after { content: " ›"; }
+  details.more[open] > summary::after { content: " ‹"; }
+  details.more > summary:hover { color: var(--cyan); }
+  details.more .g4 { margin-top: .45rem; }
+
+  /* ── V8: rank order, no percentages ────────────────────────────────────────────── */
+  .rank { display: flex; flex-direction: column; gap: .1rem; }
+  .rrow2 {
+    display: grid; grid-template-columns: 1fr auto; gap: .5rem; align-items: center;
+    font-size: .82rem; padding: .1rem 0; border-bottom: 1px solid var(--sunk);
+  }
+  .pips { display: inline-flex; gap: .16rem; }
+  .pips i { width: .34rem; height: .34rem; border-radius: 50%; border: 1px solid var(--rail); background: none; display: block; }
+  .pips i.on { background: var(--cyan); border-color: var(--cyan); }
+
+  /* ── closing table ─────────────────────────────────────────────────────────────── */
+  table.cmp { border-collapse: collapse; width: 100%; font-size: .8rem; margin-top: .6rem; }
+  table.cmp th, table.cmp td {
+    text-align: left; padding: .38rem .55rem; border-bottom: 1px solid var(--edge); vertical-align: top;
+  }
+  table.cmp th {
+    font-family: var(--mono); font-size: .58rem; letter-spacing: .12em;
+    text-transform: uppercase; color: var(--faint); font-weight: 400;
+  }
+  table.cmp td.n { font-family: var(--mono); color: var(--cyan); font-variant-numeric: tabular-nums; white-space: nowrap; }
+  table.cmp td.s { font-family: var(--mono); color: var(--green); font-variant-numeric: tabular-nums; white-space: nowrap; }
+</style>
+
+<div class="wrap">
+
+<p class="eyebrow">Panel study · sector profile · at a glance · second pass</p>
+<h1>“Crew a store can sell here” — shorter</h1>
+<p class="note">
+  The block lists the species a store in this sector can stock. Today it is a five-column
+  table of eight rows — weight, a bar, per-slot share, in-store chance — plus three greyed
+  rows for species that can never appear. It is the tallest tile in the <em>At a glance</em>
+  row and carries more digits than a glance can absorb.
+</p>
+<p class="note">
+  <b>Width.</b> Every box below is rendered at <span class="num">457px</span> — the panel’s
+  real rendered <code>offsetWidth</code>, measured in a headless browser on
+  <code>sector-federation-space-mock.html</code> at a 1440×900 viewport. The
+  <code>.glance</code> grid is <code>auto-fit / minmax(19rem, 1fr)</code> inside a 928px
+  <code>.wrap</code>, which resolves to two columns of 456.8px. All heights below are measured
+  at that width and are not comparable to the earlier 21rem pass.
+</p>
+<p class="note">
+  <b>Applied to every variation:</b> the <code>wt</code> column is gone — weight is derived
+  (6 − rarity) and no player acts on it, so per-slot and in-store carry the meaning alone.
+  <b>All percentages are rounded to whole numbers.</b> Bar and segment geometry still uses the
+  unrounded values, so a bar and its label can differ by up to half a point.
+  <b>Variation 0 is deliberately untouched</b> — it is the current panel, decimals and weight
+  column included, because a baseline that has already been improved measures nothing.
+</p>
+<p class="note src">
+  What the numbers mean (SECTOR-PAGE.md §4.3c): <b>weight</b> = 6 − rarity;
+  <b>per slot</b> = weight ÷ 17, one slot’s chance; <b>in store</b> = 1 − (1 − share)³, the chance
+  the species shows up in at least one of the three slots. Rarity 0 means the species is not in
+  the pool at all. Nothing below states an odd this data does not give.
+</p>
+<p><button class="toggle" id="tt" type="button">Toggle theme</button></p>
+
+
+<!-- ══ HEADER AXIS ══════════════════════════════════════════════════════════════ -->
+<h2>Header treatments — its own axis</h2>
+<p class="note">
+  The <code>&lt;h3&gt;</code> is a fixed cost paid by every body treatment below. At 457px it no
+  longer wraps, so the saving is smaller than it looked at 21rem — but the count still competes
+  with the title for the eye, and pushing it to the far edge (today’s <code>justify-content:
+  space-between</code>) is what makes the line read as two things instead of one.
+</p>
+
+<h2 class="sub">HA — current <span class="h" data-h="ha">…</span></h2>
+<div class="cell"><div class="panel gp" id="ha">
+  <h3>Crew a store can sell here<span class="cnt">5 of 8 species · 3 slots</span></h3>
+</div></div>
+
+<h2 class="sub">HB — one line, shared baseline <span class="h" data-h="hb">…</span></h2>
+<div class="cell"><div class="panel gp" id="hb">
+  <h3 class="hb">Store crew<span class="cnt">5 of 8 · 3 slots</span></h3>
+</div></div>
+
+<h2 class="sub">HC — title only, count dropped <span class="h" data-h="hc">…</span></h2>
+<div class="cell"><div class="panel gp" id="hc">
+  <h3 class="hc">Store crew</h3>
+</div></div>
+
+<h2 class="sub">HD — rule in line, count at the end <span class="h" data-h="hd">…</span></h2>
+<div class="cell"><div class="panel gp" id="hd">
+  <h3 class="hd">Store crew<span class="ln"></span><span class="cnt">3 slots</span></h3>
+</div></div>
+
+<ul class="bul">
+  <li>All four are the same single line at 457px, so the axis buys <b>no measurable height</b> — it buys
+    reading speed. The choice is about what the eye does first, not about px.</li>
+  <li><b>HA</b> splits the line in two and is the only one that needs a return sweep to read.
+    <b>HB</b> reads as one phrase; it is the right default and is used on V2–V8 below.</li>
+  <li><b>HC</b> pairs only with bodies that show the never-sold species explicitly (V4, V6) — the
+    “5 of 8” is then visible in the box and the count is redundant. On V3, V5 or V8 it hides that
+    three species were excluded, which is exactly the fact worth keeping.</li>
+  <li><b>HD</b> pairs best with the wide bodies (V4, V5): the rule fills the space HB leaves empty,
+    and “3 slots” — the one piece of context a player cannot derive — sits where the numbers begin.</li>
+</ul>
+
+
+<!-- ══ V0 ════════════════════════════════════════════════════════════════════════ -->
+<h2 class="before">Variation 0 — Current <span class="h" data-h="v0">…</span></h2>
+<div class="cell"><div class="panel gp before" id="v0">
+  <h3>Crew a store can sell here<span class="cnt">5 of 8 species · 3 slots</span></h3>
+  <div class="crew">
+    <div class="crow chead"><span class="cl"></span><span class="cw">wt</span><span class="cbar"></span><span class="cp">per slot</span><span class="cs">in store</span></div>
+    <div class="crow"><span class="cl">Human</span><span class="cw">5</span><span class="cbar"><i style="width:100.0%"></i></span><span class="cp">29.4%</span><span class="cs">64.8%</span></div>
+    <div class="crow"><span class="cl">Engi</span><span class="cw">4</span><span class="cbar"><i style="width:79.9%"></i></span><span class="cp">23.5%</span><span class="cs">55.3%</span></div>
+    <div class="crow"><span class="cl">Mantis</span><span class="cw">4</span><span class="cbar"><i style="width:79.9%"></i></span><span class="cp">23.5%</span><span class="cs">55.3%</span></div>
+    <div class="crow"><span class="cl">Rockman</span><span class="cw">3</span><span class="cbar"><i style="width:59.9%"></i></span><span class="cp">17.6%</span><span class="cs">44.1%</span></div>
+    <div class="crow"><span class="cl">Zoltan</span><span class="cw">1</span><span class="cbar"><i style="width:20.1%"></i></span><span class="cp">5.9%</span><span class="cs">16.6%</span></div>
+    <div class="crow out"><span class="cl">Slug</span><span class="cw">0</span><span class="cbar"></span><span class="cp">0%</span><span class="cs">0%</span></div>
+    <div class="crow out"><span class="cl">Crystal</span><span class="cw">0</span><span class="cbar"></span><span class="cp">0%</span><span class="cs">0%</span></div>
+    <div class="crow out"><span class="cl">Lanius</span><span class="cw">0</span><span class="cbar"></span><span class="cp">0%</span><span class="cs">0%</span></div>
+  </div>
+</div></div>
+<ul class="bul">
+  <li><b>Keeps</b> everything: all eight species, weight, bar, per-slot share, in-store chance, to one decimal.</li>
+  <li><b>Drops</b> nothing. Left exactly as it ships — the reference every saving below is measured against.</li>
+  <li>Nine rows of five columns to answer a question a player asks once per store.</li>
+</ul>
+
+
+<!-- ══ V1 (new — built from the user's note on the baseline) ══════════════════════ -->
+<h2>Variation 1 — The same rows, two columns <span class="h" data-h="v1">…</span></h2>
+<p class="note">
+  The baseline’s own row — species, per-slot, in-store — with the weight column removed and the
+  percentages rounded, then folded down the middle so the list is four rows deep instead of eight.
+  Nothing about how a row reads changes; only how many of them stack.
+</p>
+<div class="cell"><div class="panel gp" id="v1">
+  <h3 class="hb">Store crew<span class="cnt">5 of 8 · 3 slots</span></h3>
+  <div class="two">
+    <div class="tcol">
+      <div class="crow chead t2"><span class="cl"></span><span class="cp" title="per slot">slot</span><span class="cs" title="in at least one of 3 slots">store</span></div>
+      <div class="crow t2"><span class="cl">Human</span><span class="cp">29%</span><span class="cs">65%</span></div>
+      <div class="crow t2"><span class="cl">Engi</span><span class="cp">24%</span><span class="cs">55%</span></div>
+      <div class="crow t2"><span class="cl">Mantis</span><span class="cp">24%</span><span class="cs">55%</span></div>
+      <div class="crow t2"><span class="cl">Rockman</span><span class="cp">18%</span><span class="cs">44%</span></div>
+    </div>
+    <div class="tcol">
+      <div class="crow chead t2"><span class="cl"></span><span class="cp" title="per slot">slot</span><span class="cs" title="in at least one of 3 slots">store</span></div>
+      <div class="crow t2"><span class="cl">Zoltan</span><span class="cp">6%</span><span class="cs">17%</span></div>
+      <div class="crow t2 out"><span class="cl">Slug</span><span class="cp">0%</span><span class="cs">0%</span></div>
+      <div class="crow t2 out"><span class="cl">Crystal</span><span class="cp">0%</span><span class="cs">0%</span></div>
+      <div class="crow t2 out"><span class="cl">Lanius</span><span class="cp">0%</span><span class="cs">0%</span></div>
+    </div>
+  </div>
+</div></div>
+<ul class="bul">
+  <li><b>Drops</b> the weight column and the decimals, and nothing else. <b>Keeps</b> the baseline’s
+    row shape, both figures, all eight species, and the greyed <code>.out</code> treatment the current
+    box already uses for species a store here cannot sell.</li>
+  <li><b>Reads down, then across.</b> Left column is Human, Engi, Mantis, Rockman; right is Zoltan and
+    the three never-sold. Across-then-down would pair Human with Engi on one line and scatter the
+    never-sold three across two rows; column-major keeps the existing top-to-bottom rank scan
+    intact and lands all three excluded species contiguously in the lower right, where they read as
+    one block rather than three interruptions. The split also falls on a real boundary in the data —
+    everything at 44% or better is on the left, everything at 17% or 0% on the right.</li>
+  <li><b>Two sub-headers, one per group</b>, rather than one spanning header — see V1-alt below for the
+    measured comparison. Each group’s labels sit directly over its own numbers, which a spanning
+    header cannot do across a 1.1rem gutter.</li>
+  <li><b>Abbreviated labels.</b> A half-width column cannot hold “per slot” / “in store” at the
+    <code>.chead</code> tracking without overflowing 2.9rem, so the sub-headers read <code>slot</code>
+    and <code>store</code>, with the full phrase on each as a tooltip. That is the one wording change;
+    the figures are unchanged.</li>
+</ul>
+
+<h2 class="sub">V1-alt — one shared header instead of two <span class="h" data-h="v1s">…</span></h2>
+<div class="cell"><div class="panel gp" id="v1s">
+  <h3 class="hb">Store crew<span class="cnt">5 of 8 · 3 slots</span></h3>
+  <div class="cap">per slot · in at least one of 3 slots</div>
+  <div class="two">
+    <div class="tcol">
+      <div class="crow t2"><span class="cl">Human</span><span class="cp">29%</span><span class="cs">65%</span></div>
+      <div class="crow t2"><span class="cl">Engi</span><span class="cp">24%</span><span class="cs">55%</span></div>
+      <div class="crow t2"><span class="cl">Mantis</span><span class="cp">24%</span><span class="cs">55%</span></div>
+      <div class="crow t2"><span class="cl">Rockman</span><span class="cp">18%</span><span class="cs">44%</span></div>
+    </div>
+    <div class="tcol">
+      <div class="crow t2"><span class="cl">Zoltan</span><span class="cp">6%</span><span class="cs">17%</span></div>
+      <div class="crow t2 out"><span class="cl">Slug</span><span class="cp">0%</span><span class="cs">0%</span></div>
+      <div class="crow t2 out"><span class="cl">Crystal</span><span class="cp">0%</span><span class="cs">0%</span></div>
+      <div class="crow t2 out"><span class="cl">Lanius</span><span class="cp">0%</span><span class="cs">0%</span></div>
+    </div>
+  </div>
+</div></div>
+<ul class="bul">
+  <li>The shared header buys back the full wording — it spans the whole box, so it is not squeezed
+    into 2.9rem — at the cost of no longer sitting above the columns it describes.</li>
+  <li>Both cost exactly one row, so the two measure within a pixel or two of each other (figures
+    above). Since the height is a wash, the choice is legibility, and labels over their own numbers
+    win: <b>V1 is the one to ship.</b></li>
+</ul>
+
+<!-- ══ V2 ════════════════════════════════════════════════════════════════════════ -->
+<h2>Variation 1 — Same table, minus weight <span class="h" data-h="v2">…</span></h2>
+<div class="cell"><div class="panel gp" id="v2">
+  <h3 class="hb">Store crew<span class="cnt">5 of 8 · 3 slots</span></h3>
+  <div class="crew">
+    <div class="crow chead v2"><span class="cl"></span><span class="cbar"></span><span class="cp">per slot</span><span class="cs">in store</span></div>
+    <div class="crow v2"><span class="cl">Human</span><span class="cbar"><i style="width:100.0%"></i></span><span class="cp">29%</span><span class="cs">65%</span></div>
+    <div class="crow v2"><span class="cl">Engi</span><span class="cbar"><i style="width:79.9%"></i></span><span class="cp">24%</span><span class="cs">55%</span></div>
+    <div class="crow v2"><span class="cl">Mantis</span><span class="cbar"><i style="width:79.9%"></i></span><span class="cp">24%</span><span class="cs">55%</span></div>
+    <div class="crow v2"><span class="cl">Rockman</span><span class="cbar"><i style="width:59.9%"></i></span><span class="cp">18%</span><span class="cs">44%</span></div>
+    <div class="crow v2"><span class="cl">Zoltan</span><span class="cbar"><i style="width:20.1%"></i></span><span class="cp">6%</span><span class="cs">17%</span></div>
+  </div>
+  <div class="never"><span class="nk">never sold here</span><span class="nv">Slug · Crystal · Lanius</span></div>
+</div></div>
+<ul class="bul">
+  <li><b>Drops</b> the weight column and the decimals; the three zero rows collapse into one trailing line.</li>
+  <li><b>Keeps</b> both figures, the bar, the reading order, and every one of the eight species by name.</li>
+  <li>The most conservative move — nothing to relearn, four rows shorter. The bar is still scaled to the
+    top per-slot share, so relative likelihood survives the rounding intact.</li>
+</ul>
+
+
+<!-- ══ V3 ════════════════════════════════════════════════════════════════════════ -->
+<h2>Variation 2 — Name · bar · one number <span class="h" data-h="v3">…</span></h2>
+<div class="cell"><div class="panel gp" id="v3">
+  <h3 class="hb">Store crew<span class="cnt">5 of 8 · 3 slots</span></h3>
+  <div class="crew">
+    <div class="cap r">chance of at least one of 3 slots</div>
+    <div class="crow v3"><span class="cl">Human</span><span class="cbar"><i style="width:64.8%"></i></span><span class="cp">65%</span></div>
+    <div class="crow v3"><span class="cl">Engi</span><span class="cbar"><i style="width:55.3%"></i></span><span class="cp">55%</span></div>
+    <div class="crow v3"><span class="cl">Mantis</span><span class="cbar"><i style="width:55.3%"></i></span><span class="cp">55%</span></div>
+    <div class="crow v3"><span class="cl">Rockman</span><span class="cbar"><i style="width:44.1%"></i></span><span class="cp">44%</span></div>
+    <div class="crow v3"><span class="cl">Zoltan</span><span class="cbar"><i style="width:16.6%"></i></span><span class="cp">17%</span></div>
+  </div>
+  <div class="never"><span class="nk">never sold here</span><span class="nv">Slug · Crystal · Lanius</span></div>
+</div></div>
+<ul class="bul">
+  <li><b>Drops</b> the per-slot column and the header row — one caption replaces the header, and the bar
+    is now scaled 0–100% to the number beside it rather than to the top share.</li>
+  <li><b>Keeps</b> one honest percentage per species, and all eight names.</li>
+  <li>Bar and figure now say the same thing, so either can be read. But at 457px this buys only a few
+    pixels over V2 — the extra width makes the second figure column nearly free, which is the main
+    lesson of measuring properly: at this size, column count is not what costs height. Row count is.</li>
+</ul>
+
+
+<!-- ══ V4 ════════════════════════════════════════════════════════════════════════ -->
+<h2>Variation 3 — Eight cells, two rows of four <span class="h" data-h="v4">…</span></h2>
+<div class="cell"><div class="panel gp" id="v4">
+  <h3 class="hd">Store crew<span class="ln"></span><span class="cnt">3 slots</span></h3>
+  <div class="g4">
+    <div class="gc" style="--f:64.8%"><span class="n">Human</span><span class="f"><span class="a">65%</span><span class="b">29 slot</span></span></div>
+    <div class="gc" style="--f:55.3%"><span class="n">Engi</span><span class="f"><span class="a">55%</span><span class="b">24 slot</span></span></div>
+    <div class="gc" style="--f:55.3%"><span class="n">Mantis</span><span class="f"><span class="a">55%</span><span class="b">24 slot</span></span></div>
+    <div class="gc" style="--f:44.1%"><span class="n">Rockman</span><span class="f"><span class="a">44%</span><span class="b">18 slot</span></span></div>
+    <div class="gc" style="--f:16.6%"><span class="n">Zoltan</span><span class="f"><span class="a">17%</span><span class="b">6 slot</span></span></div>
+    <div class="gc dead"><span class="n">Slug</span><span class="f"><span class="a">—</span></span></div>
+    <div class="gc dead"><span class="n">Crystal</span><span class="f"><span class="a">—</span></span></div>
+    <div class="gc dead"><span class="n">Lanius</span><span class="f"><span class="a">—</span></span></div>
+  </div>
+  <div class="g4key">
+    <span class="cap">big % = in at least one of 3 slots</span>
+    <span class="cap">small = one slot</span>
+  </div>
+</div></div>
+<ul class="bul">
+  <li><b>Keeps</b> every species and <em>both</em> figures — nothing is dropped but the weight column,
+    the header row and the row grid itself — the same claim V1 makes, in a card shape rather than a row shape.</li>
+  <li>Two rows of four is what the 457px width actually affords: eight cells at ~103px each. The
+    never-sold three fall naturally at the end of row two, marked by a dashed border, a struck name
+    and an em-dash instead of a figure — distinct at a glance without a separate line to explain them.</li>
+  <li>The 2px underfill on each cell is the in-store chance, so the grid reads as a bar chart before
+    any digit is parsed. Ordering is likeliest-first, left to right, wrapping.</li>
+  <li class="warn">Only works at this width. Below roughly 26rem the four columns crush the longer
+    names, so a narrower breakpoint would need to fall back to V2 — an extra rule in the shell.</li>
+</ul>
+
+
+<!-- ══ V5 ════════════════════════════════════════════════════════════════════════ -->
+<h2>Variation 4 — One stacked bar <span class="h" data-h="v5">…</span></h2>
+<div class="cell"><div class="panel gp" id="v5">
+  <h3 class="hd">Store crew<span class="ln"></span><span class="cnt">one slot</span></h3>
+  <div class="stack" role="img" aria-label="Per-slot share: Human 29%, Engi 24%, Mantis 24%, Rockman 18%, Zoltan 6%">
+    <i style="width:29.4%;background:var(--cyan);opacity:1"></i>
+    <i style="width:23.5%;background:var(--cyan);opacity:.82"></i>
+    <i style="width:23.5%;background:var(--cyan);opacity:.64"></i>
+    <i style="width:17.6%;background:var(--cyan);opacity:.46"></i>
+    <i style="width:5.9%;background:var(--cyan);opacity:.28"></i>
+  </div>
+  <div class="skey">
+    <span style="--o:1">Human <b>29%</b></span>
+    <span style="--o:.82">Engi <b>24%</b></span>
+    <span style="--o:.64">Mantis <b>24%</b></span>
+    <span style="--o:.46">Rockman <b>18%</b></span>
+    <span style="--o:.28">Zoltan <b>6%</b></span>
+  </div>
+  <div class="never"><span class="nk">never sold here</span><span class="nv">Slug · Crystal · Lanius</span></div>
+</div></div>
+<ul class="bul">
+  <li><b>Drops</b> the in-store chance and the row grid. The bar is the <em>per-slot</em> distribution
+    and sums to 100% — that is why it can be one bar at all.</li>
+  <li><b>Keeps</b> the per-slot share for each of the five, and names all eight.</li>
+  <li>Reads as “what is one slot likely to be”, which is a different question from “will I see a Mantis
+    here”. Trading the in-store figure away is the real cost; segment widths make relative likelihood instant.</li>
+  <li class="warn">Rounding is visible here: the five labels sum to 101%. The segments use the unrounded
+    widths and do sum to 100 — the digits are what disagree.</li>
+</ul>
+
+
+<!-- ══ V6 ════════════════════════════════════════════════════════════════════════ -->
+<h2>Variation 5 — Chips, likeliest first <span class="h" data-h="v6">…</span></h2>
+<div class="cell"><div class="panel gp" id="v6">
+  <h3 class="hb">Store crew<span class="cnt">3 slots</span></h3>
+  <div class="chips">
+    <span class="chip" style="--f:64.8%">Human <b>65%</b></span>
+    <span class="chip" style="--f:55.3%">Engi <b>55%</b></span>
+    <span class="chip" style="--f:55.3%">Mantis <b>55%</b></span>
+    <span class="chip" style="--f:44.1%">Rockman <b>44%</b></span>
+    <span class="chip" style="--f:16.6%">Zoltan <b>17%</b></span>
+    <span class="chip dead"><span>Slug</span></span>
+    <span class="chip dead"><span>Crystal</span></span>
+    <span class="chip dead"><span>Lanius</span></span>
+  </div>
+  <div class="cap">% = chance of at least one of 3 slots</div>
+</div></div>
+<ul class="bul">
+  <li><b>Drops</b> the per-slot share and all tabular alignment. At 457px the eight chips flow into
+    two or three wrapped rows with the never-sold three trailing, so no separate line is needed.</li>
+  <li><b>Keeps</b> all eight species and the actionable figure; the never-sold three stay scannable
+    as a set — dashed, struck, unfilled.</li>
+  <li>Each chip is back-filled proportionally to its own figure, so the row is a bar chart that wraps.
+    Reflows at any cell width, which the fixed grids do not — the one variation that is width-proof.</li>
+</ul>
+
+
+<!-- ══ V7 ════════════════════════════════════════════════════════════════════════ -->
+<h2>Variation 6 — Sentence, detail on demand <span class="h" data-h="v7">…</span></h2>
+<div class="cell"><div class="panel gp" id="v7">
+  <h3 class="hb">Store crew<span class="cnt">5 of 8 · 3 slots</span></h3>
+  <p class="oneline">
+    A store here stocks <b>Human</b>, <b>Engi</b>, <b>Mantis</b>, <b>Rockman</b> or <b>Zoltan</b> —
+    Human likeliest to appear in at least one of the three slots at <b>65%</b>, Zoltan least at <b>17%</b>.
+    <span style="color:var(--dim)">Slug, Crystal and Lanius are never sold here.</span>
+  </p>
+  <details class="more">
+    <summary>All eight, with odds</summary>
+    <div class="g4">
+      <div class="gc" style="--f:64.8%"><span class="n">Human</span><span class="f"><span class="a">65%</span><span class="b">29 slot</span></span></div>
+      <div class="gc" style="--f:55.3%"><span class="n">Engi</span><span class="f"><span class="a">55%</span><span class="b">24 slot</span></span></div>
+      <div class="gc" style="--f:55.3%"><span class="n">Mantis</span><span class="f"><span class="a">55%</span><span class="b">24 slot</span></span></div>
+      <div class="gc" style="--f:44.1%"><span class="n">Rockman</span><span class="f"><span class="a">44%</span><span class="b">18 slot</span></span></div>
+      <div class="gc" style="--f:16.6%"><span class="n">Zoltan</span><span class="f"><span class="a">17%</span><span class="b">6 slot</span></span></div>
+      <div class="gc dead"><span class="n">Slug</span><span class="f"><span class="a">—</span></span></div>
+      <div class="gc dead"><span class="n">Crystal</span><span class="f"><span class="a">—</span></span></div>
+      <div class="gc dead"><span class="n">Lanius</span><span class="f"><span class="a">—</span></span></div>
+    </div>
+  </details>
+</div></div>
+<ul class="bul">
+  <li><b>Drops</b> nothing from the box — the full V4 grid is one click away inside the same panel.
+    Only the <em>default</em> height changes.</li>
+  <li><b>Keeps</b> the two figures a player would quote (best case, worst case) closed, and names all
+    eight species in the sentence itself.</li>
+  <li>Matches the page’s existing <code>details</code> idiom — the blue-options panel already expands.
+    Measured closed.</li>
+  <li class="warn">The margin is thin — a three-line sentence is nearly as tall as the grid it
+    hides, and hiding it costs the reader a click plus the middle three species’ odds. An expandable
+    earns its keep when the open state dwarfs the closed one; against a two-row grid it barely does.</li>
+</ul>
+
+
+<!-- ══ V8 ════════════════════════════════════════════════════════════════════════ -->
+<h2>Variation 7 — Rank order, no percentages <span class="h" data-h="v8">…</span></h2>
+<div class="cell"><div class="panel gp" id="v8">
+  <h3 class="hb">Store crew<span class="cnt">likeliest first</span></h3>
+  <div class="rank">
+    <div class="rrow2"><span>Human</span><span class="pips" title="weight 5 of 5"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i></span></div>
+    <div class="rrow2"><span>Engi</span><span class="pips" title="weight 4 of 5"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i></span></div>
+    <div class="rrow2"><span>Mantis</span><span class="pips" title="weight 4 of 5"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i></span></div>
+    <div class="rrow2"><span>Rockman</span><span class="pips" title="weight 3 of 5"><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i></span></div>
+    <div class="rrow2"><span>Zoltan</span><span class="pips" title="weight 1 of 5"><i class="on"></i><i></i><i></i><i></i><i></i></span></div>
+  </div>
+  <div class="never"><span class="nk">never sold here</span><span class="nv">Slug · Crystal · Lanius</span></div>
+</div></div>
+<ul class="bul">
+  <li><b>Drops</b> both percentages entirely. The pips are not a rounded probability — they are the
+    weight itself (6 − rarity, integer, maximum 5), so nothing here is approximated.</li>
+  <li><b>Keeps</b> the exact ordering, the exact relative weighting, and all eight species.</li>
+  <li>The most radical: it answers “who is likely” and refuses “how likely”. A player comparing sectors
+    loses the only figure comparable across pages — and §4.3c exists precisely because these odds are
+    known from the binary, so hiding them gives up the block’s reason to state odds at all.</li>
+  <li class="warn">It also reintroduces weight through the back door, one row at a time, having just
+    dropped the column that named it.</li>
+</ul>
+
+
+<!-- ══ comparison ═════════════════════════════════════════════════════════════════ -->
+<h2>Comparison — all at 457px</h2>
+<table class="cmp">
+  <thead><tr><th>Variation</th><th>Height</th><th>Saved</th><th>Dropped</th><th>Best for</th></tr></thead>
+  <tbody>
+    <tr><td>0 — Current</td><td class="n" data-hc="v0">…</td><td class="s">—</td><td>—</td><td>The reference, untouched. Everything, at the cost of being the tallest tile in the row.</td></tr>
+    <tr><td>1 — Same rows, two columns</td><td class="n" data-hc="v1">…</td><td class="s" data-sc="v1">…</td><td>Weight, decimals — nothing else</td><td>The user’s shape. Baseline reading, half the stack, no data given up.</td></tr>
+    <tr><td>1-alt — shared header</td><td class="n" data-hc="v1s">…</td><td class="s" data-sc="v1s">…</td><td>Same as V1</td><td>Same height; full labels, but detached from their columns.</td></tr>
+    <tr><td>1 — Table minus weight</td><td class="n" data-hc="v2">…</td><td class="s" data-sc="v2">…</td><td>Weight, decimals; three zero rows → one line</td><td>Shipping tomorrow. Same table, no reading retraining.</td></tr>
+    <tr><td>2 — Name · bar · number</td><td class="n" data-hc="v3">…</td><td class="s" data-sc="v3">…</td><td>Also per-slot, and the header row</td><td>A glance tile with exactly one number per species.</td></tr>
+    <tr><td>3 — Two rows of four</td><td class="n" data-hc="v4">…</td><td class="s" data-sc="v4">…</td><td>Only weight and the row grid — both figures survive</td><td>Card shape at this width — but V1 is shorter on the same promise.</td></tr>
+    <tr><td>4 — Stacked bar</td><td class="n" data-hc="v5">…</td><td class="s" data-sc="v5">…</td><td>In-store chance, the row grid</td><td>“What will one slot be?” — shape over figures.</td></tr>
+    <tr><td>5 — Chips</td><td class="n" data-hc="v6">…</td><td class="s" data-sc="v6">…</td><td>Per-slot, tabular alignment</td><td>Width-proof reflow; never-sold stays visible.</td></tr>
+    <tr><td>6 — Sentence + detail</td><td class="n" data-hc="v7">…</td><td class="s" data-sc="v7">…</td><td>Nothing — the V4 grid is one click away</td><td>Prose-first pages. Beats V4 by a hair while hiding five species’ odds behind a click.</td></tr>
+    <tr><td>7 — Rank, no numbers</td><td class="n" data-hc="v8">…</td><td class="s" data-sc="v8">…</td><td>Both percentages</td><td>Pure ordering. Gives up cross-sector comparison.</td></tr>
+  </tbody>
+</table>
+<p class="note" style="margin-top:.9rem">
+  Header treatments HA–HD measure identically at this width; they are a legibility choice, not a
+  height one, and are listed separately above.
+</p>
+
+</div>
+
+<script>
+(function () {
+  var root = document.documentElement;
+  document.getElementById('tt').addEventListener('click', function () {
+    var cur = root.getAttribute('data-theme');
+    if (!cur) cur = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    root.setAttribute('data-theme', cur === 'dark' ? 'light' : 'dark');
+  });
+
+  var BODIES = ['v0','v1','v1s','v2','v3','v4','v5','v6','v7','v8'];
+  var HEADERS = ['ha','hb','hc','hd'];
+
+  function measure() {
+    var base = document.getElementById('v0').offsetHeight;
+
+    HEADERS.forEach(function (id) {
+      var h = document.getElementById(id).offsetHeight;
+      var lab = document.querySelector('[data-h="' + id + '"]');
+      if (lab) lab.textContent = h + ' px';
+    });
+
+    BODIES.forEach(function (id) {
+      var h = document.getElementById(id).offsetHeight;
+      var saved = Math.round((1 - h / base) * 100);
+      var lab = document.querySelector('[data-h="' + id + '"]');
+      if (lab) {
+        lab.textContent = h + ' px' + (id === 'v0' ? ' · baseline' : '');
+        if (id !== 'v0') {
+          var sv = document.createElement('span');
+          sv.className = 'sv';
+          sv.textContent = '  −' + saved + '%';
+          lab.appendChild(sv);
+        }
+      }
+      var c = document.querySelector('[data-hc="' + id + '"]');
+      if (c) c.textContent = h + ' px';
+      var s = document.querySelector('[data-sc="' + id + '"]');
+      if (s) s.textContent = '−' + saved + '%';
+    });
+  }
+  if (document.readyState === 'complete') measure();
+  else window.addEventListener('load', measure);
+})();
+</script>
+
+<!-- ============================================================================
+     REVIEW LAYER — added to this copy only, never to the shared shell.
+     Select any text on the page to attach a note. Notes persist in localStorage
+     and export as markdown for Claude. Nothing here touches the page's own data.
+     ============================================================================ -->
+<style id="cmt-style">
+  mark.cmt-hl {
+    background: rgba(232,184,75,.28);
+    color: inherit;
+    border-bottom: 1px solid rgba(232,184,75,.75);
+    border-radius: 2px;
+    padding: 0 1px;
+    cursor: pointer;
+  }
+  mark.cmt-hl[data-active="1"] { background: rgba(232,184,75,.55); }
+
+  #cmt-fab {
+    position: fixed; z-index: 9998;
+    display: none;
+    padding: 6px 12px;
+    font: 600 12px/1 var(--sans, system-ui);
+    letter-spacing: .04em; text-transform: uppercase;
+    color: #0B1219; background: var(--amber, #E8B84B);
+    border: 0; border-radius: 4px;
+    box-shadow: 0 4px 14px rgba(0,0,0,.45);
+    cursor: pointer;
+  }
+
+  #cmt-composer {
+    position: fixed; z-index: 9999; display: none;
+    width: 320px; padding: 10px;
+    background: var(--panel, #101822);
+    border: 1px solid var(--edge, #1F2E3C); border-radius: 6px;
+    box-shadow: 0 10px 30px rgba(0,0,0,.5);
+  }
+  #cmt-composer .q {
+    font: 400 11px/1.45 var(--mono, monospace);
+    color: var(--dim, #7C8FA3);
+    max-height: 54px; overflow: hidden;
+    border-left: 2px solid var(--amber, #E8B84B);
+    padding-left: 7px; margin-bottom: 8px;
+  }
+  #cmt-composer textarea {
+    width: 100%; box-sizing: border-box; height: 84px; resize: vertical;
+    background: var(--sunk, #0B1219); color: var(--ink, #D6E2EC);
+    border: 1px solid var(--edge, #1F2E3C); border-radius: 4px;
+    padding: 7px; font: 400 13px/1.45 var(--sans, system-ui);
+  }
+  #cmt-composer .row { display: flex; gap: 6px; margin-top: 8px; justify-content: flex-end; }
+
+  .cmt-btn {
+    font: 600 11px/1 var(--sans, system-ui); letter-spacing: .04em;
+    padding: 7px 11px; border-radius: 4px; cursor: pointer;
+    background: var(--sunk, #0B1219); color: var(--ink, #D6E2EC);
+    border: 1px solid var(--edge, #1F2E3C);
+  }
+  .cmt-btn.primary { background: var(--amber, #E8B84B); color: #0B1219; border-color: transparent; }
+  .cmt-btn:hover { border-color: var(--amber, #E8B84B); }
+
+  #cmt-tab {
+    position: fixed; right: 0; top: 92px; z-index: 9997;
+    writing-mode: vertical-rl;
+    padding: 12px 7px;
+    font: 600 11px/1 var(--sans, system-ui); letter-spacing: .12em; text-transform: uppercase;
+    color: #0B1219; background: var(--amber, #E8B84B);
+    border: 0; border-radius: 5px 0 0 5px; cursor: pointer;
+    box-shadow: 0 4px 14px rgba(0,0,0,.4);
+  }
+
+  #cmt-panel {
+    position: fixed; top: 0; right: 0; bottom: 0; z-index: 9997;
+    width: 340px; transform: translateX(100%);
+    transition: transform .18s ease;
+    display: flex; flex-direction: column;
+    background: var(--panel, #101822);
+    border-left: 1px solid var(--edge, #1F2E3C);
+    box-shadow: -12px 0 34px rgba(0,0,0,.45);
+  }
+  #cmt-panel[data-open="1"] { transform: none; }
+  #cmt-panel header {
+    display: flex; align-items: center; gap: 8px;
+    padding: 12px 12px 10px; border-bottom: 1px solid var(--edge, #1F2E3C);
+  }
+  #cmt-panel header h2 {
+    margin: 0; flex: 1;
+    font: 700 12px/1 var(--sans, system-ui); letter-spacing: .14em; text-transform: uppercase;
+    color: var(--ink, #D6E2EC);
+  }
+  #cmt-list { flex: 1; overflow-y: auto; padding: 10px; }
+  #cmt-list .empty {
+    font: 400 12px/1.6 var(--sans, system-ui); color: var(--faint, #55697C); padding: 8px 4px;
+  }
+  .cmt-item {
+    border: 1px solid var(--edge, #1F2E3C); border-radius: 5px;
+    background: var(--sunk, #0B1219);
+    padding: 9px; margin-bottom: 9px; cursor: pointer;
+  }
+  .cmt-item:hover { border-color: var(--amber, #E8B84B); }
+  .cmt-item .q {
+    font: 400 11px/1.45 var(--mono, monospace); color: var(--dim, #7C8FA3);
+    border-left: 2px solid var(--amber, #E8B84B); padding-left: 7px; margin-bottom: 6px;
+  }
+  .cmt-item .n {
+    font: 400 13px/1.5 var(--sans, system-ui); color: var(--ink, #D6E2EC);
+    white-space: pre-wrap;
+  }
+  .cmt-item .tools { display: flex; gap: 10px; margin-top: 7px; }
+  .cmt-item .tools button {
+    background: none; border: 0; padding: 0; cursor: pointer;
+    font: 600 10px/1 var(--sans, system-ui); letter-spacing: .06em; text-transform: uppercase;
+    color: var(--faint, #55697C);
+  }
+  .cmt-item .tools button:hover { color: var(--red, #E0685C); }
+  .cmt-item .tools button.edit:hover { color: var(--cyan, #5FD3E8); }
+  #cmt-foot {
+    padding: 10px; border-top: 1px solid var(--edge, #1F2E3C);
+    display: flex; gap: 6px; flex-wrap: wrap;
+  }
+  #cmt-toast {
+    position: fixed; left: 50%; bottom: 26px; transform: translateX(-50%);
+    z-index: 10000; display: none;
+    padding: 9px 16px; border-radius: 5px;
+    background: var(--amber, #E8B84B); color: #0B1219;
+    font: 600 12px/1 var(--sans, system-ui);
+  }
+  @media print { #cmt-tab, #cmt-panel, #cmt-fab, #cmt-composer, #cmt-toast { display: none !important; } }
+</style>
+
+<div id="cmt-ui">
+  <button id="cmt-tab" type="button">Comments <span id="cmt-count">0</span></button>
+  <button id="cmt-fab" type="button">Comment</button>
+
+  <div id="cmt-composer">
+    <div class="q"></div>
+    <textarea placeholder="What should change here?"></textarea>
+    <div class="row">
+      <button class="cmt-btn" data-act="cancel" type="button">Cancel</button>
+      <button class="cmt-btn primary" data-act="save" type="button">Save</button>
+    </div>
+  </div>
+
+  <aside id="cmt-panel">
+    <header>
+      <h2>Review notes</h2>
+      <button class="cmt-btn" data-act="close" type="button">Close</button>
+    </header>
+    <div id="cmt-list"></div>
+    <div id="cmt-foot">
+      <button class="cmt-btn primary" data-act="copy" type="button">Copy for Claude</button>
+      <button class="cmt-btn" data-act="download" type="button">Download .md</button>
+      <button class="cmt-btn" data-act="clear" type="button">Clear all</button>
+    </div>
+  </aside>
+
+  <div id="cmt-toast"></div>
+</div>
+
+<script id="cmt-script">
+(() => {
+  "use strict";
+
+  const KEY = "ftl-review:" + (location.pathname.split("/").pop() || "page");
+  const ui = document.getElementById("cmt-ui");
+  const fab = document.getElementById("cmt-fab");
+  const composer = document.getElementById("cmt-composer");
+  const panel = document.getElementById("cmt-panel");
+  const list = document.getElementById("cmt-list");
+  const count = document.getElementById("cmt-count");
+  const toastEl = document.getElementById("cmt-toast");
+
+  let notes = [];
+  let pending = null;   /* {start, end, quote} awaiting a note */
+  let editing = null;   /* id being re-edited */
+
+  /* ---- storage ---------------------------------------------------------- */
+
+  const load = () => {
+    try { notes = JSON.parse(localStorage.getItem(KEY) || "[]"); }
+    catch (err) { notes = []; }
+  };
+  const save = () => {
+    try { localStorage.setItem(KEY, JSON.stringify(notes)); }
+    catch (err) { toast("Could not save — storage blocked"); }
+  };
+
+  /* ---- text-offset anchoring -------------------------------------------
+     Every anchor is a [start,end) pair of character offsets into the page's
+     visible text, so highlights survive a reload without depending on DOM
+     paths. Wrapping a range in <mark> splits text nodes but never changes the
+     text itself, so offsets recorded earlier stay valid.                    */
+
+  const walker = () => document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, {
+    acceptNode(node) {
+      if (!node.nodeValue) return NodeFilter.FILTER_REJECT;
+      const parent = node.parentElement;
+      if (!parent) return NodeFilter.FILTER_REJECT;
+      if (ui.contains(parent)) return NodeFilter.FILTER_REJECT;
+      const tag = parent.tagName;
+      if (tag === "SCRIPT" || tag === "STYLE" || tag === "TITLE") return NodeFilter.FILTER_REJECT;
+      return NodeFilter.FILTER_ACCEPT;
+    }
+  });
+
+  const offsetOf = (node, offset) => {
+    const w = walker();
+    let total = 0, cur;
+    while ((cur = w.nextNode())) {
+      if (cur === node) return total + offset;
+      total += cur.nodeValue.length;
+    }
+    return -1;
+  };
+
+  /* All text-node slices covered by [start,end), in document order. */
+  const slices = (start, end) => {
+    const out = [];
+    const w = walker();
+    let total = 0, cur;
+    while ((cur = w.nextNode())) {
+      const len = cur.nodeValue.length;
+      const nodeStart = total, nodeEnd = total + len;
+      total = nodeEnd;
+      if (nodeEnd <= start) continue;
+      if (nodeStart >= end) break;
+      out.push({
+        node: cur,
+        from: Math.max(0, start - nodeStart),
+        to: Math.min(len, end - nodeStart)
+      });
+    }
+    return out;
+  };
+
+  const paint = note => {
+    let painted = 0;
+    for (const s of slices(note.start, note.end)) {
+      if (s.to <= s.from) continue;
+      const r = document.createRange();
+      r.setStart(s.node, s.from);
+      r.setEnd(s.node, s.to);
+      const mark = document.createElement("mark");
+      mark.className = "cmt-hl";
+      mark.dataset.cid = note.id;
+      try { r.surroundContents(mark); painted++; }
+      catch (err) { /* a slice that straddles an element edge — skip it */ }
+    }
+    return painted > 0;
+  };
+
+  const unpaint = id => {
+    document.querySelectorAll('mark.cmt-hl[data-cid="' + id + '"]').forEach(mark => {
+      const parent = mark.parentNode;
+      while (mark.firstChild) parent.insertBefore(mark.firstChild, mark);
+      parent.removeChild(mark);
+      parent.normalize();
+    });
+  };
+
+  /* ---- ui --------------------------------------------------------------- */
+
+  let toastTimer = 0;
+  const toast = msg => {
+    toastEl.textContent = msg;
+    toastEl.style.display = "block";
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => { toastEl.style.display = "none"; }, 1900);
+  };
+
+  const hideFab = () => { fab.style.display = "none"; };
+
+  const place = (el, rect) => {
+    el.style.display = "block";
+    const w = el.offsetWidth, h = el.offsetHeight;
+    let left = rect.left + rect.width / 2 - w / 2;
+    left = Math.max(8, Math.min(left, window.innerWidth - w - 8));
+    let top = rect.top - h - 8;
+    if (top < 8) top = rect.bottom + 8;
+    top = Math.min(top, window.innerHeight - h - 8);
+    el.style.left = left + "px";
+    el.style.top = top + "px";
+  };
+
+  const closeComposer = () => {
+    composer.style.display = "none";
+    composer.querySelector("textarea").value = "";
+    pending = null;
+    editing = null;
+  };
+
+  const openComposer = (rect, quote, existing) => {
+    composer.querySelector(".q").textContent = quote;
+    const ta = composer.querySelector("textarea");
+    ta.value = existing || "";
+    place(composer, rect);
+    ta.focus();
+  };
+
+  const render = () => {
+    count.textContent = String(notes.length);
+    list.innerHTML = "";
+    if (!notes.length) {
+      const p = document.createElement("div");
+      p.className = "empty";
+      p.textContent = "No notes yet. Select any text on the page and click Comment.";
+      list.appendChild(p);
+      return;
+    }
+    notes.slice().sort((a, b) => a.start - b.start).forEach((note, i) => {
+      const item = document.createElement("div");
+      item.className = "cmt-item";
+      item.dataset.cid = note.id;
+
+      const q = document.createElement("div");
+      q.className = "q";
+      q.textContent = (i + 1) + ". " + note.quote;
+
+      const n = document.createElement("div");
+      n.className = "n";
+      n.textContent = note.text;
+
+      const tools = document.createElement("div");
+      tools.className = "tools";
+      const edit = document.createElement("button");
+      edit.className = "edit"; edit.type = "button"; edit.dataset.act = "edit";
+      edit.textContent = "Edit";
+      const del = document.createElement("button");
+      del.type = "button"; del.dataset.act = "delete";
+      del.textContent = "Delete";
+      tools.append(edit, del);
+
+      item.append(q, n, tools);
+      list.appendChild(item);
+    });
+  };
+
+  const focusNote = id => {
+    document.querySelectorAll("mark.cmt-hl[data-active]").forEach(m => m.removeAttribute("data-active"));
+    const marks = document.querySelectorAll('mark.cmt-hl[data-cid="' + id + '"]');
+    marks.forEach(m => m.setAttribute("data-active", "1"));
+    if (marks.length) marks[0].scrollIntoView({ behavior: "smooth", block: "center" });
+  };
+
+  /* ---- export ----------------------------------------------------------- */
+
+  const markdown = () => {
+    const title = (document.querySelector("title") || {}).textContent || document.title || "page";
+    const lines = ["# Review notes — " + title, "", "File: " + location.pathname, ""];
+    notes.slice().sort((a, b) => a.start - b.start).forEach((note, i) => {
+      lines.push("## " + (i + 1));
+      lines.push("> " + note.quote.replace(/\n+/g, " "));
+      lines.push("");
+      lines.push(note.text);
+      lines.push("");
+    });
+    return lines.join("\n");
+  };
+
+  /* ---- events ----------------------------------------------------------- */
+
+  document.addEventListener("mouseup", event => {
+    if (ui.contains(event.target)) return;
+    setTimeout(() => {
+      const sel = window.getSelection();
+      if (!sel || sel.isCollapsed || !sel.rangeCount) { hideFab(); return; }
+      const range = sel.getRangeAt(0);
+      const quote = sel.toString().trim();
+      if (!quote) { hideFab(); return; }
+      const start = offsetOf(range.startContainer, range.startOffset);
+      const end = offsetOf(range.endContainer, range.endOffset);
+      if (start < 0 || end < 0 || end <= start) { hideFab(); return; }
+      pending = { start, end, quote, rect: range.getBoundingClientRect() };
+      place(fab, pending.rect);
+    }, 0);
+  });
+
+  fab.addEventListener("click", () => {
+    if (!pending) return;
+    hideFab();
+    openComposer(pending.rect, pending.quote, "");
+  });
+
+  composer.addEventListener("click", event => {
+    const act = event.target.dataset && event.target.dataset.act;
+    if (act === "cancel") { closeComposer(); return; }
+    if (act !== "save") return;
+
+    const text = composer.querySelector("textarea").value.trim();
+    if (!text) { toast("Write something first"); return; }
+
+    if (editing) {
+      const note = notes.find(n => n.id === editing);
+      if (note) note.text = text;
+    } else if (pending) {
+      const note = {
+        id: "c" + notes.length + "-" + pending.start + "-" + pending.end,
+        start: pending.start,
+        end: pending.end,
+        quote: pending.quote,
+        text
+      };
+      notes.push(note);
+      paint(note);
+      window.getSelection().removeAllRanges();
+    }
+    save(); render(); closeComposer();
+    panel.dataset.open = "1";
+  });
+
+  composer.addEventListener("keydown", event => {
+    if (event.key === "Escape") closeComposer();
+    if (event.key === "Enter" && (event.metaKey || event.ctrlKey)) {
+      composer.querySelector('[data-act="save"]').click();
+    }
+  });
+
+  document.addEventListener("click", event => {
+    const mark = event.target.closest && event.target.closest("mark.cmt-hl");
+    if (mark) {
+      panel.dataset.open = "1";
+      focusNote(mark.dataset.cid);
+      const item = list.querySelector('.cmt-item[data-cid="' + mark.dataset.cid + '"]');
+      if (item) item.scrollIntoView({ block: "center" });
+      return;
+    }
+    if (!ui.contains(event.target)) hideFab();
+  });
+
+  document.getElementById("cmt-tab").addEventListener("click", () => {
+    panel.dataset.open = panel.dataset.open === "1" ? "0" : "1";
+  });
+
+  panel.addEventListener("click", event => {
+    const btn = event.target.closest("button");
+    const item = event.target.closest(".cmt-item");
+
+    if (btn && btn.dataset.act === "close") { panel.dataset.open = "0"; return; }
+
+    if (btn && btn.dataset.act === "copy") {
+      navigator.clipboard.writeText(markdown())
+        .then(() => toast("Copied — paste it to Claude"))
+        .catch(() => toast("Clipboard blocked — use Download"));
+      return;
+    }
+
+    if (btn && btn.dataset.act === "download") {
+      const blob = new Blob([markdown()], { type: "text/markdown" });
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = "review-notes.md";
+      a.click();
+      setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+      return;
+    }
+
+    if (btn && btn.dataset.act === "clear") {
+      if (!notes.length) return;
+      if (!confirm("Delete all " + notes.length + " notes?")) return;
+      notes.forEach(n => unpaint(n.id));
+      notes = []; save(); render();
+      return;
+    }
+
+    if (!item) return;
+    const id = item.dataset.cid;
+
+    if (btn && btn.dataset.act === "delete") {
+      unpaint(id);
+      notes = notes.filter(n => n.id !== id);
+      save(); render();
+      return;
+    }
+
+    if (btn && btn.dataset.act === "edit") {
+      const note = notes.find(n => n.id === id);
+      if (!note) return;
+      editing = id; pending = null;
+      const mark = document.querySelector('mark.cmt-hl[data-cid="' + id + '"]');
+      const rect = mark ? mark.getBoundingClientRect()
+                        : { left: window.innerWidth / 2, top: 120, width: 0, height: 0, bottom: 120 };
+      openComposer(rect, note.quote, note.text);
+      return;
+    }
+
+    focusNote(id);
+  });
+
+  /* ---- boot -------------------------------------------------------------
+     Repaint oldest-first so earlier marks don't shift the offsets of later
+     ones — they can't, since wrapping preserves text — and drop any anchor
+     the page no longer contains (the page was rebuilt under the note).      */
+
+  load();
+  /* file:// origins are opaque in some browsers, which makes localStorage throw.
+     Say so once, up front, rather than at the moment a note is lost. */
+  try { localStorage.setItem(KEY + ":probe", "1"); localStorage.removeItem(KEY + ":probe"); }
+  catch (err) { setTimeout(() => toast("Storage blocked here — download notes before closing"), 600); }
+
+  const survivors = [];
+  notes.slice().sort((a, b) => a.start - b.start).forEach(note => {
+    const found = slices(note.start, note.end).map(s => s.node.nodeValue.slice(s.from, s.to)).join("");
+    if (found.trim() && found.trim() === note.quote.trim() && paint(note)) survivors.push(note);
+    else survivors.push(Object.assign({ orphan: true }, note));
+  });
+  notes = survivors;
+  render();
+  if (notes.length) panel.dataset.open = "1";
+})();
+</script>

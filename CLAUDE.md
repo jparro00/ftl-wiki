@@ -44,6 +44,7 @@ bookkeeping — summarizing, filing, cross-linking, and keeping everything consi
 │   ├── card-<slug>.html   ← the built cards
 │   └── trees/             ← `<slug>.tree.json`, the extracted event trees
 ├── sectors/               ← generated sector-profile output — same sibling rule as `cards/`
+│   ├── index.html         ← the chooser: all 19 by designation, two pinnable side by side
 │   ├── sector-<slug>.html ← the built pages, one per sector
 │   └── data/              ← `<slug>.sector.json`, the extracted sector profiles
 ├── mods/                  ← generated game mods — another sibling of `wiki/`, same reasoning
@@ -52,7 +53,9 @@ bookkeeping — summarizing, filing, cross-linking, and keeping everything consi
 │                            `SECTOR-PAGE.md` the sector-profile pipeline, `EVENT-LABELS.md`
 │                            the event-labels mod, `BEACON-REVEAL.md` the Hyperspace mod that
 │                            names every beacon on the map, `SAVE-WATCH.md` the save watcher
-│                            that opens cards by itself); `sector-copy/` is hand-written copy
+│                            that opens cards by itself — and, in its §5c, the `map-signal`
+│                            mod that tells it when the star map is open);
+│                            `sector-copy/` is hand-written copy
 └── wiki/                  ← YOUR layer, everything below is maintained by you
     ├── events/            ← one page per event (markdown only; trees live in `cards/trees/`)
     ├── chains/            ← one page per multi-jump event chain / quest
@@ -448,16 +451,21 @@ where these pages are read; a published page can only offer the corner link. `SE
 §6.1 has the why.
 
 **Read `tools/SECTOR-PAGE.md` and follow it** — same reasoning as the card spec: this file is
-injected at session start and can lag the working tree, so the spec is authoritative.
+injected at session start and can lag the working tree, so the spec is authoritative. A
+redesign of these pages is agreed on one sector and not yet built: read
+`tools/SECTOR-PAGE-REDESIGN.md` alongside it before changing anything here.
 
 What stays true regardless:
 
 1. **Numbers come from the data, never from prose.** A stat tile names a metric id and the
    build fills in the number. Prose names events as `{{EVENT_ID}}` and the build fails if the
    sector cannot produce that event.
-2. **Only the copy file is hand-written.** `tools/sector-copy/<slug>.json` holds the words and
+2. **`sectors/index.html` is the way in.** All 19 under the designation the game's own
+   `<sectorType>` draw lists give them, two pinnable into a comparison at the top — the map
+   offers two — and each opens its profile. Built by `tools/build-sector-index.py`.
+3. **Only the copy file is hand-written.** `tools/sector-copy/<slug>.json` holds the words and
    nothing else; the pool, the counts and the tags are all generated.
-3. **Open questions stay open on the page.** Whether `OVERRIDE_X` replaces `X`, and whether
+4. **Open questions stay open on the page.** Whether `OVERRIDE_X` replaces `X`, and whether
    `unique="true"` is per sector or per run, are unresolved in this wiki — the page shows the
    delta and the caveat rather than picking a side.
 
@@ -465,7 +473,9 @@ What stays true regardless:
 
 The same cards as §5.2b, but the user never has to ask. `tools/save-watch.py` reads the
 game's save file, works out which event is on screen, and serves one page that swaps
-itself to that event's card. The user parks it on the second monitor; a screenshot request
+itself to that event's card — or to that **sector's page** (§5.2b-2) when there is no card
+to show, or just after arriving somewhere new. Which sector comes from `FTL_HS.log`, not
+the save, which cannot name a sector type at all (`SAVE-WATCH.md` §5b). The user parks it on the second monitor; a screenshot request
 becomes unnecessary while it runs.
 
 **Read `tools/SAVE-WATCH.md` and follow it** — the commands, the resolution rules and the
