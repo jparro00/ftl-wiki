@@ -741,14 +741,34 @@ document.querySelectorAll(".gtoggle").forEach(box => {
     }
   });
 
+  /* A range boundary is not always inside a text node: triple-click, select-all and
+     any drag that crosses an element edge hand back (element, childIndex) instead.
+     Both forms resolve to the same scale — characters of visible text from the top. */
   const offsetOf = (node, offset) => {
-    const w = walker();
-    let total = 0, cur;
-    while ((cur = w.nextNode())) {
-      if (cur === node) return total + offset;
-      total += cur.nodeValue.length;
+    if (node.nodeType === Node.TEXT_NODE) {
+      const w = walker();
+      let total = 0, cur;
+      while ((cur = w.nextNode())) {
+        if (cur === node) return total + offset;
+        total += cur.nodeValue.length;
+      }
+      return -1;
     }
-    return -1;
+
+    /* Element boundary: the offset counts child nodes. Walk the text and take the
+       position where the child at that index begins — or where the element ends, when
+       the boundary sits past its last child. */
+    const kids = node.childNodes;
+    const edge = offset >= kids.length ? null : kids[offset];
+    const w = walker();
+    let total = 0, cur, endOfNode = -1;
+    while ((cur = w.nextNode())) {
+      if (edge && (cur === edge || edge.contains(cur))) return total;
+      total += cur.nodeValue.length;
+      if (node.contains(cur)) endOfNode = total;
+    }
+    /* No text after the boundary inside this element: its own end, or the document's. */
+    return edge ? (endOfNode >= 0 ? endOfNode : -1) : (endOfNode >= 0 ? endOfNode : -1);
   };
 
   /* All text-node slices covered by [start,end), in document order. */
@@ -1031,9 +1051,15 @@ document.querySelectorAll(".gtoggle").forEach(box => {
 
   load();
   const survivors = [];
+  /* A selection spanning elements reads back with line breaks the browser inserted at
+     the block boundaries, while the markup itself has no whitespace between those
+     elements at all — so the check ignores whitespace entirely rather than collapsing
+     it. Same characters at the same offsets is still a strong guard against a page
+     that changed underneath the note. */
+  const same = s => s.replace(/\s+/g, "");
   notes.slice().sort((a, b) => a.start - b.start).forEach(note => {
     const found = slices(note.start, note.end).map(s => s.node.nodeValue.slice(s.from, s.to)).join("");
-    if (found.trim() && found.trim() === note.quote.trim() && paint(note)) survivors.push(note);
+    if (same(found) && same(found) === same(note.quote) && paint(note)) survivors.push(note);
     else survivors.push(Object.assign({ orphan: true }, note));
   });
   notes = survivors;

@@ -95,7 +95,9 @@ def main():
     problems = list(page.errors)
     problems += [f"unclosed <{t}>" for t, _, _ in page.stack]
 
-    body = re.sub(r"<style>.*?</style>", "", source, flags=re.DOTALL)
+    # `<style id="…">` counts too: the review layer (tools/REVIEW-LAYER.md) and any page
+    # that adds a second block carry CSS comments, and a comment asterisk is not prose.
+    body = re.sub(r"<style\b[^>]*>.*?</style>", "", source, flags=re.DOTALL)
     # The loader and its config are code, not copy: they hold comment asterisks and
     # braces that these checks are meant to catch in prose, and nothing a reader sees.
     body = re.sub(r"<script.*?</script>", "", body, flags=re.DOTALL)

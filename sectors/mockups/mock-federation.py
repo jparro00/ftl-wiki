@@ -22,7 +22,7 @@ HERE = pathlib.Path(__file__).resolve().parent
 REPO = HERE.parents[1]
 SLUG = "federation-space"
 OUT = HERE / f"sector-{SLUG}-mock.html"
-REVIEW_LAYER = HERE / "review-layer.html"
+REVIEW_LAYER = REPO / "tools" / "review-layer.html"
 
 spec = importlib.util.spec_from_file_location("bs", REPO / "tools" / "build-sector.py")
 B = importlib.util.module_from_spec(spec)

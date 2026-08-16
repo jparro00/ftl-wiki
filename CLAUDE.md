@@ -54,8 +54,9 @@ bookkeeping — summarizing, filing, cross-linking, and keeping everything consi
 │                            the event-labels mod, `BEACON-REVEAL.md` the Hyperspace mod that
 │                            names every beacon on the map, `SAVE-WATCH.md` the save watcher
 │                            that opens cards by itself — and, in its §5c, the `map-signal`
-│                            mod that tells it when the star map is open);
-│                            `sector-copy/` is hand-written copy
+│                            mod that tells it when the star map is open,
+│                            `REVIEW-LAYER.md` the commenting layer the user reviews a
+│                            built page with); `sector-copy/` is hand-written copy
 └── wiki/                  ← YOUR layer, everything below is maintained by you
     ├── events/            ← one page per event (markdown only; trees live in `cards/trees/`)
     ├── chains/            ← one page per multi-jump event chain / quest

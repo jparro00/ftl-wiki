@@ -47,7 +47,7 @@ comes from the join in §4.6 — use the path the extractor prints rather than a
 | `tools/smoke-sector.py` | renders a built page as text and checks it | code only |
 | `tools/smoke-inline.py` | drives a built page in a real browser and checks the boxes open | code only |
 | `tools/build-sector-index.py` | the chooser above the nineteen (§7b) | code only |
-| `sectors/mockups/review-layer.html` | the in-browser commenting layer for a review round (§7c) | code only |
+| `tools/review-layer.html` + `tools/add-review-layer.py` | the in-browser commenting layer for a review round — `REVIEW-LAYER.md` (§7c) | layer: yes; script: code only |
 | `sectors/data/<slug>.sector.json` | generated profile (regenerable data, not a page) | never |
 | `sectors/sector-<slug>.html` | the built page; publish target | never |
 
@@ -781,19 +781,18 @@ questions, which is exactly why the note stays.
 ## 7c. Reviewing a page with the user
 
 Neither smoke test can tell you a page is *good*, and the user reviews in the browser, not in
-chat. `sectors/mockups/review-layer.html` is a self-contained commenting layer that can be
-appended to any built page:
+chat. Hand over a review copy — a built page with the commenting layer appended:
 
-- Select text → **Comment** → type → save. The selection is highlighted.
-- Notes persist in `localStorage`, keyed by filename, and survive a rebuild.
-- **Copy for Claude** / **Download .md** exports them as markdown — quote plus note, in page
-  order. The user drops the file in `~/Downloads`; read the newest `review-notes*.md` there.
+```bash
+python tools/add-review-layer.py sectors/sector-rock-homeworlds.html
+```
 
-Anchoring is by character offset into the page's visible text, not DOM paths, so a rebuild
-keeps the highlights. A note whose quoted text no longer matches is kept as an orphan — still
-exported, no longer highlighted. Two consequences when editing a page under live notes:
-**anything added above an anchor shifts it**, and CSS pseudo-element content is not a text
-node, so labels added that way do not move anchors at all.
+The user selects text, attaches notes to it, and exports them as markdown to `~/Downloads`;
+read the newest `review-notes*.md` there. **`tools/REVIEW-LAYER.md` is the spec** — how the
+notes anchor, what survives a rebuild, and what to check after changing the layer. The one
+thing to carry while editing a page under live notes: anchors are character offsets into the
+visible text, so **anything added above an anchor shifts it**, while CSS pseudo-element content
+is not a text node and moves nothing.
 
 **Read a note against what the page is for.** The exports are terse and often anchor to
 whatever was nearest to what the user meant — a note on a 4,000-character selection reading
