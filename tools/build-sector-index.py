@@ -347,7 +347,7 @@ const SECTORS = %(data)s;
 const WORDS = %(words)s;
 const KEY = 'ftl-sector-picks';
 const MAX_PINS = 2;      // what the map offers, and what a hand can pin
-const MAX_SLOTS = 3;     // ...but the game can offer three, so a URL may carry three
+const MAX_SLOTS = 4;     // ...but a map column can hold four, and a URL may carry them
 
 let picks = [];
 try { picks = JSON.parse(localStorage.getItem(KEY) || '[]').filter(s => SECTORS[s]); }
@@ -356,9 +356,14 @@ catch (e) { picks = []; }
 // ?pick=slug,slug wins over whatever was pinned by hand. That is how the save watcher
 // opens this page at a sector choice: it knows the offer, and the offer is not a
 // preference to be remembered over it.
-const fromUrl = (new URLSearchParams(location.search).get('pick') || '')
+const params = new URLSearchParams(location.search);
+const fromUrl = (params.get('pick') || '')
   .split(',').map(s => s.trim()).filter(s => SECTORS[s]).slice(0, MAX_SLOTS);
 if (fromUrl.length) picks = fromUrl;
+// &column=1 means these are the next column of the map, not a verified list of what
+// this sector connects to -- Hyperspace does not expose the adjacency. The page says so
+// rather than letting the panel imply a promise the data cannot make.
+const isColumn = fromUrl.length > 0 && params.get('column') === '1';
 
 function chip(cls, text) {
   return '<span class="chip ' + cls + '">' + text + '</span>';
@@ -381,6 +386,10 @@ function render() {
       WORDS.unpin_mark + '</button></div>' +
       '<div class="sub">' + s.sub + '</div></div>';
   }).join('');
+
+  const caveat = document.getElementById('caveat');
+  caveat.textContent = isColumn ? WORDS.picks_column : '';
+  caveat.style.display = isColumn ? 'block' : 'none';
 
   const cmp = document.getElementById('cmp');
   const chosen = picks.map(s => SECTORS[s]).filter(Boolean);
@@ -497,8 +506,8 @@ def build():
     data = {r["slug"]: {"slug": r["slug"], "name": r["name"], "cls": r["class"],
                         "sub": " · ".join(r["sub_parts"]), "rows": r["rows"]}
             for r in records}
-    words = {k: VOC[k] for k in ("picks_empty", "picks_one", "pin", "unpin",
-                                 "pin_mark", "unpin_mark", "classes")}
+    words = {k: VOC[k] for k in ("picks_empty", "picks_one", "picks_column", "pin",
+                                 "unpin", "pin_mark", "unpin_mark", "classes")}
 
     page = """<!doctype html>
 <html lang="en"><head><meta charset="utf-8">
@@ -516,6 +525,7 @@ def build():
 </header>
 <section>
   <h2>%(picks_heading)s<span class="meta">%(picks_meta)s</span></h2>
+  <p class="note" id="caveat" style="display:none"></p>
   <div class="slots" id="slots"></div>
   <div id="cmp"></div>
 </section>
