@@ -100,11 +100,18 @@ MAP_SIGNAL = re.compile(r"^(?:\[[^\]]*\]:\s*)?map-signal:\s+(open|closed)\b", re
 # names what is on offer, which is the one thing neither the save nor the engine's own
 # log holds before the jump is taken:
 #
-#   map-signal: choosing 4 -> Rock Homeworlds | Slug Home Nebula
+#   map-signal: choosing 4 column -> Rock Homeworlds | Slug Home Nebula
 #   map-signal: chosen
+#
+# `column` before the arrow is load-bearing: it says the names are the sectors in the
+# next column of the map, which is a *superset* of the ones this sector connects to.
+# Hyperspace exposes three members on a Sector -- description, level, visited -- so the
+# engine's own adjacency cannot be read, and naming a subset would mean re-deriving
+# xftl's linking rules and risking the wrong two. See SAVE-WATCH.md §5d.
 SECTOR_CHOICE = re.compile(
     r"^(?:\[[^\]]*\]:\s*)?map-signal:\s+(choosing|chosen)\b([^\n]*)", re.M)
 CHOICE_SPLIT = " | "
+CHOICE_APPROX = "column"
 
 # Only the tail matters and the log is small (a few KB per sector), but a long
 # session appends, so the read is bounded rather than trusting that.
@@ -150,6 +157,7 @@ class HyperspaceLog:
         self._map_open = None       # None = the map-signal mod is not installed
         self._event = None          # (event id, slug) of the last event with a card
         self._choosing = None       # slugs on offer at the sector map, or None
+        self._choosing_approx = False   # ...and whether that is the column, not the offer
 
     @staticmethod
     def _load_index():
@@ -201,6 +209,7 @@ class HyperspaceLog:
         if self._stamp and st.st_size < self._stamp[1]:
             self._id, self._since, self._seen = None, None, False
             self._map_open, self._event, self._choosing = None, None, None
+            self._choosing_approx = False
         self._stamp = stamp
         try:
             with open(self.log_path, "rb") as fh:
@@ -220,9 +229,11 @@ class HyperspaceLog:
         choices = SECTOR_CHOICE.findall(text)
         if not choices or choices[-1][0] == "chosen":
             self._choosing = None
+            self._choosing_approx = False
         else:
             _, tail = choices[-1]
-            offered = tail.split("->", 1)[1] if "->" in tail else ""
+            head, _, offered = tail.partition("->")
+            self._choosing_approx = CHOICE_APPROX in head
             slugs = []
             for name in offered.split(CHOICE_SPLIT):
                 slug = self.by_display_name.get(name.strip().lower())
@@ -263,6 +274,7 @@ class HyperspaceLog:
             "map_open": self._map_open,
             "event": self._event,
             "choosing": self._choosing,
+            "choosing_approx": self._choosing_approx,
         }
 
 
@@ -587,6 +599,7 @@ class Watcher:
         state["sector_age"] = None if info["age"] is None else round(info["age"], 1)
         state["map_open"] = info["map_open"]
         state["next_sectors"] = info["choosing"]
+        state["next_sectors_approx"] = info["choosing_approx"]
         start = state.get("slug") in self.hs_log.start_slugs
         state["at_start_beacon"] = start
 
@@ -741,6 +754,7 @@ async function tick() {
     // reload when the source actually changes, so neither page flickers.
     const want = (s.view === 'choose')
                    ? '/sectors/index.html?pick=' + (s.next_sectors || []).join(',')
+                     + (s.next_sectors_approx ? '&column=1' : '')
                : (s.view === 'sector' && s.sector_slug) ? '/sector/' + s.sector_slug
                : s.slug ? '/card/' + s.slug
                : null;

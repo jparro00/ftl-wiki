@@ -194,8 +194,89 @@ local function name_of(sector)
     return nil
 end
 
--- The sectors the map is offering. `neighbors` is the engine's own adjacency, which is
--- exactly the question -- the next column is not the same as the reachable ones.
+-- Everything the choice screen can be asked about, logged once, because the offer is
+-- not where it was expected. Measured 2026-08-16: Hyperspace exposes exactly three
+-- members on a Sector -- description, level, visited -- so the engine's own adjacency
+-- (`neighbors`, `reachable`) is not reachable from Lua at all. What is left to check:
+--
+--   1. whether `locations` / `connectedLocations` are repurposed to hold the *sectors*
+--      while the sector map is up. That is the open question in
+--      raw/modding/2026-08-15-beacon-name-labels-mod.md, and nobody has answered it.
+--   2. the shape of the sector tree by level, which at worst gives the next column --
+--      a superset of the offer, honestly labelled, rather than a guess at the offer.
+--   3. whether Hyperspace publishes an event for the choice itself.
+local choice_probed = false
+local function probe_choice(map)
+    if choice_probed then return end
+    choice_probed = true
+
+    local function say(msg) log(PREFIX .. "probe " .. msg) end
+
+    local ok, size = pcall(function() return map.locations:size() end)
+    say("locations while choosing: " .. (ok and tostring(size) or "unreadable"))
+    ok = pcall(function()
+        local cur = map.currentLoc
+        local conn = cur.connectedLocations
+        local names = {}
+        for i = 0, conn:size() - 1 do
+            local got, name = pcall(function() return conn[i].event.eventName end)
+            names[#names + 1] = (got and name ~= "" and name) or "?"
+        end
+        say("currentLoc connects to " .. conn:size() .. ": " .. table.concat(names, ","))
+    end)
+    if not ok then say("currentLoc.connectedLocations unreadable") end
+
+    -- The tree, grouped by column. Bounded output: one line per level.
+    ok = pcall(function()
+        local sectors = map.sectors
+        local by_level = {}
+        for i = 0, sectors:size() - 1 do
+            local s = sectors[i]
+            local level = math.floor(s.level)
+            local name = name_of(s) or "?"
+            if s.visited then name = name .. "*" end
+            by_level[level] = (by_level[level] and (by_level[level] .. ",") or "") .. name
+        end
+        for level = 0, 7 do
+            if by_level[level] then
+                say("tree L" .. level .. ": " .. by_level[level])
+            end
+        end
+    end)
+    if not ok then say("sectors unreadable") end
+
+    pcall(function() probe("description", map.currentSector.description) end)
+
+    -- Hyperspace's own event tables are plain Lua tables, so their keys are readable.
+    for _, group in ipairs({"InternalEvents", "RenderEvents", "TextEvents"}) do
+        pcall(function()
+            local tbl = Defines[group]
+            if type(tbl) ~= "table" then return end
+            local names = {}
+            for k in pairs(tbl) do names[#names + 1] = tostring(k) end
+            table.sort(names)
+            say("Defines." .. group .. ": " .. table.concat(names, ","))
+        end)
+    end
+end
+
+-- The next column of the sector map -- which is NOT quite the offer, and the line this
+-- logs says so.
+--
+-- Measured 2026-08-16, by probing the live bindings rather than guessing:
+--
+--   * Hyperspace exposes three members on a Sector: description, level, visited. The
+--     engine's own adjacency (`neighbors`, `reachable`) is not bound to Lua at all.
+--   * `locations` is not repurposed while the sector map is up -- it still holds the
+--     current sector's 24 beacons, and currentLoc.connectedLocations returns beacon
+--     events. That answers the open question in the beacon-name-labels research.
+--   * `Defines.InternalEvents` publishes no sector-choice hook.
+--
+-- What is left is `sectors` filtered by level, which is the column the player is
+-- choosing from: a superset of the two or three they can actually reach. xftl documents
+-- the linking rules ("4 prev, 2 now: 1st links to previous 1st/2nd...") but loosely, and
+-- re-deriving them would risk naming the wrong sectors -- worse than naming a few extra.
+-- So the column is reported as a column, and the page says so.
 local function offer(map)
     local ok, current = pcall(function() return map.currentSector end)
     if not ok or current == nil then
@@ -203,24 +284,32 @@ local function offer(map)
         safe_probe("starMap", map)
         return nil
     end
-    local got, neighbors = pcall(function() return current.neighbors end)
-    if not got or neighbors == nil then
-        report("neighbors", "currentSector.neighbors unreadable")
-        safe_probe("starMap", map)
+    local got, level = pcall(function() return math.floor(current.level) end)
+    if not got or level == nil then
+        report("level", "currentSector.level unreadable")
         safe_probe("sector", current)
         return nil
     end
-    local size
-    got, size = pcall(function() return neighbors:size() end)
-    if not got then
-        report("neighbors_size", "neighbors is not a vector")
-        safe_probe("neighbors", neighbors)
+    local sectors
+    got, sectors = pcall(function() return map.sectors end)
+    if not got or sectors == nil then
+        report("sectors", "starMap.sectors unreadable")
+        safe_probe("starMap", map)
         return nil
     end
     local names = {}
-    for i = 0, size - 1 do
-        local name = name_of(neighbors[i])
-        if name then names[#names + 1] = name end
+    got = pcall(function()
+        for i = 0, sectors:size() - 1 do
+            local s = sectors[i]
+            if math.floor(s.level) == level + 1 then
+                local name = name_of(s)
+                if name then names[#names + 1] = name end
+            end
+        end
+    end)
+    if not got then
+        report("walk", "walking sectors failed")
+        return nil
     end
     return names
 end
@@ -254,7 +343,12 @@ local function tick()
         return
     end
     local names = offer(map)
-    log(PREFIX .. "choosing " .. sector_of(map) .. " -> "
+    if not names or #names == 0 then
+        pcall(probe_choice, map)   -- only when there is nothing to report
+    end
+    -- "column" is load-bearing: it tells the watcher these are the sectors in the next
+    -- column, not a verified list of the ones this sector connects to.
+    log(PREFIX .. "choosing " .. sector_of(map) .. " column -> "
         .. ((names and #names > 0) and table.concat(names, " | ") or "?"))
 end
 

@@ -1,11 +1,14 @@
 # Map Signal — an FTL mod
 
-Writes one line to `FTL_HS.log` each time you open or close the star map:
+Writes one line to `FTL_HS.log` each time you open or close a map — and, at the sector map,
+names the sectors in the column you are choosing from:
 
 ```
 map-signal: loaded
 map-signal: open sector 3
 map-signal: closed sector 3
+map-signal: choosing 3 column -> Rock Homeworlds | Slug Home Nebula
+map-signal: chosen
 ```
 
 That is the whole mod. Nothing is drawn, no event, choice, reward, ship or probability
@@ -21,11 +24,21 @@ profile at the entry beacon, when no card resolved, and for a while after arrivi
 new.
 
 Hyperspace exposes `starMap.bOpen` — the flag the game itself uses. Lua cannot write files
-(`io`, `os` and `package` are cut from its sandbox) but it *can* `log()`, and the log is a file
-a program outside the game can read. So the mod turns a screen the watcher cannot see into a
+(`io`, `os`, `package`, `debug` — and `rawget`/`rawset` — are cut from its sandbox) but it
+*can* `log()`, and the log is a file a program outside the game can read. So the mod turns a screen the watcher cannot see into a
 line it can.
 
 With this installed the watcher stops guessing: open map → sector profile, closed map → card.
+
+**And at the sector map** — the screen that offers your next sectors — it opens the sector
+*chooser* instead, with the next column's sectors already pinned side by side.
+
+`bChoosingNewSector` is the screen. The *offer* is not available: Hyperspace exposes exactly
+three members on a Sector (`description`, `level`, `visited`), so the engine's own adjacency
+cannot be read from Lua, and neither `locations` nor any `Defines.InternalEvents` hook carries
+it either — all three checked by probing the live bindings. What is left is the next column by
+`level`, which is a superset of what you can reach, so the line says `column` and the page
+prints a caveat rather than implying a promise the data cannot make.
 
 ## Requires Hyperspace
 
@@ -66,6 +79,11 @@ with no mods at all — it throws a NullPointerException. To reach true vanilla,
 
 - `map-signal: loaded` after launch — the script registered.
 - `map-signal: open sector N` the first time you open the map — the flag is being read.
+- `map-signal: choosing N column -> A | B` at the sector map — the column is being read.
+
+A `map-signal: probe …` line means a field this script expected is not exposed by this
+Hyperspace build; the line lists the members that **are**, so the script can be rewritten
+against fact rather than guessed at. It fires once per site, never per frame.
 
 An error inside the per-frame hook is caught and logged **once per site**, never per frame, so
 a fault cannot spam the log or take the game down.
@@ -81,9 +99,6 @@ a fault cannot spam the log or take the game down.
   the type rather than the number.
 - Hyperspace stamps `[Lua]: ` on every scripted line, so the file actually reads
   `[Lua]: map-signal: open sector 2`. The watcher's pattern allows the tag.
-- **The installed build prints a rougher sector number** than the source does: `sector 2.0`
-  in a run, and uninitialised memory (`sector 1835609917.0`) at the main menu, where no run is
-  loaded. Fixed in the builder — integer-formatted, and anything outside sectors 1–8 reported
-  as `?` — and packed, but not yet patched in, because it is cosmetic and reinstalling means
-  closing the game. It reaches the game at the next `--install`. The watcher never reads the
-  suffix.
+- The sector number is integer-formatted and reported as `?` outside sectors 1–8, because
+  `worldLevel` holds uninitialised memory at the main menu — one launch logged
+  `sector 1835609917.0` before that guard existed. The watcher never reads the suffix.

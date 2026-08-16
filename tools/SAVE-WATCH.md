@@ -498,24 +498,51 @@ a different question: not "what is here" but "which of these two do I fly to". I
 screen **and the offer**, because the offer is the part nothing else holds:
 
 ```
-map-signal: choosing 4 -> Rock Homeworlds | Slug Home Nebula
+map-signal: choosing 4 column -> Rock Homeworlds | Slug Home Nebula
 map-signal: chosen
 ```
 
-`bChoosingNewSector` is the screen; `currentSector.neighbors` is the offer — the engine's
-own adjacency, which is what "can travel to" means. The next *column* of the sector map is
-not the same set.
+`bChoosingNewSector` is the screen. The **offer is not available**, and `column` in that
+line says so: what follows is every sector in the next column of the map, which is a
+superset of the ones this sector connects to.
+
+#### Why the exact offer cannot be had (measured, not assumed)
+
+Probed against the live bindings on 2026-08-16, by dumping SWIG's own member tables
+rather than guessing at names:
+
+| Object | Exposed |
+|---|---|
+| `StarMap` | `bChoosingNewSector`, `bMapRevealed`, `bSecretSector`, `bTutorialGenerated`, `currentLoc`, `currentSector`, `dangerZone`, `hoverLoc`, `locations`, `mapsBottom`, `potentialLoc`, `pursuitDelay`, `sectors`, `ship`, `shipNoFuel`, `worldLevel`; methods `ForceWaitMessage`, `ModifyPursuit`, `PointToGrid` |
+| **`Sector`** | **`description`, `level`, `visited` — that is all** |
+| `SectorDescription` | `name`, `shortName`, `type` |
+
+So the engine's own adjacency (`neighbors`, `reachable` in the C++ struct) is not bound to
+Lua. Two other routes were checked and closed:
+
+- **`locations` is not repurposed while the sector map is up.** It still holds the current
+  sector's beacons — 24 of them, with `currentLoc.connectedLocations` returning
+  `STRANDED_BEACON`, `NEBULA_LOST_SHIP` and friends. That answers the open question left in
+  `raw/modding/2026-08-15-beacon-name-labels-mod.md` §7: **negative**.
+- **No sector-choice hook.** `Defines.InternalEvents` holds 78 events — `JUMP_ARRIVE`,
+  `MAIN_MENU`, `GET_LEVEL_DESCRIPTION` — and none of them is the choice.
+
+`xftl` does document the column-linking rules ("4 prev, 2 now: 1st sector links to previous
+1st/2nd…"), but loosely, and its own author calls the implementation "annoying to read due
+to inlining". Re-deriving them would risk naming the **wrong** sectors, which is worse than
+naming a few extra. So the column is reported as a column, and the page says which it is.
 
 The watcher resolves each name against `display_name` / `title` / `short_name` in the
-profiles and serves `/sectors/index.html?pick=<slug>,<slug>` — the chooser (`SECTOR-PAGE.md`
-§7b) with those sectors already in the comparison panel. A name that resolves to nothing is
-**dropped, never guessed**, so a renamed sector shows a short offer rather than a wrong one;
-an offer that cannot be read at all still shows the chooser, unpinned, because the screen
-being up is itself the fact.
+profiles and serves `/sectors/index.html?pick=<slug>,…&column=1` — the chooser
+(`SECTOR-PAGE.md` §7b) with those sectors already in the comparison panel, and `column=1`
+making it print the caveat above the panel. A name that resolves to nothing is **dropped,
+never guessed**, so a renamed sector shows a short list rather than a wrong one; a list that
+cannot be read at all still shows the chooser, unpinned, because the screen being up is
+itself the fact.
 
-Three or two: the map usually offers two and the panel is built for two, but it can offer
-three, and `?pick=` accepts three — the panel grows a column. Pinning by hand stays capped
-at two.
+A column holds two to four sectors, so `?pick=` accepts four and the panel grows columns to
+match. Pinning by hand stays capped at two — that is a hand comparing options, not the map
+reporting them.
 
 **Why the URL beats what was pinned by hand.** The chooser remembers pins in `localStorage`;
 `?pick=` overrides them. The offer is not a preference to be remembered over.
