@@ -1,0 +1,170 @@
+
+  :host {
+    --void:   #070B10;   /* page ground, deep space */
+    --panel:  #101822;   /* card */
+    --edge:   #1F2E3C;   /* hairlines */
+    --ink:    #D6E2EC;   /* primary text, cool white */
+    --dim:    #7C8FA3;   /* secondary text, blue-grey */
+    --cyan:   #5FD3E8;   /* UI accent: eyebrow, focus, expanded row */
+    --blue:   hsl(204, 100%, 50%);  /* blue options — HSL 136/240/120 */
+    --green:  #78C46B;   /* gains */
+    --amber:  #E8B84B;   /* scrap in or out */
+    --red:    #E0685C;   /* hostiles */
+    --rail:   #22384A;   /* indent guides */
+    --hex:    rgba(95,211,232,.035);
+    --hover:  rgba(95,211,232,.06);
+    --sunk:   rgba(0,0,0,.22);  /* nested block ground */
+
+    --step: 1.05rem;     /* indent per depth level */
+
+    --sans: ui-sans-serif, system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+  }
+  @media (prefers-color-scheme: light) {
+    :host {
+      --blue: hsl(204, 100%, 50%);
+      --void: #EEF1F4; --panel: #FFFFFF; --edge: #D3DBE2; --ink: #14202B;
+      --dim: #5B6C7B; --cyan: #12708A; --green: #3B7A31; --amber: #8A6606;
+      --red: #AF3B2E; --rail: #C2CDD6; --hex: rgba(18,112,138,.045);
+      --hover: rgba(18,112,138,.055); --sunk: rgba(20,32,43,.035);
+    }
+  }
+  :host[data-theme="dark"] {
+    --blue: hsl(204, 100%, 50%);
+    --void: #070B10; --panel: #101822; --edge: #1F2E3C; --ink: #D6E2EC;
+    --dim: #7C8FA3; --cyan: #5FD3E8; --green: #78C46B; --amber: #E8B84B;
+    --red: #E0685C; --rail: #22384A; --hex: rgba(95,211,232,.035);
+    --hover: rgba(95,211,232,.06); --sunk: rgba(0,0,0,.22);
+  }
+  :host[data-theme="light"] {
+    --blue: hsl(204, 100%, 50%);
+    --void: #EEF1F4; --panel: #FFFFFF; --edge: #D3DBE2; --ink: #14202B;
+    --dim: #5B6C7B; --cyan: #12708A; --green: #3B7A31; --amber: #8A6606;
+    --red: #AF3B2E; --rail: #C2CDD6; --hex: rgba(18,112,138,.045);
+    --hover: rgba(18,112,138,.055); --sunk: rgba(20,32,43,.035);
+  }
+
+  * { box-sizing: border-box; }
+
+  header { margin-bottom: 1.7rem; }
+  .eyebrow {
+    font-size: .66rem; letter-spacing: .18em; text-transform: uppercase;
+    color: var(--cyan); margin: 0 0 .5rem;
+  }
+  h1 { font-size: 1.6rem; font-weight: 600; letter-spacing: -.01em; margin: 0 0 .9rem; text-wrap: balance; }
+  .hail {
+    font-family: var(--mono); font-size: .8rem; line-height: 1.65;
+    color: var(--dim); border-left: 2px solid var(--rail);
+    padding: .1rem 0 .1rem .85rem; margin: 0;
+  }
+
+  .card {
+    background: var(--panel); border: 1px solid var(--edge);
+    border-radius: 3px; overflow: hidden;
+  }
+
+  /* Indentation is driven by --d (depth), so the tree nests arbitrarily deep. */
+  .row {
+    display: flex; flex-wrap: wrap; align-items: baseline; gap: .35rem .8rem;
+    width: 100%; text-align: left;
+    padding: .62rem .85rem .62rem calc(.8rem + var(--d, 0) * var(--step));
+    border: 0; border-top: 1px solid var(--edge);
+    border-left: 2px solid transparent;
+    background: transparent; color: inherit;
+    font-family: var(--mono); font-size: .82rem; line-height: 1.5;
+    position: relative;
+  }
+  .card > .node:first-child > .row { border-top: 0; }
+  .kids > .node > .row { border-top: 0; }
+  .kids > .node > .row::before {
+    content: ""; position: absolute; top: 0; bottom: 0; width: 1px;
+    left: calc(.1rem + var(--d, 0) * var(--step)); background: var(--rail);
+  }
+
+  button.row { cursor: pointer; transition: background .12s ease, border-color .12s ease; }
+  button.row:hover { background: var(--hover); }
+  button.row:focus-visible { outline: 2px solid var(--cyan); outline-offset: -2px; }
+  button.row .caret {
+    color: var(--dim); font-size: .7rem; margin-left: auto;
+    transition: transform .16s ease, color .12s ease;
+  }
+  button.row[aria-expanded="true"] { border-left-color: var(--cyan); background: var(--hover); }
+  button.row[aria-expanded="true"] .caret { transform: rotate(90deg); color: var(--cyan); }
+
+  .kids { border-top: 1px solid var(--edge); background: var(--sunk); padding: .5rem 0 .55rem 0; }
+  .kids[hidden] { display: none; }
+  .klabel {
+    font-family: var(--sans); font-size: .6rem; letter-spacing: .16em;
+    text-transform: uppercase; color: var(--dim);
+    padding: .1rem .85rem .35rem calc(.8rem + var(--d, 0) * var(--step));
+  }
+  .card > .klabel:first-child { padding-top: .55rem; }
+
+  .choice { flex: 1 1 14rem; min-width: 0; }
+  .effect { color: var(--dim); flex: 0 1 auto; }
+  .effect b { color: var(--ink); font-weight: 600; }
+  .effect b.gain  { color: var(--green); }
+  .effect b.cost  { color: var(--amber); }
+  .effect b.fight { color: var(--red); }
+  .effect b.none  { color: var(--dim); font-weight: 400; }
+  .gate { color: var(--blue); }
+  .row.gated .choice { color: var(--blue); }
+
+  .odds {
+    font-family: var(--mono); font-variant-numeric: tabular-nums;
+    font-size: .68rem; letter-spacing: .04em;
+    border: 1px solid var(--edge); border-radius: 2px;
+    padding: .06rem .38rem; color: var(--dim); white-space: nowrap;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    button.row, button.row .caret { transition: none; }
+  }
+
+  /* A quest marker sends the player to another beacon entirely, so each chained
+     stage gets its own card rather than another level of nesting. */
+  .stage { margin-top: 2.2rem; }
+  .stage h2 {
+    font-size: 1.05rem; font-weight: 600; letter-spacing: -.01em;
+    margin: 0 0 .7rem; text-wrap: balance;
+  }
+  .stage .hail { margin-bottom: .9rem; }
+  .stage-mark {
+    font-size: .66rem; letter-spacing: .18em; text-transform: uppercase;
+    color: var(--cyan); margin: 0 0 .45rem;
+  }
+  .stage-loop {
+    font-family: var(--mono); font-size: .78rem; color: var(--dim);
+    border-left: 2px solid var(--rail); padding-left: .85rem; margin: 0;
+  }
+
+  /* The root event's own effects — what happens on arrival, before any choice. */
+  .arrival {
+    font-family: var(--mono); font-size: .8rem; color: var(--dim);
+    margin: .7rem 0 0; padding-left: .85rem; border-left: 2px solid var(--red);
+  }
+  .arrival:empty { display: none; }
+  .arrival b { color: var(--ink); font-weight: 600; }
+  .arrival b.gain { color: var(--green); } .arrival b.cost { color: var(--amber); }
+  .arrival b.fight { color: var(--red); }  .arrival b.none { color: var(--dim); font-weight: 400; }
+
+  .note { font-family: var(--mono); font-size: .76rem; color: var(--dim); margin: 1.5rem 0 0; }
+
+  @media (max-width: 30rem) {
+    :host { --step: .8rem; }
+    .row { font-size: .78rem; }
+    h1 { font-size: 1.35rem; }
+  }
+
+/* Embedded in a shadow root: :root cannot match, so the variables live on :host. */
+:host {
+  display: block;
+  color: var(--ink);
+  font-family: var(--sans);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+/* An embedded card is a section of someone else's page, not the page itself: the
+   box above it already names the event, so the heading drops to a section's scale. */
+:host header { margin-bottom: 1.05rem; }
+:host h1 { font-size: 1.2rem; margin-bottom: .6rem; }

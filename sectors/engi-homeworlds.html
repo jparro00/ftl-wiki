@@ -1,0 +1,883 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Engi Homeworlds — sector profile</title>
+<style>
+:root {
+    --void:   #070B10;
+    --panel:  #101822;
+    --sunk:   #0B1219;
+    --edge:   #1F2E3C;
+    --ink:    #D6E2EC;
+    --dim:    #7C8FA3;
+    --faint:  #55697C;
+    --cyan:   #5FD3E8;
+    --green:  #78C46B;
+    --amber:  #E8B84B;
+    --red:    #E0685C;
+    --rail:   #22384A;
+    --hex:    rgba(95,211,232,.035);
+    --barlo:  rgba(95,211,232,.22);
+    --barred: rgba(224,104,92,.28);
+
+    --sans: ui-sans-serif, system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+  }
+  @media (prefers-color-scheme: light) {
+    :root {
+      --void: #EEF1F4; --panel: #FFFFFF; --sunk: #F5F7F9; --edge: #D3DBE2;
+      --ink: #14202B; --dim: #5B6C7B; --faint: #7A8895; --cyan: #12708A;
+      --green: #3B7A31; --amber: #8A6606; --red: #AF3B2E; --rail: #C2CDD6;
+      --hex: rgba(18,112,138,.045); --barlo: rgba(18,112,138,.18);
+      --barred: rgba(175,59,46,.22);
+    }
+  }
+  :root[data-theme="dark"] {
+    --void: #070B10; --panel: #101822; --sunk: #0B1219; --edge: #1F2E3C;
+    --ink: #D6E2EC; --dim: #7C8FA3; --faint: #55697C; --cyan: #5FD3E8;
+    --green: #78C46B; --amber: #E8B84B; --red: #E0685C; --rail: #22384A;
+    --hex: rgba(95,211,232,.035); --barlo: rgba(95,211,232,.22);
+    --barred: rgba(224,104,92,.28);
+  }
+  :root[data-theme="light"] {
+    --void: #EEF1F4; --panel: #FFFFFF; --sunk: #F5F7F9; --edge: #D3DBE2;
+    --ink: #14202B; --dim: #5B6C7B; --faint: #7A8895; --cyan: #12708A;
+    --green: #3B7A31; --amber: #8A6606; --red: #AF3B2E; --rail: #C2CDD6;
+    --hex: rgba(18,112,138,.045); --barlo: rgba(18,112,138,.18);
+    --barred: rgba(175,59,46,.22);
+  }
+
+  /* --- site chrome (tools/serve-site.py) ------------------------------- */
+  /* The bar is fixed rather than sticky: a sticky element inside the pages'
+     padded body is inset horizontally and resolves its containing block against
+     whatever ancestor the page happens to have. Fixed has neither problem. The
+     !important is aimed at the pages' own `body { padding: ... }`, which differs
+     between a card (2.4rem) and a profile (2.6rem) -- overriding it by weight
+     rather than by matching each value keeps this independent of both. */
+  body { padding-top: 3.5rem !important; }
+  .sb-bar {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 60;
+    display: flex; align-items: center; gap: .9rem;
+    height: 2.7rem; padding: 0 1rem;
+    background: color-mix(in srgb, var(--void) 88%, transparent);
+    backdrop-filter: blur(7px);
+    border-bottom: 1px solid var(--edge);
+    font-family: var(--sans); font-size: .78rem; line-height: 1;
+  }
+  .sb-brand {
+    font-weight: 600; color: var(--ink); text-decoration: none;
+    letter-spacing: -.005em; white-space: nowrap;
+  }
+  .sb-brand:hover { color: var(--cyan); }
+  .sb-links { display: flex; gap: .1rem; }
+  .sb-links a {
+    color: var(--dim); text-decoration: none; padding: .34rem .5rem;
+    border-radius: 2px; border: 1px solid transparent; white-space: nowrap;
+  }
+  .sb-links a:hover { color: var(--ink); border-color: var(--edge); }
+  .sb-links a.sb-on { color: var(--cyan); border-color: var(--rail); }
+  .sb-crumb {
+    flex: 1 1 auto; min-width: 0; color: var(--faint);
+    font-family: var(--mono); font-size: .68rem;
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+  .sb-crumb b { color: var(--dim); font-weight: 400; }
+  .sb-crumb a { color: inherit; text-decoration: none; }
+  .sb-crumb a:hover { color: var(--cyan); }
+  .sb-act {
+    background: transparent; border: 1px solid var(--edge); border-radius: 2px;
+    color: var(--faint); font-family: var(--mono); font-size: .72rem;
+    padding: .3rem .45rem; cursor: pointer; line-height: 1; text-decoration: none;
+  }
+  .sb-act:hover { color: var(--cyan); border-color: var(--cyan); }
+  @media (max-width: 34rem) { .sb-crumb { display: none; } }
+
+</style>
+<script>
+try {
+  var t = localStorage.getItem('ftl-theme');
+  if (t === 'dark' || t === 'light') document.documentElement.dataset.theme = t;
+} catch (e) {}
+</script>
+<style>
+  /* --- ?seen= overlay (tools/serve-site.py) ----------------------------- */
+  /* The chip rides inline in the box's own `.t` (the event name) and the count in the
+     budget row's own `.name`, so both inherit the page's `.tg` / `.mark` styling and
+     neither adds a grid child -- `.brow` is a five-column grid and a sixth cell would
+     shift the pips and the count this must not touch. */
+  .tg.sb-seen {
+    color: var(--green);
+    /* `.t` is `font-weight: 500`, which the chip would otherwise inherit and render
+       heavier than the same chip does down in the tags row. */
+    font-weight: 400;
+    display: inline-block; vertical-align: middle; white-space: nowrap;
+    margin-left: .4rem;
+  }
+  .mark.sb-seen-count { color: var(--green); }
+  /* Cyan, which `.mark.first` ("placed first") also uses. They only ever meet on line
+     one and read differently, and the colour was asked for -- but it is why the count
+     chips carry their own class rather than reusing `.mark.first`. */
+  .mark.sb-overlap-count { color: var(--cyan); }
+  /* Seen means behind you, so the title recedes. Kept above `.evbox:hover .t`
+     only by source order -- the page's stylesheet comes later in the document, so
+     hover still wins, which is what we want. */
+  .ev.sb-is-seen .t, .evbox.sb-is-seen .t { color: var(--dim); }
+  .ev.sb-is-seen, .evbox.sb-is-seen { background: var(--sunk); }
+
+  /* The run's own beacon count, in the budget heading's own meta line. Brighter than
+     the derived figures beside it, because it is the one fact about *this* map. */
+  .sb-beacons { color: var(--dim); }
+  .sb-beacons b { color: var(--cyan); font-weight: 600; }
+
+  /* The strip under the bar: what landed, and what did not. */
+  body.sb-has-seen { padding-top: 5.1rem !important; }
+  .sb-seenbar {
+    position: fixed; top: 2.7rem; left: 0; right: 0; z-index: 59;
+    display: flex; gap: .8rem; align-items: baseline;
+    padding: .3rem 1rem; border-bottom: 1px solid var(--edge);
+    background: color-mix(in srgb, var(--sunk) 92%, transparent);
+    backdrop-filter: blur(7px);
+    font-family: var(--mono); font-size: .66rem; color: var(--dim);
+  }
+  .sb-seenbar .miss { color: var(--amber); }
+</style></head>
+<body>
+<nav class="sb-bar"><a class="sb-brand" href="../index.html" title="Home">FTL Event Wiki</a><span class="sb-links"><a href="../sectors/index.html" class="sb-on">Sectors</a><a href="../cards/index.html">Events</a></span><span class="sb-crumb"> <b>›</b> <a href="../sectors/index.html">Sectors</a> <b>›</b> Engi Homeworlds</span><a class="sb-act" href="https://github.com/jparro00/ftl-wiki/blob/main/sectors/sector-engi-homeworlds.html" target="_blank" rel="noopener" title="The generated file this page is served from">Built file</a><button class="sb-act sb-theme" title="Switch theme">◐</button></nav>
+<!--
+  FTL sector profile — shared shell.
+
+  Layout, colour and type for every sector page. Holds no sector-specific content:
+  build-sector.py replaces the <title> line and the SECTOR-CONTENT marker below.
+  Editing this file changes all 19 pages, which is the point — see tools/SECTOR-PAGE.md §8.
+-->
+<style>
+  /* TOKENS-START — sliced verbatim into sectors/index.html by build-sector-index.py,
+     so the chooser and the profiles cannot drift apart in colour. Keep the four
+     blocks (bare :root, the media query, and both data-theme overrides) together. */
+  :root {
+    --void:   #070B10;
+    --panel:  #101822;
+    --sunk:   #0B1219;
+    --edge:   #1F2E3C;
+    --ink:    #D6E2EC;
+    --dim:    #7C8FA3;
+    --faint:  #55697C;
+    --cyan:   #5FD3E8;
+    --green:  #78C46B;
+    --amber:  #E8B84B;
+    --red:    #E0685C;
+    --rail:   #22384A;
+    --hex:    rgba(95,211,232,.035);
+    --barlo:  rgba(95,211,232,.22);
+    --barred: rgba(224,104,92,.28);
+
+    --sans: ui-sans-serif, system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+  }
+  @media (prefers-color-scheme: light) {
+    :root {
+      --void: #EEF1F4; --panel: #FFFFFF; --sunk: #F5F7F9; --edge: #D3DBE2;
+      --ink: #14202B; --dim: #5B6C7B; --faint: #7A8895; --cyan: #12708A;
+      --green: #3B7A31; --amber: #8A6606; --red: #AF3B2E; --rail: #C2CDD6;
+      --hex: rgba(18,112,138,.045); --barlo: rgba(18,112,138,.18);
+      --barred: rgba(175,59,46,.22);
+    }
+  }
+  :root[data-theme="dark"] {
+    --void: #070B10; --panel: #101822; --sunk: #0B1219; --edge: #1F2E3C;
+    --ink: #D6E2EC; --dim: #7C8FA3; --faint: #55697C; --cyan: #5FD3E8;
+    --green: #78C46B; --amber: #E8B84B; --red: #E0685C; --rail: #22384A;
+    --hex: rgba(95,211,232,.035); --barlo: rgba(95,211,232,.22);
+    --barred: rgba(224,104,92,.28);
+  }
+  :root[data-theme="light"] {
+    --void: #EEF1F4; --panel: #FFFFFF; --sunk: #F5F7F9; --edge: #D3DBE2;
+    --ink: #14202B; --dim: #5B6C7B; --faint: #7A8895; --cyan: #12708A;
+    --green: #3B7A31; --amber: #8A6606; --red: #AF3B2E; --rail: #C2CDD6;
+    --hex: rgba(18,112,138,.045); --barlo: rgba(18,112,138,.18);
+    --barred: rgba(175,59,46,.22);
+  }
+
+  /* TOKENS-END */
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; padding: 2.6rem 1.15rem 4.5rem;
+    background: var(--void);
+    background-image: radial-gradient(var(--hex) 1px, transparent 1.6px);
+    background-size: 22px 22px;
+    color: var(--ink); font-family: var(--sans); line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 58rem; margin: 0 auto; display: flex; flex-direction: column; gap: 2.1rem; }
+
+  .eyebrow {
+    font-family: var(--mono); font-size: .66rem; letter-spacing: .19em;
+    text-transform: uppercase; color: var(--cyan); margin: 0 0 .55rem;
+  }
+  h1 { font-size: 2.05rem; font-weight: 600; letter-spacing: -.02em; margin: 0 0 .7rem; text-wrap: balance; }
+  .lede { margin: 0 0 1rem; max-width: 42rem; color: var(--dim); font-size: .95rem; }
+  .lede strong { color: var(--ink); font-weight: 600; }
+  .facts { display: flex; flex-wrap: wrap; gap: .4rem; }
+  .fact {
+    font-family: var(--mono); font-size: .68rem; letter-spacing: .06em;
+    color: var(--dim); border: 1px solid var(--edge); border-radius: 2px;
+    padding: .22rem .5rem; background: var(--panel);
+  }
+  .fact b { color: var(--ink); font-weight: 600; }
+
+  section { display: flex; flex-direction: column; gap: .8rem; }
+  h2 {
+    font-size: .74rem; font-family: var(--mono); font-weight: 600;
+    letter-spacing: .17em; text-transform: uppercase; color: var(--cyan);
+    margin: 0; padding-bottom: .45rem; border-bottom: 1px solid var(--edge);
+    display: flex; justify-content: space-between; align-items: baseline; gap: 1rem;
+  }
+  h2 .meta { color: var(--faint); font-weight: 400; letter-spacing: .08em; text-transform: none; flex: none; }
+  .note { margin: 0; font-size: .84rem; color: var(--dim); max-width: 44rem; }
+
+  .budget { display: flex; flex-direction: column; gap: .3rem; }
+  .brow {
+    display: grid; grid-template-columns: 1.4rem 17rem 3.4rem 1fr .9rem; align-items: center;
+    gap: .7rem; padding: .34rem .55rem; border-radius: 2px; background: var(--panel);
+    border: 1px solid var(--edge);
+  }
+  /* A budget line opens onto the events it can place. <details> does the work, so the
+     page still behaves with scripting off — and inside an artifact's sandbox. */
+  .bwrap { border-radius: 2px; }
+  .brow.expandable { cursor: pointer; list-style: none; }
+  .brow.expandable::-webkit-details-marker { display: none; }
+  .brow.expandable::after {
+    content: "\203A"; justify-self: end; color: var(--faint); font-family: var(--mono);
+    font-size: .9rem; line-height: 1; transition: transform .12s ease, color .12s ease;
+  }
+  .brow.expandable:hover { border-color: var(--rail); background: var(--sunk); }
+  .brow.expandable:hover::after { color: var(--cyan); }
+  .bwrap[open] > .brow { border-bottom-left-radius: 0; border-bottom-right-radius: 0; }
+  .bwrap[open] > .brow::after { transform: rotate(90deg); color: var(--cyan); }
+  .bpool {
+    border: 1px solid var(--edge); border-top: 0; border-radius: 0 0 2px 2px;
+    background: var(--sunk); padding: .5rem .55rem .6rem 2.1rem;
+  }
+  .brow .rank {
+    font-family: var(--mono); font-size: .66rem; color: var(--faint);
+    font-variant-numeric: tabular-nums; text-align: right;
+  }
+  .brow .name {
+    font-family: var(--mono); font-size: .74rem; color: var(--ink); overflow-wrap: anywhere;
+    display: flex; flex-wrap: wrap; align-items: baseline; gap: .35rem;
+  }
+  .mark {
+    font-family: var(--sans); font-size: .58rem; letter-spacing: .09em; text-transform: uppercase;
+    padding: .06rem .3rem; border-radius: 2px; border: 1px solid currentColor;
+  }
+  .mark.first { color: var(--cyan); }
+  .mark.short { color: var(--red); }
+  .brow.short { border-left: 2px solid var(--red); }
+  .brow .cnt {
+    font-family: var(--mono); font-size: .74rem; color: var(--dim);
+    font-variant-numeric: tabular-nums; text-align: right;
+  }
+  .track { display: flex; align-items: center; gap: 2px; height: .62rem; flex-wrap: wrap; }
+  .blk { width: .62rem; height: .62rem; background: var(--cyan); border-radius: 1px; flex: none; }
+  .blk.maybe { background: var(--barlo); }
+  .brow.hostile .blk { background: var(--red); }
+  .brow.hostile .blk.maybe { background: var(--barred); }
+  .brow.zero .cnt { color: var(--faint); }
+  /* The fill-in line is not in the file — dashed, so it reads as the gap the table
+     leaves rather than another row of it. */
+  .brow.fill { border-left: 2px dashed var(--rail); background: transparent; }
+  .brow.fill .rank, .brow.fill .name { color: var(--dim); }
+  .mark.fill { color: var(--faint); }
+
+  /* What a block means, once, under the table. A faded block is "at least this many",
+     which is not something the shape can say on its own. */
+  .legend {
+    display: flex; flex-direction: column; gap: .4rem;
+    border: 1px solid var(--edge); border-radius: 2px; background: var(--sunk);
+    padding: .6rem .75rem;
+  }
+  .lgrow {
+    display: grid; grid-template-columns: 3rem 1fr; gap: .7rem; align-items: baseline;
+    font-size: .82rem; color: var(--dim);
+  }
+  .lgrow .lgkey { display: flex; gap: 2px; padding-top: .3rem; }
+  .lgrow strong { color: var(--ink); font-weight: 600; }
+  /* The budget paints red per row; the legend needs both colours side by side. */
+  .blk.hostile { background: var(--red); }
+  .blk.maybe.hostile { background: var(--barred); }
+
+  .pool { display: grid; grid-template-columns: repeat(auto-fill, minmax(16.5rem, 1fr)); gap: .4rem; align-items: start; }
+  .ev, .evbox {
+    background: var(--panel); border: 1px solid var(--edge); border-left: 2px solid var(--rail);
+    border-radius: 2px;
+  }
+  .ev { padding: .48rem .6rem; display: flex; flex-direction: column; gap: .22rem; }
+  /* A beacon box opens onto its card, rendered in place by tools/sector-cards.js. */
+  .evbox { position: relative; }
+  .evbox > summary.ev {
+    list-style: none; cursor: pointer; padding-right: 1.6rem;
+    transition: background .12s ease;
+  }
+  .evbox > summary.ev::-webkit-details-marker { display: none; }
+  .evbox:hover { border-top-color: var(--cyan); border-right-color: var(--cyan); border-bottom-color: var(--cyan); }
+  .evbox:hover > summary.ev { background: var(--sunk); }
+  .evbox:hover .t { color: var(--cyan); }
+  .evbox > summary.ev:focus-visible { outline: 2px solid var(--cyan); outline-offset: -2px; }
+  /* An open card is a page-width thing, not a grid cell's worth. */
+  .evbox[open] {
+    grid-column: 1 / -1;
+    border-top-color: var(--cyan); border-right-color: var(--cyan); border-bottom-color: var(--cyan);
+  }
+  .evbox[open] > summary.ev { background: var(--sunk); border-bottom: 1px solid var(--edge); }
+  .cardpanel { display: block; padding: .85rem .9rem 1rem; font-size: .84rem; color: var(--dim); }
+  .cardlink {
+    position: absolute; top: .3rem; right: .35rem; z-index: 1;
+    color: var(--faint); text-decoration: none; font-size: .8rem; line-height: 1;
+    padding: .15rem .2rem; border-radius: 2px;
+  }
+  .cardlink:hover, .cardlink:focus-visible { color: var(--cyan); }
+  .ev.fight, .evbox.fight { border-left-color: var(--red); }
+  .ev.may, .evbox.may { border-left-color: var(--barred); }
+  .ev.good, .evbox.good { border-left-color: var(--green); }
+  .ev.risk, .evbox.risk { border-left-color: var(--amber); }
+  .ev .t { font-size: .84rem; font-weight: 500; line-height: 1.25; }
+  .ev .id { font-family: var(--mono); font-size: .63rem; color: var(--faint); letter-spacing: .03em; overflow-wrap: anywhere; }
+  .tags { display: flex; flex-wrap: wrap; gap: .25rem; margin-top: .1rem; }
+  .tg {
+    font-family: var(--mono); font-size: .57rem; letter-spacing: .1em; text-transform: uppercase;
+    padding: .08rem .3rem; border-radius: 2px; border: 1px solid currentColor; color: var(--faint);
+  }
+  .tg.fight, .tg.may-fight { color: var(--red); }
+  .tg.crew, .tg.reward { color: var(--green); }
+  .tg.crew-loss, .tg.boarders, .tg.cost { color: var(--amber); }
+  .tg.quest, .tg.store { color: var(--cyan); }
+  /* The two marker tags — what the map draws on the beacon before you jump to it.
+     `store-marker` is not `store`: `store` means a store opens somewhere in the tree,
+     which is the narrower set. */
+  .tg.store-marker { color: var(--cyan); }
+  .tg.distress { color: var(--amber); }
+
+  .delta {
+    border: 1px dashed var(--edge); border-radius: 2px; background: var(--sunk);
+    padding: .6rem .75rem; display: flex; flex-direction: column; gap: .5rem;
+  }
+  .delta .head {
+    font-family: var(--mono); font-size: .62rem; letter-spacing: .12em;
+    text-transform: uppercase; color: var(--amber);
+  }
+  /* A budget line's expansion carries its pool, then its note, then the AE twin. */
+  .bpool .delta, .bpool .note { margin-top: .5rem; }
+
+  .cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr)); gap: .9rem; align-items: start; }
+  .panel {
+    background: var(--panel); border: 1px solid var(--edge); border-radius: 3px;
+    padding: .9rem 1rem 1rem; display: flex; flex-direction: column; gap: .55rem;
+  }
+  .panel h3 {
+    margin: 0; font-family: var(--mono); font-size: .66rem; letter-spacing: .15em;
+    text-transform: uppercase; color: var(--dim); font-weight: 600;
+  }
+  .panel ul { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: .45rem; }
+  .panel li { font-size: .82rem; line-height: 1.42; display: flex; gap: .5rem; align-items: baseline; }
+  .lead {
+    font-family: var(--mono); font-size: .72rem; color: var(--cyan); flex: none;
+    min-width: 4.6rem; font-variant-numeric: tabular-nums;
+  }
+
+  /* The two generated blocks above the budget: every blue option the pool gates,
+     and the crew a store here can sell. */
+  .glance { display: grid; grid-template-columns: repeat(auto-fit, minmax(19rem, 1fr)); gap: .9rem; align-items: start; }
+  .panel h3 .cnt {
+    font-family: var(--mono); font-size: .62rem; letter-spacing: .08em;
+    text-transform: none; color: var(--faint); font-weight: 400;
+  }
+  .gp h3 { display: flex; justify-content: space-between; align-items: baseline; gap: .8rem; }
+
+  .gates { display: grid; grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr)); gap: .1rem .9rem; }
+  .grow {
+    display: grid; grid-template-columns: 1fr auto auto; gap: .4rem; align-items: baseline;
+    font-size: .8rem; padding: .12rem 0; border-bottom: 1px solid var(--sunk);
+  }
+  /* Blue options read in the card's blue, the colour they carry in game. The level is
+     part of the name, so there is no separate chip to colour. */
+  .grow .g { overflow-wrap: anywhere; color: hsl(204, 100%, 50%); }
+  .grow .h {
+    font-family: var(--mono); font-size: .78rem; color: var(--cyan);
+    font-variant-numeric: tabular-nums; min-width: 1.2rem; text-align: right;
+  }
+
+  /* The whole blue-options box is the toggle: a summary-only control can be opened
+     from the rows above it but never closed from the rows it reveals. */
+  .gtoggle { cursor: pointer; }
+  .gtoggle > summary { list-style: none; display: flex; flex-direction: column; gap: .55rem; }
+  .gtoggle > summary::-webkit-details-marker { display: none; }
+  .gtoggle:hover { border-color: var(--rail); }
+  .gtoggle:hover .morehint { color: var(--cyan); }
+  .morehint {
+    font-family: var(--mono); font-size: .62rem; letter-spacing: .12em;
+    text-transform: uppercase; color: var(--faint);
+  }
+  .morehint::after { content: " \203A"; }
+  .gtoggle[open] .morehint::after { content: " \2039"; }
+  .gtoggle[open] .morehint { visibility: hidden; height: 0; }
+  .gates.rest { padding-top: .3rem; border-top: 1px solid var(--sunk); }
+
+  /* The crew list folded down the middle: two columns, each with its own sub-header so
+     the labels sit over their own numbers, and the title riding in the first one's
+     empty label cell so the heading costs no line. */
+  .crow {
+    display: grid; grid-template-columns: 1fr 2.9rem 2.9rem;
+    gap: .3rem; align-items: center; font-size: .8rem;
+  }
+  .crow .cl { overflow-wrap: anywhere; }
+  .crow .cp, .crow .cs {
+    font-family: var(--mono); font-variant-numeric: tabular-nums; text-align: right;
+  }
+  .crow .cp { font-size: .74rem; color: var(--cyan); }
+  .crow .cs { font-size: .68rem; color: var(--dim); }
+  .crow.chead {
+    font-family: var(--mono); font-size: .56rem; letter-spacing: .1em;
+    text-transform: uppercase; color: var(--faint); padding-bottom: .1rem;
+    border-bottom: 1px solid var(--edge); margin-bottom: .12rem;
+  }
+  .crow.chead .cp, .crow.chead .cs { font-size: .56rem; color: var(--faint); }
+  .crow.chead .cl h3 {
+    margin: 0; font-family: var(--mono); font-size: .66rem; letter-spacing: .15em;
+    text-transform: uppercase; color: var(--dim); font-weight: 600; white-space: nowrap;
+  }
+  /* A species a store here cannot offer, kept in the table at 0%: rarity 0 is a flag
+     meaning "not in the pool", and the zero row says so where a player is looking. */
+  .crow.out .cl, .crow.out .cp, .crow.out .cs { color: var(--faint); }
+  .two { display: grid; grid-template-columns: 1fr 1fr; gap: .18rem 1.1rem; }
+  .tcol { display: flex; flex-direction: column; gap: .18rem; }
+  .crewpanel { justify-content: flex-start; }
+  @media (max-width: 40rem) { .two { grid-template-columns: 1fr; } }
+
+  .chain { display: flex; flex-direction: column; gap: 0; }
+  .step { display: grid; grid-template-columns: 1.6rem 1fr; gap: .7rem; }
+  .marker { display: flex; flex-direction: column; align-items: center; }
+  .dot {
+    width: 1.35rem; height: 1.35rem; border-radius: 50%; flex: none;
+    border: 1px solid var(--cyan); color: var(--cyan); background: var(--panel);
+    font-family: var(--mono); font-size: .68rem; display: flex; align-items: center; justify-content: center;
+    font-variant-numeric: tabular-nums;
+  }
+  .step .line { width: 1px; flex: 1; background: var(--rail); min-height: .6rem; }
+  .step .body { padding-bottom: .95rem; }
+  .step .body .t { font-size: .88rem; font-weight: 500; }
+  .step .body .d { font-size: .81rem; color: var(--dim); margin-top: .15rem; }
+  .step .body .id { font-family: var(--mono); font-size: .63rem; color: var(--faint); margin-top: .12rem; }
+  .step.end .dot { border-color: var(--green); color: var(--green); }
+
+  .ref { color: var(--ink); font-weight: 500; }
+  code { font-family: var(--mono); font-size: .92em; color: var(--ink); }
+  @media (max-width: 40rem) {
+    .brow { grid-template-columns: 1.4rem 1fr 3.4rem .9rem; }
+    .brow .track { grid-column: 1 / -1; grid-row: 2; }
+    .brow.expandable::after { grid-column: 4; grid-row: 1; }
+    .bpool { padding-left: .55rem; }
+  }
+</style>
+
+<div class="wrap">
+<header><p class="eyebrow">Sector profile · ENGI_HOME</p><h1>Engi Homeworlds</h1><p class="lede">The friendliest sector in the game with a <strong>Mantis problem</strong>: the only place the <strong>Stealth Cruiser quest</strong> can begin, and not one hostile beacon in it is Engi. What shoots at you is pirates, Rebel patrols, and Mantis raiders picking Engi stations apart.</p><div class="facts"><span class="fact">earliest sector <b>3</b></span><span class="fact"><b>at most one per run</b></span><span class="fact">music <b>engi · cosmos · hacking</b></span><span class="fact"><b>built from Advanced Edition files</b></span></div></header><section><h2>At a glance</h2><div class="glance"><details class="panel gp gtoggle"><summary><h3>Blue options in the pool<span class="cnt">28 options · 50 hits</span></h3><div class="gates"><div class="grow"><span class="g">Engi crew</span><span class="h">5</span></div><div class="grow"><span class="g">Sensors 2+</span><span class="h">5</span></div><div class="grow"><span class="g">Sensors 3+</span><span class="h">5</span></div><div class="grow"><span class="g">Long-Ranged Scanners</span><span class="h">4</span></div></div><div class="morehint">Show all 36</div></summary><div class="gates rest"><div class="grow"><span class="g">Cloaking 1+</span><span class="h">3</span></div><div class="grow"><span class="g">Anti-Personnel Drone</span><span class="h">2</span></div><div class="grow"><span class="g">Hacking 1+</span><span class="h">2</span></div><div class="grow"><span class="g">Medbay 3+</span><span class="h">2</span></div><div class="grow"><span class="g">Mind Control 1+</span><span class="h">2</span></div><div class="grow"><span class="g">Rock Plating</span><span class="h">2</span></div><div class="grow"><span class="g">Teleporter 1+</span><span class="h">2</span></div><div class="grow"><span class="g">Anti-Bio Beam</span><span class="h">1</span></div><div class="grow"><span class="g">Beam drone</span><span class="h">1</span></div><div class="grow"><span class="g">Beam weapon</span><span class="h">1</span></div><div class="grow"><span class="g">Boarding Drone</span><span class="h">1</span></div><div class="grow"><span class="g">Cloaking 2+</span><span class="h">1</span></div><div class="grow"><span class="g">Cloaking 3+</span><span class="h">1</span></div><div class="grow"><span class="g">Damaged Stasis Pod</span><span class="h">1</span></div><div class="grow"><span class="g">Defense drone</span><span class="h">1</span></div><div class="grow"><span class="g">Doors 1+</span><span class="h">1</span></div><div class="grow"><span class="g">Doors 2+</span><span class="h">1</span></div><div class="grow"><span class="g">Hacking 2+</span><span class="h">1</span></div><div class="grow"><span class="g">Hacking 3+</span><span class="h">1</span></div><div class="grow"><span class="g">Human</span><span class="h">1</span></div><div class="grow"><span class="g">Ion weapon</span><span class="h">1</span></div><div class="grow"><span class="g">Lanius crew</span><span class="h">1</span></div><div class="grow"><span class="g">Mantis crew</span><span class="h">1</span></div><div class="grow"><span class="g">Medbay 2+</span><span class="h">1</span></div><div class="grow"><span class="g">Missile weapon</span><span class="h">1</span></div><div class="grow"><span class="g">Oxygen 1+</span><span class="h">1</span></div><div class="grow"><span class="g">Piloting 1+</span><span class="h">1</span></div><div class="grow"><span class="g">Reactor</span><span class="h">1</span></div><div class="grow"><span class="g">Scrap Recovery Arm</span><span class="h">1</span></div><div class="grow"><span class="g">Sensors 1+</span><span class="h">1</span></div><div class="grow"><span class="g">System Repair Drone</span><span class="h">1</span></div><div class="grow"><span class="g">Weapon Control 6+</span><span class="h">1</span></div></div></details><div class="panel gp crewpanel"><div class="two"><div class="tcol"><div class="crow chead t2"><span class="cl"><h3>Crew in stores</h3></span><span class="cp" title="per slot">slot</span><span class="cs" title="in at least one of the three slots">store</span></div><div class="crow t2"><span class="cl">Engi</span><span class="cp">50%</span><span class="cs">88%</span></div><div class="crow t2"><span class="cl">Human</span><span class="cp">30%</span><span class="cs">66%</span></div><div class="crow t2"><span class="cl">Zoltan</span><span class="cp">20%</span><span class="cs">49%</span></div><div class="crow t2 out"><span class="cl">Crystal</span><span class="cp">0%</span><span class="cs">0%</span></div></div><div class="tcol"><div class="crow chead t2"><span class="cl"></span><span class="cp" title="per slot">slot</span><span class="cs" title="in at least one of the three slots">store</span></div><div class="crow t2 out"><span class="cl">Lanius</span><span class="cp">0%</span><span class="cs">0%</span></div><div class="crow t2 out"><span class="cl">Mantis</span><span class="cp">0%</span><span class="cs">0%</span></div><div class="crow t2 out"><span class="cl">Rockman</span><span class="cp">0%</span><span class="cs">0%</span></div><div class="crow t2 out"><span class="cl">Slug</span><span class="cp">0%</span><span class="cs">0%</span></div></div></div></div></div></section><section><h2>Beacon budget<span class="meta">21–29 slots allocated · 57 events in pool</span></h2><div class="budget"><details class="bwrap"><summary class="brow expandable"><div class="rank">1</div><div class="name">ENGI_UNLOCK_1</div><div class="cnt">1</div><div class="track"><i class="blk" title="always placed, if the map has room"></i></div></summary><div class="bpool"><div class="pool"><details class="evbox may" data-card="engi-fleet-discussion"><summary class="ev"><div class="t">Engi fleet discussion</div><div class="id">ENGI_UNLOCK_1</div><div class="tags"><span class="tg may-fight">May fight</span><span class="tg quest">Quest</span><span class="tg unique">Unique</span></div><a class="cardlink" href="../cards/card-engi-fleet-discussion.html" title="Open the full card">↗</a></summary><div class="cardpanel"></div></details></div></div></details><details class="bwrap"><summary class="brow expandable"><div class="rank">2</div><div class="name">STORE_ENGI</div><div class="cnt">2–3</div><div class="track"><i class="blk" title="always placed, if the map has room"></i><i class="blk" title="always placed, if the map has room"></i><i class="blk maybe" title="50% chance"></i></div></summary><div class="bpool"><div class="pool"><details class="evbox good" data-card="store-engi"><summary class="ev"><div class="t">Store (Engi)</div><div class="id">STORE_ENGI</div><div class="tags"><span class="tg store">Store</span><span class="tg store-marker">Store marker</span></div><a class="cardlink" href="../cards/card-store-engi.html" title="Open the full card">↗</a></summary><div class="cardpanel"></div></details></div></div></details><details class="bwrap"><summary class="brow expandable"><div class="rank">3</div><div class="name">ITEMS</div><div class="cnt">2</div><div class="track"><i class="blk" title="always placed, if the map has room"></i><i class="blk" title="always placed, if the map has room"></i></div></summary><div class="bpool"><div class="pool"><details class="evbox good" data-card="free-drone-schematic"><summary class="ev"><div class="t">Free drone schematic</div><div class="id">FIND_DRONE</div><div class="tags"><span class="tg reward">Reward</span></div><a class="cardlink" href="../cards/card-free-drone-schematic.html" title="Open the full card">↗</a></summary><div class="cardpanel"></div></details><details class="evbox good" data-card="free-weapon"><summary class="ev"><div class="t">Free weapon</div><div class="id">FIND_WEAPON</div><div class="tags"><span class="tg reward">Reward</span></div><a class="cardlink" href="../cards/card-free-weapon.html" title="Open the full card">↗</a></summary><div class="cardpanel"></div></details><details class="evbox good" data-card="free-scrap-with-resources"><summary class="ev"><div class="t">Free scrap with resources</div><div class="id">FREE_ITEMS</div><div class="tags"><span class="tg reward">Reward</span></div><a class="cardlink" href="../cards/card-free-scrap-with-resources.html" title="Open the full card">↗</a></summary><div class="cardpanel"></div></details><details class="evbox good" data-card="trade-fuel-for-drone-parts"><summary class="ev"><div class="t">Trade fuel for drone parts</div><div class="id">FUEL_FOR_DRONE</div><div class="tags"><span class="tg reward">Reward</span><span class="tg cost">Cost</span></div><a class="cardlink" href="../cards/card-trade-fuel-for-drone-parts.html" title="Open the full card">↗</a></summary><div class="cardpanel"></div></details><details class="evbox good" data-card="refueling-station"><summary class="ev"><div class="t">Refueling station</div><div class="id">REFUEL_STATION</div><div class="tags"><span class="tg reward">Reward</span><span class="tg cost">Cost</span><span class="tg unique">Unique</span></div><a class="cardlink" href="../cards/card-refueling-station.html" title="Open the full card">↗</a></summary><div class="cardpanel"></div></details><details class="evbox" data-card="repair-station"><summary class="ev"><div class="t">Repair station</div><div class="id">REPAIR_STATION</div><div class="tags"><span class="tg cost">Cost</span><span class="tg unique">Unique</span></div><a class="cardlink" href="../cards/card-repair-station.html" title="Open the full card">↗</a></summary><div class="cardpanel"></div></details><details class="evbox good" data-card="sell-drone-parts-for-scrap"><summary class="ev"><div class="t">Sell drone parts for scrap</div><div class="id">SELL_DRONES_STATION</div><div class="tags"><span class="tg reward">Reward</span><span class="tg cost">Cost</span><span class="tg unique">Unique</span></div><a class="cardlink" href="../cards/card-sell-drone-parts-for-scrap.html" title="Open the full card">↗</a></summary><div class="cardpanel"></div></details><details class="evbox good" data-card="sell-missiles-for-scrap"><summary class="ev"><div class="t">Sell missiles for scrap</div><div class="id">SELL_MISSILES_STATION</div><div class="tags"><span class="tg reward">Reward</span><span class="tg cost">Cost</span><span class="tg unique">Unique</span></div><a class="cardlink" href="../cards/card-sell-missiles-for-scrap.html" title="Open the full card">↗</a></summary><div class="cardpanel"></div></details><details class="evbox good" data-card="trade-resources"><summary class="ev"><div class="t">Trade resources</div><div class="id">TRADER_CIV</div><div class="tags"><span class="tg reward">Reward</span><span class="tg cost">Cost</span></div><a class="cardlink" href="../cards/card-trade-resources.html" title="Open the full card">↗</a></summary><div class="cardpanel"></div></details><details class="evbox good" data-card="crew-hiring-station"><summary class="ev"><div class="t">Crew hiring station</div><div class="id">TAVERN_HIRE</div><div class="tags"><span class="tg crew">Crew</span><span class="tg cost">Cost</span><span class="tg unique">Unique</span></div><a class="cardlink" href="../cards/card-crew-hiring-station.html" title="Open the full card">↗</a></summary><div class="cardpanel"></div></details><details class="evbox" data-card="trade-scrap-for-upgrades"><summary class="ev"><div class="t">Trade scrap for upgrades</div><div class="id">TRADER_UPGRADES</div><div class="tags"><span class="tg cost">Cost</span><span class="tg unique">Unique</span></div><a class="cardlink" href="../cards/card-trade-scrap-for-upgrades.html" title="Open the full card">↗</a></summary><div class="cardpanel"></div></details><details class="evbox" data-card="improve-reactor-for-supplies"><summary class="ev"><div class="t">Improve reactor for supplies</div><div class="id">TRADER_UPGRADES_EXCHANGE</div><div class="tags"><span class="tg cost">Cost</span><span class="tg unique">Unique</span></div><a class="cardlink" href="../cards/card-improve-reactor-for-supplies.html" title="Open the full card">↗</a></summary><div class="cardpanel"></div></details><details class="evbox good" data-card="asteroid-mining-colony"><summary class="ev"><div class="t">Asteroid mining colony</div><div class="id">HELP_MINERS</div><div class="tags"><span class="tg reward">Reward</span><span class="tg cost">Cost</span><span class="tg unique">Unique</span></div><a class="cardlink" href="../cards/card-asteroid-mining-colony.html" title="Open the full card">↗</a></summary><div class="cardpanel"></div></details></div><div class="delta"><div class="head">Advanced Edition adds — OVERRIDE_ITEMS</div><div class="pool"><details class="evbox may" data-card="large-trade-station"><summary class="ev"><div class="t">Large trade station</div><div class="id">STORE_REBELSIDE</div><div class="tags"><span class="tg may-fight">May fight</span><span class="tg crew">Crew</span><span class="tg store">Store</span><span class="tg store-marker">Store marker</span></div><a class="cardlink" href="../cards/card-large-trade-station.html" title="Open the full card">↗</a></summary><div class="cardpanel"></div></details></div><p class="note">Whether the engine uses this list instead is not stated by any file here.</p></div></div></details><details class="bwrap"><summary class="brow expandable"><div class="rank">4</div><div class="name">NOTHING_ENGI</div><div class="cnt">1–2</div><div class="track"><i class="blk" title="always placed, if the map has room"></i><i class="blk maybe" title="50% chance"></i></div></summary><div class="bpool"><div class="pool"><details class="evbox" data-card="empty-beacon-engi"><summary class="ev"><div class="t">Empty beacon (Engi)</div><div class="id">NOTHING_ENGI</div><a class="cardlink" href="../cards/card-empty-beacon-engi.html" title="Open the full card">↗</a></summary><div class="cardpanel"></div></details></div></div></details><details class="bwrap"><summary class="brow expandable"><div class="rank">5</div><div class="name">ITEMS_ENGI</div><div class="cnt">3</div><div class="track"><i class="blk" title="always placed, if the map has room"></i><i class="blk" title="always placed, if the map has room"></i><i class="blk" title="always placed, if the map has room"></i></div></summary><div class="bpool"><div class="pool"><details class="evbox good" data-card="free-scrap-with-resources-engi"><summary class="ev"><div class="t">Free scrap with resources (Engi)</div><div class="id">ENGI_GIFT</div><div class="tags"><span class="tg reward">Reward</span></div><a class="cardlink" href="../cards/card-free-scrap-with-resources-engi.html" title="Open the full card">↗</a></summary><div class="cardpanel"></div></details><details class="evbox good" data-card="engi-cache"><summary class="ev"><div class="t">Engi cache</div><div class="id">ENGI_FLEET_DELAY</div><div class="tags"><span class="tg reward">Reward</span><span class="tg cost">Cost</span><span class="tg unique">Unique</span></div><a class="cardlink" href="../cards/card-engi-cache.html" title="Open the full card">↗</a></summary><div class="cardpanel"></div></details><details class="evbox good" data-card="engi-surrender"><summary class="ev"><div class="t">Engi surrender</div><div class="id">ENGI_SURRENDER</div><div class="tags"><span class="tg reward">Reward</span><span class="tg unique">Unique</span></div><a class="cardlink" href="../cards/card-engi-surrender.html" title="Open the full card">↗</a></summary><div class="cardpanel"></div></details><details class="evbox good" data-card="free-drone-schematic"><summary class="ev"><div class="t">Free drone schematic</div><div class="id">FIND_DRONE</div><div class="tags"><span class="tg reward">Reward</span></div><a class="cardlink" href="../cards/card-free-drone-schematic.html" title="Open the full card">↗</a></summary><div class="cardpanel"></div></details><details class="evbox good" data-card="free-weapon"><summary class="ev"><div class="t">Free weapon</div><div class="id">FIND_WEAPON</div><div class="tags"><span class="tg reward">Reward</span></div><a class="cardlink" href="../cards/card-free-weapon.html" title="Open the full card">↗</a></summary><div class="cardpanel"></div></details><details class="evbox good" data-card="refueling-station"><summary class="ev"><div class="t">Refueling station</div><div class="id">REFUEL_STATION</div><div class="tags"><span class="tg reward">Reward</span><span class="tg cost">Cost</span><span class="tg unique">Unique</span></div><a class="cardlink" href="../cards/card-refueling-station.html" title="Open the full card">↗</a></summary><div class="cardpanel"></div></details></div></div></details><details class="bwrap"><summary class="brow expandable"><div class="rank">6</div><div class="name">DISTRESS_BEACON_ENGI</div><div class="cnt">1–3</div><div class="track"><i class="blk" title="always placed, if the map has room"></i><i class="blk maybe" title="67% chance"></i><i class="blk maybe" title="33% chance"></i></div></summary><div class="bpool"><div class="pool"><details class="evbox may" data-card="engi-ship-attacked-by-mantis-ship"><summary class="ev"><div class="t">Engi ship attacked by Mantis ship</div><div class="id">ENGI_STATION_DISTRESS</div><div class="tags"><span class="tg may-fight">May fight</span><span class="tg boarders">Boarders</span><span class="tg crew">Crew</span></div><a class="cardlink" href="../cards/card-engi-ship-attacked-by-mantis-ship.html" title="Open the full card">↗</a></summary><div class="cardpanel"></div></details><details class="evbox fight" data-card="engi-distress-rebel-fight"><summary class="ev"><div class="t">Engi distress Rebel fight</div><div class="id">DISTRESS_ENGI_REBEL</div><div class="tags"><span class="tg fight">Fight</span><span class="tg cost">Cost</span><span class="tg unique">Unique</span><span class="tg distress">Distress signal</span></div><a class="cardlink" href="../cards/card-engi-distress-rebel-fight.html" title="Open the full card">↗</a></summary><div class="cardpanel"></div></details><details class="evbox risk" data-card="engi-research-station"><summary class="ev"><div class="t">Engi research station</div><div class="id">DISTRESS_ENGI_REACTOR</div><div class="tags"><span class="tg crew-loss">Crew loss</span><span class="tg crew">Crew</span><span class="tg reward">Reward</span><span class="tg distress">Distress signal</span></div><a class="cardlink" href="../cards/card-engi-research-station.html" title="Open the full card">↗</a></summary><div class="cardpanel"></div></details><details class="evbox may" data-card="asteroid-belt-distress"><summary class="ev"><div class="t">Asteroid belt distress</div><div class="id">CIVILIAN_ASTEROIDS_BEACON</div><div class="tags"><span class="tg may-fight">May fight</span><span class="tg crew">Crew</span><span class="tg quest">Quest</span><span class="tg distress">Distress signal</span></div><a class="cardlink" href="../cards/card-asteroid-belt-distress.html" title="Open the full card">↗</a></summary><div class="cardpanel"></div></details><details class="evbox good" data-card="friendly-ship-out-of-fuel"><summary class="ev"><div class="t">Friendly ship out of fuel</div><div class="id">FRIENDLY_BEACON</div><div class="tags"><span class="tg crew">Crew</span><span class="tg reward">Reward</span><span class="tg cost">Cost</span><span class="tg distress">Distress signal</span></div><a class="cardlink" href="../cards/card-friendly-ship-out-of-fuel.html" title="Open the full card">↗</a></summary><div class="cardpanel"></div></details><details class="evbox fight" data-card="pirate-ship-distress-trap"><summary class="ev"><div class="t">Pirate ship distress trap</div><div class="id">TRAP_BEACON</div><div class="tags"><span class="tg fight">Fight</span><span class="tg crew">Crew</span><span class="tg unique">Unique</span><span class="tg distress">Distress signal</span></div><a class="cardlink" href="../cards/card-pirate-ship-distress-trap.html" title="Open the full card">↗</a></summary><div class="cardpanel"></div></details><details class="evbox may" data-card="crushed-pirate"><summary class="ev"><div class="t">Crushed pirate</div><div class="id">DISTRESS_TRAPPED_MINER</div><div class="tags"><span class="tg may-fight">May fight</span><span class="tg crew">Crew</span><span class="tg cost">Cost</span><span class="tg distress">Distress signal</span></div><a class="cardlink" href="../cards/card-crushed-pirate.html" title="Open the full card">↗</a></summary><div class="cardpanel"></div></details><details class="evbox risk" data-card="giant-alien-spiders"><summary class="ev"><div class="t">Giant alien spiders</div><div class="id">DISTRESS_INFESTATION</div><div class="tags"><span class="tg crew-loss">Crew loss</span><span class="tg reward">Reward</span><span class="tg cost">Cost</span><span class="tg distress">Distress signal</span></div><a class="cardlink" href="../cards/card-giant-alien-spiders.html" title="Open the full card">↗</a></summary><div class="cardpanel"></div></details><details class="evbox good" data-card="malfunctioning-defense-system"><summary class="ev"><div class="t">Malfunctioning defense system</div><div class="id">DISTRESS_SATELLITE_DEFENSE</div><div class="tags"><span class="tg reward">Reward</span><span class="tg unique">Unique</span><span class="tg distress">Distress signal</span></div><a class="cardlink" href="../cards/card-malfunctioning-defense-system.html" title="Open the full card">↗</a></summary><div class="cardpanel"></div></details></div></div></details><details class="bwrap"><summary class="brow expandable"><div class="rank">7</div><div class="name">QUESTS_ENGI</div><div class="cnt">1</div><div class="track"><i class="blk" title="always placed, if the map has room"></i></div></summary><div class="bpool"><div class="pool"><details class="evbox may" data-card="escort-civilians"><summary class="ev"><div class="t">Escort civilians</div><div class="id">QUEST_ESCORT</div><div class="tags"><span class="tg may-fight">May fight</span><span class="tg crew">Crew</span><span class="tg quest">Quest</span><span class="tg store-marker">Store marker</span></div><a class="cardlink" href="../cards/card-escort-civilians.html" title="Open the full card">↗</a></summary><div class="cardpanel"></div></details><details class="evbox may" data-card="merchant-s-request"><summary class="ev"><div class="t">Merchant&#x27;s request</div><div class="id">MERCHANT_REQUEST</div><div class="tags"><span class="tg may-fight">May fight</span><span class="tg boarders">Boarders</span><span class="tg crew-loss">Crew loss</span></div><a class="cardlink" href="../cards/card-merchant-s-request.html" title="Open the full card">↗</a></summary><div class="cardpanel"></div></details><details class="evbox may" data-card="encrypted-federation-signal"><summary class="ev"><div class="t">Encrypted federation signal</div><div class="id">FEDERATION_PLANET_SIGNAL</div><div class="tags"><span class="tg may-fight">May fight</span><span class="tg boarders">Boarders</span><span class="tg crew">Crew</span></div><a class="cardlink" href="../cards/card-encrypted-federation-signal.html" title="Open the full card">↗</a></summary><div class="cardpanel"></div></details><details class="evbox may" data-card="settlement-mercenary-work"><summary class="ev"><div class="t">Settlement mercenary work</div><div class="id">MERCENARY_WORK_START</div><div class="tags"><span class="tg may-fight">May fight</span><span class="tg quest">Quest</span><span class="tg store">Store</span><span class="tg store-marker">Store marker</span></div><a class="cardlink" href="../cards/card-settlement-mercenary-work.html" title="Open the full card">↗</a></summary><div class="cardpanel"></div></details></div><p class="note">Two events outside this list can also plant the Hidden Federation Base marker: <span class="ref">Asteroid belt distress</span>, and <span class="ref">Engi ship attacked by Mantis ship</span> if you have Engi crew.</p></div></details><details class="bwrap"><summary class="brow expandable"><div class="rank">8</div><div class="name">NEUTRAL_ENGI</div><div class="cnt">5–7</div><div class="track"><i class="blk" title="always placed, if the map has room"></i><i class="blk" title="always placed, if the map has room"></i><i class="blk" title="always placed, if the map has room"></i><i class="blk" title="always placed, if the map has room"></i><i class="blk" title="always placed, if the map has room"></i><i class="blk maybe" title="67% chance"></i><i class="blk maybe" title="33% chance"></i></div></summary><div class="bpool"><div class="pool"><details class="evbox may" data-card="engi-ship-attacked-by-mantis-ship"><summary class="ev"><div class="t">Engi ship attacked by Mantis ship</div><div class="id">ENGI_STATION_DISTRESS</div><div class="tags"><span class="tg may-fight">May fight</span><span class="tg boarders">Boarders</span><span class="tg crew">Crew</span></div><a class="cardlink" href="../cards/card-engi-ship-attacked-by-mantis-ship.html" title="Open the full card">↗</a></summary><div class="cardpanel"></div></details><details class="evbox may" data-card="mantis-fight-choice"><summary class="ev"><div class="t">Mantis fight choice</div><div class="id">MANTIS_FIGHT_CHOICE</div><div class="tags"><span class="tg may-fight">May fight</span><span class="tg crew">Crew</span></div><a class="cardlink" href="../cards/card-mantis-fight-choice.html" title="Open the full card">↗</a></summary><div class="cardpanel"></div></details><details class="evbox may" data-card="mantis-ship-attacking-civilian"><summary class="ev"><div class="t">Mantis ship attacking civilian</div><div class="id">MANTIS_CIVILIAN</div><div class="tags"><span class="tg may-fight">May fight</span><span class="tg crew">Crew</span></div><a class="cardlink" href="../cards/card-mantis-ship-attacking-civilian.html" title="Open the full card">↗</a></summary><div class="cardpanel"></div></details><details class="evbox may" data-card="pirate-briber"><summary class="ev"><div class="t">Pirate briber</div><div class="id">PIRATE_BRIBER</div><div class="tags"><span class="tg may-fight">May fight</span><span class="tg store">Store</span><span class="tg unique">Unique</span><span class="tg store-marker">Store marker</span></div><a class="cardlink" href="../cards/card-pirate-briber.html" title="Open the full card">↗</a></summary><div class="cardpanel"></div></details><details class="evbox may" data-card="large-asteroid-field"><summary class="ev"><div class="t">Large asteroid field</div><div class="id">ASTEROID_EXPLORE</div><div class="tags"><span class="tg may-fight">May fight</span><span class="tg crew">Crew</span><span class="tg unique">Unique</span></div><a class="cardlink" href="../cards/card-large-asteroid-field.html" title="Open the full card">↗</a></summary><div class="cardpanel"></div></details><details class="evbox may" data-card="deactivated-auto-ship"><summary class="ev"><div class="t">Deactivated Auto-ship</div><div class="id">BROKEN_REBEL_DRONE</div><div class="tags"><span class="tg may-fight">May fight</span><span class="tg crew">Crew</span><span class="tg unique">Unique</span></div><a class="cardlink" href="../cards/card-deactivated-auto-ship.html" title="Open the full card">↗</a></summary><div class="cardpanel"></div></details><details class="evbox may" data-card="auto-ship-near-storage-station"><summary class="ev"><div class="t">Auto-ship near storage station</div><div class="id">AUTO_DEFENSE_ITEM</div><div class="tags"><span class="tg may-fight">May fight</span><span class="tg unique">Unique</span></div><a class="cardlink" href="../cards/card-auto-ship-near-storage-station.html" title="Open the full card">↗</a></summary><div class="cardpanel"></div></details><details class="evbox may" data-card="mantis-fugitive"><summary class="ev"><div class="t">Mantis fugitive</div><div class="id">ALISON_MANTIS_CREW</div><div class="tags"><span class="tg may-fight">May fight</span><span class="tg boarders">Boarders</span><span class="tg crew">Crew</span></div><a class="cardlink" href="../cards/card-mantis-fugitive.html" title="Open the full card">↗</a></summary><div class="cardpanel"></div></details><details class="evbox may" data-card="zoltan-research-facility"><summary class="ev"><div class="t">Zoltan research facility</div><div class="id">ZOLTAN_CREW_STUDY</div><div class="tags"><span class="tg may-fight">May fight</span><span class="tg boarders">Boarders</span><span class="tg crew">Crew</span></div><a class="cardlink" href="../cards/card-zoltan-research-facility.html" title="Open the full card">↗</a></summary><div class="cardpanel"></div></details><details class="evbox good" data-card="dense-asteroid-field-distress"><summary class="ev"><div class="t">Dense asteroid field distress</div><div class="id">ASTEROID_DERELICT_SHIP</div><div class="tags"><span class="tg reward">Reward</span><span class="tg unique">Unique</span><span class="tg distress">Distress signal</span></div><a class="cardlink" href="../cards/card-dense-asteroid-field-distress.html" title="Open the full card">↗</a></summary><div class="cardpanel"></div></details><details class="evbox may" data-card="refugee"><summary class="ev"><div class="t">Refugee</div><div class="id">REFUGEE_NO_DISTRESS</div><div class="tags"><span class="tg may-fight">May fight</span><span class="tg crew">Crew</span><span class="tg cost">Cost</span></div><a class="cardlink" href="../cards/card-refugee.html" title="Open the full card">↗</a></summary><div class="cardpanel"></div></details><details class="evbox may" data-card="battlefield-wreckage"><summary class="ev"><div class="t">Battlefield wreckage</div><div class="id">WRECKAGE_EVENT</div><div class="tags"><span class="tg may-fight">May fight</span><span class="tg crew">Crew</span></div><a class="cardlink" href="../cards/card-battlefield-wreckage.html" title="Open the full card">↗</a></summary><div class="cardpanel"></div></details><details class="evbox may" data-card="refueling-platform"><summary class="ev"><div class="t">Refueling platform</div><div class="id">FUELING_STATION</div><div class="tags"><span class="tg may-fight">May fight</span><span class="tg boarders">Boarders</span><span class="tg crew">Crew</span></div><a class="cardlink" href="../cards/card-refueling-platform.html" title="Open the full card">↗</a></summary><div class="cardpanel"></div></details><details class="evbox risk" data-card="confused-mantis"><summary class="ev"><div class="t">Confused Mantis</div><div class="id">CONFUSED_MANTIS</div><div class="tags"><span class="tg crew-loss">Crew loss</span><span class="tg crew">Crew</span><span class="tg reward">Reward</span></div><a class="cardlink" href="../cards/card-confused-mantis.html" title="Open the full card">↗</a></summary><div class="cardpanel"></div></details><details class="evbox may" data-card="engi-smashed-ships"><summary class="ev"><div class="t">Engi smashed ships</div><div class="id">ENGI_SEX</div><div class="tags"><span class="tg may-fight">May fight</span><span class="tg unique">Unique</span></div><a class="cardlink" href="../cards/card-engi-smashed-ships.html" title="Open the full card">↗</a></summary><div class="cardpanel"></div></details><details class="evbox may" data-card="the-engi-virus"><summary class="ev"><div class="t">The Engi virus</div><div class="id">ENGI_VIRUS</div><div class="tags"><span class="tg may-fight">May fight</span><span class="tg crew-loss">Crew loss</span><span class="tg crew">Crew</span></div><a class="cardlink" href="../cards/card-the-engi-virus.html" title="Open the full card">↗</a></summary><div class="cardpanel"></div></details></div><p class="note">The deepest pool in the sector, filled second-to-last, and where both halves of the Crystal route sit: <span class="ref">Dense asteroid field distress</span> hands out the Damaged Stasis Pod, and <span class="ref">Zoltan research facility</span> is where the pod becomes a Crystal crew member.</p></div></details><details class="bwrap"><summary class="brow expandable hostile"><div class="rank">9</div><div class="name">HOSTILE_ENGI</div><div class="cnt">5–7</div><div class="track"><i class="blk" title="always placed, if the map has room"></i><i class="blk" title="always placed, if the map has room"></i><i class="blk" title="always placed, if the map has room"></i><i class="blk" title="always placed, if the map has room"></i><i class="blk" title="always placed, if the map has room"></i><i class="blk maybe" title="67% chance"></i><i class="blk maybe" title="33% chance"></i></div></summary><div class="bpool"><div class="pool"><details class="evbox fight" data-card="mantis-fight-engi"><summary class="ev"><div class="t">Mantis fight (Engi)</div><div class="id">ENGI_MANTIS_FIGHT</div><div class="tags"><span class="tg fight">Fight</span><span class="tg crew">Crew</span></div><a class="cardlink" href="../cards/card-mantis-fight-engi.html" title="Open the full card">↗</a></summary><div class="cardpanel"></div></details><details class="evbox fight" data-card="rebel-fight-engi"><summary class="ev"><div class="t">Rebel fight (Engi)</div><div class="id">ENGI_REBEL_FIGHT</div><div class="tags"><span class="tg fight">Fight</span><span class="tg crew">Crew</span></div><a class="cardlink" href="../cards/card-rebel-fight-engi.html" title="Open the full card">↗</a></summary><div class="cardpanel"></div></details><details class="evbox fight" data-card="pirate-fight-engi"><summary class="ev"><div class="t">Pirate fight (Engi)</div><div class="id">ENGI_PIRATE_FIGHT</div><div class="tags"><span class="tg fight">Fight</span><span class="tg crew">Crew</span></div><a class="cardlink" href="../cards/card-pirate-fight-engi.html" title="Open the full card">↗</a></summary><div class="cardpanel"></div></details><details class="evbox fight" data-card="pirate-fight"><summary class="ev"><div class="t">Pirate fight</div><div class="id">PIRATE</div><div class="tags"><span class="tg fight">Fight</span><span class="tg crew">Crew</span></div><a class="cardlink" href="../cards/card-pirate-fight.html" title="Open the full card">↗</a></summary><div class="cardpanel"></div></details><details class="evbox may" data-card="pirate-toll"><summary class="ev"><div class="t">Pirate toll</div><div class="id">PIRATE_CHOICE</div><div class="tags"><span class="tg may-fight">May fight</span><span class="tg crew">Crew</span><span class="tg cost">Cost</span></div><a class="cardlink" href="../cards/card-pirate-toll.html" title="Open the full card">↗</a></summary><div class="cardpanel"></div></details><details class="evbox fight" data-card="rebel-fight"><summary class="ev"><div class="t">Rebel fight</div><div class="id">REBEL</div><div class="tags"><span class="tg fight">Fight</span><span class="tg crew">Crew</span></div><a class="cardlink" href="../cards/card-rebel-fight.html" title="Open the full card">↗</a></summary><div class="cardpanel"></div></details><details class="evbox fight" data-card="rebel-ship-warning"><summary class="ev"><div class="t">Rebel ship warning</div><div class="id">SQUAT_WARNING</div><div class="tags"><span class="tg fight">Fight</span><span class="tg unique">Unique</span></div><a class="cardlink" href="../cards/card-rebel-ship-warning.html" title="Open the full card">↗</a></summary><div class="cardpanel"></div></details><details class="evbox may" data-card="pirate-fight-in-asteroid-field"><summary class="ev"><div class="t">Pirate fight in asteroid field</div><div class="id">PIRATE_ASTEROID</div><div class="tags"><span class="tg may-fight">May fight</span><span class="tg crew">Crew</span></div><a class="cardlink" href="../cards/card-pirate-fight-in-asteroid-field.html" title="Open the full card">↗</a></summary><div class="cardpanel"></div></details><details class="evbox fight" data-card="pirate-fight-near-sun"><summary class="ev"><div class="t">Pirate fight near sun</div><div class="id">PIRATE_SUN</div><div class="tags"><span class="tg fight">Fight</span><span class="tg crew">Crew</span><span class="tg unique">Unique</span></div><a class="cardlink" href="../cards/card-pirate-fight-near-sun.html" title="Open the full card">↗</a></summary><div class="cardpanel"></div></details><details class="evbox may" data-card="pirate-engine-hacker"><summary class="ev"><div class="t">Pirate engine hacker</div><div class="id">PIRATE_NO_ESCAPE</div><div class="tags"><span class="tg may-fight">May fight</span><span class="tg unique">Unique</span></div><a class="cardlink" href="../cards/card-pirate-engine-hacker.html" title="Open the full card">↗</a></summary><div class="cardpanel"></div></details></div><p class="note">The Engi hold a non-aggression pact with the Rebels, so none of these are Engi ships. This line is filled last, so it is also where the shortfall lands: the sector asks for up to 29 beacons on a map that holds 24, and everything above this has already taken its share. Expect the low end of 5–7 more often than the high end.</p><div class="delta"><div class="head">Advanced Edition adds — OVERRIDE_HOSTILE_ENGI</div><div class="pool"><details class="evbox fight" data-card="pirate-fight-near-pulsar"><summary class="ev"><div class="t">Pirate fight near pulsar</div><div class="id">PIRATE_PULSAR</div><div class="tags"><span class="tg fight">Fight</span><span class="tg crew">Crew</span><span class="tg unique">Unique</span></div><a class="cardlink" href="../cards/card-pirate-fight-near-pulsar.html" title="Open the full card">↗</a></summary><div class="cardpanel"></div></details></div><p class="note">Whether the engine uses this list instead is not stated by any file here.</p></div></div></details><details class="bwrap"><summary class="brow expandable fill"><div class="rank">+</div><div class="name">NEUTRAL<span class="mark fill">fill-in</span></div><div class="cnt">0–3</div><div class="track"><i class="blk maybe" title="filled only if the table leaves room"></i><i class="blk maybe" title="filled only if the table leaves room"></i><i class="blk maybe" title="filled only if the table leaves room"></i></div></summary><div class="bpool"><div class="pool"><details class="evbox may" data-card="pirate-ship-attacking-civilian"><summary class="ev"><div class="t">Pirate ship attacking civilian</div><div class="id">PIRATE_CIVILIAN</div><div class="tags"><span class="tg may-fight">May fight</span><span class="tg crew">Crew</span></div><a class="cardlink" href="../cards/card-pirate-ship-attacking-civilian.html" title="Open the full card">↗</a></summary><div class="cardpanel"></div></details><details class="evbox may" data-card="rebel-transport-ship"><summary class="ev"><div class="t">Rebel transport ship</div><div class="id">REBEL_TRANSPORT</div><div class="tags"><span class="tg may-fight">May fight</span><span class="tg crew">Crew</span><span class="tg unique">Unique</span></div><a class="cardlink" href="../cards/card-rebel-transport-ship.html" title="Open the full card">↗</a></summary><div class="cardpanel"></div></details><details class="evbox may" data-card="auto-ship-attacking-outpost"><summary class="ev"><div class="t">Auto-ship attacking outpost</div><div class="id">AUTO_REFUEL_STATION</div><div class="tags"><span class="tg may-fight">May fight</span><span class="tg unique">Unique</span></div><a class="cardlink" href="../cards/card-auto-ship-attacking-outpost.html" title="Open the full card">↗</a></summary><div class="cardpanel"></div></details><details class="evbox may" data-card="large-asteroid-field"><summary class="ev"><div class="t">Large asteroid field</div><div class="id">ASTEROID_EXPLORE</div><div class="tags"><span class="tg may-fight">May fight</span><span class="tg crew">Crew</span><span class="tg unique">Unique</span></div><a class="cardlink" href="../cards/card-large-asteroid-field.html" title="Open the full card">↗</a></summary><div class="cardpanel"></div></details><details class="evbox may" data-card="deactivated-auto-ship"><summary class="ev"><div class="t">Deactivated Auto-ship</div><div class="id">BROKEN_REBEL_DRONE</div><div class="tags"><span class="tg may-fight">May fight</span><span class="tg crew">Crew</span><span class="tg unique">Unique</span></div><a class="cardlink" href="../cards/card-deactivated-auto-ship.html" title="Open the full card">↗</a></summary><div class="cardpanel"></div></details><details class="evbox may" data-card="the-mercenary"><summary class="ev"><div class="t">The mercenary</div><div class="id">MERCENARY</div><div class="tags"><span class="tg may-fight">May fight</span><span class="tg crew">Crew</span><span class="tg cost">Cost</span></div><a class="cardlink" href="../cards/card-the-mercenary.html" title="Open the full card">↗</a></summary><div class="cardpanel"></div></details><details class="evbox may" data-card="slaver-friendly"><summary class="ev"><div class="t">Slaver (friendly)</div><div class="id">FRIENDLY_SLAVER</div><div class="tags"><span class="tg may-fight">May fight</span><span class="tg crew">Crew</span><span class="tg cost">Cost</span></div><a class="cardlink" href="../cards/card-slaver-friendly.html" title="Open the full card">↗</a></summary><div class="cardpanel"></div></details><details class="evbox may" data-card="pirate-briber"><summary class="ev"><div class="t">Pirate briber</div><div class="id">PIRATE_BRIBER</div><div class="tags"><span class="tg may-fight">May fight</span><span class="tg store">Store</span><span class="tg unique">Unique</span><span class="tg store-marker">Store marker</span></div><a class="cardlink" href="../cards/card-pirate-briber.html" title="Open the full card">↗</a></summary><div class="cardpanel"></div></details><details class="evbox may" data-card="auto-ship-near-storage-station"><summary class="ev"><div class="t">Auto-ship near storage station</div><div class="id">AUTO_DEFENSE_ITEM</div><div class="tags"><span class="tg may-fight">May fight</span><span class="tg unique">Unique</span></div><a class="cardlink" href="../cards/card-auto-ship-near-storage-station.html" title="Open the full card">↗</a></summary><div class="cardpanel"></div></details><details class="evbox risk" data-card="intelligent-ponies"><summary class="ev"><div class="t">Intelligent ponies</div><div class="id">DONOR_PONY</div><div class="tags"><span class="tg crew-loss">Crew loss</span><span class="tg crew">Crew</span><span class="tg reward">Reward</span></div><a class="cardlink" href="../cards/card-intelligent-ponies.html" title="Open the full card">↗</a></summary><div class="cardpanel"></div></details><details class="evbox risk" data-card="plagued-station"><summary class="ev"><div class="t">Plagued station</div><div class="id">DONOR_PLAGUE</div><div class="tags"><span class="tg crew-loss">Crew loss</span><span class="tg crew">Crew</span><span class="tg reward">Reward</span></div><a class="cardlink" href="../cards/card-plagued-station.html" title="Open the full card">↗</a></summary><div class="cardpanel"></div></details><details class="evbox may" data-card="refugee"><summary class="ev"><div class="t">Refugee</div><div class="id">REFUGEE_NO_DISTRESS</div><div class="tags"><span class="tg may-fight">May fight</span><span class="tg crew">Crew</span><span class="tg cost">Cost</span></div><a class="cardlink" href="../cards/card-refugee.html" title="Open the full card">↗</a></summary><div class="cardpanel"></div></details><details class="evbox may" data-card="battlefield-wreckage"><summary class="ev"><div class="t">Battlefield wreckage</div><div class="id">WRECKAGE_EVENT</div><div class="tags"><span class="tg may-fight">May fight</span><span class="tg crew">Crew</span></div><a class="cardlink" href="../cards/card-battlefield-wreckage.html" title="Open the full card">↗</a></summary><div class="cardpanel"></div></details><details class="evbox may" data-card="refueling-platform"><summary class="ev"><div class="t">Refueling platform</div><div class="id">FUELING_STATION</div><div class="tags"><span class="tg may-fight">May fight</span><span class="tg boarders">Boarders</span><span class="tg crew">Crew</span></div><a class="cardlink" href="../cards/card-refueling-platform.html" title="Open the full card">↗</a></summary><div class="cardpanel"></div></details><details class="evbox may" data-card="pirate-ship-selling-drones"><summary class="ev"><div class="t">Pirate ship selling drones</div><div class="id">PIRATE_SALESMAN</div><div class="tags"><span class="tg may-fight">May fight</span><span class="tg crew">Crew</span><span class="tg cost">Cost</span></div><a class="cardlink" href="../cards/card-pirate-ship-selling-drones.html" title="Open the full card">↗</a></summary><div class="cardpanel"></div></details><details class="evbox may" data-card="terraforming-scan"><summary class="ev"><div class="t">Terraforming scan</div><div class="id">TERRAFORMING_SCAN</div><div class="tags"><span class="tg may-fight">May fight</span><span class="tg crew">Crew</span><span class="tg cost">Cost</span></div><a class="cardlink" href="../cards/card-terraforming-scan.html" title="Open the full card">↗</a></summary><div class="cardpanel"></div></details><details class="evbox may" data-card="rebel-checkpoint"><summary class="ev"><div class="t">Rebel checkpoint</div><div class="id">REBEL_CHECKPOINT</div><div class="tags"><span class="tg may-fight">May fight</span><span class="tg crew">Crew</span><span class="tg cost">Cost</span></div><a class="cardlink" href="../cards/card-rebel-checkpoint.html" title="Open the full card">↗</a></summary><div class="cardpanel"></div></details><details class="evbox may" data-card="rebel-ship-supplying-civilians"><summary class="ev"><div class="t">Rebel ship supplying civilians</div><div class="id">REBEL_HELPERS</div><div class="tags"><span class="tg may-fight">May fight</span></div><a class="cardlink" href="../cards/card-rebel-ship-supplying-civilians.html" title="Open the full card">↗</a></summary><div class="cardpanel"></div></details><details class="evbox may" data-card="rebel-fight-chance"><summary class="ev"><div class="t">Rebel fight chance</div><div class="id">ROGUE_REBEL</div><div class="tags"><span class="tg may-fight">May fight</span><span class="tg crew">Crew</span></div><a class="cardlink" href="../cards/card-rebel-fight-chance.html" title="Open the full card">↗</a></summary><div class="cardpanel"></div></details><details class="evbox may" data-card="abandoned-station"><summary class="ev"><div class="t">Abandoned station</div><div class="id">EMPTY_STATION2</div><div class="tags"><span class="tg may-fight">May fight</span><span class="tg boarders">Boarders</span><span class="tg crew">Crew</span></div><a class="cardlink" href="../cards/card-abandoned-station.html" title="Open the full card">↗</a></summary><div class="cardpanel"></div></details></div></div></details></div><div class="legend"><div class="lgrow"><span class="lgkey"><i class="blk"></i><i class="blk hostile"></i></span><span><strong>Must be placed</strong> — every solid block is filled, as long as the map still has a free beacon when the line comes up.</span></div><div class="lgrow"><span class="lgkey"><i class="blk maybe"></i><i class="blk maybe hostile"></i></span><span><strong>May be placed</strong> — the line rolls one count between its minimum and its maximum and every outcome is equally likely. DISTRESS_BEACON_ENGI rolls 1–3, so each of those 3 counts is 33%. A faded block is the chance of <strong>at least</strong> that many: 67% for the first faded one, 33% for all 3. Hover any block for its own figure.</span></div><div class="lgrow"><span class="lgkey"><i class="blk hostile"></i><i class="blk maybe hostile"></i></span><span>Beacons that always put you in a fight.</span></div></div><p class="note">The map is a 6×4 grid and each cell has an <strong>80% chance</strong> of holding a beacon, so a sector has at most <strong>24</strong> of them. The lines above are then filled in that order, each rolling its own count, until the beacons run out — so a line near the bottom can get nothing. Whatever is still empty at the end is filled from the shared <code>NEUTRAL</code> list.</p><p class="note">Clouds are drawn before any of it. A beacon under one is converted and draws from <code>NEBULA</code> instead.</p></section><section><h2>Distress signals</h2><div class="pool"><details class="evbox good" data-card="dense-asteroid-field-distress"><summary class="ev"><div class="t">Dense asteroid field distress</div><div class="id">ASTEROID_DERELICT_SHIP</div><div class="tags"><span class="tg reward">Reward</span><span class="tg unique">Unique</span><span class="tg distress">Distress signal</span></div><a class="cardlink" href="../cards/card-dense-asteroid-field-distress.html" title="Open the full card">↗</a></summary><div class="cardpanel"></div></details><details class="evbox may" data-card="asteroid-belt-distress"><summary class="ev"><div class="t">Asteroid belt distress</div><div class="id">CIVILIAN_ASTEROIDS_BEACON</div><div class="tags"><span class="tg may-fight">May fight</span><span class="tg crew">Crew</span><span class="tg quest">Quest</span><span class="tg distress">Distress signal</span></div><a class="cardlink" href="../cards/card-asteroid-belt-distress.html" title="Open the full card">↗</a></summary><div class="cardpanel"></div></details><details class="evbox risk" data-card="engi-research-station"><summary class="ev"><div class="t">Engi research station</div><div class="id">DISTRESS_ENGI_REACTOR</div><div class="tags"><span class="tg crew-loss">Crew loss</span><span class="tg crew">Crew</span><span class="tg reward">Reward</span><span class="tg distress">Distress signal</span></div><a class="cardlink" href="../cards/card-engi-research-station.html" title="Open the full card">↗</a></summary><div class="cardpanel"></div></details><details class="evbox fight" data-card="engi-distress-rebel-fight"><summary class="ev"><div class="t">Engi distress Rebel fight</div><div class="id">DISTRESS_ENGI_REBEL</div><div class="tags"><span class="tg fight">Fight</span><span class="tg cost">Cost</span><span class="tg unique">Unique</span><span class="tg distress">Distress signal</span></div><a class="cardlink" href="../cards/card-engi-distress-rebel-fight.html" title="Open the full card">↗</a></summary><div class="cardpanel"></div></details><details class="evbox risk" data-card="giant-alien-spiders"><summary class="ev"><div class="t">Giant alien spiders</div><div class="id">DISTRESS_INFESTATION</div><div class="tags"><span class="tg crew-loss">Crew loss</span><span class="tg reward">Reward</span><span class="tg cost">Cost</span><span class="tg distress">Distress signal</span></div><a class="cardlink" href="../cards/card-giant-alien-spiders.html" title="Open the full card">↗</a></summary><div class="cardpanel"></div></details><details class="evbox good" data-card="malfunctioning-defense-system"><summary class="ev"><div class="t">Malfunctioning defense system</div><div class="id">DISTRESS_SATELLITE_DEFENSE</div><div class="tags"><span class="tg reward">Reward</span><span class="tg unique">Unique</span><span class="tg distress">Distress signal</span></div><a class="cardlink" href="../cards/card-malfunctioning-defense-system.html" title="Open the full card">↗</a></summary><div class="cardpanel"></div></details><details class="evbox may" data-card="crushed-pirate"><summary class="ev"><div class="t">Crushed pirate</div><div class="id">DISTRESS_TRAPPED_MINER</div><div class="tags"><span class="tg may-fight">May fight</span><span class="tg crew">Crew</span><span class="tg cost">Cost</span><span class="tg distress">Distress signal</span></div><a class="cardlink" href="../cards/card-crushed-pirate.html" title="Open the full card">↗</a></summary><div class="cardpanel"></div></details><details class="evbox good" data-card="friendly-ship-out-of-fuel"><summary class="ev"><div class="t">Friendly ship out of fuel</div><div class="id">FRIENDLY_BEACON</div><div class="tags"><span class="tg crew">Crew</span><span class="tg reward">Reward</span><span class="tg cost">Cost</span><span class="tg distress">Distress signal</span></div><a class="cardlink" href="../cards/card-friendly-ship-out-of-fuel.html" title="Open the full card">↗</a></summary><div class="cardpanel"></div></details><details class="evbox fight" data-card="pirate-ship-distress-trap"><summary class="ev"><div class="t">Pirate ship distress trap</div><div class="id">TRAP_BEACON</div><div class="tags"><span class="tg fight">Fight</span><span class="tg crew">Crew</span><span class="tg unique">Unique</span><span class="tg distress">Distress signal</span></div><a class="cardlink" href="../cards/card-pirate-ship-distress-trap.html" title="Open the full card">↗</a></summary><div class="cardpanel"></div></details></div><p class="note"><i>Note: not every beacon from the <code>DISTRESS</code> pool broadcasts a distress signal, and some of these show up in the neutral pools too.</i></p></section><section><h2>Stores</h2><div class="pool"><details class="evbox may" data-card="settlement-mercenary-work"><summary class="ev"><div class="t">Settlement mercenary work</div><div class="id">MERCENARY_WORK_START</div><div class="tags"><span class="tg may-fight">May fight</span><span class="tg quest">Quest</span><span class="tg store">Store</span><span class="tg store-marker">Store marker</span></div><a class="cardlink" href="../cards/card-settlement-mercenary-work.html" title="Open the full card">↗</a></summary><div class="cardpanel"></div></details><details class="evbox may" data-card="pirate-briber"><summary class="ev"><div class="t">Pirate briber</div><div class="id">PIRATE_BRIBER</div><div class="tags"><span class="tg may-fight">May fight</span><span class="tg store">Store</span><span class="tg unique">Unique</span><span class="tg store-marker">Store marker</span></div><a class="cardlink" href="../cards/card-pirate-briber.html" title="Open the full card">↗</a></summary><div class="cardpanel"></div></details><details class="evbox may" data-card="escort-civilians"><summary class="ev"><div class="t">Escort civilians</div><div class="id">QUEST_ESCORT</div><div class="tags"><span class="tg may-fight">May fight</span><span class="tg crew">Crew</span><span class="tg quest">Quest</span><span class="tg store-marker">Store marker</span></div><a class="cardlink" href="../cards/card-escort-civilians.html" title="Open the full card">↗</a></summary><div class="cardpanel"></div></details><details class="evbox good" data-card="store-engi"><summary class="ev"><div class="t">Store (Engi)</div><div class="id">STORE_ENGI</div><div class="tags"><span class="tg store">Store</span><span class="tg store-marker">Store marker</span></div><a class="cardlink" href="../cards/card-store-engi.html" title="Open the full card">↗</a></summary><div class="cardpanel"></div></details></div></section><section><h2>Quest chain<span class="meta">Stealth Cruiser · The Nesasio</span></h2><div class="chain"><div class="step"><div class="marker"><div class="dot">1</div><div class="line"></div></div><div class="body"><div class="t"><span class="ref">Engi fleet discussion</span></div><div class="d">The guaranteed beacon. The quest only starts through the <strong>Engi crew</strong> blue option — both plain choices end the event where it stands.</div><div class="id">ENGI_UNLOCK_1 · req=&quot;engi&quot;</div></div></div><div class="step"><div class="marker"><div class="dot">2</div><div class="line"></div></div><div class="body"><div class="t">Two beacons get marked — one real, one decoy</div><div class="d">Both quest markers are planted at once. The decoy is a Rebel fight that leads nowhere; the real one continues the chain when you accept its surrender.</div><div class="id">ENGI_UNLOCK_2FAKE / ENGI_UNLOCK_2REAL</div></div></div><div class="step"><div class="marker"><div class="dot">3</div><div class="line"></div></div><div class="body"><div class="t">Mantis ambush</div><div class="d">A Mantis ship sitting on the stolen tech. A straight fight, no choices.</div><div class="id">ENGI_UNLOCK_3</div></div></div><div class="step end"><div class="marker"><div class="dot">✓</div></div><div class="body"><div class="t">Hand the tech over</div><div class="d">Hull repaired 20, a high standard reward, the <strong>Titanium System Casing</strong> augment, and the ship unlocks — &quot;built near the Engi homeworlds… they only trust their own kind.&quot;</div><div class="id">ENGI_UNLOCK_4 · unlockShip id=&quot;1&quot;</div></div></div></div></section><div class="cols"><div class="panel"><h3>Blue options that pay here</h3><ul><li><span class="lead">Engi ×5</span><span>Starts the ship-unlock quest, and adds an out to the virus, the Mantis-attacked station, the smashed ships and the defense satellite.</span></li><li><span class="lead">Sensors ×7</span><span>Level 2 or 3 opens branches across the wreckage, the asteroid belt, the federation signal and both Engi station events.</span></li><li><span class="lead">Scanners ×4</span><span>Long-Ranged Scanners, including the one that makes <span class="ref">Engi research station</span> safe to work.</span></li><li><span class="lead">Cloaking ×3</span><span>Escape routes out of the Mantis fight, the storage station and the defense system.</span></li><li><span class="lead">Hacking ×2</span><span>Three graded payoffs inside <span class="ref">The Engi virus</span> — the higher the level, the better the deal.</span></li><li><span class="lead">Lanius ×1</span><span>A clean solve on <span class="ref">The Engi virus</span>, with no fight and no loss.</span></li></ul></div><div class="panel"><h3>Named things you can leave with</h3><ul><li><span class="lead">Augment</span><span><strong>Damaged Stasis Pod</strong> — the Crystal route starts at <span class="ref">Dense asteroid field distress</span>.</span></li><li><span class="lead">Crew</span><span><strong>Crystal crew member</strong> at <span class="ref">Zoltan research facility</span>, if you are already carrying the pod.</span></li><li><span class="lead">Augment</span><span><strong>Engi Med-bot Dispersal</strong>, and the <strong>Healing Burst</strong> bomb, both from <span class="ref">Engi distress Rebel fight</span>.</span></li><li><span class="lead">Augment</span><span><strong>Drone Reactor Booster</strong> from <span class="ref">The Engi virus</span>, behind Hacking.</span></li><li><span class="lead">Crew</span><span><strong>An Engi with two levels in every skill</strong> — the reborn virus, if you let <span class="ref">The Engi virus</span> run its course.</span></li><li><span class="lead">Crew</span><span>Engi crew from <span class="ref">Engi ship attacked by Mantis ship</span> and <span class="ref">Engi research station</span>; Mantis from <span class="ref">Mantis fugitive</span> and <span class="ref">Confused Mantis</span>.</span></li></ul></div><div class="panel"><h3>What can bite</h3><ul><li><span class="lead">Crew</span><span>Five events in the pool can kill a crew member outright, <span class="ref">Giant alien spiders</span> and <span class="ref">Engi research station</span> among them.</span></li><li><span class="lead">Systems</span><span><span class="ref">The Engi virus</span> can halve your shields <strong>and</strong> your engines before the fight even starts.</span></li><li><span class="lead">Boarders</span><span>Six events put someone aboard — up to four at <span class="ref">Refueling platform</span>, two to three humans on <span class="ref">Encrypted federation signal</span>.</span></li><li><span class="lead">Missiles</span><span><span class="ref">Engi cache</span> trades two missiles for two jumps of fleet delay. Cheap if you are not flying missiles.</span></li><li><span class="lead">The clock</span><span>No nebula line anywhere in the table, so nothing on this map halves the fleet&#x27;s advance for you — every jump is paid at full price.</span></li></ul></div></div><script type="application/json" id="sector-card-loader">
+{
+  "runtime": "../cards/runtime/card.js",
+  "css": "../cards/runtime/card.css",
+  "data": "../cards/data/{slug}.js",
+  "strings": {
+    "loading": "Loading card…",
+    "failed": "Card unavailable — build it with tools/build-card.py, and open this page from disk."
+  }
+}
+</script>
+<script>
+/*
+  Sector page → event cards, without leaving the page.
+
+  A beacon box is a <details>; opening one loads that event's card and renders it
+  underneath. Three things arrive on demand, and nothing before the first open:
+
+    cards/runtime/card.js    the renderer + vocabulary — once per page
+    cards/runtime/card.css   the card's styling — once per open box, into its shadow root
+    cards/data/<slug>.js     one FTLCard.define() call — once per event
+
+  All three come in through a <script>/<link> tag rather than fetch(), because that is
+  the only cross-directory read a file:// page is allowed (tools/SECTOR-PAGE.md §6.1).
+  Verified in Chrome and in Firefox with stock prefs; fetch, XHR and dynamic import are
+  all blocked there, script tags are not.
+
+  Each card renders into its own shadow root. The two stylesheets collide on five class
+  names and both define the palette variables, so isolation is not a nicety — without it
+  a card would repaint the page around it.
+
+  build-sector.py inlines this file and a <script type="application/json"> config block
+  holding the paths and every word this file can show.
+*/
+(function () {
+  "use strict";
+
+  const config = document.getElementById("sector-card-loader");
+  if (!config) return;
+  const CFG = JSON.parse(config.textContent);
+
+  const pending = new Map();
+
+  function load(src) {
+    if (pending.has(src)) return pending.get(src);
+    const done = new Promise((resolve, reject) => {
+      const tag = document.createElement("script");
+      tag.src = src;
+      tag.onload = () => resolve();
+      tag.onerror = () => reject(new Error(src));
+      document.head.appendChild(tag);
+    });
+    pending.set(src, done);
+    return done;
+  }
+
+  /* The card's palette lives on :host, so the page's explicit theme — an artifact host
+     stamps data-theme on the document — has to be handed across the shadow boundary.
+     :host-context() would do it without this, but Firefox does not implement it. */
+  function theme(host) {
+    const mode = document.documentElement.getAttribute("data-theme");
+    if (mode) host.setAttribute("data-theme", mode);
+  }
+
+  function stylesheet(root) {
+    return new Promise(resolve => {
+      const link = document.createElement("link");
+      link.rel = "stylesheet";
+      link.href = CFG.css;
+      /* Resolve either way: a missing stylesheet should still show the card. */
+      link.onload = resolve;
+      link.onerror = resolve;
+      root.appendChild(link);
+    });
+  }
+
+  async function fill(box) {
+    const slug = box.getAttribute("data-card");
+    const panel = box.querySelector(".cardpanel");
+    if (!slug || !panel || box.getAttribute("data-state")) return;
+    box.setAttribute("data-state", "loading");
+    panel.textContent = CFG.strings.loading;
+    try {
+      await load(CFG.runtime);
+      await load(CFG.data.replace("{slug}", slug));
+      const data = window.FTLCard.get(slug);
+      if (!data) throw new Error("no payload for " + slug);
+      panel.textContent = "";
+      theme(panel);
+      const shadow = panel.attachShadow({ mode: "open" });
+      await stylesheet(shadow);
+      const root = document.createElement("div");
+      root.className = "wrap";
+      shadow.appendChild(root);
+      window.FTLCard.render(root, data);
+      box.setAttribute("data-state", "ready");
+    } catch (err) {
+      panel.textContent = CFG.strings.failed;
+      /* Cleared, not left as "loading": closing and reopening should try again. */
+      box.removeAttribute("data-state");
+    }
+  }
+
+  /* toggle does not bubble, so listen in the capture phase. */
+  document.addEventListener("toggle", event => {
+    const box = event.target;
+    if (box instanceof HTMLDetailsElement && box.classList.contains("evbox") && box.open) {
+      fill(box);
+    }
+  }, true);
+
+  /* The corner link opens the standalone card page; without this it would also toggle
+     the box on the way out. */
+  document.addEventListener("click", event => {
+    const link = event.target.closest && event.target.closest("a.cardlink");
+    if (link) event.stopPropagation();
+  }, true);
+})();
+</script><script>
+/*
+  A box that is its own toggle.
+
+  The blue-options block is a <details> whose whole body is clickable, not just its
+  <summary>: a summary-only toggle can be opened from the visible rows but never closed
+  from the rows it just revealed, which reads as a broken control.
+
+  Two clicks are left alone — one that lands on the summary (the browser toggles that
+  one itself, and handling it here would toggle twice), and one that ends a text
+  selection, so selecting a row's text does not collapse the box under the cursor.
+
+  Holds no English and no paths, like tools/sector-cards.js; build-sector.py inlines it.
+*/
+(function () {
+  "use strict";
+
+  document.querySelectorAll(".gtoggle").forEach(function (box) {
+    box.addEventListener("click", function (event) {
+      if (event.target.closest("summary")) return;
+      if (String(window.getSelection())) return;
+      box.open = !box.open;
+    });
+  });
+})();
+</script>
+</div>
+
+<script>
+document.addEventListener('click', function (ev) {
+  var b = ev.target.closest('.sb-theme');
+  if (!b) return;
+  var el = document.documentElement;
+  // No attribute means "follow the system", and the first click has to pick a side.
+  // Pick the opposite of what is on screen, which is what the reader just asked for.
+  var now = el.dataset.theme ||
+    (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+  var next = now === 'dark' ? 'light' : 'dark';
+  el.dataset.theme = next;
+  try { localStorage.setItem('ftl-theme', next); } catch (e) {}
+});
+</script>
+<script>
+(function () {
+  const WORDS = {"chip": "Seen", "chip_n": "Seen {n}", "row": "{n} seen", "row_title": "seen {n}× across {events} of the {total} events this line can place", "overlap": "{n} overlap", "overlap_title": "{n}× of that is counted on another line too: {list}", "beacons": "{n} placed this run", "beacons_title": "How many beacons this run's map drew from the table below — one per line of the sector's generation log. The entry beacon, and outside a nebula sector the exit beacon, are fixed rather than drawn, so the map holds a little more than this.", "bad_beacons": "beacons={v} is not a count", "bar": "{n} of {total} events marked seen", "bar_visits": "{n} visits", "bar_none": "nothing marked seen", "unmatched": "{n} not in this sector's pool: {list}", "badcount": "{n} with an unreadable count: {list}"};
+  const params = new URLSearchParams(location.search);
+  const raw = params.get('seen');
+  const rawBeacons = params.get('beacons');
+  // No parameters, no markup. A sector page with neither must be byte-for-byte the
+  // page it was before this existed.
+  if (raw === null && rawBeacons === null) return;
+
+  // Case and the three word separators are normalised away, so a token may be the
+  // slug (`ancient-device`) or the in-game event id the Hyperspace log prints
+  // (`ROCK_CRYSTAL_BEACON`, `rock_crystal_beacon`). Measured across all 386 cards:
+  // no normalised event id equals a *different* event's slug, so one flat lookup
+  // cannot mistake one event for another.
+  const norm = s => String(s).toLowerCase().replace(/[\s_-]+/g, '-');
+
+  // A token may carry how many times the beacon was visited, two ways:
+  //
+  //   store-engi          once
+  //   store-engi:3        three times
+  //   store-engi,store-engi   also twice -- repeats accumulate
+  //
+  // The repeat form exists because it is what the watcher naturally produces: one
+  // token per `Creating event:` line, appended in order, with no counting to do.
+  // The `:n` form is for a hand-written or compacted URL. Every token is a visit
+  // record, so both forms add: `store-engi:2,STORE_ENGI` is three visits.
+  //
+  // The bound on URL length does not change. A run visits at most 24 beacons, so
+  // there are at most 24 tokens either way.
+  const counts = new Map();       // normalised token -> visits
+  const tokens = [], bad = [];
+  (raw || '').split(',').map(s => s.trim()).filter(Boolean).forEach(tok => {
+    const at = tok.lastIndexOf(':');
+    let name = tok, n = 1;
+    if (at >= 0) {
+      name = tok.slice(0, at);
+      const digits = tok.slice(at + 1);
+      // Slugs are [a-z0-9-] and ids are [A-Z0-9_], so a colon is never part of a name.
+      // A count that is not a number is refused rather than read as one visit, which
+      // would report a figure nobody asked for -- and it is reported as a *count*
+      // problem, not as "not in this sector's pool", which would blame the wrong thing
+      // about an event that is sitting right there in the list.
+      if (!/^[0-9]+$/.test(digits)) { bad.push(tok); return; }
+      n = Number(digits);
+      // `:0` is not an error. It says the beacon was visited zero times, which is what
+      // saying nothing says, so the token drops and nothing is marked or reported.
+      if (n < 1) return;
+    }
+    const key = norm(name);
+    if (!key) return;
+    if (!counts.has(key)) { counts.set(key, 0); tokens.push(name); }
+    counts.set(key, counts.get(key) + n);
+  });
+  const want = new Set(counts.keys());
+
+  // Every beacon box on the page -- `details.evbox` where the event has a card, plain
+  // `div.ev` where it does not. Both carry the event id in `.id`, so an event with no
+  // card is still markable: the run visited it either way.
+  const boxes = Array.prototype.slice.call(document.querySelectorAll('.evbox, .ev'))
+    .filter(el => !el.matches('summary'));
+
+  // `hit` is which *tokens* landed; `events` is how many distinct events they named.
+  // The two differ, and the bar must report the second: an event reachable through a
+  // budget line and a marker section has a box in each, so counting boxes reported
+  // ten for five events and read as though half the sector had been visited.
+  const hit = new Set(), events = new Set();
+  // Every box's visit count, by the element itself -- the same event has a box in each
+  // place it is listed, and each of those boxes shows the same count.
+  const visitsOf = new Map();
+  let visits = 0;
+  boxes.forEach(el => {
+    const idEl = el.querySelector('.id');
+    const keys = [el.dataset.card, idEl && idEl.textContent]
+      .filter(Boolean).map(norm);
+    // **Deduplicated.** A box contributes its slug and its normalised id as lookup
+    // keys, and for plenty of events those are the same string -- `store-engi` and
+    // `STORE_ENGI` both normalise to `store-engi`. Summing over the raw key list
+    // therefore counted that event's visits twice, and `store-engi:2` read as `Seen 4`.
+    const matched = keys.filter((k, i) => want.has(k) && keys.indexOf(k) === i);
+    if (!matched.length) return;
+    matched.forEach(k => hit.add(k));
+    // Summed over the distinct matching keys, because an event named both by slug and
+    // by a *different* id string is two visit records, exactly as naming it twice by
+    // slug would be.
+    const n = matched.reduce((sum, k) => sum + counts.get(k), 0);
+    const key = el.dataset.card || keys[0];
+    if (!events.has(key)) { events.add(key); visits += n; }
+    visitsOf.set(el, n);
+    el.classList.add('sb-is-seen');
+    // Inline in the event name, not down in the tags row: the name is the line a reader
+    // scans, and every box has a `.t` whether or not it has any tags -- so there is no
+    // container to create and no box that cannot take the chip.
+    const chip = document.createElement('span');
+    chip.className = 'tg sb-seen';
+    // One visit is the ordinary case and says nothing extra; a repeat is the news.
+    chip.textContent = n > 1 ? WORDS.chip_n.replace('{n}', n) : WORDS.chip;
+    const title = el.querySelector('.t');
+    (title || el).appendChild(chip);
+  });
+
+  // Per budget line: how many of the events *this line* can place are marked.
+  // `.bpool > .pool` is deliberately direct-child only -- an AE delta block sits in
+  // the same expansion with a `.pool` of its own, and counting it would inflate the
+  // line by events the base list does not hold.
+  //
+  // Collected before anything is appended, because the line's own name is read out of
+  // `.name` and `.name` is where the chips go -- read it after and the label picks up
+  // the chip text of whatever was added first.
+  const lines = [];
+  document.querySelectorAll('details.bwrap').forEach(row => {
+    const pool = row.querySelector(':scope > .bpool > .pool');
+    const brow = row.querySelector(':scope > .brow');
+    const name = brow && brow.querySelector('.name');
+    if (!pool || !name) return;
+    const own = Array.prototype.slice.call(pool.children);
+    lines.push({
+      name: name,
+      total: own.length,
+      // Text nodes only: `.name` already carries `placed first` / `fill-in` chips as
+      // element children, and textContent would glue their words onto the list name.
+      label: Array.prototype.filter.call(name.childNodes, n => n.nodeType === 3)
+        .map(n => n.textContent).join('').trim(),
+      // Each seen box in this line, as {key, visits}. The line's count is the sum of
+      // the visits, not the number of events: a store visited twice is two beacons of
+      // this line's allocation spent, which is the question the budget answers.
+      hits: own.filter(el => el.classList.contains('sb-is-seen')).map(el => ({
+        key: el.dataset.card || norm(el.querySelector('.id').textContent),
+        visits: visitsOf.get(el) || 1,
+      })),
+    });
+  });
+
+  // Which lines each seen event lands on. An event in two lines is counted by both --
+  // that is the intended reading, since the URL says which event was visited and not
+  // which beacon, so there is nothing to attribute it with. The overlap chip makes
+  // that visible instead of leaving the per-line counts summing past the total.
+  const on = new Map();
+  lines.forEach((line, i) => line.hits.forEach(h => {
+    if (!on.has(h.key)) on.set(h.key, []);
+    on.get(h.key).push(i);
+  }));
+
+  const sum = hs => hs.reduce((t, h) => t + h.visits, 0);
+
+  lines.forEach((line, i) => {
+    if (!line.hits.length) return;
+    const chip = document.createElement('span');
+    chip.className = 'mark sb-seen-count';
+    chip.textContent = WORDS.row.replace('{n}', sum(line.hits));
+    chip.title = WORDS.row_title
+      .replace('{n}', sum(line.hits))
+      .replace('{events}', line.hits.length)
+      .replace('{total}', line.total);
+    line.name.appendChild(chip);
+
+    // Overlap is counted in visits too, so the two chips are in the same unit and the
+    // arithmetic closes: the per-line counts exceed the run's real total by exactly
+    // the overlaps.
+    const shared = line.hits.filter(h => on.get(h.key).length > 1);
+    if (!shared.length) return;
+    // Lines are identified by index, never by label: two entries in one allocation
+    // table can carry the same list name, and a label key would merge them.
+    const others = [];
+    shared.forEach(h => on.get(h.key).forEach(j => {
+      if (j !== i && others.indexOf(lines[j].label) < 0) others.push(lines[j].label);
+    }));
+    const dup = document.createElement('span');
+    dup.className = 'mark sb-overlap-count';
+    dup.textContent = WORDS.overlap.replace('{n}', sum(shared));
+    dup.title = WORDS.overlap_title
+      .replace('{n}', sum(shared)).replace('{list}', others.join(', '));
+    line.name.appendChild(dup);
+  });
+
+  // How many beacons this run's map actually has. No file states it -- the map rolls
+  // the count -- and under Hyperspace the save watcher cannot read it either, since the
+  // Hyperspace save layout costs it the beacon list entirely (`SAVE-WATCH.md` §3b). So
+  // it arrives in the URL or not at all, and the page reports it rather than deriving
+  // anything from it: which lines a short map cuts is a roll, not an inference.
+  let badBeacons = null;
+  if (rawBeacons !== null) {
+    if (!/^[0-9]+$/.test(rawBeacons.trim()) || Number(rawBeacons) < 1) {
+      badBeacons = rawBeacons;
+    } else {
+      // Beside the heading's own figures, and first: it is the concrete one, and it is
+      // what makes the allocated range mean something.
+      const meta = document.querySelector('.budget') &&
+        document.querySelector('.budget').closest('section').querySelector('h2 .meta');
+      if (meta) {
+        const span = document.createElement('span');
+        span.className = 'sb-beacons';
+        span.title = WORDS.beacons_title;
+        span.innerHTML = WORDS.beacons.replace('{n}',
+          '<b>' + Number(rawBeacons) + '</b>');
+        meta.insertBefore(document.createTextNode(' \u00b7 '), meta.firstChild);
+        meta.insertBefore(span, meta.firstChild);
+      }
+    }
+  }
+
+  // What did not land. A token can be a real event that simply is not in this
+  // sector's pool, and the page cannot tell that from a typo -- it holds one
+  // sector's events and nothing wider. So it says the true thing.
+  // Two different failures, reported as two different things. A name the pool does not
+  // hold and a count that is not a number are not the same mistake, and one message for
+  // both would have said "not in this sector's pool" about `FREE_WEAPON:tow`, whose
+  // event is in the pool twice over.
+  const missed = tokens.filter(t => !hit.has(norm(t)));
+  const esc = t => t.replace(/[<&]/g, c => (c === '<' ? '&lt;' : '&amp;'));
+  const miss = (words, list) => list.length
+    ? '<span class="miss">' + words.replace('{n}', list.length)
+        .replace('{list}', list.map(esc).join(', ')) + '</span>'
+    : '';
+  const bar = document.createElement('div');
+  bar.className = 'sb-seenbar';
+  bar.innerHTML =
+    // `?beacons=` alone is a legitimate URL, and saying "nothing marked seen" about it
+    // would answer a question nobody asked.
+    (raw === null ? '' : '<span>' + (events.size
+      ? WORDS.bar.replace('{n}', events.size).replace('{total}', tokens.length)
+      : WORDS.bar_none) + '</span>') +
+    // Only when a repeat exists: with one visit each, visits and events are the same
+    // number and printing both says nothing twice.
+    (visits > events.size
+      ? '<span>' + WORDS.bar_visits.replace('{n}', visits) + '</span>' : '') +
+    miss(WORDS.unmatched, missed) + miss(WORDS.badcount, bad) +
+    (badBeacons === null ? ''
+      : '<span class="miss">' + WORDS.bad_beacons.replace('{v}', esc(badBeacons)) +
+        '</span>');
+  // A `?beacons=`-only URL has nothing to report here -- the count went into the
+  // heading. An empty strip would still push the page down by its own height, so it is
+  // not inserted at all.
+  if (!bar.innerHTML) return;
+  document.body.classList.add('sb-has-seen');
+  const nav = document.querySelector('.sb-bar');
+  if (nav) nav.parentNode.insertBefore(bar, nav.nextSibling);
+  else document.body.insertBefore(bar, document.body.firstChild);
+})();
+</script></body></html>

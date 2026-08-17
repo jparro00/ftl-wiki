@@ -1,0 +1,2930 @@
+{
+  "schema": "ftl-sector-profile/1",
+  "id": "REBEL_SECTOR",
+  "slug": "rebel-controlled-sector",
+  "title": "Rebel Controlled Sector",
+  "display_name": "Rebel Controlled Sector",
+  "short_name": "Rebel Controlled",
+  "extracted_from": "raw/gamedata/sector_data.xml",
+  "min_sector": 0,
+  "earliest_sector": 1,
+  "unique": false,
+  "tracks": [
+    "colonial",
+    "wasteland",
+    "lostship",
+    "hacking"
+  ],
+  "crew_rarity": [],
+  "crew_store_odds": {
+    "slots": 3,
+    "total_weight": 17,
+    "crew": [
+      {
+        "id": "human",
+        "label": "Human",
+        "rarity": 1,
+        "listed": false,
+        "weight": 5,
+        "share": 29.4,
+        "in_store": 64.8
+      },
+      {
+        "id": "engi",
+        "label": "Engi",
+        "rarity": 2,
+        "listed": false,
+        "weight": 4,
+        "share": 23.5,
+        "in_store": 55.3
+      },
+      {
+        "id": "mantis",
+        "label": "Mantis",
+        "rarity": 2,
+        "listed": false,
+        "weight": 4,
+        "share": 23.5,
+        "in_store": 55.3
+      },
+      {
+        "id": "rock",
+        "label": "Rockman",
+        "rarity": 3,
+        "listed": false,
+        "weight": 3,
+        "share": 17.6,
+        "in_store": 44.1
+      },
+      {
+        "id": "energy",
+        "label": "Zoltan",
+        "rarity": 5,
+        "listed": false,
+        "weight": 1,
+        "share": 5.9,
+        "in_store": 16.6
+      }
+    ],
+    "excluded": [
+      {
+        "id": "crystal",
+        "label": "Crystal"
+      },
+      {
+        "id": "anaerobic",
+        "label": "Lanius"
+      },
+      {
+        "id": "slug",
+        "label": "Slug"
+      }
+    ]
+  },
+  "start_event": {
+    "id": "START_BEACON_REBEL",
+    "slug": "start-beacon-rebel",
+    "title": "Start beacon (Rebel)",
+    "card": true,
+    "tags": [],
+    "gates": [],
+    "items": [],
+    "crew_classes": [],
+    "quests": [],
+    "boarders": [],
+    "unlock_ship": [],
+    "fleet_delay": []
+  },
+  "entries": [
+    {
+      "name": "STORE_REBEL",
+      "min": 1,
+      "max": 2,
+      "kind": "event",
+      "section": "store",
+      "events": [
+        {
+          "id": "STORE_REBEL",
+          "slug": "store-rebel",
+          "title": "Store (Rebel)",
+          "card": true,
+          "tags": [
+            "store",
+            "store-marker"
+          ],
+          "marker": {
+            "store": true
+          },
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        }
+      ],
+      "order": 0,
+      "placement": {
+        "position": 1,
+        "nebula_first": false,
+        "before_min": 0,
+        "before_max": 5,
+        "at_risk": false,
+        "always_short": false
+      }
+    },
+    {
+      "name": "ITEMS",
+      "min": 1,
+      "max": 2,
+      "kind": "list",
+      "section": "items",
+      "events": [
+        {
+          "id": "FIND_DRONE",
+          "slug": "free-drone-schematic",
+          "title": "Free drone schematic",
+          "card": true,
+          "tags": [
+            "reward"
+          ],
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "FIND_WEAPON",
+          "slug": "free-weapon",
+          "title": "Free weapon",
+          "card": true,
+          "tags": [
+            "reward"
+          ],
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "FREE_ITEMS",
+          "slug": "free-scrap-with-resources",
+          "title": "Free scrap with resources",
+          "card": true,
+          "tags": [
+            "reward"
+          ],
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "FUEL_FOR_DRONE",
+          "slug": "trade-fuel-for-drone-parts",
+          "title": "Trade fuel for drone parts",
+          "card": true,
+          "tags": [
+            "reward",
+            "cost"
+          ],
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "REFUEL_STATION",
+          "slug": "refueling-station",
+          "title": "Refueling station",
+          "card": true,
+          "tags": [
+            "reward",
+            "cost",
+            "unique"
+          ],
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "REPAIR_STATION",
+          "slug": "repair-station",
+          "title": "Repair station",
+          "card": true,
+          "tags": [
+            "cost",
+            "unique"
+          ],
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "SELL_DRONES_STATION",
+          "slug": "sell-drone-parts-for-scrap",
+          "title": "Sell drone parts for scrap",
+          "card": true,
+          "tags": [
+            "reward",
+            "cost",
+            "unique"
+          ],
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "SELL_MISSILES_STATION",
+          "slug": "sell-missiles-for-scrap",
+          "title": "Sell missiles for scrap",
+          "card": true,
+          "tags": [
+            "reward",
+            "cost",
+            "unique"
+          ],
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "TRADER_CIV",
+          "slug": "trade-resources",
+          "title": "Trade resources",
+          "card": true,
+          "tags": [
+            "reward",
+            "cost"
+          ],
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "TAVERN_HIRE",
+          "slug": "crew-hiring-station",
+          "title": "Crew hiring station",
+          "card": true,
+          "tags": [
+            "crew",
+            "cost",
+            "unique"
+          ],
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "TRADER_UPGRADES",
+          "slug": "trade-scrap-for-upgrades",
+          "title": "Trade scrap for upgrades",
+          "card": true,
+          "tags": [
+            "cost",
+            "unique"
+          ],
+          "gates": [
+            {
+              "req": "oxygen",
+              "label": "Oxygen"
+            },
+            {
+              "req": "pilot",
+              "label": "Piloting"
+            },
+            {
+              "req": "doors",
+              "label": "Door System"
+            },
+            {
+              "req": "sensors",
+              "label": "Sensors"
+            },
+            {
+              "req": "reactor",
+              "label": "reactor"
+            }
+          ],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "TRADER_UPGRADES_EXCHANGE",
+          "slug": "improve-reactor-for-supplies",
+          "title": "Improve reactor for supplies",
+          "card": true,
+          "tags": [
+            "cost",
+            "unique"
+          ],
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "HELP_MINERS",
+          "slug": "asteroid-mining-colony",
+          "title": "Asteroid mining colony",
+          "card": true,
+          "tags": [
+            "reward",
+            "cost",
+            "unique"
+          ],
+          "gates": [
+            {
+              "req": "WEAPONS_MISSILES_EVENTS",
+              "label": "WEAPONS_MISSILES_EVENTS"
+            }
+          ],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        }
+      ],
+      "override": {
+        "list": "OVERRIDE_ITEMS",
+        "added": [
+          {
+            "id": "STORE_REBELSIDE",
+            "slug": "large-trade-station",
+            "title": "Large trade station",
+            "card": true,
+            "tags": [
+              "may-fight",
+              "crew",
+              "store",
+              "unique",
+              "store-marker"
+            ],
+            "marker": {
+              "store": true
+            },
+            "gates": [
+              {
+                "req": "mind",
+                "label": "Mind Control",
+                "lvl": "1"
+              },
+              {
+                "req": "mind",
+                "label": "Mind Control",
+                "lvl": "2"
+              },
+              {
+                "req": "mind",
+                "label": "Mind Control",
+                "lvl": "3"
+              }
+            ],
+            "items": [],
+            "crew_classes": [],
+            "quests": [],
+            "boarders": [],
+            "unlock_ship": [],
+            "fleet_delay": []
+          }
+        ],
+        "removed": [],
+        "applies": "unconfirmed"
+      },
+      "order": 1,
+      "placement": {
+        "position": 2,
+        "nebula_first": false,
+        "before_min": 1,
+        "before_max": 7,
+        "at_risk": false,
+        "always_short": false
+      }
+    },
+    {
+      "name": "HOSTILE_REBEL",
+      "min": 6,
+      "max": 8,
+      "kind": "list",
+      "section": "hostile",
+      "events": [
+        {
+          "id": "REBEL",
+          "slug": "rebel-fight",
+          "title": "Rebel fight",
+          "card": true,
+          "tags": [
+            "fight",
+            "crew"
+          ],
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "REBEL_AUTO",
+          "slug": "auto-ship-fight",
+          "title": "Auto-ship fight",
+          "card": true,
+          "tags": [
+            "fight",
+            "crew"
+          ],
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "AUTO_ASTEROID",
+          "slug": "auto-ship-fight-in-asteroid-field",
+          "title": "Auto-ship fight in asteroid field",
+          "card": true,
+          "tags": [
+            "fight",
+            "crew"
+          ],
+          "marker": {
+            "environment": "asteroid"
+          },
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "AUTO_WARNING",
+          "slug": "auto-ship-warning",
+          "title": "Auto-ship warning",
+          "card": true,
+          "tags": [
+            "fight",
+            "unique"
+          ],
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": [
+            1
+          ]
+        },
+        {
+          "id": "SQUAT_WARNING",
+          "slug": "rebel-ship-warning",
+          "title": "Rebel ship warning",
+          "card": true,
+          "tags": [
+            "fight",
+            "unique"
+          ],
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": [
+            1
+          ]
+        }
+      ],
+      "override": {
+        "list": "OVERRIDE_HOSTILE_REBEL",
+        "added": [
+          {
+            "id": "REBEL_PULSAR",
+            "slug": "rebel-fight-near-pulsar",
+            "title": "Rebel fight near pulsar",
+            "card": true,
+            "tags": [
+              "fight",
+              "crew",
+              "unique"
+            ],
+            "marker": {
+              "environment": "pulsar"
+            },
+            "gates": [],
+            "items": [],
+            "crew_classes": [],
+            "quests": [],
+            "boarders": [],
+            "unlock_ship": [],
+            "fleet_delay": []
+          }
+        ],
+        "removed": [],
+        "applies": "unconfirmed"
+      },
+      "order": 2,
+      "placement": {
+        "position": 3,
+        "nebula_first": false,
+        "before_min": 2,
+        "before_max": 9,
+        "at_risk": false,
+        "always_short": false
+      }
+    },
+    {
+      "name": "BOARDERS_REBEL",
+      "min": 1,
+      "max": 1,
+      "kind": "list",
+      "section": "boarders",
+      "events": [
+        {
+          "id": "BOARDERS_SUN",
+          "slug": "boarders-humans-near-sun",
+          "title": "Boarders: Humans near sun",
+          "card": true,
+          "tags": [
+            "boarders",
+            "unique"
+          ],
+          "marker": {
+            "environment": "sun"
+          },
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [
+            {
+              "class": "human",
+              "min": 2,
+              "max": 4
+            }
+          ],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "BOARDERS_REBEL_SHIP",
+          "slug": "rebel-fight-with-boarders",
+          "title": "Rebel fight with boarders",
+          "card": true,
+          "tags": [
+            "fight",
+            "boarders",
+            "crew"
+          ],
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [
+            {
+              "class": "human",
+              "min": 2,
+              "max": 3
+            }
+          ],
+          "unlock_ship": [],
+          "fleet_delay": []
+        }
+      ],
+      "order": 3,
+      "placement": {
+        "position": 4,
+        "nebula_first": false,
+        "before_min": 8,
+        "before_max": 17,
+        "at_risk": false,
+        "always_short": false
+      }
+    },
+    {
+      "name": "DISTRESS_BEACON_REBEL",
+      "min": 1,
+      "max": 2,
+      "kind": "list",
+      "section": "distress",
+      "events": [
+        {
+          "id": "CIVILIAN_ASTEROIDS_BEACON",
+          "slug": "asteroid-belt-distress",
+          "title": "Asteroid belt distress",
+          "card": true,
+          "tags": [
+            "may-fight",
+            "crew",
+            "quest",
+            "cost",
+            "unique",
+            "distress"
+          ],
+          "marker": {
+            "beacon": "distress"
+          },
+          "gates": [
+            {
+              "req": "DRONES_DEFENSE_LIST",
+              "label": "DRONES_DEFENSE_LIST"
+            },
+            {
+              "req": "REPAIR",
+              "label": "System Repair Drone"
+            },
+            {
+              "req": "teleporter",
+              "label": "Crew Teleporter"
+            },
+            {
+              "req": "ROCK_ARMOR",
+              "label": "Rock Plating"
+            },
+            {
+              "req": "sensors",
+              "label": "Sensors",
+              "lvl": "2"
+            },
+            {
+              "req": "sensors",
+              "label": "Sensors",
+              "lvl": "3"
+            },
+            {
+              "req": "ADV_SCANNERS",
+              "label": "Long-Ranged Scanners"
+            }
+          ],
+          "items": [],
+          "crew_classes": [],
+          "quests": [
+            "HIDDEN_FEDERATION_BASE_LIST"
+          ],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": [
+            1
+          ]
+        },
+        {
+          "id": "REBEL_VS_FEDERATION",
+          "slug": "rebel-ship-attacking-federation-loyalists",
+          "title": "Rebel ship attacking Federation loyalists",
+          "card": true,
+          "tags": [
+            "may-fight",
+            "crew",
+            "quest",
+            "cost",
+            "unique"
+          ],
+          "gates": [
+            {
+              "req": "NANO_MEDBAY",
+              "label": "Engi Med-bot Dispersal"
+            },
+            {
+              "req": "teleporter",
+              "label": "Crew Teleporter"
+            },
+            {
+              "req": "BOMB_HEAL",
+              "label": "Healing Burst"
+            },
+            {
+              "req": "sensors",
+              "label": "Sensors",
+              "lvl": "2"
+            },
+            {
+              "req": "sensors",
+              "label": "Sensors",
+              "lvl": "3"
+            },
+            {
+              "req": "ADV_SCANNERS",
+              "label": "Long-Ranged Scanners"
+            }
+          ],
+          "items": [],
+          "crew_classes": [],
+          "quests": [
+            "HIDDEN_FEDERATION_BASE_LIST"
+          ],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "ESCORT_BEACON",
+          "slug": "escort-civilians-ftl-haywire",
+          "title": "Escort civilians FTL haywire",
+          "card": true,
+          "tags": [
+            "may-fight",
+            "crew",
+            "store",
+            "quest",
+            "unique",
+            "distress",
+            "store-marker"
+          ],
+          "marker": {
+            "beacon": "distress",
+            "store": true
+          },
+          "gates": [
+            {
+              "req": "FTL_JUMPER",
+              "label": "Adv. FTL Navigation"
+            }
+          ],
+          "items": [],
+          "crew_classes": [],
+          "quests": [
+            "QUEST_ESCORT_ARRIVE"
+          ],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "FRIENDLY_BEACON",
+          "slug": "friendly-ship-out-of-fuel",
+          "title": "Friendly ship out of fuel",
+          "card": true,
+          "tags": [
+            "crew",
+            "reward",
+            "cost",
+            "distress"
+          ],
+          "marker": {
+            "beacon": "distress"
+          },
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "TRAP_BEACON",
+          "slug": "pirate-ship-distress-trap",
+          "title": "Pirate ship distress trap",
+          "card": true,
+          "tags": [
+            "fight",
+            "crew",
+            "unique",
+            "distress"
+          ],
+          "marker": {
+            "beacon": "distress"
+          },
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "DISTRESS_STATION_FIRE",
+          "slug": "fire-on-research-station",
+          "title": "Fire on research station",
+          "card": true,
+          "tags": [
+            "crew-loss",
+            "crew",
+            "reward",
+            "unique",
+            "distress"
+          ],
+          "marker": {
+            "beacon": "distress"
+          },
+          "gates": [
+            {
+              "req": "rock",
+              "label": "Rockman"
+            },
+            {
+              "req": "REPAIR",
+              "label": "System Repair Drone"
+            }
+          ],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        }
+      ],
+      "order": 4,
+      "placement": {
+        "position": 5,
+        "nebula_first": false,
+        "before_min": 9,
+        "before_max": 18,
+        "at_risk": false,
+        "always_short": false
+      }
+    },
+    {
+      "name": "NEBULA_REBEL",
+      "min": 0,
+      "max": 5,
+      "kind": "list",
+      "section": "nebula",
+      "events": [
+        {
+          "id": "NEBULA_EMPTY",
+          "slug": "empty-nebula-beacon",
+          "title": "Empty nebula beacon",
+          "card": true,
+          "tags": [],
+          "marker": {
+            "environment": "nebula"
+          },
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "NEBULA_AUTO",
+          "slug": "auto-ship-fight-in-nebula",
+          "title": "Auto-ship fight in nebula",
+          "card": true,
+          "tags": [
+            "fight",
+            "crew"
+          ],
+          "marker": {
+            "environment": "nebula"
+          },
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "NEBULA_AUTO_WARNING",
+          "slug": "auto-ship-warning-in-nebula",
+          "title": "Auto-ship warning in nebula",
+          "card": true,
+          "tags": [
+            "fight",
+            "unique"
+          ],
+          "marker": {
+            "environment": "nebula"
+          },
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": [
+            1
+          ]
+        },
+        {
+          "id": "NEBULA_AUTO_DEFENSE_ITEM",
+          "slug": "auto-ship-near-storage-station-in-nebula",
+          "title": "Auto-ship near storage station in nebula",
+          "card": true,
+          "tags": [
+            "may-fight",
+            "cost",
+            "unique"
+          ],
+          "marker": {
+            "environment": "nebula"
+          },
+          "gates": [
+            {
+              "req": "cloaking",
+              "label": "Cloaking",
+              "lvl": "1"
+            },
+            {
+              "req": "cloaking",
+              "label": "Cloaking",
+              "lvl": "2"
+            },
+            {
+              "req": "hacking",
+              "label": "Hacking",
+              "lvl": "1"
+            },
+            {
+              "req": "hacking",
+              "label": "Hacking",
+              "lvl": "2"
+            }
+          ],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "NEBULA_TRADER",
+          "slug": "trade-resources-in-nebula",
+          "title": "Trade resources in nebula",
+          "card": true,
+          "tags": [
+            "reward",
+            "cost",
+            "unique"
+          ],
+          "marker": {
+            "environment": "nebula"
+          },
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "STORM_REBEL",
+          "slug": "rebel-fight-in-plasma-storm",
+          "title": "Rebel fight in plasma storm",
+          "card": true,
+          "tags": [
+            "fight",
+            "crew",
+            "unique"
+          ],
+          "marker": {
+            "environment": "storm"
+          },
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "STORM_AUTO",
+          "slug": "auto-ship-fight-in-plasma-storm",
+          "title": "Auto-ship fight in plasma storm",
+          "card": true,
+          "tags": [
+            "may-fight",
+            "crew",
+            "unique"
+          ],
+          "marker": {
+            "environment": "storm"
+          },
+          "gates": [
+            {
+              "req": "engines",
+              "label": "Engines",
+              "lvl": "3"
+            },
+            {
+              "req": "engines",
+              "label": "Engines",
+              "lvl": "6"
+            },
+            {
+              "req": "cloaking",
+              "label": "Cloaking"
+            }
+          ],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "STORM_ITEMS",
+          "slug": "plasma-storm-incapacitated-ships",
+          "title": "Plasma storm incapacitated ships",
+          "card": true,
+          "tags": [
+            "crew-loss",
+            "crew",
+            "reward",
+            "unique"
+          ],
+          "marker": {
+            "environment": "storm"
+          },
+          "gates": [
+            {
+              "req": "pilot",
+              "label": "Piloting",
+              "lvl": "2"
+            }
+          ],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "NEBULA_REBEL_UNDETECTED",
+          "slug": "rebel-fight-choice-in-nebula",
+          "title": "Rebel fight choice in nebula",
+          "card": true,
+          "tags": [
+            "may-fight",
+            "crew",
+            "unique"
+          ],
+          "marker": {
+            "environment": "nebula"
+          },
+          "gates": [
+            {
+              "req": "engines",
+              "label": "Engines",
+              "lvl": "4"
+            },
+            {
+              "req": "cloaking",
+              "label": "Cloaking"
+            }
+          ],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": [
+            1
+          ]
+        },
+        {
+          "id": "NEBULA_LOST_SHIP",
+          "slug": "nebula-lost-ship",
+          "title": "Nebula lost ship",
+          "card": true,
+          "tags": [
+            "may-fight",
+            "crew",
+            "unique"
+          ],
+          "marker": {
+            "environment": "nebula"
+          },
+          "gates": [
+            {
+              "req": "teleporter",
+              "label": "Crew Teleporter"
+            },
+            {
+              "req": "ADV_SCANNERS",
+              "label": "Long-Ranged Scanners"
+            }
+          ],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "NEBULA_REBEL_BOARDING",
+          "slug": "boarders-rebels-in-nebula",
+          "title": "Boarders: rebels in nebula",
+          "card": true,
+          "tags": [
+            "boarders",
+            "unique"
+          ],
+          "marker": {
+            "environment": "nebula"
+          },
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [
+            {
+              "class": "human",
+              "min": 3,
+              "max": 4
+            }
+          ],
+          "unlock_ship": [],
+          "fleet_delay": []
+        }
+      ],
+      "ambiguous": "defined as both an eventList and an event",
+      "order": 5,
+      "placement": {
+        "position": 0,
+        "nebula_first": true,
+        "before_min": 0,
+        "before_max": 0,
+        "at_risk": false,
+        "always_short": false
+      }
+    },
+    {
+      "name": "NOTHING_REBEL",
+      "min": 1,
+      "max": 2,
+      "kind": "event",
+      "section": "empty",
+      "events": [
+        {
+          "id": "NOTHING_REBEL",
+          "slug": "empty-beacon-rebel",
+          "title": "Empty beacon (Rebel)",
+          "card": true,
+          "tags": [],
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        }
+      ],
+      "order": 6,
+      "placement": {
+        "position": 6,
+        "nebula_first": false,
+        "before_min": 10,
+        "before_max": 20,
+        "at_risk": false,
+        "always_short": false
+      }
+    },
+    {
+      "name": "QUESTS_REBEL",
+      "min": 0,
+      "max": 2,
+      "kind": "list",
+      "section": "quests",
+      "events": [
+        {
+          "id": "MERCHANT_REQUEST",
+          "slug": "merchant-s-request",
+          "title": "Merchant's request",
+          "card": true,
+          "tags": [
+            "may-fight",
+            "boarders",
+            "crew-loss",
+            "crew",
+            "quest",
+            "cost",
+            "unique"
+          ],
+          "gates": [
+            {
+              "req": "medbay",
+              "label": "Medbay",
+              "lvl": "3"
+            },
+            {
+              "req": "teleporter",
+              "label": "Crew Teleporter"
+            },
+            {
+              "req": "medbay",
+              "label": "Medbay",
+              "lvl": "2"
+            },
+            {
+              "req": "BATTLE",
+              "label": "Anti-Personnel Drone"
+            },
+            {
+              "req": "mind",
+              "label": "Mind Control"
+            },
+            {
+              "req": "weapons",
+              "label": "Weapon Control",
+              "lvl": "6"
+            }
+          ],
+          "items": [],
+          "crew_classes": [],
+          "quests": [
+            "MERCHANT_DELIVER",
+            "MERCHANT_INVESTIGATE",
+            "MERCHANT_INVESTIGATE_DELIVER"
+          ],
+          "boarders": [
+            {
+              "class": "human",
+              "min": 3,
+              "max": 4
+            }
+          ],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "FEDERATION_PLANET_SIGNAL",
+          "slug": "encrypted-federation-signal",
+          "title": "Encrypted federation signal",
+          "card": true,
+          "tags": [
+            "may-fight",
+            "boarders",
+            "crew",
+            "quest",
+            "unique"
+          ],
+          "gates": [
+            {
+              "req": "sensors",
+              "label": "Sensors",
+              "lvl": "2"
+            },
+            {
+              "req": "sensors",
+              "label": "Sensors",
+              "lvl": "3"
+            },
+            {
+              "req": "ADV_SCANNERS",
+              "label": "Long-Ranged Scanners"
+            }
+          ],
+          "items": [],
+          "crew_classes": [],
+          "quests": [
+            "HIDDEN_FEDERATION_BASE_LIST",
+            "FEDERATION_BASE_ASSIST"
+          ],
+          "boarders": [
+            {
+              "class": "human",
+              "min": 2,
+              "max": 3
+            }
+          ],
+          "unlock_ship": [],
+          "fleet_delay": []
+        }
+      ],
+      "order": 7,
+      "placement": {
+        "position": 7,
+        "nebula_first": false,
+        "before_min": 11,
+        "before_max": 22,
+        "at_risk": false,
+        "always_short": false
+      }
+    },
+    {
+      "name": "NEUTRAL_REBEL",
+      "min": 5,
+      "max": 6,
+      "kind": "list",
+      "section": "neutral",
+      "events": [
+        {
+          "id": "AUTO_CIVILIAN",
+          "slug": "auto-ship-attacking-civilian",
+          "title": "Auto-ship attacking civilian",
+          "card": true,
+          "tags": [
+            "may-fight",
+            "crew"
+          ],
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "SQUAT_REFUEL_STATION",
+          "slug": "rebel-ship-attacking-refueling-outpost",
+          "title": "Rebel ship attacking refueling outpost",
+          "card": true,
+          "tags": [
+            "may-fight",
+            "unique"
+          ],
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "AUTO_DEFENSE_MAP",
+          "slug": "auto-ship-near-sensor-station",
+          "title": "Auto-ship near sensor station",
+          "card": true,
+          "tags": [
+            "may-fight",
+            "unique"
+          ],
+          "gates": [
+            {
+              "req": "sensors",
+              "label": "Sensors",
+              "lvl": "3"
+            },
+            {
+              "req": "teleporter",
+              "label": "Crew Teleporter"
+            }
+          ],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "AUTO_DEFENSE_ITEM",
+          "slug": "auto-ship-near-storage-station",
+          "title": "Auto-ship near storage station",
+          "card": true,
+          "tags": [
+            "may-fight",
+            "unique"
+          ],
+          "gates": [
+            {
+              "req": "cloaking",
+              "label": "Cloaking"
+            }
+          ],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "AUTO_DEFENSE_RADAR",
+          "slug": "auto-ship-near-radar-station",
+          "title": "Auto-ship near radar station",
+          "card": true,
+          "tags": [
+            "may-fight",
+            "cost",
+            "unique"
+          ],
+          "gates": [
+            {
+              "req": "COMBAT_DRONE_LIST",
+              "label": "COMBAT_DRONE_LIST"
+            },
+            {
+              "req": "hacking",
+              "label": "Hacking"
+            }
+          ],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": [
+            -1,
+            1
+          ]
+        },
+        {
+          "id": "REBEL_TRANSPORT",
+          "slug": "rebel-transport-ship",
+          "title": "Rebel transport ship",
+          "card": true,
+          "tags": [
+            "may-fight",
+            "crew",
+            "unique"
+          ],
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "BROKEN_REBEL_DRONE",
+          "slug": "deactivated-auto-ship",
+          "title": "Deactivated Auto-ship",
+          "card": true,
+          "tags": [
+            "may-fight",
+            "crew",
+            "unique"
+          ],
+          "gates": [
+            {
+              "req": "sensors",
+              "label": "Sensors",
+              "lvl": "3"
+            }
+          ],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "ALISON_DEFECTOR",
+          "slug": "rebel-defector",
+          "title": "Rebel defector",
+          "card": true,
+          "tags": [
+            "may-fight",
+            "boarders",
+            "crew-loss",
+            "crew",
+            "quest",
+            "unique"
+          ],
+          "gates": [],
+          "items": [],
+          "crew_classes": [
+            "human"
+          ],
+          "quests": [
+            "ALISON_DEFECTOR_QUEST"
+          ],
+          "boarders": [
+            {
+              "class": "human",
+              "min": 2,
+              "max": 2
+            },
+            {
+              "class": "human",
+              "min": 1,
+              "max": 1
+            }
+          ],
+          "unlock_ship": [],
+          "fleet_delay": [
+            1
+          ]
+        }
+      ],
+      "order": 8,
+      "placement": {
+        "position": 8,
+        "nebula_first": false,
+        "before_min": 11,
+        "before_max": 24,
+        "at_risk": true,
+        "always_short": false
+      }
+    }
+  ],
+  "generation": {
+    "grid_beacons": 24,
+    "grid_beacons_min": 19,
+    "allocated_min": 16,
+    "allocated_max": 30,
+    "can_exhaust_map": true,
+    "at_risk_entries": [
+      "NEUTRAL_REBEL"
+    ],
+    "always_short_entries": [],
+    "cannot_meet_minimum": false,
+    "nebula_first": [
+      "NEBULA_REBEL"
+    ],
+    "fallback_list": "NEUTRAL",
+    "fallback_list_ae": "OVERRIDE_NEUTRAL",
+    "fallback_events": [
+      {
+        "id": "PIRATE_CIVILIAN",
+        "slug": "pirate-ship-attacking-civilian",
+        "title": "Pirate ship attacking civilian",
+        "card": true,
+        "tags": [
+          "may-fight",
+          "crew"
+        ],
+        "gates": [],
+        "items": [],
+        "crew_classes": [],
+        "quests": [],
+        "boarders": [],
+        "unlock_ship": [],
+        "fleet_delay": []
+      },
+      {
+        "id": "REBEL_TRANSPORT",
+        "slug": "rebel-transport-ship",
+        "title": "Rebel transport ship",
+        "card": true,
+        "tags": [
+          "may-fight",
+          "crew",
+          "unique"
+        ],
+        "gates": [],
+        "items": [],
+        "crew_classes": [],
+        "quests": [],
+        "boarders": [],
+        "unlock_ship": [],
+        "fleet_delay": []
+      },
+      {
+        "id": "AUTO_REFUEL_STATION",
+        "slug": "auto-ship-attacking-outpost",
+        "title": "Auto-ship attacking outpost",
+        "card": true,
+        "tags": [
+          "may-fight",
+          "unique"
+        ],
+        "gates": [],
+        "items": [],
+        "crew_classes": [],
+        "quests": [],
+        "boarders": [],
+        "unlock_ship": [],
+        "fleet_delay": []
+      },
+      {
+        "id": "ASTEROID_EXPLORE",
+        "slug": "large-asteroid-field",
+        "title": "Large asteroid field",
+        "card": true,
+        "tags": [
+          "may-fight",
+          "crew",
+          "unique"
+        ],
+        "gates": [
+          {
+            "req": "SCRAP_COLLECTOR",
+            "label": "Scrap Recovery Arm"
+          }
+        ],
+        "items": [],
+        "crew_classes": [],
+        "quests": [],
+        "boarders": [],
+        "unlock_ship": [],
+        "fleet_delay": []
+      },
+      {
+        "id": "BROKEN_REBEL_DRONE",
+        "slug": "deactivated-auto-ship",
+        "title": "Deactivated Auto-ship",
+        "card": true,
+        "tags": [
+          "may-fight",
+          "crew",
+          "unique"
+        ],
+        "gates": [
+          {
+            "req": "sensors",
+            "label": "Sensors",
+            "lvl": "3"
+          }
+        ],
+        "items": [],
+        "crew_classes": [],
+        "quests": [],
+        "boarders": [],
+        "unlock_ship": [],
+        "fleet_delay": []
+      },
+      {
+        "id": "MERCENARY",
+        "slug": "the-mercenary",
+        "title": "The mercenary",
+        "card": true,
+        "tags": [
+          "may-fight",
+          "crew",
+          "cost"
+        ],
+        "gates": [],
+        "items": [],
+        "crew_classes": [],
+        "quests": [],
+        "boarders": [],
+        "unlock_ship": [],
+        "fleet_delay": [
+          -2
+        ]
+      },
+      {
+        "id": "FRIENDLY_SLAVER",
+        "slug": "slaver-friendly",
+        "title": "Slaver (friendly)",
+        "card": true,
+        "tags": [
+          "may-fight",
+          "crew",
+          "cost",
+          "unique"
+        ],
+        "gates": [
+          {
+            "req": "teleporter",
+            "label": "Crew Teleporter",
+            "lvl": "2"
+          }
+        ],
+        "items": [],
+        "crew_classes": [
+          "mantis",
+          "rock",
+          "engi"
+        ],
+        "quests": [],
+        "boarders": [],
+        "unlock_ship": [],
+        "fleet_delay": []
+      },
+      {
+        "id": "PIRATE_BRIBER",
+        "slug": "pirate-briber",
+        "title": "Pirate briber",
+        "card": true,
+        "tags": [
+          "may-fight",
+          "store",
+          "unique",
+          "store-marker"
+        ],
+        "marker": {
+          "store": true
+        },
+        "gates": [],
+        "items": [],
+        "crew_classes": [],
+        "quests": [],
+        "boarders": [],
+        "unlock_ship": [],
+        "fleet_delay": [
+          -1
+        ]
+      },
+      {
+        "id": "AUTO_DEFENSE_ITEM",
+        "slug": "auto-ship-near-storage-station",
+        "title": "Auto-ship near storage station",
+        "card": true,
+        "tags": [
+          "may-fight",
+          "unique"
+        ],
+        "gates": [
+          {
+            "req": "cloaking",
+            "label": "Cloaking"
+          }
+        ],
+        "items": [],
+        "crew_classes": [],
+        "quests": [],
+        "boarders": [],
+        "unlock_ship": [],
+        "fleet_delay": []
+      },
+      {
+        "id": "DONOR_PONY",
+        "slug": "intelligent-ponies",
+        "title": "Intelligent ponies",
+        "card": true,
+        "tags": [
+          "crew-loss",
+          "crew",
+          "reward",
+          "unique"
+        ],
+        "gates": [
+          {
+            "req": "slug",
+            "label": "Slug"
+          }
+        ],
+        "items": [],
+        "crew_classes": [
+          "engi"
+        ],
+        "quests": [],
+        "boarders": [],
+        "unlock_ship": [],
+        "fleet_delay": []
+      },
+      {
+        "id": "DONOR_PLAGUE",
+        "slug": "plagued-station",
+        "title": "Plagued station",
+        "card": true,
+        "tags": [
+          "crew-loss",
+          "crew",
+          "reward",
+          "unique"
+        ],
+        "gates": [
+          {
+            "req": "medbay",
+            "label": "Medbay",
+            "lvl": "2"
+          }
+        ],
+        "items": [],
+        "crew_classes": [
+          "human"
+        ],
+        "quests": [],
+        "boarders": [],
+        "unlock_ship": [],
+        "fleet_delay": []
+      },
+      {
+        "id": "REFUGEE_NO_DISTRESS",
+        "slug": "refugee",
+        "title": "Refugee",
+        "card": true,
+        "tags": [
+          "may-fight",
+          "crew",
+          "cost"
+        ],
+        "gates": [],
+        "items": [],
+        "crew_classes": [],
+        "quests": [],
+        "boarders": [],
+        "unlock_ship": [],
+        "fleet_delay": []
+      },
+      {
+        "id": "WRECKAGE_EVENT",
+        "slug": "battlefield-wreckage",
+        "title": "Battlefield wreckage",
+        "card": true,
+        "tags": [
+          "may-fight",
+          "crew"
+        ],
+        "gates": [
+          {
+            "req": "sensors",
+            "label": "Sensors",
+            "lvl": "2"
+          },
+          {
+            "req": "sensors",
+            "label": "Sensors",
+            "lvl": "3"
+          }
+        ],
+        "items": [],
+        "crew_classes": [],
+        "quests": [],
+        "boarders": [],
+        "unlock_ship": [],
+        "fleet_delay": []
+      },
+      {
+        "id": "FUELING_STATION",
+        "slug": "refueling-platform",
+        "title": "Refueling platform",
+        "card": true,
+        "tags": [
+          "may-fight",
+          "boarders",
+          "crew",
+          "cost",
+          "unique"
+        ],
+        "gates": [
+          {
+            "req": "doors",
+            "label": "Door System",
+            "lvl": "2"
+          }
+        ],
+        "items": [],
+        "crew_classes": [],
+        "quests": [],
+        "boarders": [
+          {
+            "class": "random",
+            "min": 2,
+            "max": 4
+          }
+        ],
+        "unlock_ship": [],
+        "fleet_delay": []
+      },
+      {
+        "id": "PIRATE_SALESMAN",
+        "slug": "pirate-ship-selling-drones",
+        "title": "Pirate ship selling drones",
+        "card": true,
+        "tags": [
+          "may-fight",
+          "crew",
+          "cost",
+          "unique"
+        ],
+        "gates": [
+          {
+            "req": "drones",
+            "label": "Drone Part"
+          },
+          {
+            "req": "slug",
+            "label": "Slug"
+          },
+          {
+            "req": "hacking",
+            "label": "Hacking"
+          }
+        ],
+        "items": [],
+        "crew_classes": [],
+        "quests": [],
+        "boarders": [],
+        "unlock_ship": [],
+        "fleet_delay": []
+      },
+      {
+        "id": "TERRAFORMING_SCAN",
+        "slug": "terraforming-scan",
+        "title": "Terraforming scan",
+        "card": true,
+        "tags": [
+          "may-fight",
+          "crew",
+          "cost",
+          "unique"
+        ],
+        "gates": [
+          {
+            "req": "sensors",
+            "label": "Sensors",
+            "lvl": "2"
+          },
+          {
+            "req": "energy",
+            "label": "Zoltan"
+          }
+        ],
+        "items": [],
+        "crew_classes": [],
+        "quests": [],
+        "boarders": [],
+        "unlock_ship": [],
+        "fleet_delay": []
+      },
+      {
+        "id": "REBEL_CHECKPOINT",
+        "slug": "rebel-checkpoint",
+        "title": "Rebel checkpoint",
+        "card": true,
+        "tags": [
+          "may-fight",
+          "crew",
+          "cost"
+        ],
+        "gates": [],
+        "items": [],
+        "crew_classes": [],
+        "quests": [],
+        "boarders": [],
+        "unlock_ship": [],
+        "fleet_delay": []
+      },
+      {
+        "id": "REBEL_HELPERS",
+        "slug": "rebel-ship-supplying-civilians",
+        "title": "Rebel ship supplying civilians",
+        "card": true,
+        "tags": [
+          "may-fight"
+        ],
+        "gates": [],
+        "items": [],
+        "crew_classes": [],
+        "quests": [],
+        "boarders": [],
+        "unlock_ship": [],
+        "fleet_delay": []
+      },
+      {
+        "id": "ROGUE_REBEL",
+        "slug": "rebel-fight-chance",
+        "title": "Rebel fight chance",
+        "card": true,
+        "tags": [
+          "may-fight",
+          "crew"
+        ],
+        "gates": [
+          {
+            "req": "sensors",
+            "label": "Sensors",
+            "lvl": "2"
+          },
+          {
+            "req": "sensors",
+            "label": "Sensors",
+            "lvl": "3"
+          }
+        ],
+        "items": [],
+        "crew_classes": [],
+        "quests": [],
+        "boarders": [],
+        "unlock_ship": [],
+        "fleet_delay": [
+          1
+        ]
+      },
+      {
+        "id": "EMPTY_STATION2",
+        "slug": "abandoned-station",
+        "title": "Abandoned station",
+        "card": true,
+        "tags": [
+          "may-fight",
+          "boarders",
+          "crew",
+          "unique"
+        ],
+        "gates": [
+          {
+            "req": "clonebay",
+            "label": "Clone Bay"
+          }
+        ],
+        "items": [],
+        "crew_classes": [],
+        "quests": [],
+        "boarders": [
+          {
+            "class": null,
+            "min": 1,
+            "max": 1
+          },
+          {
+            "class": null,
+            "min": 2,
+            "max": 2
+          },
+          {
+            "class": null,
+            "min": 2,
+            "max": 4
+          }
+        ],
+        "unlock_ship": [],
+        "fleet_delay": []
+      }
+    ],
+    "fallback_beacons": {
+      "min": 0,
+      "max": 8,
+      "on_full_map": 0
+    },
+    "exit_list": "EXIT_LIST",
+    "source": "raw/wiki/sectors.md"
+  },
+  "rollup": {
+    "markers": {
+      "distress": {
+        "events": [
+          "CIVILIAN_ASTEROIDS_BEACON",
+          "DISTRESS_STATION_FIRE",
+          "ESCORT_BEACON",
+          "FRIENDLY_BEACON",
+          "TRAP_BEACON"
+        ],
+        "allocation_entries": [
+          "DISTRESS_BEACON_REBEL"
+        ],
+        "marked_outside_allocation": [],
+        "allocated_but_unmarked": [
+          "REBEL_VS_FEDERATION"
+        ]
+      },
+      "store": [
+        "ESCORT_BEACON",
+        "STORE_REBEL"
+      ],
+      "environment": {
+        "asteroid": [
+          "AUTO_ASTEROID"
+        ],
+        "nebula": [
+          "NEBULA_AUTO",
+          "NEBULA_AUTO_DEFENSE_ITEM",
+          "NEBULA_AUTO_WARNING",
+          "NEBULA_EMPTY",
+          "NEBULA_LOST_SHIP",
+          "NEBULA_REBEL_BOARDING",
+          "NEBULA_REBEL_UNDETECTED",
+          "NEBULA_TRADER"
+        ],
+        "storm": [
+          "STORM_AUTO",
+          "STORM_ITEMS",
+          "STORM_REBEL"
+        ],
+        "sun": [
+          "BOARDERS_SUN"
+        ]
+      }
+    },
+    "distinct_events": 49,
+    "no_card": [],
+    "always_fight": [
+      "AUTO_ASTEROID",
+      "AUTO_WARNING",
+      "BOARDERS_REBEL_SHIP",
+      "NEBULA_AUTO",
+      "NEBULA_AUTO_WARNING",
+      "REBEL",
+      "REBEL_AUTO",
+      "SQUAT_WARNING",
+      "STORM_REBEL",
+      "TRAP_BEACON"
+    ],
+    "may_fight": [
+      "ALISON_DEFECTOR",
+      "AUTO_CIVILIAN",
+      "AUTO_DEFENSE_ITEM",
+      "AUTO_DEFENSE_MAP",
+      "AUTO_DEFENSE_RADAR",
+      "BROKEN_REBEL_DRONE",
+      "CIVILIAN_ASTEROIDS_BEACON",
+      "ESCORT_BEACON",
+      "FEDERATION_PLANET_SIGNAL",
+      "MERCHANT_REQUEST",
+      "NEBULA_AUTO_DEFENSE_ITEM",
+      "NEBULA_LOST_SHIP",
+      "NEBULA_REBEL_UNDETECTED",
+      "REBEL_TRANSPORT",
+      "REBEL_VS_FEDERATION",
+      "SQUAT_REFUEL_STATION",
+      "STORM_AUTO"
+    ],
+    "crew_loss": [
+      "ALISON_DEFECTOR",
+      "DISTRESS_STATION_FIRE",
+      "MERCHANT_REQUEST",
+      "STORM_ITEMS"
+    ],
+    "crew_gain": [
+      "ALISON_DEFECTOR",
+      "AUTO_ASTEROID",
+      "AUTO_CIVILIAN",
+      "BOARDERS_REBEL_SHIP",
+      "BROKEN_REBEL_DRONE",
+      "CIVILIAN_ASTEROIDS_BEACON",
+      "DISTRESS_STATION_FIRE",
+      "ESCORT_BEACON",
+      "FEDERATION_PLANET_SIGNAL",
+      "FRIENDLY_BEACON",
+      "MERCHANT_REQUEST",
+      "NEBULA_AUTO",
+      "NEBULA_LOST_SHIP",
+      "NEBULA_REBEL_UNDETECTED",
+      "REBEL",
+      "REBEL_AUTO",
+      "REBEL_TRANSPORT",
+      "REBEL_VS_FEDERATION",
+      "STORM_AUTO",
+      "STORM_ITEMS",
+      "STORM_REBEL",
+      "TAVERN_HIRE",
+      "TRAP_BEACON"
+    ],
+    "boarders": [
+      "ALISON_DEFECTOR",
+      "BOARDERS_REBEL_SHIP",
+      "BOARDERS_SUN",
+      "FEDERATION_PLANET_SIGNAL",
+      "MERCHANT_REQUEST",
+      "NEBULA_REBEL_BOARDING"
+    ],
+    "unique": [
+      "ALISON_DEFECTOR",
+      "AUTO_DEFENSE_ITEM",
+      "AUTO_DEFENSE_MAP",
+      "AUTO_DEFENSE_RADAR",
+      "AUTO_WARNING",
+      "BOARDERS_SUN",
+      "BROKEN_REBEL_DRONE",
+      "CIVILIAN_ASTEROIDS_BEACON",
+      "DISTRESS_STATION_FIRE",
+      "ESCORT_BEACON",
+      "FEDERATION_PLANET_SIGNAL",
+      "HELP_MINERS",
+      "MERCHANT_REQUEST",
+      "NEBULA_AUTO_DEFENSE_ITEM",
+      "NEBULA_AUTO_WARNING",
+      "NEBULA_LOST_SHIP",
+      "NEBULA_REBEL_BOARDING",
+      "NEBULA_REBEL_UNDETECTED",
+      "NEBULA_TRADER",
+      "REBEL_TRANSPORT",
+      "REBEL_VS_FEDERATION",
+      "REFUEL_STATION",
+      "REPAIR_STATION",
+      "SELL_DRONES_STATION",
+      "SELL_MISSILES_STATION",
+      "SQUAT_REFUEL_STATION",
+      "SQUAT_WARNING",
+      "STORM_AUTO",
+      "STORM_ITEMS",
+      "STORM_REBEL",
+      "TAVERN_HIRE",
+      "TRADER_UPGRADES",
+      "TRADER_UPGRADES_EXCHANGE",
+      "TRAP_BEACON"
+    ],
+    "quest_starts": [
+      "ALISON_DEFECTOR",
+      "CIVILIAN_ASTEROIDS_BEACON",
+      "ESCORT_BEACON",
+      "FEDERATION_PLANET_SIGNAL",
+      "MERCHANT_REQUEST",
+      "REBEL_VS_FEDERATION"
+    ],
+    "gates": [
+      {
+        "label": "Sensors",
+        "reqs": [
+          "sensors"
+        ],
+        "req": "sensors",
+        "system": true,
+        "levels": [
+          "2",
+          "3"
+        ],
+        "events": [
+          "TRADER_UPGRADES",
+          "CIVILIAN_ASTEROIDS_BEACON",
+          "REBEL_VS_FEDERATION",
+          "FEDERATION_PLANET_SIGNAL",
+          "AUTO_DEFENSE_MAP",
+          "BROKEN_REBEL_DRONE"
+        ],
+        "levels_detail": [
+          {
+            "lvl": "1",
+            "events": [
+              "TRADER_UPGRADES"
+            ]
+          },
+          {
+            "lvl": "2",
+            "events": [
+              "CIVILIAN_ASTEROIDS_BEACON",
+              "REBEL_VS_FEDERATION",
+              "FEDERATION_PLANET_SIGNAL"
+            ]
+          },
+          {
+            "lvl": "3",
+            "events": [
+              "CIVILIAN_ASTEROIDS_BEACON",
+              "REBEL_VS_FEDERATION",
+              "FEDERATION_PLANET_SIGNAL",
+              "AUTO_DEFENSE_MAP",
+              "BROKEN_REBEL_DRONE"
+            ]
+          }
+        ]
+      },
+      {
+        "label": "Teleporter",
+        "reqs": [
+          "teleporter"
+        ],
+        "req": "teleporter",
+        "system": true,
+        "levels": [],
+        "events": [
+          "CIVILIAN_ASTEROIDS_BEACON",
+          "REBEL_VS_FEDERATION",
+          "NEBULA_LOST_SHIP",
+          "MERCHANT_REQUEST",
+          "AUTO_DEFENSE_MAP"
+        ],
+        "levels_detail": [
+          {
+            "lvl": "1",
+            "events": [
+              "CIVILIAN_ASTEROIDS_BEACON",
+              "REBEL_VS_FEDERATION",
+              "NEBULA_LOST_SHIP",
+              "MERCHANT_REQUEST",
+              "AUTO_DEFENSE_MAP"
+            ]
+          }
+        ]
+      },
+      {
+        "label": "Cloaking",
+        "reqs": [
+          "cloaking"
+        ],
+        "req": "cloaking",
+        "system": true,
+        "levels": [
+          "1",
+          "2"
+        ],
+        "events": [
+          "NEBULA_AUTO_DEFENSE_ITEM",
+          "STORM_AUTO",
+          "NEBULA_REBEL_UNDETECTED",
+          "AUTO_DEFENSE_ITEM"
+        ],
+        "levels_detail": [
+          {
+            "lvl": "1",
+            "events": [
+              "NEBULA_AUTO_DEFENSE_ITEM",
+              "STORM_AUTO",
+              "NEBULA_REBEL_UNDETECTED",
+              "AUTO_DEFENSE_ITEM"
+            ]
+          },
+          {
+            "lvl": "2",
+            "events": [
+              "NEBULA_AUTO_DEFENSE_ITEM"
+            ]
+          }
+        ]
+      },
+      {
+        "label": "Long-Ranged Scanners",
+        "reqs": [
+          "ADV_SCANNERS"
+        ],
+        "req": "ADV_SCANNERS",
+        "system": false,
+        "levels": [],
+        "events": [
+          "CIVILIAN_ASTEROIDS_BEACON",
+          "REBEL_VS_FEDERATION",
+          "NEBULA_LOST_SHIP",
+          "FEDERATION_PLANET_SIGNAL"
+        ],
+        "levels_detail": [
+          {
+            "lvl": null,
+            "events": [
+              "CIVILIAN_ASTEROIDS_BEACON",
+              "REBEL_VS_FEDERATION",
+              "NEBULA_LOST_SHIP",
+              "FEDERATION_PLANET_SIGNAL"
+            ]
+          }
+        ]
+      },
+      {
+        "label": "Engines",
+        "reqs": [
+          "engines"
+        ],
+        "req": "engines",
+        "system": true,
+        "levels": [
+          "3",
+          "6",
+          "4"
+        ],
+        "events": [
+          "STORM_AUTO",
+          "NEBULA_REBEL_UNDETECTED"
+        ],
+        "levels_detail": [
+          {
+            "lvl": "3",
+            "events": [
+              "STORM_AUTO"
+            ]
+          },
+          {
+            "lvl": "4",
+            "events": [
+              "NEBULA_REBEL_UNDETECTED"
+            ]
+          },
+          {
+            "lvl": "6",
+            "events": [
+              "STORM_AUTO"
+            ]
+          }
+        ]
+      },
+      {
+        "label": "Hacking",
+        "reqs": [
+          "hacking"
+        ],
+        "req": "hacking",
+        "system": true,
+        "levels": [
+          "1",
+          "2"
+        ],
+        "events": [
+          "NEBULA_AUTO_DEFENSE_ITEM",
+          "AUTO_DEFENSE_RADAR"
+        ],
+        "levels_detail": [
+          {
+            "lvl": "1",
+            "events": [
+              "NEBULA_AUTO_DEFENSE_ITEM",
+              "AUTO_DEFENSE_RADAR"
+            ]
+          },
+          {
+            "lvl": "2",
+            "events": [
+              "NEBULA_AUTO_DEFENSE_ITEM"
+            ]
+          }
+        ]
+      },
+      {
+        "label": "Piloting",
+        "reqs": [
+          "pilot"
+        ],
+        "req": "pilot",
+        "system": true,
+        "levels": [
+          "2"
+        ],
+        "events": [
+          "TRADER_UPGRADES",
+          "STORM_ITEMS"
+        ],
+        "levels_detail": [
+          {
+            "lvl": "1",
+            "events": [
+              "TRADER_UPGRADES"
+            ]
+          },
+          {
+            "lvl": "2",
+            "events": [
+              "STORM_ITEMS"
+            ]
+          }
+        ]
+      },
+      {
+        "label": "System Repair Drone",
+        "reqs": [
+          "REPAIR"
+        ],
+        "req": "REPAIR",
+        "system": false,
+        "levels": [],
+        "events": [
+          "CIVILIAN_ASTEROIDS_BEACON",
+          "DISTRESS_STATION_FIRE"
+        ],
+        "levels_detail": [
+          {
+            "lvl": null,
+            "events": [
+              "CIVILIAN_ASTEROIDS_BEACON",
+              "DISTRESS_STATION_FIRE"
+            ]
+          }
+        ]
+      },
+      {
+        "label": "Adv. FTL Navigation",
+        "reqs": [
+          "FTL_JUMPER"
+        ],
+        "req": "FTL_JUMPER",
+        "system": false,
+        "levels": [],
+        "events": [
+          "ESCORT_BEACON"
+        ],
+        "levels_detail": [
+          {
+            "lvl": null,
+            "events": [
+              "ESCORT_BEACON"
+            ]
+          }
+        ]
+      },
+      {
+        "label": "Anti-Personnel Drone",
+        "reqs": [
+          "BATTLE"
+        ],
+        "req": "BATTLE",
+        "system": false,
+        "levels": [],
+        "events": [
+          "MERCHANT_REQUEST"
+        ],
+        "levels_detail": [
+          {
+            "lvl": null,
+            "events": [
+              "MERCHANT_REQUEST"
+            ]
+          }
+        ]
+      },
+      {
+        "label": "Combat drone",
+        "reqs": [
+          "COMBAT_DRONE_LIST"
+        ],
+        "req": "COMBAT_DRONE_LIST",
+        "system": false,
+        "levels": [],
+        "events": [
+          "AUTO_DEFENSE_RADAR"
+        ],
+        "levels_detail": [
+          {
+            "lvl": null,
+            "events": [
+              "AUTO_DEFENSE_RADAR"
+            ]
+          }
+        ]
+      },
+      {
+        "label": "Defense drone",
+        "reqs": [
+          "DRONES_DEFENSE_LIST"
+        ],
+        "req": "DRONES_DEFENSE_LIST",
+        "system": false,
+        "levels": [],
+        "events": [
+          "CIVILIAN_ASTEROIDS_BEACON"
+        ],
+        "levels_detail": [
+          {
+            "lvl": null,
+            "events": [
+              "CIVILIAN_ASTEROIDS_BEACON"
+            ]
+          }
+        ]
+      },
+      {
+        "label": "Doors",
+        "reqs": [
+          "doors"
+        ],
+        "req": "doors",
+        "system": true,
+        "levels": [],
+        "events": [
+          "TRADER_UPGRADES"
+        ],
+        "levels_detail": [
+          {
+            "lvl": "1",
+            "events": [
+              "TRADER_UPGRADES"
+            ]
+          }
+        ]
+      },
+      {
+        "label": "Engi Med-bot Dispersal",
+        "reqs": [
+          "NANO_MEDBAY"
+        ],
+        "req": "NANO_MEDBAY",
+        "system": false,
+        "levels": [],
+        "events": [
+          "REBEL_VS_FEDERATION"
+        ],
+        "levels_detail": [
+          {
+            "lvl": null,
+            "events": [
+              "REBEL_VS_FEDERATION"
+            ]
+          }
+        ]
+      },
+      {
+        "label": "Healing Burst",
+        "reqs": [
+          "BOMB_HEAL"
+        ],
+        "req": "BOMB_HEAL",
+        "system": false,
+        "levels": [],
+        "events": [
+          "REBEL_VS_FEDERATION"
+        ],
+        "levels_detail": [
+          {
+            "lvl": null,
+            "events": [
+              "REBEL_VS_FEDERATION"
+            ]
+          }
+        ]
+      },
+      {
+        "label": "Medbay",
+        "reqs": [
+          "medbay"
+        ],
+        "req": "medbay",
+        "system": true,
+        "levels": [
+          "3",
+          "2"
+        ],
+        "events": [
+          "MERCHANT_REQUEST"
+        ],
+        "levels_detail": [
+          {
+            "lvl": "2",
+            "events": [
+              "MERCHANT_REQUEST"
+            ]
+          },
+          {
+            "lvl": "3",
+            "events": [
+              "MERCHANT_REQUEST"
+            ]
+          }
+        ]
+      },
+      {
+        "label": "Mind Control",
+        "reqs": [
+          "mind"
+        ],
+        "req": "mind",
+        "system": true,
+        "levels": [],
+        "events": [
+          "MERCHANT_REQUEST"
+        ],
+        "levels_detail": [
+          {
+            "lvl": "1",
+            "events": [
+              "MERCHANT_REQUEST"
+            ]
+          }
+        ]
+      },
+      {
+        "label": "Missile weapon",
+        "reqs": [
+          "WEAPONS_MISSILES_EVENTS"
+        ],
+        "req": "WEAPONS_MISSILES_EVENTS",
+        "system": false,
+        "levels": [],
+        "events": [
+          "HELP_MINERS"
+        ],
+        "levels_detail": [
+          {
+            "lvl": null,
+            "events": [
+              "HELP_MINERS"
+            ]
+          }
+        ]
+      },
+      {
+        "label": "Oxygen",
+        "reqs": [
+          "oxygen"
+        ],
+        "req": "oxygen",
+        "system": true,
+        "levels": [],
+        "events": [
+          "TRADER_UPGRADES"
+        ],
+        "levels_detail": [
+          {
+            "lvl": "1",
+            "events": [
+              "TRADER_UPGRADES"
+            ]
+          }
+        ]
+      },
+      {
+        "label": "Reactor",
+        "reqs": [
+          "reactor"
+        ],
+        "req": "reactor",
+        "system": false,
+        "levels": [],
+        "events": [
+          "TRADER_UPGRADES"
+        ],
+        "levels_detail": [
+          {
+            "lvl": null,
+            "events": [
+              "TRADER_UPGRADES"
+            ]
+          }
+        ]
+      },
+      {
+        "label": "Rock crew",
+        "reqs": [
+          "rock"
+        ],
+        "req": "rock",
+        "system": false,
+        "levels": [],
+        "events": [
+          "DISTRESS_STATION_FIRE"
+        ],
+        "levels_detail": [
+          {
+            "lvl": null,
+            "events": [
+              "DISTRESS_STATION_FIRE"
+            ]
+          }
+        ]
+      },
+      {
+        "label": "Rock Plating",
+        "reqs": [
+          "ROCK_ARMOR"
+        ],
+        "req": "ROCK_ARMOR",
+        "system": false,
+        "levels": [],
+        "events": [
+          "CIVILIAN_ASTEROIDS_BEACON"
+        ],
+        "levels_detail": [
+          {
+            "lvl": null,
+            "events": [
+              "CIVILIAN_ASTEROIDS_BEACON"
+            ]
+          }
+        ]
+      },
+      {
+        "label": "Weapon Control",
+        "reqs": [
+          "weapons"
+        ],
+        "req": "weapons",
+        "system": true,
+        "levels": [
+          "6"
+        ],
+        "events": [
+          "MERCHANT_REQUEST"
+        ],
+        "levels_detail": [
+          {
+            "lvl": "6",
+            "events": [
+              "MERCHANT_REQUEST"
+            ]
+          }
+        ]
+      }
+    ],
+    "named_items": [],
+    "crew_classes": [
+      {
+        "value": "human",
+        "events": [
+          "ALISON_DEFECTOR"
+        ]
+      }
+    ],
+    "unlock_ships": [],
+    "quest_targets": [
+      {
+        "value": "HIDDEN_FEDERATION_BASE_LIST",
+        "events": [
+          "CIVILIAN_ASTEROIDS_BEACON",
+          "REBEL_VS_FEDERATION",
+          "FEDERATION_PLANET_SIGNAL"
+        ]
+      },
+      {
+        "value": "ALISON_DEFECTOR_QUEST",
+        "events": [
+          "ALISON_DEFECTOR"
+        ]
+      },
+      {
+        "value": "FEDERATION_BASE_ASSIST",
+        "events": [
+          "FEDERATION_PLANET_SIGNAL"
+        ]
+      },
+      {
+        "value": "MERCHANT_DELIVER",
+        "events": [
+          "MERCHANT_REQUEST"
+        ]
+      },
+      {
+        "value": "MERCHANT_INVESTIGATE",
+        "events": [
+          "MERCHANT_REQUEST"
+        ]
+      },
+      {
+        "value": "MERCHANT_INVESTIGATE_DELIVER",
+        "events": [
+          "MERCHANT_REQUEST"
+        ]
+      },
+      {
+        "value": "QUEST_ESCORT_ARRIVE",
+        "events": [
+          "ESCORT_BEACON"
+        ]
+      }
+    ]
+  },
+  "metrics": {
+    "blue_options": 23,
+    "blue_option_hits": 42,
+    "store_rarity_changes": 0,
+    "crew_rarity_changes": 0,
+    "crew_types_sold": 5,
+    "grid_beacons": 24,
+    "at_risk_entries": 1,
+    "beacons_min": 16,
+    "beacons_max": 30,
+    "distinct_events": 49,
+    "always_fight_events": 10,
+    "may_fight_events": 17,
+    "crew_loss_events": 4,
+    "crew_gain_events": 23,
+    "boarder_events": 6,
+    "unique_events": 34,
+    "gated_events": 17,
+    "quest_start_events": 6,
+    "section:hostile:min": 6,
+    "section:hostile:max": 8,
+    "section:boarders:min": 1,
+    "section:boarders:max": 1,
+    "section:neutral:min": 5,
+    "section:neutral:max": 6,
+    "section:nebula:min": 0,
+    "section:nebula:max": 5,
+    "section:distress:min": 1,
+    "section:distress:max": 2,
+    "section:items:min": 1,
+    "section:items:max": 2,
+    "section:store:min": 1,
+    "section:store:max": 2,
+    "section:quests:min": 0,
+    "section:quests:max": 2,
+    "section:empty:min": 1,
+    "section:empty:max": 2,
+    "entry:STORE_REBEL:min": 1,
+    "entry:STORE_REBEL:max": 2,
+    "entry:ITEMS:min": 1,
+    "entry:ITEMS:max": 2,
+    "entry:HOSTILE_REBEL:min": 6,
+    "entry:HOSTILE_REBEL:max": 8,
+    "entry:BOARDERS_REBEL:min": 1,
+    "entry:BOARDERS_REBEL:max": 1,
+    "entry:DISTRESS_BEACON_REBEL:min": 1,
+    "entry:DISTRESS_BEACON_REBEL:max": 2,
+    "entry:NEBULA_REBEL:min": 0,
+    "entry:NEBULA_REBEL:max": 5,
+    "entry:NOTHING_REBEL:min": 1,
+    "entry:NOTHING_REBEL:max": 2,
+    "entry:QUESTS_REBEL:min": 0,
+    "entry:QUESTS_REBEL:max": 2,
+    "entry:NEUTRAL_REBEL:min": 5,
+    "entry:NEUTRAL_REBEL:max": 6
+  }
+}

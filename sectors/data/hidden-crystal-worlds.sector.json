@@ -1,0 +1,1920 @@
+{
+  "schema": "ftl-sector-profile/1",
+  "id": "CRYSTAL_HOME",
+  "slug": "hidden-crystal-worlds",
+  "title": "Hidden Crystal Worlds",
+  "display_name": "Hidden Crystal Worlds",
+  "short_name": "Hidden Crystal Worlds",
+  "extracted_from": "raw/gamedata/sector_data.xml",
+  "min_sector": 0,
+  "earliest_sector": 1,
+  "unique": true,
+  "tracks": [
+    "debris",
+    "wasteland",
+    "deepspace"
+  ],
+  "crew_rarity": [
+    {
+      "id": "engi",
+      "label": "Engi",
+      "crew": true,
+      "rarity": 0,
+      "base": 2,
+      "change": "excluded"
+    },
+    {
+      "id": "mantis",
+      "label": "Mantis",
+      "crew": true,
+      "rarity": 0,
+      "base": 2,
+      "change": "excluded"
+    },
+    {
+      "id": "energy",
+      "label": "Zoltan",
+      "crew": true,
+      "rarity": 0,
+      "base": 5,
+      "change": "excluded"
+    },
+    {
+      "id": "slug",
+      "label": "Slug",
+      "crew": true,
+      "rarity": 0,
+      "base": 0,
+      "change": "same"
+    },
+    {
+      "id": "rock",
+      "label": "Rockman",
+      "crew": true,
+      "rarity": 0,
+      "base": 3,
+      "change": "excluded"
+    },
+    {
+      "id": "human",
+      "label": "Human",
+      "crew": true,
+      "rarity": 0,
+      "base": 1,
+      "change": "excluded"
+    },
+    {
+      "id": "crystal",
+      "label": "Crystal",
+      "crew": true,
+      "rarity": 1,
+      "base": 0,
+      "change": "unlocked"
+    },
+    {
+      "id": "LASER_BURST_1",
+      "label": "Defense Laser Mark I",
+      "crew": false,
+      "rarity": 0,
+      "base": 0,
+      "change": "same"
+    },
+    {
+      "id": "LASER_BURST_2",
+      "label": "Dual Shot Laser",
+      "crew": false,
+      "rarity": 0,
+      "base": 0,
+      "change": "same"
+    },
+    {
+      "id": "LASER_BURST_2_A",
+      "label": "Burst Laser Mark I",
+      "crew": false,
+      "rarity": 0,
+      "base": 1,
+      "change": "excluded"
+    },
+    {
+      "id": "LASER_BURST_3",
+      "label": "Burst Laser Mark II",
+      "crew": false,
+      "rarity": 0,
+      "base": 4,
+      "change": "excluded"
+    },
+    {
+      "id": "LASER_BURST_5",
+      "label": "Burst Laser Mark III",
+      "crew": false,
+      "rarity": 0,
+      "base": 4,
+      "change": "excluded"
+    },
+    {
+      "id": "LASER_HEAVY_1",
+      "label": "Heavy Laser Mark I",
+      "crew": false,
+      "rarity": 0,
+      "base": 2,
+      "change": "excluded"
+    },
+    {
+      "id": "LASER_HEAVY_2",
+      "label": "Heavy Laser Mark II",
+      "crew": false,
+      "rarity": 0,
+      "base": 4,
+      "change": "excluded"
+    },
+    {
+      "id": "MISSILES_1",
+      "label": "Leto Missiles",
+      "crew": false,
+      "rarity": 0,
+      "base": 0,
+      "change": "same"
+    },
+    {
+      "id": "MISSILES_2",
+      "label": "Artemis Missiles",
+      "crew": false,
+      "rarity": 0,
+      "base": 0,
+      "change": "same"
+    },
+    {
+      "id": "MISSILES_2_PLAYER",
+      "label": "Artemis Missiles",
+      "crew": false,
+      "rarity": 0,
+      "base": 0,
+      "change": "same"
+    },
+    {
+      "id": "MISSILES_3",
+      "label": "Hermes Missile",
+      "crew": false,
+      "rarity": 0,
+      "base": 2,
+      "change": "excluded"
+    },
+    {
+      "id": "MISSILES_BURST",
+      "label": "Pegasus Missile",
+      "crew": false,
+      "rarity": 0,
+      "base": 3,
+      "change": "excluded"
+    },
+    {
+      "id": "MISSILES_BREACH",
+      "label": "Breach Missiles",
+      "crew": false,
+      "rarity": 0,
+      "base": 3,
+      "change": "excluded"
+    },
+    {
+      "id": "BEAM_1",
+      "label": "Mini Beam",
+      "crew": false,
+      "rarity": 0,
+      "base": 0,
+      "change": "same"
+    },
+    {
+      "id": "BEAM_2",
+      "label": "Halberd Beam",
+      "crew": false,
+      "rarity": 0,
+      "base": 2,
+      "change": "excluded"
+    },
+    {
+      "id": "BEAM_3",
+      "label": "Glaive Beam",
+      "crew": false,
+      "rarity": 0,
+      "base": 5,
+      "change": "excluded"
+    },
+    {
+      "id": "BEAM_LONG",
+      "label": "Pike Beam",
+      "crew": false,
+      "rarity": 0,
+      "base": 2,
+      "change": "excluded"
+    },
+    {
+      "id": "BEAM_FIRE",
+      "label": "Fire Beam",
+      "crew": false,
+      "rarity": 0,
+      "base": 3,
+      "change": "excluded"
+    },
+    {
+      "id": "BOMB_BREACH_1",
+      "label": "Breach Bomb Mark I",
+      "crew": false,
+      "rarity": 0,
+      "base": 0,
+      "change": "same"
+    },
+    {
+      "id": "BOMB_BREACH_2",
+      "label": "Breach Bomb Mark II",
+      "crew": false,
+      "rarity": 0,
+      "base": 4,
+      "change": "excluded"
+    },
+    {
+      "id": "ION_1",
+      "label": "Ion Blast",
+      "crew": false,
+      "rarity": 0,
+      "base": 3,
+      "change": "excluded"
+    },
+    {
+      "id": "ION_2",
+      "label": "Heavy Ion",
+      "crew": false,
+      "rarity": 0,
+      "base": 3,
+      "change": "excluded"
+    },
+    {
+      "id": "ION_4",
+      "label": "Ion Blast Mark II",
+      "crew": false,
+      "rarity": 0,
+      "base": 4,
+      "change": "excluded"
+    },
+    {
+      "id": "BOMB_1",
+      "label": "Small Bomb",
+      "crew": false,
+      "rarity": 0,
+      "base": 1,
+      "change": "excluded"
+    },
+    {
+      "id": "BOMB_FIRE",
+      "label": "Fire Bomb",
+      "crew": false,
+      "rarity": 0,
+      "base": 2,
+      "change": "excluded"
+    },
+    {
+      "id": "BOMB_ION",
+      "label": "Ion Bomb",
+      "crew": false,
+      "rarity": 0,
+      "base": 3,
+      "change": "excluded"
+    },
+    {
+      "id": "BOMB_HEAL",
+      "label": "Healing Burst",
+      "crew": false,
+      "rarity": 0,
+      "base": 3,
+      "change": "excluded"
+    },
+    {
+      "id": "LASER_HULL_1",
+      "label": "Hull Smasher Laser",
+      "crew": false,
+      "rarity": 0,
+      "base": 2,
+      "change": "excluded"
+    },
+    {
+      "id": "LASER_HULL_2",
+      "label": "Hull Smasher Laser Mark II",
+      "crew": false,
+      "rarity": 0,
+      "base": 3,
+      "change": "excluded"
+    },
+    {
+      "id": "BEAM_HULL",
+      "label": "Hull Beam",
+      "crew": false,
+      "rarity": 0,
+      "base": 3,
+      "change": "excluded"
+    },
+    {
+      "id": "MISSILES_HULL",
+      "label": "Hull Missile",
+      "crew": false,
+      "rarity": 0,
+      "base": 3,
+      "change": "excluded"
+    },
+    {
+      "id": "BOMB_LOCK",
+      "label": "Crystal Lockdown Bomb",
+      "crew": false,
+      "rarity": 3,
+      "base": 0,
+      "change": "unlocked"
+    },
+    {
+      "id": "CRYSTAL_BURST_1",
+      "label": "Crystal Burst Mark I",
+      "crew": false,
+      "rarity": 1,
+      "base": 0,
+      "change": "unlocked"
+    },
+    {
+      "id": "CRYSTAL_BURST_2",
+      "label": "Crystal Burst Mark II",
+      "crew": false,
+      "rarity": 4,
+      "base": 0,
+      "change": "unlocked"
+    },
+    {
+      "id": "CRYSTAL_HEAVY_1",
+      "label": "Heavy Crystal Mark I",
+      "crew": false,
+      "rarity": 2,
+      "base": 0,
+      "change": "unlocked"
+    },
+    {
+      "id": "CRYSTAL_HEAVY_2",
+      "label": "Heavy Crystal Mark II",
+      "crew": false,
+      "rarity": 5,
+      "base": 0,
+      "change": "unlocked"
+    }
+  ],
+  "crew_store_odds": {
+    "slots": 3,
+    "total_weight": 5,
+    "crew": [
+      {
+        "id": "crystal",
+        "label": "Crystal",
+        "rarity": 1,
+        "listed": true,
+        "weight": 5,
+        "share": 100.0,
+        "in_store": 100.0
+      }
+    ],
+    "excluded": [
+      {
+        "id": "engi",
+        "label": "Engi"
+      },
+      {
+        "id": "human",
+        "label": "Human"
+      },
+      {
+        "id": "anaerobic",
+        "label": "Lanius"
+      },
+      {
+        "id": "mantis",
+        "label": "Mantis"
+      },
+      {
+        "id": "rock",
+        "label": "Rockman"
+      },
+      {
+        "id": "slug",
+        "label": "Slug"
+      },
+      {
+        "id": "energy",
+        "label": "Zoltan"
+      }
+    ]
+  },
+  "start_event": {
+    "id": "START_BEACON_CRYSTAL",
+    "slug": "start-beacon-crystal",
+    "title": "Start beacon (Crystal)",
+    "card": true,
+    "tags": [
+      "quest",
+      "reward"
+    ],
+    "gates": [],
+    "items": [
+      {
+        "id": "CRYSTAL_SHARDS",
+        "kind": "augment",
+        "label": "Crystal Vengeance"
+      }
+    ],
+    "crew_classes": [],
+    "quests": [
+      "CRYSTAL_UNLOCK"
+    ],
+    "boarders": [],
+    "unlock_ship": [
+      "8"
+    ],
+    "fleet_delay": []
+  },
+  "entries": [
+    {
+      "name": "STORE_CRYSTAL",
+      "min": 2,
+      "max": 3,
+      "kind": "event",
+      "section": "store",
+      "events": [
+        {
+          "id": "STORE_CRYSTAL",
+          "slug": "store-crystal",
+          "title": "Store (Crystal)",
+          "card": true,
+          "tags": [
+            "store",
+            "store-marker"
+          ],
+          "marker": {
+            "store": true
+          },
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        }
+      ],
+      "order": 0,
+      "placement": {
+        "position": 0,
+        "nebula_first": false,
+        "before_min": 0,
+        "before_max": 0,
+        "at_risk": false,
+        "always_short": false
+      }
+    },
+    {
+      "name": "ITEMS_CRYSTAL",
+      "min": 2,
+      "max": 2,
+      "kind": "list",
+      "section": "items",
+      "events": [
+        {
+          "id": "CRYSTAL_CACHE",
+          "slug": "crystalline-cache",
+          "title": "Crystalline cache",
+          "card": true,
+          "tags": [
+            "boarders",
+            "crew-loss",
+            "reward",
+            "cost",
+            "unique"
+          ],
+          "gates": [
+            {
+              "req": "teleporter",
+              "label": "Crew Teleporter",
+              "lvl": "2"
+            },
+            {
+              "req": "engines",
+              "label": "Engines",
+              "lvl": "7"
+            },
+            {
+              "req": "MISSILES_BREACH",
+              "label": "Breach Missiles"
+            },
+            {
+              "req": "crystal",
+              "label": "Crystal"
+            }
+          ],
+          "items": [
+            {
+              "id": "WEAPONS_CRYSTAL",
+              "kind": "weapon",
+              "label": "WEAPONS_CRYSTAL"
+            }
+          ],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [
+            {
+              "class": "crystal",
+              "min": 2,
+              "max": 3
+            }
+          ],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "CRYSTAL_SCRAP_EXCITED",
+          "slug": "crystal-scrap-collector",
+          "title": "Crystal scrap collector",
+          "card": true,
+          "tags": [
+            "crew",
+            "cost",
+            "unique"
+          ],
+          "gates": [],
+          "items": [
+            {
+              "id": "BOMB_LOCK",
+              "kind": "weapon",
+              "label": "Crystal Lockdown Bomb"
+            },
+            {
+              "id": "CRYSTAL_BURST_2",
+              "kind": "weapon",
+              "label": "Crystal Burst Mark II"
+            }
+          ],
+          "crew_classes": [
+            "crystal"
+          ],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "FIND_DRONE",
+          "slug": "free-drone-schematic",
+          "title": "Free drone schematic",
+          "card": true,
+          "tags": [
+            "reward"
+          ],
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "FIND_WEAPON",
+          "slug": "free-weapon",
+          "title": "Free weapon",
+          "card": true,
+          "tags": [
+            "reward"
+          ],
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "REFUEL_STATION",
+          "slug": "refueling-station",
+          "title": "Refueling station",
+          "card": true,
+          "tags": [
+            "reward",
+            "cost",
+            "unique"
+          ],
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "REPAIR_STATION",
+          "slug": "repair-station",
+          "title": "Repair station",
+          "card": true,
+          "tags": [
+            "cost",
+            "unique"
+          ],
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        }
+      ],
+      "order": 1,
+      "placement": {
+        "position": 1,
+        "nebula_first": false,
+        "before_min": 2,
+        "before_max": 3,
+        "at_risk": false,
+        "always_short": false
+      }
+    },
+    {
+      "name": "NOTHING_CRYSTAL",
+      "min": 2,
+      "max": 2,
+      "kind": "event",
+      "section": "empty",
+      "events": [
+        {
+          "id": "NOTHING_CRYSTAL",
+          "slug": "empty-beacon-crystal",
+          "title": "Empty beacon (Crystal)",
+          "card": true,
+          "tags": [],
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        }
+      ],
+      "order": 2,
+      "placement": {
+        "position": 2,
+        "nebula_first": false,
+        "before_min": 4,
+        "before_max": 5,
+        "at_risk": false,
+        "always_short": false
+      }
+    },
+    {
+      "name": "HOSTILE_CRYSTAL",
+      "min": 6,
+      "max": 10,
+      "kind": "list",
+      "section": "hostile",
+      "events": [
+        {
+          "id": "CRYSTAL_FIGHT",
+          "slug": "crystal-fight",
+          "title": "Crystal fight",
+          "card": true,
+          "tags": [
+            "fight",
+            "crew"
+          ],
+          "gates": [],
+          "items": [],
+          "crew_classes": [
+            "crystal"
+          ],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": [],
+          "weight": 3
+        },
+        {
+          "id": "CRYSTAL_CONVOY",
+          "slug": "crystal-fight-with-surrender-offer-hull-repairs",
+          "title": "Crystal fight with surrender offer (hull repairs)",
+          "card": true,
+          "tags": [
+            "fight",
+            "unique"
+          ],
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "CRYSTAL_REBEL",
+          "slug": "rebel-fight-crystal",
+          "title": "Rebel fight (Crystal)",
+          "card": true,
+          "tags": [
+            "fight",
+            "crew"
+          ],
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "CRYSTAL_HUNTER",
+          "slug": "crystal-fight-with-surrender-offer-human-crew",
+          "title": "Crystal fight with surrender offer (Human crew)",
+          "card": true,
+          "tags": [
+            "fight",
+            "crew",
+            "unique"
+          ],
+          "gates": [],
+          "items": [],
+          "crew_classes": [
+            "human"
+          ],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "CRYSTAL_AUTO",
+          "slug": "auto-ship-fight-crystal",
+          "title": "Auto-ship fight (Crystal)",
+          "card": true,
+          "tags": [
+            "fight",
+            "crew",
+            "unique"
+          ],
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        }
+      ],
+      "order": 3,
+      "placement": {
+        "position": 3,
+        "nebula_first": false,
+        "before_min": 6,
+        "before_max": 7,
+        "at_risk": false,
+        "always_short": false
+      }
+    },
+    {
+      "name": "BOARDERS_CRYSTAL",
+      "min": 1,
+      "max": 2,
+      "kind": "event",
+      "section": "boarders",
+      "events": [
+        {
+          "id": "BOARDERS_CRYSTAL",
+          "slug": "boarders-crystal",
+          "title": "Boarders: Crystal",
+          "card": true,
+          "tags": [
+            "boarders"
+          ],
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [
+            {
+              "class": "crystal",
+              "min": 2,
+              "max": 3
+            }
+          ],
+          "unlock_ship": [],
+          "fleet_delay": []
+        }
+      ],
+      "order": 4,
+      "placement": {
+        "position": 4,
+        "nebula_first": false,
+        "before_min": 12,
+        "before_max": 17,
+        "at_risk": false,
+        "always_short": false
+      }
+    },
+    {
+      "name": "NEUTRAL_CRYSTAL",
+      "min": 12,
+      "max": 12,
+      "kind": "list",
+      "section": "neutral",
+      "events": [
+        {
+          "id": "CRYSTAL_REBEL_CRYSTAL",
+          "slug": "rebel-ship-attacking-crystal-ship",
+          "title": "Rebel ship attacking Crystal ship",
+          "card": true,
+          "tags": [
+            "may-fight",
+            "crew"
+          ],
+          "gates": [],
+          "items": [
+            {
+              "id": "WEAPONS_CRYSTAL",
+              "kind": "weapon",
+              "label": "WEAPONS_CRYSTAL"
+            }
+          ],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": [
+            1
+          ]
+        },
+        {
+          "id": "CRYSTAL_REBEL_CRYSTAL2",
+          "slug": "crystal-fight-choice",
+          "title": "Crystal fight choice",
+          "card": true,
+          "tags": [
+            "may-fight",
+            "crew",
+            "unique"
+          ],
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "CRYSTAL_MANTIS_CRYSTAL",
+          "slug": "mantis-ship-attacking-crystal",
+          "title": "Mantis ship attacking Crystal",
+          "card": true,
+          "tags": [
+            "may-fight"
+          ],
+          "gates": [],
+          "items": [
+            {
+              "id": "WEAPONS_CRYSTAL",
+              "kind": "weapon",
+              "label": "WEAPONS_CRYSTAL"
+            }
+          ],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "CRYSTAL_PIRATE_CRYSTAL",
+          "slug": "pirate-ship-attacking-crystal",
+          "title": "Pirate ship attacking Crystal",
+          "card": true,
+          "tags": [
+            "may-fight"
+          ],
+          "gates": [],
+          "items": [
+            {
+              "id": "WEAPONS_CRYSTAL",
+              "kind": "weapon",
+              "label": "WEAPONS_CRYSTAL"
+            }
+          ],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "CRYSTAL_FED",
+          "slug": "crystal-ship-attacking-federation-loyalists",
+          "title": "Crystal ship attacking Federation loyalists",
+          "card": true,
+          "tags": [
+            "may-fight",
+            "crew"
+          ],
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "CRYSTAL_FED_DESERTER",
+          "slug": "federation-deserters",
+          "title": "Federation deserters",
+          "card": true,
+          "tags": [
+            "may-fight",
+            "crew",
+            "cost",
+            "unique"
+          ],
+          "gates": [],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "CRYSTAL_HUMAN_TESTS",
+          "slug": "crystalline-research-facility",
+          "title": "Crystalline research facility",
+          "card": true,
+          "tags": [
+            "may-fight",
+            "crew-loss",
+            "crew",
+            "unique"
+          ],
+          "gates": [
+            {
+              "req": "rock",
+              "label": "Rockman"
+            },
+            {
+              "req": "BACKUP_DNA",
+              "label": "Backup DNA Bank"
+            }
+          ],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "CRYSTAL_CHATTY",
+          "slug": "crystal-chat",
+          "title": "Crystal chat",
+          "card": true,
+          "tags": [
+            "may-fight",
+            "crew",
+            "unique"
+          ],
+          "gates": [
+            {
+              "req": "crystal",
+              "label": "Crystal"
+            }
+          ],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": []
+        },
+        {
+          "id": "CRYSTAL_REQUEST",
+          "slug": "crystalline-ship-messaging-about-rebels",
+          "title": "Crystalline ship messaging about Rebels",
+          "card": true,
+          "tags": [
+            "may-fight",
+            "boarders",
+            "crew",
+            "unique"
+          ],
+          "gates": [
+            {
+              "req": "FLEET_DISTRACTION",
+              "label": "Distraction Buoys"
+            }
+          ],
+          "items": [],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [
+            {
+              "class": "crystal",
+              "min": 1,
+              "max": 2
+            }
+          ],
+          "unlock_ship": [],
+          "fleet_delay": [
+            1,
+            -1
+          ]
+        },
+        {
+          "id": "CRYSTAL_HELP_DIG",
+          "slug": "crystalline-men-buried",
+          "title": "Crystalline men buried",
+          "card": true,
+          "tags": [
+            "may-fight",
+            "crew-loss",
+            "crew",
+            "unique"
+          ],
+          "gates": [],
+          "items": [
+            {
+              "id": "CRYSTAL_HEAVY_2",
+              "kind": "weapon",
+              "label": "Heavy Crystal Mark II"
+            }
+          ],
+          "crew_classes": [],
+          "quests": [],
+          "boarders": [],
+          "unlock_ship": [],
+          "fleet_delay": [
+            1
+          ]
+        }
+      ],
+      "order": 5,
+      "placement": {
+        "position": 5,
+        "nebula_first": false,
+        "before_min": 13,
+        "before_max": 19,
+        "at_risk": false,
+        "always_short": true
+      }
+    }
+  ],
+  "generation": {
+    "grid_beacons": 24,
+    "grid_beacons_min": 19,
+    "allocated_min": 25,
+    "allocated_max": 31,
+    "can_exhaust_map": true,
+    "at_risk_entries": [],
+    "always_short_entries": [
+      "NEUTRAL_CRYSTAL"
+    ],
+    "cannot_meet_minimum": true,
+    "nebula_first": [],
+    "fallback_list": "NEUTRAL",
+    "fallback_list_ae": "OVERRIDE_NEUTRAL",
+    "fallback_events": [
+      {
+        "id": "PIRATE_CIVILIAN",
+        "slug": "pirate-ship-attacking-civilian",
+        "title": "Pirate ship attacking civilian",
+        "card": true,
+        "tags": [
+          "may-fight",
+          "crew"
+        ],
+        "gates": [],
+        "items": [],
+        "crew_classes": [],
+        "quests": [],
+        "boarders": [],
+        "unlock_ship": [],
+        "fleet_delay": []
+      },
+      {
+        "id": "REBEL_TRANSPORT",
+        "slug": "rebel-transport-ship",
+        "title": "Rebel transport ship",
+        "card": true,
+        "tags": [
+          "may-fight",
+          "crew",
+          "unique"
+        ],
+        "gates": [],
+        "items": [],
+        "crew_classes": [],
+        "quests": [],
+        "boarders": [],
+        "unlock_ship": [],
+        "fleet_delay": []
+      },
+      {
+        "id": "AUTO_REFUEL_STATION",
+        "slug": "auto-ship-attacking-outpost",
+        "title": "Auto-ship attacking outpost",
+        "card": true,
+        "tags": [
+          "may-fight",
+          "unique"
+        ],
+        "gates": [],
+        "items": [],
+        "crew_classes": [],
+        "quests": [],
+        "boarders": [],
+        "unlock_ship": [],
+        "fleet_delay": []
+      },
+      {
+        "id": "ASTEROID_EXPLORE",
+        "slug": "large-asteroid-field",
+        "title": "Large asteroid field",
+        "card": true,
+        "tags": [
+          "may-fight",
+          "crew",
+          "unique"
+        ],
+        "gates": [
+          {
+            "req": "SCRAP_COLLECTOR",
+            "label": "Scrap Recovery Arm"
+          }
+        ],
+        "items": [],
+        "crew_classes": [],
+        "quests": [],
+        "boarders": [],
+        "unlock_ship": [],
+        "fleet_delay": []
+      },
+      {
+        "id": "BROKEN_REBEL_DRONE",
+        "slug": "deactivated-auto-ship",
+        "title": "Deactivated Auto-ship",
+        "card": true,
+        "tags": [
+          "may-fight",
+          "crew",
+          "unique"
+        ],
+        "gates": [
+          {
+            "req": "sensors",
+            "label": "Sensors",
+            "lvl": "3"
+          }
+        ],
+        "items": [],
+        "crew_classes": [],
+        "quests": [],
+        "boarders": [],
+        "unlock_ship": [],
+        "fleet_delay": []
+      },
+      {
+        "id": "MERCENARY",
+        "slug": "the-mercenary",
+        "title": "The mercenary",
+        "card": true,
+        "tags": [
+          "may-fight",
+          "crew",
+          "cost"
+        ],
+        "gates": [],
+        "items": [],
+        "crew_classes": [],
+        "quests": [],
+        "boarders": [],
+        "unlock_ship": [],
+        "fleet_delay": [
+          -2
+        ]
+      },
+      {
+        "id": "FRIENDLY_SLAVER",
+        "slug": "slaver-friendly",
+        "title": "Slaver (friendly)",
+        "card": true,
+        "tags": [
+          "may-fight",
+          "crew",
+          "cost",
+          "unique"
+        ],
+        "gates": [
+          {
+            "req": "teleporter",
+            "label": "Crew Teleporter",
+            "lvl": "2"
+          }
+        ],
+        "items": [],
+        "crew_classes": [
+          "mantis",
+          "rock",
+          "engi"
+        ],
+        "quests": [],
+        "boarders": [],
+        "unlock_ship": [],
+        "fleet_delay": []
+      },
+      {
+        "id": "PIRATE_BRIBER",
+        "slug": "pirate-briber",
+        "title": "Pirate briber",
+        "card": true,
+        "tags": [
+          "may-fight",
+          "store",
+          "unique",
+          "store-marker"
+        ],
+        "marker": {
+          "store": true
+        },
+        "gates": [],
+        "items": [],
+        "crew_classes": [],
+        "quests": [],
+        "boarders": [],
+        "unlock_ship": [],
+        "fleet_delay": [
+          -1
+        ]
+      },
+      {
+        "id": "AUTO_DEFENSE_ITEM",
+        "slug": "auto-ship-near-storage-station",
+        "title": "Auto-ship near storage station",
+        "card": true,
+        "tags": [
+          "may-fight",
+          "unique"
+        ],
+        "gates": [
+          {
+            "req": "cloaking",
+            "label": "Cloaking"
+          }
+        ],
+        "items": [],
+        "crew_classes": [],
+        "quests": [],
+        "boarders": [],
+        "unlock_ship": [],
+        "fleet_delay": []
+      },
+      {
+        "id": "DONOR_PONY",
+        "slug": "intelligent-ponies",
+        "title": "Intelligent ponies",
+        "card": true,
+        "tags": [
+          "crew-loss",
+          "crew",
+          "reward",
+          "unique"
+        ],
+        "gates": [
+          {
+            "req": "slug",
+            "label": "Slug"
+          }
+        ],
+        "items": [],
+        "crew_classes": [
+          "engi"
+        ],
+        "quests": [],
+        "boarders": [],
+        "unlock_ship": [],
+        "fleet_delay": []
+      },
+      {
+        "id": "DONOR_PLAGUE",
+        "slug": "plagued-station",
+        "title": "Plagued station",
+        "card": true,
+        "tags": [
+          "crew-loss",
+          "crew",
+          "reward",
+          "unique"
+        ],
+        "gates": [
+          {
+            "req": "medbay",
+            "label": "Medbay",
+            "lvl": "2"
+          }
+        ],
+        "items": [],
+        "crew_classes": [
+          "human"
+        ],
+        "quests": [],
+        "boarders": [],
+        "unlock_ship": [],
+        "fleet_delay": []
+      },
+      {
+        "id": "REFUGEE_NO_DISTRESS",
+        "slug": "refugee",
+        "title": "Refugee",
+        "card": true,
+        "tags": [
+          "may-fight",
+          "crew",
+          "cost"
+        ],
+        "gates": [],
+        "items": [],
+        "crew_classes": [],
+        "quests": [],
+        "boarders": [],
+        "unlock_ship": [],
+        "fleet_delay": []
+      },
+      {
+        "id": "WRECKAGE_EVENT",
+        "slug": "battlefield-wreckage",
+        "title": "Battlefield wreckage",
+        "card": true,
+        "tags": [
+          "may-fight",
+          "crew"
+        ],
+        "gates": [
+          {
+            "req": "sensors",
+            "label": "Sensors",
+            "lvl": "2"
+          },
+          {
+            "req": "sensors",
+            "label": "Sensors",
+            "lvl": "3"
+          }
+        ],
+        "items": [],
+        "crew_classes": [],
+        "quests": [],
+        "boarders": [],
+        "unlock_ship": [],
+        "fleet_delay": []
+      },
+      {
+        "id": "FUELING_STATION",
+        "slug": "refueling-platform",
+        "title": "Refueling platform",
+        "card": true,
+        "tags": [
+          "may-fight",
+          "boarders",
+          "crew",
+          "cost",
+          "unique"
+        ],
+        "gates": [
+          {
+            "req": "doors",
+            "label": "Door System",
+            "lvl": "2"
+          }
+        ],
+        "items": [],
+        "crew_classes": [],
+        "quests": [],
+        "boarders": [
+          {
+            "class": "random",
+            "min": 2,
+            "max": 4
+          }
+        ],
+        "unlock_ship": [],
+        "fleet_delay": []
+      },
+      {
+        "id": "PIRATE_SALESMAN",
+        "slug": "pirate-ship-selling-drones",
+        "title": "Pirate ship selling drones",
+        "card": true,
+        "tags": [
+          "may-fight",
+          "crew",
+          "cost",
+          "unique"
+        ],
+        "gates": [
+          {
+            "req": "drones",
+            "label": "Drone Part"
+          },
+          {
+            "req": "slug",
+            "label": "Slug"
+          },
+          {
+            "req": "hacking",
+            "label": "Hacking"
+          }
+        ],
+        "items": [],
+        "crew_classes": [],
+        "quests": [],
+        "boarders": [],
+        "unlock_ship": [],
+        "fleet_delay": []
+      },
+      {
+        "id": "TERRAFORMING_SCAN",
+        "slug": "terraforming-scan",
+        "title": "Terraforming scan",
+        "card": true,
+        "tags": [
+          "may-fight",
+          "crew",
+          "cost",
+          "unique"
+        ],
+        "gates": [
+          {
+            "req": "sensors",
+            "label": "Sensors",
+            "lvl": "2"
+          },
+          {
+            "req": "energy",
+            "label": "Zoltan"
+          }
+        ],
+        "items": [],
+        "crew_classes": [],
+        "quests": [],
+        "boarders": [],
+        "unlock_ship": [],
+        "fleet_delay": []
+      },
+      {
+        "id": "REBEL_CHECKPOINT",
+        "slug": "rebel-checkpoint",
+        "title": "Rebel checkpoint",
+        "card": true,
+        "tags": [
+          "may-fight",
+          "crew",
+          "cost"
+        ],
+        "gates": [],
+        "items": [],
+        "crew_classes": [],
+        "quests": [],
+        "boarders": [],
+        "unlock_ship": [],
+        "fleet_delay": []
+      },
+      {
+        "id": "REBEL_HELPERS",
+        "slug": "rebel-ship-supplying-civilians",
+        "title": "Rebel ship supplying civilians",
+        "card": true,
+        "tags": [
+          "may-fight"
+        ],
+        "gates": [],
+        "items": [],
+        "crew_classes": [],
+        "quests": [],
+        "boarders": [],
+        "unlock_ship": [],
+        "fleet_delay": []
+      },
+      {
+        "id": "ROGUE_REBEL",
+        "slug": "rebel-fight-chance",
+        "title": "Rebel fight chance",
+        "card": true,
+        "tags": [
+          "may-fight",
+          "crew"
+        ],
+        "gates": [
+          {
+            "req": "sensors",
+            "label": "Sensors",
+            "lvl": "2"
+          },
+          {
+            "req": "sensors",
+            "label": "Sensors",
+            "lvl": "3"
+          }
+        ],
+        "items": [],
+        "crew_classes": [],
+        "quests": [],
+        "boarders": [],
+        "unlock_ship": [],
+        "fleet_delay": [
+          1
+        ]
+      },
+      {
+        "id": "EMPTY_STATION2",
+        "slug": "abandoned-station",
+        "title": "Abandoned station",
+        "card": true,
+        "tags": [
+          "may-fight",
+          "boarders",
+          "crew",
+          "unique"
+        ],
+        "gates": [
+          {
+            "req": "clonebay",
+            "label": "Clone Bay"
+          }
+        ],
+        "items": [],
+        "crew_classes": [],
+        "quests": [],
+        "boarders": [
+          {
+            "class": null,
+            "min": 1,
+            "max": 1
+          },
+          {
+            "class": null,
+            "min": 2,
+            "max": 2
+          },
+          {
+            "class": null,
+            "min": 2,
+            "max": 4
+          }
+        ],
+        "unlock_ship": [],
+        "fleet_delay": []
+      }
+    ],
+    "fallback_beacons": {
+      "min": 0,
+      "max": 0,
+      "on_full_map": 0
+    },
+    "exit_list": "EXIT_LIST",
+    "source": "raw/wiki/sectors.md"
+  },
+  "rollup": {
+    "markers": {
+      "distress": {
+        "events": [],
+        "allocation_entries": [],
+        "marked_outside_allocation": [],
+        "allocated_but_unmarked": []
+      },
+      "store": [
+        "STORE_CRYSTAL"
+      ],
+      "environment": {}
+    },
+    "distinct_events": 24,
+    "no_card": [],
+    "always_fight": [
+      "CRYSTAL_AUTO",
+      "CRYSTAL_CONVOY",
+      "CRYSTAL_FIGHT",
+      "CRYSTAL_HUNTER",
+      "CRYSTAL_REBEL"
+    ],
+    "may_fight": [
+      "CRYSTAL_CHATTY",
+      "CRYSTAL_FED",
+      "CRYSTAL_FED_DESERTER",
+      "CRYSTAL_HELP_DIG",
+      "CRYSTAL_HUMAN_TESTS",
+      "CRYSTAL_MANTIS_CRYSTAL",
+      "CRYSTAL_PIRATE_CRYSTAL",
+      "CRYSTAL_REBEL_CRYSTAL",
+      "CRYSTAL_REBEL_CRYSTAL2",
+      "CRYSTAL_REQUEST"
+    ],
+    "crew_loss": [
+      "CRYSTAL_CACHE",
+      "CRYSTAL_HELP_DIG",
+      "CRYSTAL_HUMAN_TESTS"
+    ],
+    "crew_gain": [
+      "CRYSTAL_AUTO",
+      "CRYSTAL_CHATTY",
+      "CRYSTAL_FED",
+      "CRYSTAL_FED_DESERTER",
+      "CRYSTAL_FIGHT",
+      "CRYSTAL_HELP_DIG",
+      "CRYSTAL_HUMAN_TESTS",
+      "CRYSTAL_HUNTER",
+      "CRYSTAL_REBEL",
+      "CRYSTAL_REBEL_CRYSTAL",
+      "CRYSTAL_REBEL_CRYSTAL2",
+      "CRYSTAL_REQUEST",
+      "CRYSTAL_SCRAP_EXCITED"
+    ],
+    "boarders": [
+      "BOARDERS_CRYSTAL",
+      "CRYSTAL_CACHE",
+      "CRYSTAL_REQUEST"
+    ],
+    "unique": [
+      "CRYSTAL_AUTO",
+      "CRYSTAL_CACHE",
+      "CRYSTAL_CHATTY",
+      "CRYSTAL_CONVOY",
+      "CRYSTAL_FED_DESERTER",
+      "CRYSTAL_HELP_DIG",
+      "CRYSTAL_HUMAN_TESTS",
+      "CRYSTAL_HUNTER",
+      "CRYSTAL_REBEL_CRYSTAL2",
+      "CRYSTAL_REQUEST",
+      "CRYSTAL_SCRAP_EXCITED",
+      "REFUEL_STATION",
+      "REPAIR_STATION"
+    ],
+    "quest_starts": [],
+    "gates": [
+      {
+        "label": "Crystal crew",
+        "reqs": [
+          "crystal"
+        ],
+        "req": "crystal",
+        "system": false,
+        "levels": [],
+        "events": [
+          "CRYSTAL_CACHE",
+          "CRYSTAL_CHATTY"
+        ],
+        "levels_detail": [
+          {
+            "lvl": null,
+            "events": [
+              "CRYSTAL_CACHE",
+              "CRYSTAL_CHATTY"
+            ]
+          }
+        ]
+      },
+      {
+        "label": "Backup DNA Bank",
+        "reqs": [
+          "BACKUP_DNA"
+        ],
+        "req": "BACKUP_DNA",
+        "system": false,
+        "levels": [],
+        "events": [
+          "CRYSTAL_HUMAN_TESTS"
+        ],
+        "levels_detail": [
+          {
+            "lvl": null,
+            "events": [
+              "CRYSTAL_HUMAN_TESTS"
+            ]
+          }
+        ]
+      },
+      {
+        "label": "Breach Missiles",
+        "reqs": [
+          "MISSILES_BREACH"
+        ],
+        "req": "MISSILES_BREACH",
+        "system": false,
+        "levels": [],
+        "events": [
+          "CRYSTAL_CACHE"
+        ],
+        "levels_detail": [
+          {
+            "lvl": null,
+            "events": [
+              "CRYSTAL_CACHE"
+            ]
+          }
+        ]
+      },
+      {
+        "label": "Distraction Buoys",
+        "reqs": [
+          "FLEET_DISTRACTION"
+        ],
+        "req": "FLEET_DISTRACTION",
+        "system": false,
+        "levels": [],
+        "events": [
+          "CRYSTAL_REQUEST"
+        ],
+        "levels_detail": [
+          {
+            "lvl": null,
+            "events": [
+              "CRYSTAL_REQUEST"
+            ]
+          }
+        ]
+      },
+      {
+        "label": "Engines",
+        "reqs": [
+          "engines"
+        ],
+        "req": "engines",
+        "system": true,
+        "levels": [
+          "7"
+        ],
+        "events": [
+          "CRYSTAL_CACHE"
+        ],
+        "levels_detail": [
+          {
+            "lvl": "7",
+            "events": [
+              "CRYSTAL_CACHE"
+            ]
+          }
+        ]
+      },
+      {
+        "label": "Rock crew",
+        "reqs": [
+          "rock"
+        ],
+        "req": "rock",
+        "system": false,
+        "levels": [],
+        "events": [
+          "CRYSTAL_HUMAN_TESTS"
+        ],
+        "levels_detail": [
+          {
+            "lvl": null,
+            "events": [
+              "CRYSTAL_HUMAN_TESTS"
+            ]
+          }
+        ]
+      },
+      {
+        "label": "Teleporter",
+        "reqs": [
+          "teleporter"
+        ],
+        "req": "teleporter",
+        "system": true,
+        "levels": [
+          "2"
+        ],
+        "events": [
+          "CRYSTAL_CACHE"
+        ],
+        "levels_detail": [
+          {
+            "lvl": "2",
+            "events": [
+              "CRYSTAL_CACHE"
+            ]
+          }
+        ]
+      }
+    ],
+    "named_items": [
+      {
+        "value": {
+          "id": "WEAPONS_CRYSTAL",
+          "kind": "weapon",
+          "label": "WEAPONS_CRYSTAL"
+        },
+        "events": [
+          "CRYSTAL_CACHE",
+          "CRYSTAL_REBEL_CRYSTAL",
+          "CRYSTAL_MANTIS_CRYSTAL",
+          "CRYSTAL_PIRATE_CRYSTAL"
+        ]
+      },
+      {
+        "value": {
+          "id": "BOMB_LOCK",
+          "kind": "weapon",
+          "label": "Crystal Lockdown Bomb"
+        },
+        "events": [
+          "CRYSTAL_SCRAP_EXCITED"
+        ]
+      },
+      {
+        "value": {
+          "id": "CRYSTAL_BURST_2",
+          "kind": "weapon",
+          "label": "Crystal Burst Mark II"
+        },
+        "events": [
+          "CRYSTAL_SCRAP_EXCITED"
+        ]
+      },
+      {
+        "value": {
+          "id": "CRYSTAL_HEAVY_2",
+          "kind": "weapon",
+          "label": "Heavy Crystal Mark II"
+        },
+        "events": [
+          "CRYSTAL_HELP_DIG"
+        ]
+      }
+    ],
+    "crew_classes": [
+      {
+        "value": "crystal",
+        "events": [
+          "CRYSTAL_SCRAP_EXCITED",
+          "CRYSTAL_FIGHT"
+        ]
+      },
+      {
+        "value": "human",
+        "events": [
+          "CRYSTAL_HUNTER"
+        ]
+      }
+    ],
+    "unlock_ships": [],
+    "quest_targets": []
+  },
+  "metrics": {
+    "blue_options": 7,
+    "blue_option_hits": 8,
+    "store_rarity_changes": 35,
+    "crew_rarity_changes": 6,
+    "crew_types_sold": 1,
+    "grid_beacons": 24,
+    "at_risk_entries": 0,
+    "beacons_min": 25,
+    "beacons_max": 31,
+    "distinct_events": 24,
+    "always_fight_events": 5,
+    "may_fight_events": 10,
+    "crew_loss_events": 3,
+    "crew_gain_events": 13,
+    "boarder_events": 3,
+    "unique_events": 13,
+    "gated_events": 4,
+    "quest_start_events": 0,
+    "section:hostile:min": 6,
+    "section:hostile:max": 10,
+    "section:boarders:min": 1,
+    "section:boarders:max": 2,
+    "section:neutral:min": 12,
+    "section:neutral:max": 12,
+    "section:items:min": 2,
+    "section:items:max": 2,
+    "section:store:min": 2,
+    "section:store:max": 3,
+    "section:empty:min": 2,
+    "section:empty:max": 2,
+    "entry:STORE_CRYSTAL:min": 2,
+    "entry:STORE_CRYSTAL:max": 3,
+    "entry:ITEMS_CRYSTAL:min": 2,
+    "entry:ITEMS_CRYSTAL:max": 2,
+    "entry:NOTHING_CRYSTAL:min": 2,
+    "entry:NOTHING_CRYSTAL:max": 2,
+    "entry:HOSTILE_CRYSTAL:min": 6,
+    "entry:HOSTILE_CRYSTAL:max": 10,
+    "entry:BOARDERS_CRYSTAL:min": 1,
+    "entry:BOARDERS_CRYSTAL:max": 2,
+    "entry:NEUTRAL_CRYSTAL:min": 12,
+    "entry:NEUTRAL_CRYSTAL:max": 12
+  }
+}
