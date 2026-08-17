@@ -518,6 +518,11 @@ generated output into a local website: clean URLs, one nav bar, a home page, and
       ?beacons=<n>              how many beacons this run's map has, by the budget heading
 ```
 
+**Two ports, and neither survives a session.** `serve-site.py` is **8080** and serves every
+page; `save-watch.py` is **8787** and serves only its shell, pointing an iframe at the site.
+Nothing starts either automatically — if a page will not load, check both are up before
+looking anywhere else.
+
 **Read `tools/LOCAL-SITE.md` and follow it** — same reasoning as the other specs: this file is
 injected at session start and can lag the working tree, so the spec is authoritative.
 
@@ -561,6 +566,16 @@ process's environment and reports PASS/FAIL. See `mods/fullscreen-no-minimize/RE
 Also: the game may be holding an **unsaved run**. Under Hyperspace the run save is
 `hs_continue.sav` (§ `tools/SAVE-WATCH.md`); if that file does not exist, killing
 `FTLGame.exe` destroys the run. Check before restarting the game, and ask.
+
+**What is patched into the install right now** (as of 2026-08-17): Hyperspace, `event-labels`
+and `map-signal` — the `PATCH_ORDER` in `tools/build-map-signal-mod.py`, which is what
+`--install` applies. `beacon-reveal` is built but **not installed**. Confirm rather than
+assume: `grep "Loading Lua file" FTL_HS.log` names every Lua mod the running game loaded.
+
+**A Slipstream `--patch` applies exactly what it is given, so a mod missing from the list is a
+mod uninstalled.** `build-beacon-mod.py` carries a longer `PATCH_ORDER` than
+`build-map-signal-mod.py` for that reason — installing beacon-reveal keeps map-signal, but
+installing map-signal drops beacon-reveal. Check the list before running either `--install`.
 
 ### 5.3 Lint — "lint the wiki" (run periodically, e.g. every 5–10 ingests)
 
@@ -608,6 +623,20 @@ not a canonical data store.
 - **The user curates; you do the bookkeeping.** Their job is choosing sources, setting
   direction, and thinking. Your job is everything else: summarizing, filing,
   cross-referencing, keeping it consistent.
+- **Never change a file's line endings.** This repo is mixed — `EVENT-CARD.md`,
+  `SECTOR-PAGE.md`, `SAVE-WATCH.md` and `README.md` are CRLF; `CLAUDE.md`, `log.md` and most
+  `.py` are LF — and there is no `.gitattributes` to normalise it. Rewriting a whole file in
+  Python is what flips one: `read_text()` gives `\n` for CRLF and `write_text(newline="")`
+  writes it back as LF, turning a 200-line edit into a 1,500-line diff that hides the real
+  change. Prefer `Edit`. If a script must rewrite a file, read and write **bytes** and put the
+  endings back. Check before committing:
+  ```bash
+  for f in $(git diff --name-only); do
+    a=$(git show HEAD:"$f" | file - | grep -o CRLF || echo LF)
+    b=$(file "$f" | grep -o CRLF || echo LF)
+    [ "$a" != "$b" ] && echo "FLIPPED $f"
+  done
+  ```
 - **Never invent facts.** Everything traces to `raw/`. Do not fill gaps with recalled
   FTL knowledge from training data — if no source says it, the answer is "unknown",
   which is a valid and useful value.

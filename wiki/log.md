@@ -4273,3 +4273,28 @@ prevent. Four more cases tested, including that revisit.
 Worth naming: the synthetic tests all wrote the beacon line *before* the arrival, because that
 is how the design was imagined. The real log wrote it after. **Test the order the file
 receives, not the order the design assumes** — the same lesson as the `[Lua]: ` prefix.
+
+## [2026-08-17] tooling | Session close — the environment, written down
+
+Three things a fresh session could not have worked out, now in `CLAUDE.md` because that is the
+file injected at session start:
+
+**The ports.** `serve-site.py` is 8080 and serves every page; `save-watch.py` is 8787 and
+serves only its shell. Neither starts on its own and neither survives a session, so "a page
+will not load" should send you to check both are up before anywhere else.
+
+**What is patched into the game.** Hyperspace, `event-labels` and `map-signal` — the
+`PATCH_ORDER` in `build-map-signal-mod.py`. `beacon-reveal` is built but **not** installed.
+With it, the caution that made it matter: Slipstream's `--patch` applies exactly what it is
+given, so a mod missing from the list is a mod uninstalled — which is why
+`build-beacon-mod.py` carries the longer list, and why the two `--install` commands are not
+interchangeable. `grep "Loading Lua file" FTL_HS.log` confirms rather than assumes.
+
+**Line endings.** The repo is mixed CRLF/LF with no `.gitattributes`, and rewriting a whole
+file in Python flips it: `read_text()` gives `\n` for CRLF and `write_text(newline="")` writes
+LF back. That turned a 209-line edit into 1,527 lines once and a 41-line edit into 863 lines
+again, both in `SAVE-WATCH.md`, both caught only at commit time. Prefer `Edit`; if a script
+must rewrite, read and write bytes. The check is now in §7 with the rule.
+
+Verified from a clean start at close: both index builders, the mod build, all 418 site routes
+and every relative asset, and `save-watch --once`.
