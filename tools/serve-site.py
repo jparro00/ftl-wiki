@@ -228,6 +228,11 @@ SEEN_CSS = """
   .ev.sb-is-seen .t, .evbox.sb-is-seen .t { color: var(--dim); }
   .ev.sb-is-seen, .evbox.sb-is-seen { background: var(--sunk); }
 
+  /* The run's own beacon count, in the budget heading's own meta line. Brighter than
+     the derived figures beside it, because it is the one fact about *this* map. */
+  .sb-beacons { color: var(--dim); }
+  .sb-beacons b { color: var(--cyan); font-weight: 600; }
+
   /* The strip under the bar: what landed, and what did not. */
   body.sb-has-seen { padding-top: 5.1rem !important; }
   .sb-seenbar {
@@ -244,10 +249,12 @@ SEEN_CSS = """
 SEEN_JS = """
 (function () {
   const WORDS = %(words)s;
-  const raw = new URLSearchParams(location.search).get('seen');
-  // No parameter, no markup. A sector page with no `?seen=` must be byte-for-byte
-  // the page it was before this existed.
-  if (raw === null) return;
+  const params = new URLSearchParams(location.search);
+  const raw = params.get('seen');
+  const rawBeacons = params.get('beacons');
+  // No parameters, no markup. A sector page with neither must be byte-for-byte the
+  // page it was before this existed.
+  if (raw === null && rawBeacons === null) return;
 
   // Case and the three word separators are normalised away, so a token may be the
   // slug (`ancient-device`) or the in-game event id the Hyperspace log prints
@@ -271,7 +278,7 @@ SEEN_JS = """
   // there are at most 24 tokens either way.
   const counts = new Map();       // normalised token -> visits
   const tokens = [], bad = [];
-  raw.split(',').map(s => s.trim()).filter(Boolean).forEach(tok => {
+  (raw || '').split(',').map(s => s.trim()).filter(Boolean).forEach(tok => {
     const at = tok.lastIndexOf(':');
     let name = tok, n = 1;
     if (at >= 0) {
@@ -414,6 +421,32 @@ SEEN_JS = """
     line.name.appendChild(dup);
   });
 
+  // How many beacons this run's map actually has. No file states it -- the map rolls
+  // the count -- and under Hyperspace the save watcher cannot read it either, since the
+  // Hyperspace save layout costs it the beacon list entirely (`SAVE-WATCH.md` §3b). So
+  // it arrives in the URL or not at all, and the page reports it rather than deriving
+  // anything from it: which lines a short map cuts is a roll, not an inference.
+  let badBeacons = null;
+  if (rawBeacons !== null) {
+    if (!/^[0-9]+$/.test(rawBeacons.trim()) || Number(rawBeacons) < 1) {
+      badBeacons = rawBeacons;
+    } else {
+      // Beside the heading's own figures, and first: it is the concrete one, and it is
+      // what makes the allocated range mean something.
+      const meta = document.querySelector('.budget') &&
+        document.querySelector('.budget').closest('section').querySelector('h2 .meta');
+      if (meta) {
+        const span = document.createElement('span');
+        span.className = 'sb-beacons';
+        span.title = WORDS.beacons_title;
+        span.innerHTML = WORDS.beacons.replace('{n}',
+          '<b>' + Number(rawBeacons) + '</b>');
+        meta.insertBefore(document.createTextNode(' \\u00b7 '), meta.firstChild);
+        meta.insertBefore(span, meta.firstChild);
+      }
+    }
+  }
+
   // What did not land. A token can be a real event that simply is not in this
   // sector's pool, and the page cannot tell that from a typo -- it holds one
   // sector's events and nothing wider. So it says the true thing.
@@ -429,14 +462,24 @@ SEEN_JS = """
     : '';
   const bar = document.createElement('div');
   bar.className = 'sb-seenbar';
-  bar.innerHTML = '<span>' + (events.size
+  bar.innerHTML =
+    // `?beacons=` alone is a legitimate URL, and saying "nothing marked seen" about it
+    // would answer a question nobody asked.
+    (raw === null ? '' : '<span>' + (events.size
       ? WORDS.bar.replace('{n}', events.size).replace('{total}', tokens.length)
-      : WORDS.bar_none) + '</span>' +
+      : WORDS.bar_none) + '</span>') +
     // Only when a repeat exists: with one visit each, visits and events are the same
     // number and printing both says nothing twice.
     (visits > events.size
       ? '<span>' + WORDS.bar_visits.replace('{n}', visits) + '</span>' : '') +
-    miss(WORDS.unmatched, missed) + miss(WORDS.badcount, bad);
+    miss(WORDS.unmatched, missed) + miss(WORDS.badcount, bad) +
+    (badBeacons === null ? ''
+      : '<span class="miss">' + WORDS.bad_beacons.replace('{v}', esc(badBeacons)) +
+        '</span>');
+  // A `?beacons=`-only URL has nothing to report here -- the count went into the
+  // heading. An empty strip would still push the page down by its own height, so it is
+  // not inserted at all.
+  if (!bar.innerHTML) return;
   document.body.classList.add('sb-has-seen');
   const nav = document.querySelector('.sb-bar');
   if (nav) nav.parentNode.insertBefore(bar, nav.nextSibling);
@@ -775,11 +818,12 @@ def resolve(path, query=""):
         if page.exists():
             if wants_raw(query):
                 return serve_raw(page)
-            # The `?seen=` overlay is only ever attached here, and only when the
-            # parameter is present, so a plain sector page is unchanged by its
+            # The run overlay is only ever attached here, and only when one of its
+            # parameters is present, so a plain sector page is unchanged by its
             # existence. The style goes in the head; the script goes last, because it
             # reads beacon boxes the page's own markup has to have produced first.
-            asked_seen = "seen" in urllib.parse.parse_qs(query)
+            asked = urllib.parse.parse_qs(query)
+            asked_seen = "seen" in asked or "beacons" in asked
             return fragment_page(
                 page, "sectors",
                 [(NAV["sectors"], "/sectors/"), (sector_title(slug), None)], "?raw=1",

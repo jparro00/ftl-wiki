@@ -4131,3 +4131,37 @@ newline is written. Counts on the real log are unchanged.
 Worth noting what made this findable: the bad value would have been a *plausible* one. `REBEL`
 sitting in the Mantis pool is exactly why the failure mode is silent, and why the check was
 "is this event real" rather than "does this look odd".
+
+## [2026-08-17] tooling | `may be cut` comes off the budget; `?beacons=` puts the real number on
+
+**Removed the `may be cut` chip**, and the amber left border with it. `at_risk` is a real
+computation — the lines above could, at their maxima, consume all 24 beacons — but as a chip it
+fired on most lines of most sectors, and a warning that common reads as decoration rather than
+as a warning. The border encoded the same predicate, so keeping it would have left a colour
+with nothing naming it, which is worse than either. **The field stays in the profile JSON and
+in `at_risk_entries`**; only the display went.
+
+**Added `?beacons=<n>`**, which puts the run's actual beacon count in front of the budget
+heading's own figures:
+
+```
+BEACON BUDGET      21 beacons on this map · 19–27 slots allocated · 56 events in pool
+```
+
+First in the line and the only bright figure in it, because it is the one fact about *this*
+map — and it is what makes the allocated range mean anything. 19–27 slots against 21 beacons
+says the bottom of the table is being cut; the range alone can only say it might be. That is
+the trade: a chip that said *maybe* on nearly every line, for one number that says how much
+room there actually is.
+
+**It has to arrive in the URL.** No file states it, since the map rolls the count — and the
+watcher cannot supply it either: under Hyperspace the save is read by content scan, which gives
+up the beacon list entirely (`SAVE-WATCH.md` §3b). So this is a parameter by necessity, not by
+preference.
+
+**The page reports it and derives nothing from it.** Which lines a short map cuts is a roll,
+not an inference, and marking rows as cut would be exactly the guess the budget refuses to make.
+
+Two details worth keeping: either parameter may appear alone, and neither present still means
+no markup at all; and a `?beacons=`-only URL gets **no strip** — the count went into the
+heading, and an empty strip would still push the page down by its own height.

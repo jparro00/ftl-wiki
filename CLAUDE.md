@@ -514,7 +514,8 @@ generated output into a local website: clean URLs, one nav bar, a home page, and
 /                     home            /cards/            the event index, ?q= ?sector= ?tag=
 /sectors/             the chooser     /cards/<slug>      one card
 /sectors/<slug>       one profile     <page>?raw=1       the built file, as source
-      ?seen=<slug-or-id>,…  marks the beacons a run has visited, and counts them per budget line
+      ?seen=<slug-or-id>[:n],…  marks the beacons a run has visited, counted per budget line
+      ?beacons=<n>              how many beacons this run's map has, by the budget heading
 ```
 
 **Read `tools/LOCAL-SITE.md` and follow it** — same reasoning as the other specs: this file is

@@ -252,8 +252,6 @@ def budget_html(data, copy, titles, slug):
             classes += " hostile"
         if entry["max"] == 0:
             classes += " zero"
-        if place["at_risk"]:
-            classes += " risk"
         if place.get("always_short"):
             classes += " short"
         count = str(entry["min"]) if entry["min"] == entry["max"] else \
@@ -261,8 +259,11 @@ def budget_html(data, copy, titles, slug):
         marks = ""
         if place["nebula_first"]:
             marks += f'<span class="mark first">{html.escape(VOC["budget"]["nebula_mark"])}</span>'
-        if place["at_risk"]:
-            marks += f'<span class="mark risk">{html.escape(VOC["budget"]["risk_mark"])}</span>'
+        # `at_risk` is still computed and still in the profile JSON -- it is simply not
+        # shown. The chip said "may be cut", which is a possibility rather than a
+        # prediction, and it fired on most lines of most sectors; a warning that common
+        # is read as decoration. The amber left border went with it: it encoded the same
+        # predicate, and a colour with nothing naming it is worse than either.
         if place.get("always_short"):
             marks += f'<span class="mark short">{html.escape(VOC["budget"]["short_mark"])}</span>'
         head = (

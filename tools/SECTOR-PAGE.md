@@ -168,7 +168,12 @@ So `entries` is kept in **file order** and carries `placement` (`position`, `neb
 `before_min`, `before_max`, `at_risk`, `always_short`):
 
 - **`at_risk`** — the lines placed before it could, at their maxima, consume all 24 beacons.
-  A possibility, not a prediction. Chipped `may be cut`.
+  A possibility, not a prediction. **Computed and carried, but no longer shown on the page.**
+  It was chipped `may be cut` with an amber left border; the chip fired on most lines of most
+  sectors, and a warning that common reads as decoration rather than as a warning. The border
+  went with it — it encoded the same predicate, and a colour with nothing naming it is worse
+  than either. The field stays in the profile JSON, and `?beacons=` (`LOCAL-SITE.md` §5c) now
+  answers the question it was gesturing at, with the run's real number instead of a maybe.
 - **`always_short`** — the minima above it plus its own minimum already exceed 24, so it
   cannot be satisfied even on the best roll. Chipped `always short`, and true on exactly one
   line in the shipped data: `NEUTRAL_CRYSTAL`, the last line of Hidden Crystal Worlds.
@@ -548,10 +553,11 @@ sector*:
 2. **At a glance** — the two generated blocks (§6.2). No copy at all, and **omitted entirely**
    when a sector has neither: the Last Stand gates nothing, so it has no glance section
 3. **Beacon budget** — the spine of the page. The heading carries the two surviving metrics
-   (`13–24 slots allocated · 85 events in pool`), then:
+   (`13–24 slots allocated · 85 events in pool`), and `?beacons=` prepends the run's own
+   count in front of them (`LOCAL-SITE.md` §5c). Then:
    - one row per entry **in placement order**, numbered, solid blocks for `min` and faded for
-     `max − min`; hostile and boarder rows are red; `placed first`, `may be cut` and
-     `always short` chips from `placement` (§4.1b). Every block carries its own chance as a
+     `max − min`; hostile and boarder rows are red; `placed first` and `always short` chips
+     from `placement` (§4.1b). Every block carries its own chance as a
      `title` tooltip — solid says "always placed, if the map has room", faded says `P(roll ≥ k)`
    - each row is a `<details>` whose expansion holds **the events that line can place** (§6.1),
      then that line's *section note (copy)*, then the **AE delta** where the list has an

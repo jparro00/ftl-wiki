@@ -10,7 +10,7 @@ This turns the same files into a site you can navigate, link to, and hand somebo
 
 ```
 sectors/index.html            ──►  /sectors/            the chooser, ?pick= selects
-sectors/sector-<slug>.html    ──►  /sectors/<slug>      one profile, ?seen= marks visited
+sectors/sector-<slug>.html    ──►  /sectors/<slug>      one profile, ?seen= + ?beacons=
 cards/index.html              ──►  /cards/              the event index, ?q= ?sector= ?tag=
 cards/card-<slug>.html        ──►  /cards/<slug>        one card
                                    /                    home  (the server's own page)
@@ -35,7 +35,7 @@ python tools/build-card-index.py --verify   # check the built index
 it with Bash `run_in_background: true`. A foreground call blocks until the tool times out
 and tells you nothing.
 
-`--check` is the pre-flight: it resolves all 416 routes and every relative asset those pages
+`--check` is the pre-flight: it resolves all 418 routes and every relative asset those pages
 ask for, in-process, and prints a count. It starts nothing. Run it before serving and after
 any change to the build.
 
@@ -85,6 +85,7 @@ implementation of the same rules.
 | `/cards/` | `cards/index.html` | full document, chrome spliced in |
 | `/cards/<slug>` | `cards/card-<slug>.html` | fragment, wrapped |
 | `<page>?raw=1` | the built file, `text/plain` | §6 |
+| `/sectors/<slug>?seen=` `?beacons=` | the same profile, marked up for a run | §5c |
 | `/sectors/...`, `/cards/...` | any other file on disk | the card runtime, payloads, profile JSON |
 
 Redirects, all `301`, query string preserved:
@@ -284,14 +285,43 @@ Two layout rules that were got wrong first:
   `.row`: the label row is the same grid and therefore the same class, but carries no data
   attributes, so selecting it counted a 387th event and threw on the first keystroke.
 
-### 5c. `?seen=` — the beacons this run has already visited
+### 5c. `?seen=` and `?beacons=` — this run's map, on a sector profile
 
-On a sector profile, `?seen=` marks the events the run has been to: a `Seen` chip on every
-matching beacon box, and a count of them beside each budget line's name.
+Two parameters, both about the run in progress rather than the sector in general. `?seen=`
+marks the events the run has been to; `?beacons=` says how big this map actually is.
 
 ```
-/sectors/engi-controlled-sector?seen=engi-ship-attacked-by-mantis-ship,FREE_WEAPON,store-engi
+/sectors/engi-controlled-sector?beacons=21&seen=engi-ship-attacked-by-mantis-ship,FREE_WEAPON
 ```
+
+Either may appear alone. Neither present means **no markup at all** — the page is byte-for-byte
+what it was before this existed.
+
+#### `?beacons=<n>` — the count in the budget heading
+
+```
+BEACON BUDGET      21 beacons on this map · 19–27 slots allocated · 56 events in pool
+```
+
+First in the line, and the only bright figure in it, because it is the one fact about *this*
+map — and it is what makes the allocated range mean anything: 19–27 slots against 21 beacons
+says the bottom of the table is getting cut, which the range alone cannot say.
+
+**It has to come from outside.** No file states it — the map rolls the count — and the save
+watcher cannot supply it either: under Hyperspace the save is read by content scan, which
+gives up the beacon list entirely (`SAVE-WATCH.md` §3b). So the URL or nothing.
+
+**The page reports it and derives nothing from it.** Which lines a short map cuts is a roll,
+not an inference, and marking rows as cut would be exactly the guess the budget refuses to
+make. A value that is not a positive integer is reported in the strip and otherwise ignored.
+
+This replaced the `may be cut` chip, which is the better trade: a chip that fired on most lines
+of most sectors, saying a line *might* be cut, against one number that says how much room there
+actually is (`SECTOR-PAGE.md` §4.1b).
+
+#### `?seen=<token>,…`
+
+A `Seen` chip on every matching beacon box, and a count of them beside each budget line's name.
 
 **The watcher owns this state, and the URL is its only channel.** That is a consequence of
 the site being hostable: the watcher cannot serve the page, so the one thing it can still do
@@ -405,9 +435,11 @@ identical to it.
 - **Events with no card are markable too.** They render as a plain `div.ev` with no
   `data-card`, but they still carry the in-game id in `.id`, and the run visited them either
   way.
-- **No parameter, no markup.** Neither the style nor the script is attached when `?seen=` is
-  absent, so a plain sector page is byte-identical to what it was before this existed.
-  `--check` asserts both directions (§7).
+- **No parameter, no markup.** Neither the style nor the script is attached when both
+  `?seen=` and `?beacons=` are absent, so a plain sector page is byte-identical to what it
+  was before this existed. `--check` asserts both directions (§7). A `?beacons=`-only URL
+  also gets **no strip** — the count went into the heading, and an empty strip would still
+  push the page down by its own height.
 
 **It is injected by the server, never built into the page.** The overlay is chrome, on the
 same boundary as the nav (§4) — so the built profile keeps opening off `file://` and keeps

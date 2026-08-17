@@ -92,7 +92,6 @@
   },
   "budget": {
     "nebula_mark": "placed first",
-    "risk_mark": "may be cut",
     "short_mark": "always short",
     "fallback_mark": "fill-in",
     "fallback_rank": "+",
