@@ -106,20 +106,16 @@
   },
   "index": {
     "title": "FTL sectors",
-    "eyebrow": "Sector profiles",
-    "heading": "Where next?",
-    "lede": "Every sector the game can offer you, by the designation the map colours it with. Open one for its full profile — what it must place, what it can pay, and what bites.",
-    "picks_heading": "This jump",
-    "picks_meta": "the map offers two — pin them here to compare",
+    "heading": "Sector Map",
     "picks_column": "These are the sectors in the next column of the map. You can reach some of them — the game does not tell a program outside it which.",
-    "picks_empty": "Pin a sector with + to bring it up here. Two at a time, because that is what the map gives you.",
+    "picks_empty": "Pin a sector with + to bring it up here.",
     "picks_one": "Pin the other option to compare them.",
     "pin": "Pin to this jump",
     "unpin": "Unpin",
     "pin_mark": "+",
     "unpin_mark": "×",
     "open": "Open profile",
-    "from": "from sector {n}",
+    "from": "earliest sector: {n}",
     "fixed": "always sector {n} — never a choice",
     "unique": "once per run",
     "ae_only": "Advanced Edition only",
@@ -176,7 +172,8 @@
         "Beacons left to the fill-in list"
       ]
     ],
-    "source": "Designations per the community wiki's own grouping of the sector map; everything else is read from sector_data.xml and the event files."
+    "source": "Designations per the community wiki's own grouping of the sector map; everything else is read from sector_data.xml and the event files.",
+    "blank": "—"
   },
   "cards": {
     "loading": "Loading card…",

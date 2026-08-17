@@ -738,6 +738,32 @@ Pins survive a reload (`localStorage`); clicking anywhere else on a card opens t
 profile. No copy file — the words are in `sector-vocab.json` under `index`, and everything
 else is read.
 
+**The panel is one table, and the pinned boxes are its header cells** (`<thead>`), not a
+separate row of boxes above it. So a sector's box and its figures are the same table column
+and cannot drift apart, and the table carries **no row of sector names** — the box already
+says which sector the column is. (Review rounds, 2026-08-16.)
+
+Four things about that panel are less obvious than they look:
+
+- **The table is there whether or not anything is pinned.** Empty columns show `—` and the
+  header is a dashed prompt. The questions it asks are the same ones whatever is in the
+  columns, and a panel that appears on the first pin moves the whole page under the reader.
+- **The panel is the content width in every state** — `.wrap` is `58rem`, the width the
+  sector profiles themselves are read at, and the table is `width: 100%` of it with the
+  columns as **percentages** (28% for the labels, the remaining 72% split between the
+  sectors). Fixed rem widths would make the panel a different size for two sectors than for
+  four. Figures are **centred** in their column: flushed right they cluster at one edge with
+  a gulf between a label and its own numbers.
+- **The boxes are levelled in JavaScript, not in CSS.** `levelBoxes()` sets them to `auto`,
+  measures the tallest and gives them all that height, and re-runs on resize. A percentage
+  height inside a `<th>` has nothing to resolve against, so the box falls back to its own
+  content — or, given a `min-height` floor, to the floor, and a name that wraps then spills
+  out under its own border. That failure looks like equal boxes to any check that only
+  compares heights; the check that catches it is `scrollHeight > clientHeight`.
+- **The whole box is the link to the profile**, with the unpin button sitting on top of it.
+  The click handler's `preventDefault()` runs on the bubbled event, which cancels the
+  anchor's navigation — so unpinning from the box does not also open the sector.
+
 ### The designation is in the game data
 
 Not a taxonomy of ours, and not the community wiki's grouping: `sector_data.xml` opens with

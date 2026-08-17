@@ -3677,3 +3677,97 @@ since the script regenerates one on demand.
 Also fixed: `smoke-sector.py` stripped `<style>` but not `<style id="…">`, so a page with a
 second style block failed the stray-asterisk check on its own CSS comments. That is why the
 mock had been failing smoke since it was built — the failure was in the checker, not the page.
+
+## [2026-08-16] tooling | The chooser's panel becomes one table, with the boxes as its headers
+
+Review round on `sectors/index-review.html`, three notes, all on the "This jump" panel: the
+pinned boxes should be narrower and head the columns, the table's own row of sector names
+should go, and the figures should line up under the boxes.
+
+**One change answers all three.** The slots grid and the comparison table were two layouts
+side by side, each deciding its own widths and hoping they agreed — the boxes were a
+`grid-template-columns: 1fr 1fr` spanning the panel, the figures were `width: 8.5rem` cells
+at the right. Now there is one `<table>`: the boxes are its `<thead>` cells, the figures its
+`<tbody>`, and a `<colgroup>` gives the pick columns a fixed 12.5rem while the label column
+takes the rest. Alignment is structural rather than arranged, and the name row is gone
+because the box above the column already says which sector it is.
+
+Two states the narrowing forced a decision on. **Nothing pinned** now shows one invitation
+across the panel instead of the same long sentence twice, which is what two narrow dashed
+boxes would have been. **One pinned** keeps the box plus a dashed slot and prints no figures,
+as before. The class colour moved from a left rail to the box's top border, where it reads as
+a cap on the column.
+
+Verified in Firefox by measurement, not by eye: a throwaway Playwright script drove all four
+states — nothing, one, two pinned by clicking a card's `+`, and the watcher's three-column
+`?pick=…&column=1` form — and compared each header cell's `x`/`width` against the cell of the
+figure beneath it (equal to within a pixel), checked that no sector name survives as a row
+label, and checked the boxes are under a third of the panel's width. No page errors.
+
+`tools/SECTOR-PAGE.md` §7b records the structure and why the two thin states read as they do.
+
+## [2026-08-16] tooling | Level boxes, even columns — and the check that equal heights was not enough
+
+Second round on the chooser's panel: the boxes must be the same height whatever their names
+do, and the row label and its figures should sit evenly across the row rather than clustered
+at the right.
+
+**Levelling is a JavaScript job here, and finding that out cost a wrong first attempt.** The
+CSS route — `height: 1px` on the header cell, `height: 100%` on the box — is the standard
+trick for making a box fill a table cell, and it does not work when the box is a flex
+container with a `min-height`: the percentage has nothing to resolve against, so every box
+came out at exactly the floor, and Zoltan Controlled Sector's two-line name pushed its
+`from sector 2` line out under its own border. **The boxes were equal and wrong**, which is
+why the first Playwright pass reported success: it compared heights to each other and nothing
+else. The check now also asserts `scrollHeight - clientHeight <= 1` per box — content inside
+its own border — and that assertion is what a height comparison can never make. `levelBoxes()`
+now measures the tallest box and sets them all to it, re-running on resize, because column
+width is what decides whether a name wraps at all.
+
+**Even spacing meant giving up on filling the page.** The table now stops at 22rem of label
+plus a fixed width per sector (17rem for two, 15 for three, 13 for four) instead of stretching
+to the 72rem wrap, and the figures are centred in their columns rather than flushed right. At
+full width with right-aligned figures the label sat at the far left and its numbers at the far
+right with nothing between them; the gaps between label centre and each figure centre are now
+within a third of each other, which the check measures rather than eyeballs.
+
+Also: the sub line is pushed to the box's floor (`margin-top: auto`), so with the boxes
+levelled the "from sector 4 · once per run" lines form a row of their own instead of ending
+wherever each name did.
+
+Checked in Firefox across five pin sets (short names, a wrapping name, a two-line sub, the
+three- and four-column forms the sector map can hand the watcher), the empty and single-pin
+states, and a resize down to 780px. `tools/SECTOR-PAGE.md` §7b records both mechanisms.
+
+## [2026-08-16] tooling | The chooser becomes the Sector Map: one width, a table that stays, whole-box links
+
+Third review round on `sectors/index-review.html`, five notes, all applied.
+
+**The page lost its head.** Eyebrow, "Where next?", the lede and the "This jump" heading are
+gone; the page opens on `Sector Map` and nothing else. Four vocab keys went with them —
+`eyebrow`, `lede`, `picks_heading`, `picks_meta` — rather than being left unused in
+`sector-vocab.json`, where a dead word is indistinguishable from one nothing happens to be
+rendering today.
+
+**One width, in every state, and it is the profiles' own.** `.wrap` is now `58rem`, read off
+`sector-page-render.html` rather than picked, and the table is `width: 100%` of it with the
+columns as percentages (28% labels, the other 72% split between the sectors). The fixed rem
+widths from the last round made the panel a different size for two sectors than for four, and
+made it grow the moment something was pinned. The check now measures the panel in all seven
+states and against a built profile's `.wrap`.
+
+**The table stays put when nothing is pinned** — empty columns read `—`, the headers are
+dashed prompts. It asks the same questions whatever is in the columns, and the version that
+appeared on the first pin moved the whole page under the reader. One sector pinned marks
+nothing as leading: there is no comparison to lead.
+
+**The whole box opens the profile now**, not just the name, and the unpin button on it still
+only unpins — `preventDefault()` on the bubbled event cancels the anchor's navigation, which
+the check proves by clicking the × and then the box and looking at where the page went.
+
+**And a wording fix**: cards read `earliest sector: 2`, not `from sector 2`. One vocab string,
+so the pinned boxes changed with them.
+
+Checked in Firefox: the head, the five pin sets from the last round, the empty and single-pin
+states, both click targets, panel width across all of them, and a resize. `tools/SECTOR-PAGE.md`
+§7b carries all four of the panel's non-obvious mechanisms.

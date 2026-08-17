@@ -243,13 +243,10 @@ CSS = """
     background-size: 22px 22px;
     color: var(--ink); font-family: var(--sans); line-height: 1.5;
   }
-  .wrap { max-width: 72rem; margin: 0 auto; }
-  .eyebrow {
-    font-family: var(--mono); font-size: .68rem; letter-spacing: .18em;
-    text-transform: uppercase; color: var(--cyan);
-  }
-  h1 { font-size: 1.9rem; margin: .3rem 0 .5rem; letter-spacing: -.01em; }
-  .lede { color: var(--dim); max-width: 46rem; margin: 0 0 2.2rem; }
+  /* the width the sector profiles are read at -- the panel below spans it exactly,
+     in every state, so the page does not resize itself as sectors are pinned. */
+  .wrap { max-width: 58rem; margin: 0 auto; }
+  h1 { font-size: 1.9rem; margin: 0 0 .2rem; letter-spacing: -.01em; }
   h2 {
     font-size: .82rem; letter-spacing: .12em; text-transform: uppercase;
     color: var(--ink); margin: 2.4rem 0 .2rem; display: flex; flex-wrap: wrap;
@@ -261,38 +258,61 @@ CSS = """
   }
   section > .note { color: var(--faint); font-size: .78rem; margin: .3rem 0 1rem; }
 
-  /* the pinned pair */
-  .slots { display: grid; grid-template-columns: 1fr 1fr; gap: .6rem; margin-top: .9rem; }
+  /* the pinned pair — each box is the header of its own column of numbers, so the
+     alignment is structural: box and figures are the same table column, not two
+     layouts hoping to agree on a width. */
+  .cmp-wrap { margin-top: .9rem; overflow-x: auto; }
+  /* Always the full content width, whatever is pinned: the columns are percentages,
+     so the panel neither grows as sectors arrive nor shrinks to fit two boxes. */
+  .cmp { width: 100%; min-width: 34rem; border-collapse: collapse; table-layout: fixed; }
+  .cmp th, .cmp td {
+    padding: .34rem .5rem; font-size: .82rem; font-variant-numeric: tabular-nums;
+  }
+  .cmp thead th { padding: 0 0 .55rem .55rem; vertical-align: bottom; }
+  .cmp thead th.lab { padding: 0; }
+  .cmp tbody th, .cmp tbody td { border-top: 1px solid var(--edge); }
+  .cmp tbody th { text-align: left; font-weight: 400; color: var(--dim); }
+  /* Centred, not flushed right: the label and the figures then sit evenly across the
+     row instead of leaving a gulf between the two. */
+  .cmp tbody td { text-align: center; font-family: var(--mono); }
+  .cmp tbody td.more { color: var(--cyan); }
+  .cmp tbody td.blank { color: var(--faint); }
+  /* The whole box is the link to the profile, not just the name. */
   .slot {
-    border: 1px solid var(--edge); border-radius: 3px; background: var(--panel);
-    padding: .8rem .9rem; min-height: 5.4rem;
+    position: relative; text-align: left; min-height: 5.2rem;
+    display: flex; flex-direction: column; align-items: flex-start;
+    border: 1px solid var(--edge); border-top: 2px solid var(--rail);
+    border-radius: 3px; background: var(--panel); padding: .5rem .6rem .55rem;
+    text-decoration: none; color: inherit;
   }
-  .slot.empty {
-    border-style: dashed; background: transparent; color: var(--faint);
-    display: flex; align-items: center; justify-content: center; text-align: center;
-    font-size: .8rem; padding: 1.2rem;
+  a.slot:hover { border-color: var(--rail); background: var(--sunk); }
+  a.slot:hover .name { color: var(--cyan); }
+  .slot.civilian { border-top-color: var(--green); }
+  .slot.hostile  { border-top-color: var(--red); }
+  .slot.nebula   { border-top-color: #9B7BD4; }
+  .slot.special  { border-top-color: var(--amber); }
+  .slot .name {
+    display: block; font-size: .92rem; font-weight: 600; padding-right: 1.2rem;
+    line-height: 1.25; color: var(--ink);
   }
-  .slot .top { display: flex; align-items: baseline; gap: .5rem; flex-wrap: wrap; }
-  .slot .name { font-size: 1.02rem; font-weight: 600; }
-  .slot a.name { color: var(--ink); text-decoration: none; }
-  .slot a.name:hover { color: var(--cyan); }
+  .slot .chip { display: inline-block; margin-top: .32rem; }
+  /* margin-top:auto takes up whatever slack the equal heights leave, so the sub line
+     sits on the box's floor in every column rather than wherever its name ended. */
+  .slot .sub {
+    font-family: var(--mono); font-size: .66rem; color: var(--faint);
+    margin-top: auto; padding-top: .4rem; line-height: 1.35;
+  }
   .slot .drop {
-    margin-left: auto; background: none; border: 1px solid var(--edge); color: var(--faint);
-    font-family: var(--mono); border-radius: 2px; cursor: pointer; line-height: 1;
-    padding: .12rem .34rem;
+    position: absolute; top: .32rem; right: .32rem;
+    background: none; border: 1px solid var(--edge); color: var(--faint);
+    font-family: var(--mono); font-size: .72rem; border-radius: 2px; cursor: pointer;
+    line-height: 1; padding: .1rem .3rem;
   }
   .slot .drop:hover { color: var(--red); border-color: var(--red); }
-  .cmp { width: 100%; border-collapse: collapse; margin-top: 1rem; }
-  .cmp th, .cmp td {
-    border-top: 1px solid var(--edge); padding: .34rem .5rem; font-size: .82rem;
-    font-variant-numeric: tabular-nums;
-  }
-  .cmp th { text-align: left; font-weight: 400; color: var(--dim); }
-  .cmp td { text-align: right; font-family: var(--mono); width: 8.5rem; }
-  .cmp td.more { color: var(--cyan); }
-  .cmp tr.head th, .cmp tr.head td {
-    border-top: 0; color: var(--faint); font-size: .68rem; letter-spacing: .1em;
-    text-transform: uppercase;
+  .slot.empty {
+    border: 1px dashed var(--edge); background: transparent; color: var(--faint);
+    display: flex; align-items: center; justify-content: center; text-align: center;
+    font-size: .74rem; padding: .85rem .6rem;
   }
 
   /* the 19 */
@@ -339,12 +359,12 @@ CSS = """
   .chip.nebula { color: #9B7BD4; }
   .chip.special { color: var(--amber); }
   .chip.unique { color: var(--faint); }
-  @media (max-width: 34rem) { .slots { grid-template-columns: 1fr; } }
 """
 
 SCRIPT = """
 const SECTORS = %(data)s;
 const WORDS = %(words)s;
+const METRICS = %(metrics)s;   // the row labels, which the table shows pinned or not
 const KEY = 'ftl-sector-picks';
 const MAX_PINS = 2;      // what the map offers, and what a hand can pin
 const MAX_SLOTS = 4;     // ...but a map column can hold four, and a URL may carry them
@@ -369,47 +389,84 @@ function chip(cls, text) {
   return '<span class="chip ' + cls + '">' + text + '</span>';
 }
 
-function render() {
-  // The slots, then the comparison, then the pinned state on the cards. Two slots
-  // normally; three only when something handed us three, which the sector map can.
-  const slots = document.getElementById('slots');
-  const count = Math.max(MAX_PINS, picks.length);
-  slots.style.gridTemplateColumns = 'repeat(' + count + ', 1fr)';
-  slots.innerHTML = Array.from({length: count}, (_, i) => i).map(i => {
-    const s = SECTORS[picks[i]];
-    if (!s) return '<div class="slot empty">' +
-      (picks.length ? WORDS.picks_one : WORDS.picks_empty) + '</div>';
-    return '<div class="slot"><div class="top">' +
-      '<a class="name" href="sector-' + s.slug + '.html">' + s.name + '</a>' +
-      chip(s.cls, WORDS.classes[s.cls].label) +
-      '<button class="drop" data-drop="' + s.slug + '" title="' + WORDS.unpin + '">' +
-      WORDS.unpin_mark + '</button></div>' +
-      '<div class="sub">' + s.sub + '</div></div>';
-  }).join('');
+// One pinned sector, as the box that heads its column. The box carries the name, so
+// the table below it has no name row -- it would say the same thing twice. The whole
+// box is the link; the unpin button sits on top of it and cancels the navigation.
+function slotBox(s, anyPinned) {
+  if (!s) return '<div class="slot empty">' +
+    (anyPinned ? WORDS.picks_one : WORDS.picks_empty) + '</div>';
+  return '<a class="slot ' + s.cls + '" href="sector-' + s.slug + '.html" title="' +
+    WORDS.open + '">' +
+    '<button class="drop" data-drop="' + s.slug + '" title="' + WORDS.unpin + '">' +
+    WORDS.unpin_mark + '</button>' +
+    '<span class="name">' + s.name + '</span>' +
+    chip(s.cls, WORDS.classes[s.cls].label) +
+    '<span class="sub">' + s.sub + '</span></a>';
+}
 
+// Level the header boxes by measurement. CSS cannot do this from inside a table
+// cell: a percentage height in a `<th>` has no basis to resolve against, so the box
+// falls back to its own content -- or, given a floor, to the floor, and a name that
+// wraps then spills out under the border. Measure the tallest, set them all to it.
+// Re-run on resize, because the column width is what decides whether a name wraps.
+function levelBoxes() {
+  const boxes = Array.prototype.slice.call(
+    document.querySelectorAll('#cmp thead .slot'));
+  if (!boxes.length) return;
+  boxes.forEach(b => { b.style.height = 'auto'; });
+  const tallest = Math.max.apply(null,
+    boxes.map(b => b.getBoundingClientRect().height));
+  boxes.forEach(b => { b.style.height = tallest + 'px'; });
+}
+
+let levelPending = 0;
+window.addEventListener('resize', () => {
+  cancelAnimationFrame(levelPending);
+  levelPending = requestAnimationFrame(levelBoxes);
+});
+
+function render() {
+  // The panel is one table: the boxes are its header cells and the figures fall in
+  // the same columns beneath them. Two columns normally; three or four only when
+  // something handed us that many, which the sector map can.
   const caveat = document.getElementById('caveat');
   caveat.textContent = isColumn ? WORDS.picks_column : '';
   caveat.style.display = isColumn ? 'block' : 'none';
 
-  const cmp = document.getElementById('cmp');
+  // The table is always here, pinned or not: the questions it asks are the same ones
+  // whatever is in the columns, and a panel that appears and disappears moves the
+  // whole page under the reader.
+  const panel = document.getElementById('cmp');
   const chosen = picks.map(s => SECTORS[s]).filter(Boolean);
-  if (chosen.length >= 2) {
-    const span = r => r.low === r.high ? String(r.low) : r.low + '\\u2013' + r.high;
-    const rows = chosen[0].rows.map((row, i) => {
-      const all = chosen.map(s => s.rows[i]);
-      const top = Math.max.apply(null, all.map(r => r.high));
-      // The leading side is marked, never judged: more fights is not worse and more
-      // stores is not better without knowing the run. Ties mark nothing.
-      const tied = all.filter(r => r.high === top).length > 1;
-      return '<tr><th>' + row.label + '</th>' + all.map(r =>
-        '<td' + (!tied && r.high === top ? ' class="more"' : '') + '>' + span(r) + '</td>'
-      ).join('') + '</tr>';
-    }).join('');
-    cmp.innerHTML = '<table class="cmp"><tr class="head"><th></th>' +
-      chosen.map(s => '<td>' + s.name + '</td>').join('') + '</tr>' + rows + '</table>';
-  } else {
-    cmp.innerHTML = '';
-  }
+  const count = Math.max(MAX_PINS, chosen.length);
+  // Percentages, not fixed widths: the panel is the content width in every state, and
+  // the label and the figures still come out evenly spaced across the row.
+  const cols = '<colgroup><col style="width:28%%">' +
+    ('<col class="pick" style="width:' + (72 / count).toFixed(2) + '%%">').repeat(count) +
+    '</colgroup>';
+  const head = '<thead><tr><th class="lab"></th>' +
+    Array.from({length: count}, (_, i) =>
+      '<th class="pick">' + slotBox(chosen[i], chosen.length > 0) + '</th>'
+    ).join('') + '</tr></thead>';
+
+  const span = r => r.low === r.high ? String(r.low) : r.low + '\\u2013' + r.high;
+  const body = '<tbody>' + METRICS.map((label, i) => {
+    const all = Array.from({length: count}, (_, c) => chosen[c] ? chosen[c].rows[i] : null);
+    const real = all.filter(Boolean);
+    const top = Math.max.apply(null, real.map(r => r.high));
+    // The leading side is marked, never judged: more fights is not worse and more
+    // stores is not better without knowing the run. Ties mark nothing, and one
+    // sector on its own leads nothing -- there is no comparison to lead.
+    const tied = real.filter(r => r.high === top).length > 1;
+    const mark = real.length >= 2 && !tied;
+    return '<tr><th>' + label + '</th>' + all.map(r =>
+      r ? '<td' + (mark && r.high === top ? ' class="more"' : '') + '>' + span(r) + '</td>'
+        : '<td class="blank">' + WORDS.blank + '</td>'
+    ).join('') + '</tr>';
+  }).join('') + '</tbody>';
+
+  panel.innerHTML = '<table class="cmp">' + cols + head + body + '</table>';
+  levelBoxes();
 
   document.querySelectorAll('.card').forEach(card => {
     const on = picks.indexOf(card.dataset.slug) >= 0;
@@ -507,7 +564,8 @@ def build():
                         "sub": " · ".join(r["sub_parts"]), "rows": r["rows"]}
             for r in records}
     words = {k: VOC[k] for k in ("picks_empty", "picks_one", "picks_column", "pin",
-                                 "unpin", "pin_mark", "unpin_mark", "classes")}
+                                 "unpin", "pin_mark", "unpin_mark", "open", "blank",
+                                 "classes")}
 
     page = """<!doctype html>
 <html lang="en"><head><meta charset="utf-8">
@@ -518,16 +576,10 @@ def build():
 %(css)s
 </style></head>
 <body><div class="wrap">
-<header>
-  <div class="eyebrow">%(eyebrow)s</div>
-  <h1>%(heading)s</h1>
-  <p class="lede">%(lede)s</p>
-</header>
+<header><h1>%(heading)s</h1></header>
 <section>
-  <h2>%(picks_heading)s<span class="meta">%(picks_meta)s</span></h2>
   <p class="note" id="caveat" style="display:none"></p>
-  <div class="slots" id="slots"></div>
-  <div id="cmp"></div>
+  <div class="cmp-wrap" id="cmp"></div>
 </section>
 %(body)s
 <p class="note">%(source)s</p>
@@ -540,15 +592,14 @@ def build():
         "title": html.escape(VOC["title"]),
         "tokens": tokens(),
         "css": CSS,
-        "eyebrow": html.escape(VOC["eyebrow"]),
         "heading": html.escape(VOC["heading"]),
-        "lede": html.escape(VOC["lede"]),
-        "picks_heading": html.escape(VOC["picks_heading"]),
-        "picks_meta": html.escape(VOC["picks_meta"]),
         "body": "".join(body),
         "source": html.escape(VOC["source"]),
-        "script": SCRIPT % {"data": json.dumps(data, ensure_ascii=False),
-                            "words": json.dumps(words, ensure_ascii=False)},
+        "script": SCRIPT % {
+            "data": json.dumps(data, ensure_ascii=False),
+            "words": json.dumps(words, ensure_ascii=False),
+            "metrics": json.dumps([label for _, label in VOC["compare"]],
+                                  ensure_ascii=False)},
     }
     OUT.write_text(page, encoding="utf-8", newline="\n")
     return records, notes
