@@ -85,6 +85,30 @@ When it can't be certain — a couple of dozen outcome texts are shared by many 
 says so instead of showing you the wrong card, and sorts itself out at the next beacon.
 Details in [`tools/SAVE-WATCH.md`](./tools/SAVE-WATCH.md).
 
+### Browse it like a website
+> **"Serve the pages."**
+
+```bash
+python tools/serve-site.py --open
+```
+
+Everything that has been generated, with addresses, at `http://127.0.0.1:8080`:
+
+| | |
+|---|---|
+| `/sectors/` | all 19 sectors — pin two side by side, the way the map offers them |
+| `/sectors/rock-homeworlds` | one sector's whole profile |
+| `/cards/` | **all 386 events**, searchable by name, id, tag or sector |
+| `/cards/giant-alien-spiders` | one card |
+
+Every view is a link you can send. Pin two sectors and the address bar says
+`?pick=rock-homeworlds,slug-home-nebula`; filter the event list and it says `?q=` and
+`?sector=`. Reload one and you get exactly what you were looking at.
+
+Nothing is rebuilt or rewritten to make this work — the same files still open straight off
+disk and still publish as artifacts. Details in
+[`tools/LOCAL-SITE.md`](./tools/LOCAL-SITE.md).
+
 ### Lint it
 Every so often (say, every handful of ingests):
 > **"Lint the wiki."**

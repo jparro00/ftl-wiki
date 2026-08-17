@@ -4,6 +4,7 @@
     python tools/smoke-inline.py sectors/sector-rock-homeworlds.html
     python tools/smoke-inline.py --all
     python tools/smoke-inline.py --all --browser chromium
+    python tools/smoke-inline.py --all --base http://127.0.0.1:8080   # the local site
 
 The static check (tools/smoke-sector.py) cannot see any of this: the card is fetched
 by a <script> tag and rendered into a shadow root, so it exists only in a live page.
@@ -17,12 +18,18 @@ box, then open a row inside the card that appears — and fails on:
     check would miss and the one that matters: the wrong card under the wrong box
   · a row inside the card that does not expand
 
-It loads the page from **file://**, which is the case that matters and the one that
-constrains the whole design: fetch, XHR and dynamic import are all blocked there, so
-the loader uses script tags (tools/SECTOR-PAGE.md §6.1). Firefox is the default
-browser here, and Playwright ships it with security.fileuri.strict_origin_policy
-turned off — that would hide exactly the failure this test exists to catch, so the
-stock value is forced back on.
+By default it loads the page from **file://**, which is the case that matters and the
+one that constrains the whole design: fetch, XHR and dynamic import are all blocked
+there, so the loader uses script tags (tools/SECTOR-PAGE.md §6.1). Firefox is the
+default browser here, and Playwright ships it with
+security.fileuri.strict_origin_policy turned off — that would hide exactly the failure
+this test exists to catch, so the stock value is forced back on.
+
+`--base http://127.0.0.1:8080` runs the same checks against the local site
+(tools/LOCAL-SITE.md) instead, where the page is wrapped in a document and served at
+`/sectors/<slug>`. Both modes are worth running: the boxes reach their card by a
+different path in each — a sibling file on disk, a route on the server — and only the
+served one can break when the route table changes.
 
 Needs playwright (`pip install playwright && python -m playwright install firefox`).
 """
@@ -44,10 +51,23 @@ def normalise(text):
     return " ".join((text or "").split()).casefold()
 
 
-def check(page, path, boxes_to_open):
+def target_url(path, base):
+    """Where to load this page from: its own file, or its route on the local site."""
+    if not base:
+        return path.resolve().as_uri()
+    slug = path.stem[len("sector-"):] if path.stem.startswith("sector-") else path.stem
+    return "%s/sectors/%s" % (base.rstrip("/"), slug)
+
+
+def check(page, path, boxes_to_open, base=None):
     problems, errors = [], []
     page.on("pageerror", lambda e: errors.append(str(e)))
-    page.goto(path.resolve().as_uri())
+    # Over http the checks are the same but a 404 is a live possibility, so a bad
+    # response is a failure here rather than a silently empty box.
+    if base:
+        page.on("response", lambda r: errors.append("HTTP %d %s" % (r.status, r.url))
+                if r.status >= 400 else None)
+    page.goto(target_url(path, base))
 
     # Budget lines hold the boxes; open them all so every box is clickable.
     lines = page.locator("details.bwrap")
@@ -109,6 +129,9 @@ def main():
     ap.add_argument("--all", action="store_true", help="every built sector page")
     ap.add_argument("--browser", default="firefox", choices=["firefox", "chromium"])
     ap.add_argument("--boxes", type=int, default=3, help="boxes to open per page (default 3)")
+    ap.add_argument("--base", default=None, metavar="URL",
+                    help="load pages from a running tools/serve-site.py instead of "
+                         "file:// (e.g. http://127.0.0.1:8080)")
     args = ap.parse_args()
 
     if args.all:
@@ -133,7 +156,7 @@ def main():
             if not path.exists():
                 sys.exit(f"{path}: not found")
             page = browser.new_page(viewport={"width": 1200, "height": 1000})
-            problems, total, opened, expanded = check(page, path, args.boxes)
+            problems, total, opened, expanded = check(page, path, args.boxes, args.base)
             page.close()
             name = path.stem.replace("sector-", "")
             if problems:
@@ -148,7 +171,8 @@ def main():
 
     if failed:
         sys.exit(f"\n{failed} page(s) failed")
-    print(f"\nOK — {len(pages)} page(s), {args.browser} over file://")
+    where = args.base if args.base else "file://"
+    print(f"\nOK — {len(pages)} page(s), {args.browser} over {where}")
 
 
 if __name__ == "__main__":

@@ -734,9 +734,16 @@ python tools/build-sector-index.py --verify   # check the built page
 
 It lists all 19 under their designation, and **two can be pinned into a panel at the top**,
 side by side, because two is what the map gives you. A third pin pushes the older one out.
-Pins survive a reload (`localStorage`); clicking anywhere else on a card opens that sector's
-profile. No copy file — the words are in `sector-vocab.json` under `index`, and everything
-else is read.
+Clicking anywhere else on a card opens that sector's profile. No copy file — the words are in
+`sector-vocab.json` under `index`, and everything else is read.
+
+**The URL is the state.** Every pin writes `?pick=` back with `history.replaceState`, so the
+address bar reproduces what is on screen and a comparison is a link you can send.
+`localStorage` is the fallback for the **bare** URL only, and only a hand action writes it —
+seeding from `?pick=` must not overwrite the reader's own pins, because the save watcher opens
+this page at every sector choice and a reported offer is not a preference. The full query
+vocabulary, and how a token like `ROCK_HOME` or `rock-home` resolves to a sector, is in
+**`tools/LOCAL-SITE.md` §5a**.
 
 **The panel is one table, and the pinned boxes are its header cells** (`<thead>`), not a
 separate row of boxes above it. So a sector's box and its figures are the same table column

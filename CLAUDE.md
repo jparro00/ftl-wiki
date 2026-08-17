@@ -41,12 +41,14 @@ bookkeeping — summarizing, filing, cross-linking, and keeping everything consi
 │   └── runs/              ← the user's own playthrough notes and observations
 ├── cards/                 ← generated card output — a sibling of `wiki/`, never inside it, so
 │   │                        wiki searches never scan machine output
+│   ├── index.html         ← the event index: all 386, searchable, every filter in the URL
 │   ├── card-<slug>.html   ← the built cards
 │   └── trees/             ← `<slug>.tree.json`, the extracted event trees
 ├── sectors/               ← generated sector-profile output — same sibling rule as `cards/`
 │   ├── index.html         ← the chooser: all 19 by designation, two pinnable side by side
 │   ├── sector-<slug>.html ← the built pages, one per sector
 │   └── data/              ← `<slug>.sector.json`, the extracted sector profiles
+│                            (`cards/index.html` is the peer index for all 386 events)
 ├── mods/                  ← generated game mods — another sibling of `wiki/`, same reasoning
 │   └── <mod-name>/        ← `src/` is the tree that ships; `<mod-name>.ftl` is it zipped
 ├── tools/                 ← scripts + their contracts (`EVENT-CARD.md` is the card pipeline,
@@ -56,7 +58,8 @@ bookkeeping — summarizing, filing, cross-linking, and keeping everything consi
 │                            that opens cards by itself — and, in its §5c, the `map-signal`
 │                            mod that tells it when the star map is open,
 │                            `REVIEW-LAYER.md` the commenting layer the user reviews a
-│                            built page with); `sector-copy/` is hand-written copy
+│                            built page with, and `LOCAL-SITE.md` the local website that
+│                            gives every built page a URL); `sector-copy/` is hand-written copy
 └── wiki/                  ← YOUR layer, everything below is maintained by you
     ├── events/            ← one page per event (markdown only; trees live in `cards/trees/`)
     ├── chains/            ← one page per multi-jump event chain / quest
@@ -481,10 +484,17 @@ becomes unnecessary while it runs.
 failure modes live there, kept out of this file for the same reason as the card spec: this
 file is injected at session start and can lag the working tree.
 
-Three things that are easy to get wrong and cost a wasted turn:
+**It needs the site running** (§5.2c-2): `serve-site.py` serves the pages, the watcher decides
+which URL to show and publishes it as `url` in `/current`. Start the site first; the watcher
+probes it at startup and says `site … (reachable)` or tells you it is not.
+
+Four things that are easy to get wrong and cost a wasted turn:
 
 1. **It is a server that never returns.** Launch it with Bash `run_in_background: true`.
    A foreground call blocks until timeout and tells you nothing.
+   And when killing one by port, **confirm the port is clear afterwards** — on Windows
+   `allow_reuse_address` lets a second watcher bind a port that is already listening, so a
+   stale process keeps answering with old code while the new one reports a clean start.
 2. **Check with `--once` first.** It parses the current save, prints one JSON object and
    exits — that is how you verify the pipeline without starting anything.
 3. **Nothing here modifies the game.** It reads `continue.sav` and the installed `ftl.dat`.
@@ -493,6 +503,44 @@ Three things that are easy to get wrong and cost a wasted turn:
 
 `status: nosave` means no run is in progress; `ambiguous` and `nocard` are normal, defined
 outcomes, not faults. Only a persistent `error` is worth investigating.
+
+### 5.2c-2 The local site — "serve the pages", "give me a link to that sector"
+
+The same built pages as §5.2b and §5.2b-2, with addresses. `tools/serve-site.py` turns the
+generated output into a local website: clean URLs, one nav bar, a home page, and
+`cards/index.html` — the searchable index of all 386 events that the cards never had.
+
+```
+/                     home            /cards/            the event index, ?q= ?sector= ?tag=
+/sectors/             the chooser     /cards/<slug>      one card
+/sectors/<slug>       one profile     <page>?raw=1       the built file, as source
+      ?seen=<slug-or-id>,…  marks the beacons a run has visited, and counts them per budget line
+```
+
+**Read `tools/LOCAL-SITE.md` and follow it** — same reasoning as the other specs: this file is
+injected at session start and can lag the working tree, so the spec is authoritative.
+
+Four things that are easy to get wrong:
+
+1. **It is a server that never returns.** Launch with Bash `run_in_background: true`, and run
+   `python tools/serve-site.py --check` first — that resolves all 416 routes and every asset
+   the pages ask for, in-process, and starts nothing.
+2. **It rewrites no built file and no link.** `/sectors/<slug>` shares its base path with
+   `sectors/sector-<slug>.html` on disk, so the pages' own relative links resolve here
+   unchanged and the old `.html` shapes 301 to the clean ones. That is what keeps the pages
+   working off `file://` and publishable as artifacts.
+3. **Restart it after any edit to `tools/`.** Nothing hot-reloads. Page *content* is read per
+   request, so rebuilding a card or an index needs no restart.
+   **`?seen=` and `?pick=` are the watcher's channel** — once the site is hosted, the URL is
+   the only thing the watcher can still control, so state it wants on screen rides there.
+   A token may be a slug or the in-game event id `FTL_HS.log` prints; one that matches
+   nothing is reported, never guessed.
+4. **It is a second server, beside the watcher (§5.2c), not a replacement.** Both read the
+   same files; both can run at once. Merging them is deferred by decision.
+
+`python tools/build-card-index.py` rebuilds the event index. Its tags come from
+`extract-sector.py`'s own derivation, so a tag reads the same there as on a sector page — and
+the 118 events in no sector pool are tagged and listed too, rather than dropped.
 
 ### 5.2d Launching the game — always through `launch-ftl.cmd`
 

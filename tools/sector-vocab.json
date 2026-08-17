@@ -108,6 +108,7 @@
     "title": "FTL sectors",
     "heading": "Sector Map",
     "picks_column": "These are the sectors in the next column of the map. You can reach some of them — the game does not tell a program outside it which.",
+    "picks_dropped": "Not in the link: {list} — no sector goes by that name, or more than one does.",
     "picks_empty": "Pin a sector with + to bring it up here.",
     "picks_one": "Pin the other option to compare them.",
     "pin": "Pin to this jump",

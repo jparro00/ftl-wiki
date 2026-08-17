@@ -1,0 +1,69 @@
+{
+  "_comment": "Words for the local site: the chrome tools/serve-site.py wraps every page in, its home page, and the event index tools/build-card-index.py builds. Tag labels are NOT here -- they are read from sector-vocab.json's `tags`, so a tag reads the same on a sector page and in the event index.",
+
+  "nav": {
+    "brand": "FTL Event Wiki",
+    "brand_title": "Home",
+    "sectors": "Sectors",
+    "cards": "Events",
+    "theme": "Switch theme",
+    "theme_mark": "◐",
+    "source": "Built file",
+    "source_title": "The generated file this page is served from"
+  },
+
+  "home": {
+    "title": "FTL Event Wiki",
+    "eyebrow": "Local site",
+    "heading": "FTL Event Wiki",
+    "lede": "Every sector the map can offer and every event a beacon can hold, generated from the game's own files. Two ways in.",
+    "sectors_title": "Sector Map",
+    "sectors_blurb": "All 19 sectors under the designation the game's draw lists give them. Pin two side by side — the map offers two — and open either profile for its whole beacon budget.",
+    "sectors_count": "{n} sectors",
+    "cards_title": "Event Cards",
+    "cards_blurb": "One decision tree per event: every choice, every outcome, every blue option, with the odds the files state and nothing where they state none.",
+    "cards_count": "{n} events",
+    "jump_heading": "Straight to a sector",
+    "note": "Nothing on these pages is written by hand. Every number and every quoted line is read out of raw/gamedata."
+  },
+
+  "seen": {
+    "chip": "Seen",
+    "chip_n": "Seen {n}",
+    "row": "{n} seen",
+    "row_title": "seen {n}× across {events} of the {total} events this line can place",
+    "overlap": "{n} overlap",
+    "overlap_title": "{n}× of that is counted on another line too: {list}",
+    "bar": "{n} of {total} events marked seen",
+    "bar_visits": "{n} visits",
+    "bar_none": "nothing marked seen",
+    "unmatched": "{n} not in this sector's pool: {list}",
+    "badcount": "{n} with an unreadable count: {list}"
+  },
+
+  "cards_index": {
+    "title": "FTL events",
+    "eyebrow": "Event index",
+    "heading": "Event Cards",
+    "lede": "Every event with a card, searchable by name, by in-game id, by tag, and by the sector whose pool can place it.",
+    "search": "Search a name, an id, a tag…",
+    "search_label": "Search",
+    "sector_label": "Sector pool",
+    "tag_label": "Tag",
+    "any_sector": "Any sector",
+    "any_tag": "Any tag",
+    "no_pool": "In no sector pool",
+    "no_pool_hint": "Reachable another way — a chain step, a fight outcome, the boss, or content the pool lists never name.",
+    "count": "{shown} of {total}",
+    "count_all": "{total} events",
+    "none": "Nothing matches that.",
+    "clear": "Clear filters",
+    "open": "Open card",
+    "col_name": "Event",
+    "col_id": "In-game id",
+    "col_tags": "What it holds",
+    "sectors_col": "Pools",
+    "sectors_more": "+{n}",
+    "note": "A sector column counts the pools that can place the event, not how often it turns up. No file states that."
+  }
+}

@@ -18,11 +18,21 @@ from the game's string table and no odds appear unless the files publish them. W
 guarantees is [[concept-event-cards]]; the grammar it rests on is
 [[concept-event-tree-grammar]]; the pipeline is `tools/EVENT-CARD.md`.
 
-**385 trees and 385 cards** are built, out of 395 paged events — `cards/trees/*.tree.json`
+**386 trees and 386 cards** are built, out of 395 paged events — `cards/trees/*.tree.json`
 and `cards/card-*.html` are the inventory, and neither is catalogued here because both are
 regenerable machine output. Any remaining event id can be carded on demand with the event id
 as the only input. Built ≠ published: publishing mints a hosted URL and is done on request,
 per `tools/EVENT-CARD.md` §9.
+
+## Reading the generated pages
+`python tools/serve-site.py` puts all of it behind URLs on `127.0.0.1:8080` — `/sectors/` for
+the 19 profiles, `/cards/` for a searchable index of all 386, and a page each. Nothing is
+rebuilt to make that work, so the same files still open off disk and still publish as
+artifacts. `tools/LOCAL-SITE.md` is the spec.
+
+With FTL running, `python tools/save-watch.py` drives it: the current event's card appears on
+its own, and a sector page arrives marked with the beacons that run has already visited.
+`tools/SAVE-WATCH.md` is the spec.
 
 ## Coverage at a Glance
 | Type | Pages | Notes |

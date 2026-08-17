@@ -18,11 +18,19 @@ Two ways in, because there are two save layouts. Section 3b says which runs when
 
 ## 1. Running it
 
+**Two processes.** The site serves the pages; the watcher decides which one to show. Start the
+site first:
+
 ```bash
-python tools/save-watch.py --open          # watch + serve + open the page
+python tools/serve-site.py                 # the pages, on :8080  (tools/LOCAL-SITE.md)
+python tools/save-watch.py --open          # watch + serve the shell on :8787 + open it
+```
+
+```bash
 python tools/save-watch.py --once          # resolve the current save once, print JSON
 python tools/save-watch.py --no-sector     # cards only; never show a sector profile (§5b)
 python tools/save-watch.py --index-report  # measure how well texts pin to cards
+python tools/save-watch.py --site URL      # point at a different site (default :8080)
 python tools/ftlsave.py <continue.sav>     # dump the parsed encounter
 python tools/ftlsave.py <continue.sav> --beacons   # what the save gives away about the sector
 ```
@@ -360,29 +368,183 @@ vanilla parse path — the sector and beacon numbers. `source` says which channe
 
 **Without Hyperspace there is no log**, and everything falls back to §4 exactly as before.
 
+## 4c. Which beacons this sector has already been to
+
+The sector page can mark what a run has visited and count it per budget line
+(`LOCAL-SITE.md` §5c). The watcher supplies that set, and the log supplies it whole:
+`Creating event: <ID>` is written on every arrival, and `Sector: <ID>` partitions the file
+into sectors.
+
+```
+-- Generating Events --
+Sector: ENGI_SECTOR          ← everything after this line is this sector
+-- Done Generating Events --
+Creating event: START_BEACON_ENGI
+Creating event: STORE_ENGI
+Creating event: DESTROYED_DEFAULT
+Creating event: STORE_ENGI    ← a second visit; counted as one
+```
+→ `seen=STORE_ENGI:2,…`
+
+**Recomputed from the log on every read, never accumulated.** That is what makes the reset
+exact and free: a new `Sector:` line moves the anchor and everything before it stops counting.
+There is no state to remember and therefore none to forget at the wrong moment — no
+double-count when the tail is re-read, no leak across a jump, and nothing to clear on a
+restart.
+
+No `Sector:` line in the 256 KB tail means the whole tail lies inside one sector's block, since
+a line between two blocks would be in it. So the anchor is 0, and that is correct rather than a
+fallback.
+
+### A bare line is an arrival; a trailing number is a child
+
+The two are different facts and the log distinguishes them. Measured on a live log
+(2026-08-17, `MANTIS_SECTOR`, eight lines, entirely consistent):
+
+```
+Creating event: NOTHING_MANTIS               ← arrival
+Creating event: STORE_MANTIS                 ← arrival
+Creating event: AUTO_ASTEROID                ← arrival
+Creating event: DESTROYED_DEFAULT 287        ← its outcome
+Creating event: DISTRESS_TRAPPED_MINER       ← arrival
+Creating event: DISTRESS_TRAPPED_MINER_LOOT 99
+Creating event: REBEL_TRANSPORT              ← arrival
+Creating event: REBEL_TRANSPORT 851          ← and its own child, same name
+```
+
+The pool filter below already drops children whose names differ from any pool event.
+**The last pair is why `ARRIVED_EVENT` has to exist:** a child sharing its parent's name is
+in the pool by definition, so nothing but the trailing number tells them apart — and counting
+it made one visit to the exit beacon read as `REBEL_TRANSPORT:2`.
+
+`CREATED_EVENT` still matches **both** kinds, deliberately: *which event is on screen* is
+answered by the most recent line of either sort, and `REBEL_TRANSPORT 851` being last is
+exactly how the watcher knows it is in `REBEL_TRANSPORT`. Two questions, two patterns.
+
+Known risk, stated because the evidence is one sector wide: if a genuine arrival ever carries
+a trailing number it is missed, and the symptom is an **undercount** rather than a wrong count.
+
+**The pattern requires a real newline, not `$`.** In `MULTILINE`, `$` also matches at the end of
+the string, so a log caught mid-write matches its own truncated final line — and the game
+appends to this file constantly while the watcher polls twice a second. Two ways that lies, both
+silent: `Creating event: REBEL_CHECKPOINT` cut short reads as an arrival at `REBEL`, which is a
+real event in the pool and therefore indistinguishable from a true one; and
+`Creating event: REBEL_TRANSPORT 851` read before ` 851` lands looks bare and inflates that
+beacon's count by one. A lookahead for the newline costs only the genuine last line of a file
+that has no trailing newline — the ambiguous case regardless, and the next poll picks it up.
+
+**Filtered to the sector's pool**, because the log carries far more than beacon arrivals:
+sub-events (`DESTROYED_DEFAULT`, `FUEL_EXPLORE_LIST`), `Creating ShipEvent:` spawns, the entry
+beacon, and the out-of-fuel event `FUEL_EXPLORE` — which is real, but is not a beacon this
+sector's budget allocated, and would only be reported by the page as *not in this sector's
+pool*. The pool is the only thing that states the difference.
+
+**The pool is all three sources, and taking only the first was a real bug:**
+
+| Source | |
+|---|---|
+| `entries[].events` | the allocation table's own lists |
+| `generation.fallback_events` | the fill-in row (`SECTOR-PAGE.md` §4.1b-2) |
+| `entries[].override.added` | the Advanced Edition delta (§4.4) |
+
+The sector page draws a box for each of them, and a box is what `?seen=` marks. `entries`
+alone gives the Mantis sector 37 events where the page shows 55 — the fill-in list is 20
+events and 18 of them are nowhere in `entries`, so more than a third of that sector's beacons
+could never have been marked, silently.
+
+**`?seen=` rides only on the sector URL.** A card page has no boxes to mark, so carrying it
+there would lengthen every URL to no effect.
+
+**A repeat is a real second visit as far as this is concerned.** Two bare lines for one event
+are two arrivals — two beacons that rolled the same event, or one revisited. Nothing here
+tries to tell those apart; the count is what the log says. What a repeat is *not* is a parent
+and its same-named child, which the trailing number now excludes.
+
+### The browser has to be reloaded after a change here
+
+The shell's JavaScript is fetched once, when the page is opened. A tab left open across a
+watcher restart keeps running the **old** shell — so a change to what `/current` publishes, or
+to how the frame is composed, appears to have done nothing while `/current` plainly shows the
+new field. Observed 2026-08-17 with `?seen=`: the watcher was emitting the parameter and the
+frame was not using it. Restarting the watcher does not help; reloading the tab does.
+
+---
+
 ## 5. The page
 
-A single shell at `http://127.0.0.1:8787/` polls `/current` twice a second and swaps an
-iframe to `/card/<slug>` — or to `/sector/<slug>`, per §5b. Serving locally rather than launching a browser per event is what
-keeps it to one window that never steals focus — relevant because the point of the second
-monitor is that FTL stays drawn on the first (see `mods/fullscreen-no-minimize/`).
+A single shell at `http://127.0.0.1:8787/` polls `/current` twice a second and points an
+iframe at whatever URL the watcher says. Serving locally rather than launching a browser per
+event is what keeps it to one window that never steals focus — relevant because the point of
+the second monitor is that FTL stays drawn on the first (see `mods/fullscreen-no-minimize/`).
 
-Cards are served from `cards/card-<slug>.html` verbatim. They are fragments with their data
-inlined, which browsers render directly; no publish step and no network access is involved.
+### 5a. The watcher serves no pages — the site does
+
+Pages come from `tools/serve-site.py` (`tools/LOCAL-SITE.md`), on **port 8080**. The watcher
+computes a complete site URL, publishes it as `url` in `/current`, and the shell composes
+`site + url` and nothing else:
+
+| `view` | `url` |
+|---|---|
+| `choose` | `/sectors/?pick=<slug>,…[&column=1]` |
+| `sector` | `/sectors/<slug>[?seen=…]` |
+| `card` | `/cards/<slug>` |
+
+**Start both.** `serve-site.py` first, then the watcher; the watcher probes the site once at
+startup and says so, because a site that is not up shows as a blank frame with no explanation
+anywhere while `/current` keeps reporting perfectly good state:
+
+```
+watching C:\Users\...\FasterThanLight\hs_continue.sav   (auto, re-resolved each poll)
+serving  http://127.0.0.1:8787/   (ctrl-c to stop)
+site     http://127.0.0.1:8080   (reachable)
+sectors  D:\...\FTL_HS.log   (reading ENGI_SECTOR)
+```
+
+**`--site` is the whole change needed to drive a hosted copy.** The watcher's channel to the
+page is the address bar and nothing else, which is what makes that true — see `LOCAL-SITE.md`
+§5c for why the state rides on the URL rather than being fetched.
+
+**The URL is built in Python, not in the shell.** The shell used to assemble it from `view`
+and a slug; now it does not, because that was a second place where the two could disagree
+about what should be on screen.
+
+The watcher's old page routes are gone. `/card/<slug>`, `/sector/<slug>` and anything under
+`/cards` or `/sectors` **302 to the site**, so an old link or bookmark still lands right.
+
+> ⚠️ **A stale watcher can hold the port and answer for the new one.** `Server` sets
+> `allow_reuse_address`, and on Windows that permits a *second* bind to a port already
+> listening — so a watcher left running from a previous session keeps serving its old code
+> while the new process reports a clean startup. Observed 2026-08-17: a watcher started the
+> previous afternoon answered `/card/…` with a page instead of a redirect, from a process
+> nothing had said was still there. Kill by port and **confirm the port is clear** before
+> restarting:
+>
+> ```powershell
+> Get-NetTCPConnection -LocalPort 8787 -State Listen |
+>     ForEach-Object { Stop-Process -Id $_.OwningProcess -Force }
+> Get-NetTCPConnection -LocalPort 8787 -State Listen -ErrorAction SilentlyContinue
+> ```
+
+Cards and profiles are fragments with no `<html>` of their own; the site wraps them into
+documents and adds its nav (`LOCAL-SITE.md` §4). That is why the watcher no longer needs to
+serve them.
 
 Non-event states render as a short message rather than a blank page. A save caught
 mid-write raises `SaveFormatError`; the next poll retries, so a torn read is invisible.
 
 ### 5b. Two pages in one frame — the sector profile
 
-The same shell also serves `/sector/<slug>`, the built sector profile
-(`tools/SECTOR-PAGE.md`), and `view` in `/current` says which of the two belongs on screen:
+A sector profile (`tools/SECTOR-PAGE.md`) is sometimes the better answer than a card, and
+`view` in `/current` says which. The pages come from the site (§5a); `view` decides, and `url`
+carries the decision:
 
 | `view` | When | Frame shows |
 |---|---|---|
-| `choose` | **the sector map is open** — the screen that offers the next sectors (§5d) | `/sectors/index.html?pick=…`, the offer already pinned |
-| `sector` | the beacon map is open (§5c), **or** the resolved event is a `START_BEACON_*`, **or** no card resolves at all, **or** within `--sector-hold` seconds of arriving in a new sector | `/sector/<slug>` |
-| `card` | none of the above | `/card/<slug>` |
+| `choose` | **the sector map is open** — the screen that offers the next sectors (§5d) | `/sectors/?pick=…`, the offer already pinned |
+| `sector` | the beacon map is open (§5c), **or** the resolved event is a `START_BEACON_*`, **or** no card resolves at all, **or** within `--sector-hold` seconds of arriving in a new sector | `/sectors/<slug>?seen=…` (§4c) |
+| `card` | none of the above | `/cards/<slug>` |
+
+Those are paths on the site (§5a), and `url` in `/current` carries the one that won.
 
 The order is the priority: choosing a sector outranks everything, because it is the one
 moment the player is asked a question the wiki can answer.
@@ -417,9 +579,10 @@ blocks are the sectors already flown. `--hs-log` overrides the path, which defau
 beside `ftl.dat`.
 
 **Beacon boxes still open onto cards.** A sector page loads `../cards/runtime/*.js` and
-`../cards/data/<slug>.js` when a box is opened (`SECTOR-PAGE.md` §6.1). Served at
-`/sector/<slug>`, those resolve to `/cards/...`, which the server serves out of `cards/`.
-So the watcher gets the full local behaviour — the version a published artifact cannot have.
+`../cards/data/<slug>.js` when a box is opened (`SECTOR-PAGE.md` §6.1). The site resolves
+those (`LOCAL-SITE.md` §3), so the frame gets the full local behaviour — the version a
+published artifact cannot have. That the watcher no longer serves the pages itself changes
+nothing here; the site was built to keep exactly this working.
 
 **The one heuristic in the whole watcher, stated as such.** *Is the star map open* is not
 in the save, and cannot be: the save is written during encounters and is silent while the
@@ -570,7 +733,7 @@ unreadable name, no single `visited` sector in the column, or a shape the genera
 produce. Naming a sector the player cannot travel to is worse than naming a few extra.
 
 The watcher resolves each name against `display_name` / `title` / `short_name` in the
-profiles and serves `/sectors/index.html?pick=<slug>,…&column=1` — the chooser
+profiles and serves `/sectors/?pick=<slug>,…&column=1` — the chooser
 (`SECTOR-PAGE.md` §7b) with those sectors already in the comparison panel, and `column=1`
 making it print the caveat above the panel. A name that resolves to nothing is **dropped,
 never guessed**, so a renamed sector shows a short list rather than a wrong one; a list that
@@ -582,7 +745,19 @@ match. Pinning by hand stays capped at two — that is a hand comparing options,
 reporting them.
 
 **Why the URL beats what was pinned by hand.** The chooser remembers pins in `localStorage`;
-`?pick=` overrides them. The offer is not a preference to be remembered over.
+`?pick=` overrides them, and a URL-seeded pin is never written back to `localStorage`. The
+offer is not a preference to be remembered over.
+
+**The chooser now resolves names itself** — slug, game id, display name, or an unambiguous
+prefix, and it reports the tokens it dropped (`tools/LOCAL-SITE.md` §5a). That does not
+replace the resolution above: the watcher must still decide whether it has a *single* answer
+before it builds a URL, because a token it passes through is a token it has stopped vouching
+for. Two independent refusals to guess, at the two points where guessing is possible.
+
+**Nothing here changes for the watcher.** It serves `/sectors/index.html` off its own port,
+statically, and the site server (`tools/LOCAL-SITE.md`) is a separate process on 8080 that
+redirects the watcher's own `/card/<slug>` and `/sector/<slug>` shapes to its canonical URLs.
+Folding the two together is deferred by decision, not oversight.
 
 ### The last card stays up — except when we know it is wrong
 

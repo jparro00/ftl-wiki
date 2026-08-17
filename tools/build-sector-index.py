@@ -369,21 +369,66 @@ const KEY = 'ftl-sector-picks';
 const MAX_PINS = 2;      // what the map offers, and what a hand can pin
 const MAX_SLOTS = 4;     // ...but a map column can hold four, and a URL may carry them
 
-let picks = [];
-try { picks = JSON.parse(localStorage.getItem(KEY) || '[]').filter(s => SECTORS[s]); }
-catch (e) { picks = []; }
+const ALL = Object.keys(SECTORS);
 
-// ?pick=slug,slug wins over whatever was pinned by hand. That is how the save watcher
-// opens this page at a sector choice: it knows the offer, and the offer is not a
-// preference to be remembered over it.
+// One `?pick=` token to one sector, or to nothing. Four ways in, tried in this order,
+// because a caller may hold any of them: the save watcher resolves names off the
+// Hyperspace log, a hand-written link is likelier to carry a slug, and a game id is
+// what `sector_data.xml` and the log itself use.
+//
+//   1. slug            rock-homeworlds
+//   2. game id         ROCK_HOME
+//   3. display name    Rock Homeworlds
+//   4. unique prefix   rock-home        (of a slug or a name)
+//   5. unique substring
+//
+// Case and the three word separators (`-`, `_`, space) are all normalised away, so
+// `ROCK_HOME`, `rock home` and `Rock-Home` are one token. **A token that matches
+// nothing, or more than one sector, resolves to nothing and is reported** -- naming a
+// sector the caller did not mean is worse than naming none, and the same rule already
+// governs the watcher's own name resolution.
+function norm(s) { return String(s).toLowerCase().replace(/[\\s_-]+/g, '-'); }
+
+function resolvePick(token) {
+  const want = norm(token);
+  if (!want) return null;
+  const keys = s => [norm(SECTORS[s].slug), norm(SECTORS[s].id), norm(SECTORS[s].name)];
+  let hit = ALL.filter(s => keys(s).indexOf(want) >= 0);
+  if (hit.length !== 1) hit = ALL.filter(s => keys(s).some(k => k.indexOf(want) === 0));
+  if (hit.length !== 1) hit = ALL.filter(s => keys(s).some(k => k.indexOf(want) >= 0));
+  return hit.length === 1 ? hit[0] : null;
+}
+
+// The URL is the state. `?pick=` seeds the page and every pin writes it back, so the
+// address bar always reproduces what is on screen and a filtered view is a link you
+// can send. localStorage is the fallback for the *bare* URL only -- with a `pick` in
+// hand, a remembered pin would silently rewrite what somebody deliberately linked to.
 const params = new URLSearchParams(location.search);
-const fromUrl = (params.get('pick') || '')
-  .split(',').map(s => s.trim()).filter(s => SECTORS[s]).slice(0, MAX_SLOTS);
-if (fromUrl.length) picks = fromUrl;
+const asked = (params.get('pick') || '').split(',').map(s => s.trim()).filter(Boolean);
+const resolved = asked.map(resolvePick);
+const dropped = asked.filter((t, i) => resolved[i] === null);
+let picks = resolved.filter(Boolean).filter((s, i, a) => a.indexOf(s) === i)
+                    .slice(0, MAX_SLOTS);
+
+if (!asked.length) {
+  try { picks = JSON.parse(localStorage.getItem(KEY) || '[]').filter(s => SECTORS[s]); }
+  catch (e) { picks = []; }
+}
+
 // &column=1 means these are the next column of the map, not a verified list of what
 // this sector connects to -- Hyperspace does not expose the adjacency. The page says so
-// rather than letting the panel imply a promise the data cannot make.
-const isColumn = fromUrl.length > 0 && params.get('column') === '1';
+// rather than letting the panel imply a promise the data cannot make. Pinning by hand
+// clears it: the caveat is about an offer the map reported, and a hand-picked pair is
+// no longer that offer.
+let isColumn = picks.length > 0 && params.get('column') === '1';
+
+function writeUrl() {
+  const next = new URLSearchParams();
+  if (picks.length) next.set('pick', picks.join(','));
+  if (isColumn) next.set('column', '1');
+  const qs = next.toString();
+  history.replaceState(null, '', qs ? '?' + qs : location.pathname);
+}
 
 function chip(cls, text) {
   return '<span class="chip ' + cls + '">' + text + '</span>';
@@ -429,9 +474,16 @@ function render() {
   // The panel is one table: the boxes are its header cells and the figures fall in
   // the same columns beneath them. Two columns normally; three or four only when
   // something handed us that many, which the sector map can.
+  // Two things can want saying above the panel, and a dropped token always says so:
+  // a `?pick=` that quietly matched nothing looks exactly like a page that ignored
+  // the link, which is how a wrong sector name survives unnoticed.
+  const lines = [];
+  if (isColumn) lines.push(WORDS.picks_column);
+  if (dropped.length)
+    lines.push(WORDS.picks_dropped.replace('{list}', dropped.join(', ')));
   const caveat = document.getElementById('caveat');
-  caveat.textContent = isColumn ? WORDS.picks_column : '';
-  caveat.style.display = isColumn ? 'block' : 'none';
+  caveat.textContent = lines.join('  ');
+  caveat.style.display = lines.length ? 'block' : 'none';
 
   // The table is always here, pinned or not: the questions it asks are the same ones
   // whatever is in the columns, and a panel that appears and disappears moves the
@@ -475,14 +527,22 @@ function render() {
     pin.textContent = on ? WORDS.unpin_mark : WORDS.pin_mark;
     pin.title = on ? WORDS.unpin : WORDS.pin;
   });
-  localStorage.setItem(KEY, JSON.stringify(picks));
+  writeUrl();
 }
 
 function toggle(slug) {
   const at = picks.indexOf(slug);
   if (at >= 0) picks.splice(at, 1);
+  // A hand pin caps at two -- what the map offers and what a comparison is for. Four
+  // slots exist only because the sector map can report a column of four; touching one
+  // by hand collapses that back to a pair, keeping the newest.
   else if (picks.length < MAX_PINS) picks.push(slug);
   else picks = picks.slice(-(MAX_PINS - 1)).concat(slug);  // oldest falls out
+  isColumn = false;
+  // Only a hand action is remembered. Seeding from `?pick=` must not overwrite the
+  // reader's own pins -- the watcher opens this page at every sector choice, and a
+  // reported offer is not a preference.
+  try { localStorage.setItem(KEY, JSON.stringify(picks)); } catch (e) {}
   render();
 }
 
@@ -560,12 +620,16 @@ def build():
             % (html.escape(label), html.escape(hint),
                "".join(card_html(r) for r in group)))
 
-    data = {r["slug"]: {"slug": r["slug"], "name": r["name"], "cls": r["class"],
-                        "sub": " · ".join(r["sub_parts"]), "rows": r["rows"]}
+    # `id` rides along because `?pick=` resolves game ids too -- `ROCK_HOME` is what
+    # sector_data.xml and the Hyperspace log call this sector, so it is what a caller
+    # with a log line in hand has to offer.
+    data = {r["slug"]: {"slug": r["slug"], "id": r["id"], "name": r["name"],
+                        "cls": r["class"], "sub": " · ".join(r["sub_parts"]),
+                        "rows": r["rows"]}
             for r in records}
-    words = {k: VOC[k] for k in ("picks_empty", "picks_one", "picks_column", "pin",
-                                 "unpin", "pin_mark", "unpin_mark", "open", "blank",
-                                 "classes")}
+    words = {k: VOC[k] for k in ("picks_empty", "picks_one", "picks_column",
+                                 "picks_dropped", "pin", "unpin", "pin_mark",
+                                 "unpin_mark", "open", "blank", "classes")}
 
     page = """<!doctype html>
 <html lang="en"><head><meta charset="utf-8">

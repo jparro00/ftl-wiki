@@ -23,16 +23,15 @@ event a hidden choice chains into, so it can be a whole event behind. SAVE-WATCH
 """
 
 import argparse
-import html
 import http.server
 import json
-import mimetypes
 import os
 import re
 import socketserver
 import sys
 import threading
 import time
+import urllib.request
 import webbrowser
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
@@ -86,6 +85,46 @@ SECTOR_LINE = re.compile(r"^Sector:\s*([A-Z0-9_]+)\s*$", re.M)
 # deliberately not matched.
 CREATED_EVENT = re.compile(r"^Creating event: ([A-Za-z0-9_]+)", re.M)
 
+# The same line, but only where **nothing follows the name** -- which is what separates
+# arriving at a beacon from creating an event inside one. Measured on a real log
+# (2026-08-17, MANTIS_SECTOR, 8 lines, entirely consistent):
+#
+#   Creating event: NOTHING_MANTIS              <- arrival
+#   Creating event: AUTO_ASTEROID               <- arrival
+#   Creating event: DESTROYED_DEFAULT 287       <- its outcome
+#   Creating event: DISTRESS_TRAPPED_MINER      <- arrival
+#   Creating event: DISTRESS_TRAPPED_MINER_LOOT 99
+#   Creating event: REBEL_TRANSPORT             <- arrival
+#   Creating event: REBEL_TRANSPORT 851         <- and its own child, same name
+#
+# The pool filter (§4c) already drops the children whose names differ from any pool
+# event. **The last pair is why this pattern has to exist:** a child sharing its
+# parent's name is in the pool by definition, so nothing but the trailing number
+# distinguishes it, and counting it made one visit to the exit beacon read as two.
+#
+# `CREATED_EVENT` deliberately still matches both, because *which event is on screen*
+# is answered by the most recent line of either kind -- `REBEL_TRANSPORT 851` being
+# last is exactly how we know we are in REBEL_TRANSPORT.
+#
+# Known risk, stated because the evidence is one sector wide: if a genuine arrival ever
+# carries a trailing number, it is missed, and the symptom is an undercount rather than
+# a wrong count.
+#
+# **A real newline, not `$`.** In MULTILINE, `$` also matches at the end of the string,
+# so a log caught mid-write matches its own truncated final line -- and the game appends
+# to this file constantly while the watcher polls twice a second. Two ways that lies,
+# both silent:
+#
+#   `Creating event: REBEL_CHECKPOINT` cut short reads as an arrival at `REBEL`, which is
+#   a real event in the pool, so nothing downstream can tell it was never there.
+#   `Creating event: REBEL_TRANSPORT 851` read before ` 851` lands looks bare, and
+#   inflates that beacon's count by one.
+#
+# The lookahead costs only the genuine last line of a file with no trailing newline,
+# which is the ambiguous case anyway -- the next poll picks it up once the newline is
+# written.
+ARRIVED_EVENT = re.compile(r"^Creating event: ([A-Za-z0-9_]+)[ \t]*(?=\r?\n)", re.M)
+
 # And the `map-signal` mod (tools/build-map-signal-mod.py) prints one of these each
 # time the star map opens or closes. Only the two state words match: the mod's
 # `loaded` and its error lines share the prefix and must not read as transitions.
@@ -117,10 +156,42 @@ CHOICE_APPROX = "column"
 # session appends, so the read is bounded rather than trusting that.
 LOG_TAIL_BYTES = 256 * 1024
 
+# Where the pages are served from (`tools/LOCAL-SITE.md`). The watcher builds URLs
+# against this origin and serves no pages of its own; `--site` points it elsewhere,
+# which is the whole change needed to drive a hosted copy.
+DEFAULT_SITE = "http://127.0.0.1:8080"
+
 
 def default_hs_log(ftl_dat):
     """Hyperspace writes FTL_HS.log beside the game, so ftl.dat locates it."""
     return os.path.join(os.path.dirname(os.path.abspath(ftl_dat)), "FTL_HS.log")
+
+
+def _pool_of(data):
+    """Every event id a beacon of this sector can hold — all three sources.
+
+    **All three, because the sector page draws a box for each of them**, and a box is
+    what `?seen=` marks. Taking only `entries` is the mistake this function exists to
+    have made once: the fill-in list is 20 events in the Mantis sector and 18 of them
+    are nowhere in `entries`, so more than a third of that sector's beacons could never
+    be marked, silently.
+
+      entries[].events        the allocation table's own lists
+      generation.fallback_events   the fill-in row (`SECTOR-PAGE.md` §4.1b-2)
+      entries[].override.added     the Advanced Edition delta (§4.4)
+    """
+    pool = set()
+    for entry in data.get("entries") or []:
+        for event in entry.get("events") or []:
+            if event.get("id"):
+                pool.add(event["id"])
+        for event in ((entry.get("override") or {}).get("added") or []):
+            if event.get("id"):
+                pool.add(event["id"])
+    for event in ((data.get("generation") or {}).get("fallback_events") or []):
+        if event.get("id"):
+            pool.add(event["id"])
+    return pool
 
 
 class HyperspaceLog:
@@ -147,7 +218,8 @@ class HyperspaceLog:
 
     def __init__(self, log_path, by_id=None):
         self.log_path = log_path
-        self.index, self.start_slugs, self.by_display_name = self._load_index()
+        (self.index, self.start_slugs, self.by_display_name,
+         self.pools) = self._load_index()
         # Event id -> card slug, from the same trees the text index is built from.
         self.by_id = by_id or {}
         self._id = None
@@ -158,6 +230,7 @@ class HyperspaceLog:
         self._event = None          # (event id, slug) of the last event with a card
         self._choosing = None       # slugs on offer at the sector map, or None
         self._choosing_approx = False   # ...and whether that is the column, not the offer
+        self._visits = []           # [(event id, times)] visited in this sector, in order
 
     @staticmethod
     def _load_index():
@@ -168,12 +241,16 @@ class HyperspaceLog:
         Stand drops out on its own: its `startEvent` is `BOSS_NEUTRAL`, a list rather
         than an event, so it has no card slug — and its members are real fights that
         must keep showing their own cards.
+
+        The **pool** — every event id a beacon of that sector can hold — comes from the
+        same files, and is what filters the log's `Creating event:` stream down to
+        beacon arrivals (§4c). Nothing else distinguishes a beacon from a sub-event.
         """
-        out, starts, by_name = {}, set(), {}
+        out, starts, by_name, pools = {}, set(), {}, {}
         try:
             names = sorted(os.listdir(SECTOR_DATA))
         except OSError:
-            return out, starts, by_name
+            return out, starts, by_name, pools
         for name in names:
             if not name.endswith(".sector.json"):
                 continue
@@ -189,10 +266,12 @@ class HyperspaceLog:
             for key in ("display_name", "title", "short_name"):
                 if data.get(key) and data.get("slug"):
                     by_name.setdefault(data[key].strip().lower(), data["slug"])
+            if data.get("id"):
+                pools[data["id"]] = _pool_of(data)
             start = data.get("start_event") or {}
             if start.get("slug") and str(start.get("id", "")).startswith("START_BEACON"):
                 starts.add(start["slug"])
-        return out, starts, by_name
+        return out, starts, by_name, pools
 
     def poll(self):
         try:
@@ -210,6 +289,7 @@ class HyperspaceLog:
             self._id, self._since, self._seen = None, None, False
             self._map_open, self._event, self._choosing = None, None, None
             self._choosing_approx = False
+            self._visits = []
         self._stamp = stamp
         try:
             with open(self.log_path, "rb") as fh:
@@ -253,6 +333,36 @@ class HyperspaceLog:
                 break
 
         hits = SECTOR_LINE.findall(text)
+
+        # Which beacons this sector has been to. Recomputed from the log on every read
+        # rather than accumulated, which is what makes the reset exact and free: a new
+        # `Sector:` line moves the anchor, and everything before it stops counting.
+        # Nothing to remember, so nothing to forget at the wrong moment.
+        anchor = 0
+        last = None
+        for match in SECTOR_LINE.finditer(text):
+            anchor, last = match.end(), match.group(1)
+        # No `Sector:` line in the tail means the whole tail lies inside one sector's
+        # block -- a line between two blocks would be in it. So anchor 0 is right, not
+        # a fallback.
+        pool = self.pools.get(last if last else self._id) or set()
+        order, times = [], {}
+        # ARRIVED_EVENT, not CREATED_EVENT: only a line with nothing after the name is a
+        # beacon arrival. A child event created inside one carries a trailing number, and
+        # where it shares its parent's name the pool cannot tell them apart.
+        for match in ARRIVED_EVENT.finditer(text, anchor):
+            eid = match.group(1)
+            # And only events this sector's pool can place. The log also carries the
+            # entry beacon, ship spawns, and the out-of-fuel event -- none of which is a
+            # beacon the budget allocated, and the pool is what states the difference.
+            if eid not in pool:
+                continue
+            if eid not in times:
+                times[eid] = 0
+                order.append(eid)
+            times[eid] += 1
+        self._visits = [(eid, times[eid]) for eid in order]
+
         if not hits:
             return
         # The last generation block is the current sector; earlier ones are history.
@@ -275,6 +385,7 @@ class HyperspaceLog:
             "event": self._event,
             "choosing": self._choosing,
             "choosing_approx": self._choosing_approx,
+            "visits": list(self._visits),
         }
 
 
@@ -497,11 +608,14 @@ class Resolver:
 
 class Watcher:
     def __init__(self, save_path, ftl_dat, resolver, verbose=False, pinned_save=False,
-                 hs_log=None, sector_hold=40.0):
+                 hs_log=None, sector_hold=40.0, site=DEFAULT_SITE):
         self.save_path = save_path
         self.ftl_dat = ftl_dat
         self.resolver = resolver
         self.verbose = verbose
+        # Where the pages live. The watcher builds URLs against this and serves none
+        # itself; point it at a hosted site and nothing else changes.
+        self.site = site.rstrip("/")
         # Optional: the sector page takes the screen when there is no card to show,
         # and for `sector_hold` seconds after arriving somewhere new.
         self.hs_log = hs_log
@@ -542,6 +656,7 @@ class Watcher:
         # Decided per request, not per save write: the hold window expires on the
         # clock, and the save is silent exactly while it is running down.
         self._decorate_sector(state)
+        state["site"] = self.site
         return state
 
     # Hold the last card only while we cannot tell what the player is looking at.
@@ -592,6 +707,7 @@ class Watcher:
         """
         if not self.hs_log:
             state["view"] = "card"
+            state["url"] = self._url(state)
             return
         info = self.hs_log.current()
         state["sector_id"] = info["id"]
@@ -600,6 +716,8 @@ class Watcher:
         state["map_open"] = info["map_open"]
         state["next_sectors"] = info["choosing"]
         state["next_sectors_approx"] = info["choosing_approx"]
+        state["seen"] = [eid if n == 1 else "%s:%d" % (eid, n)
+                         for eid, n in info["visits"]]
         start = state.get("slug") in self.hs_log.start_slugs
         state["at_start_beacon"] = start
 
@@ -609,12 +727,40 @@ class Watcher:
         # which is a reason to show the chooser unpinned, not to show a card.
         if info["choosing"] is not None:
             state["view"] = "choose"
+            state["url"] = self._url(state)
             return
         # A guess is only worth making where nothing is being reported.
         fresh = (info["map_open"] is None
                  and info["age"] is not None and info["age"] <= self.sector_hold)
         want = info["map_open"] or start or fresh or not state.get("slug")
         state["view"] = "sector" if info["slug"] and want else "card"
+        state["url"] = self._url(state)
+
+    @staticmethod
+    def _url(state):
+        """The site URL this state should be showing — path and query, no origin.
+
+        The watcher decides the whole URL rather than handing the page a slug and a
+        `view` to reassemble, because the URL *is* the interface to the site
+        (`LOCAL-SITE.md` §5c). Once the site is hosted, the address is the only channel
+        the watcher has left, and a shell that built its own would be a second place
+        where the two could disagree.
+        """
+        if state.get("view") == "choose":
+            query = "?pick=" + ",".join(state.get("next_sectors") or [])
+            if state.get("next_sectors_approx"):
+                query += "&column=1"
+            return "/sectors/" + query
+        if state.get("view") == "sector" and state.get("sector_slug"):
+            url = "/sectors/" + state["sector_slug"]
+            # Only this sector's beacons, and only on this sector's page. Carrying them
+            # onto a card would mark nothing and lengthen every URL.
+            if state.get("seen"):
+                url += "?seen=" + ",".join(state["seen"])
+            return url
+        if state.get("slug"):
+            return "/cards/" + state["slug"]
+        return None
 
     def poll_once(self, force=False):
         # Before the early return below: the log moves on its own schedule, and both
@@ -748,16 +894,12 @@ async function tick() {
     const frame = document.getElementById('frame');
     const msg = document.getElementById('msg');
 
-    // Two pages, one frame. The sector profile wins when the watcher has no card
-    // to show, or just after arriving in a new sector; otherwise the card does.
-    // Any slug at all means a card is worth showing -- held or current. Only
-    // reload when the source actually changes, so neither page flickers.
-    const want = (s.view === 'choose')
-                   ? '/sectors/index.html?pick=' + (s.next_sectors || []).join(',')
-                     + (s.next_sectors_approx ? '&column=1' : '')
-               : (s.view === 'sector' && s.sector_slug) ? '/sector/' + s.sector_slug
-               : s.slug ? '/card/' + s.slug
-               : null;
+    // One frame, and the watcher has already decided what belongs in it: `url` is a
+    // complete site URL, chosen in Python (`Watcher._url`), and `site` is where the
+    // site is served from. The shell composes and nothing more -- rebuilding the URL
+    // here would be a second place for the two to disagree, and the hosted case makes
+    // the address the only channel the watcher has.
+    const want = s.url ? (s.site || '') + s.url : null;
     if (want) {
       if (want !== shownSrc) {
         shownSrc = want;
@@ -824,54 +966,27 @@ def make_handler(watcher):
                 self._send(SHELL, "text/html; charset=utf-8")
             elif self.path == "/current":
                 self._send(json.dumps(watcher.snapshot()), "application/json")
-            elif self.path.startswith("/card/"):
-                slug = self.path[len("/card/"):]
-                if not re.fullmatch(r"[a-z0-9-]+", slug):
-                    self._send("bad slug", "text/plain", 400)
-                    return
-                path = os.path.join(CARDS, "card-%s.html" % slug)
-                if not os.path.exists(path):
-                    self._send("no card %s" % html.escape(slug), "text/plain", 404)
-                    return
-                with open(path, "rb") as fh:
-                    self._send(fh.read(), "text/html; charset=utf-8")
-            elif self.path.startswith("/sector/"):
-                slug = self.path[len("/sector/"):]
-                if not re.fullmatch(r"[a-z0-9-]+", slug):
-                    self._send("bad slug", "text/plain", 400)
-                    return
-                path = os.path.join(SECTOR_PAGES, "sector-%s.html" % slug)
-                if not os.path.exists(path):
-                    self._send("no sector page %s" % html.escape(slug), "text/plain", 404)
-                    return
-                with open(path, "rb") as fh:
-                    self._send(fh.read(), "text/html; charset=utf-8")
-            elif self.path.startswith("/sectors/"):
-                # The chooser and the profiles, served from their own directory so the
-                # page's own relative links (sector-<slug>.html, ../cards/...) resolve
-                # exactly as they do off disk.
-                self._send_static(SECTOR_PAGES, self.path[len("/sectors/"):])
-            elif self.path.startswith("/cards/"):
-                # A sector page opens its beacon boxes onto cards, loading
-                # ../cards/runtime/*.js and ../cards/data/<slug>.js at that moment
-                # (SECTOR-PAGE.md 6.1). Served at /sector/<slug>, those resolve to
-                # /cards/... -- so the boxes work here exactly as they do off disk.
-                self._send_static(CARDS, self.path[len("/cards/"):])
             else:
-                self._send("not found", "text/plain", 404)
+                # **This watcher no longer serves pages — the site does**
+                # (`tools/LOCAL-SITE.md`). One owner for page serving, and it is the one
+                # with the URLs, the chrome and the `?seen=` overlay. The old shapes are
+                # kept as redirects so a link or a bookmark from before still lands in
+                # the right place.
+                match = re.fullmatch(r"/(card|sector)/([a-z0-9-]+)", self.path)
+                if match:
+                    kind, slug = match.groups()
+                    self._redirect("%s/%ss/%s" % (watcher.site, kind, slug))
+                elif self.path.startswith(("/cards", "/sectors")):
+                    self._redirect(watcher.site + self.path)
+                else:
+                    self._send("not found -- pages are served by %s" % watcher.site,
+                               "text/plain", 404)
 
-        def _send_static(self, root, rel):
-            rel = rel.split("?", 1)[0]
-            if not re.fullmatch(r"[A-Za-z0-9._/-]+", rel) or ".." in rel:
-                self._send("bad path", "text/plain", 400)
-                return
-            path = os.path.normpath(os.path.join(root, rel))
-            if os.path.commonpath([path, root]) != root or not os.path.isfile(path):
-                self._send("not found", "text/plain", 404)
-                return
-            ctype, _ = mimetypes.guess_type(path)
-            with open(path, "rb") as fh:
-                self._send(fh.read(), ctype or "application/octet-stream")
+        def _redirect(self, to):
+            self.send_response(302)
+            self.send_header("Location", to)
+            self.send_header("Content-Length", "0")
+            self.end_headers()
 
     return Handler
 
@@ -910,6 +1025,16 @@ def index_report(resolver):
             print("  %-44s %s" % (k[:44], ", ".join(sorted(v))))
 
 
+def probe_site(base, timeout=1.5):
+    """One-line verdict on whether the site is answering. Never raises."""
+    try:
+        with urllib.request.urlopen(base + "/sectors/", timeout=timeout) as fh:
+            return "reachable" if fh.status == 200 else "responded %s" % fh.status
+    except Exception as exc:                              # any failure is the same news
+        return ("not reachable (%s) -- start it with tools/serve-site.py"
+                % type(exc).__name__)
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__,
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
@@ -930,6 +1055,11 @@ def main():
                          "sector (default 40; 0 shows it only when no card resolves)")
     ap.add_argument("--no-sector", action="store_true",
                     help="cards only; never show a sector profile")
+    ap.add_argument("--site", default=DEFAULT_SITE, metavar="URL",
+                    help="where the pages are served from (default %(default)s). The "
+                         "watcher builds URLs against this and serves no pages itself, "
+                         "so a hosted site needs only this flag. Start it with "
+                         "tools/serve-site.py")
     ap.add_argument("--quiet", action="store_true")
     args = ap.parse_args()
 
@@ -950,7 +1080,7 @@ def main():
 
     watcher = Watcher(args.save or find_save(), args.ftl_dat, resolver,
                       verbose=not args.quiet, pinned_save=bool(args.save),
-                      hs_log=hs_log, sector_hold=args.sector_hold)
+                      hs_log=hs_log, sector_hold=args.sector_hold, site=args.site)
 
     if args.once:
         watcher.poll_once(force=True)
@@ -970,6 +1100,12 @@ def main():
                                      "" if args.save else "   (auto, re-resolved each poll)"),
                   flush=True)
             print("serving  %s   (ctrl-c to stop)" % url, flush=True)
+            # The pages come from somewhere else now, so whether that somewhere is up
+            # is worth one probe at startup. Getting this wrong shows up as a blank
+            # frame with no explanation anywhere -- the watcher would look broken while
+            # reporting perfectly good state on /current.
+            print("site     %s   (%s)" % (watcher.site, probe_site(watcher.site)),
+                  flush=True)
             if hs_log:
                 found = hs_log.current()["id"]
                 print("sectors  %s   (%s)" % (

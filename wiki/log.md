@@ -3871,3 +3871,263 @@ wrong constant shows up as a disagreement instead of as two copies of one mistak
 live afterwards: patched, relaunched, and the sector map logged
 `choosing 2 -> Mantis Controlled Sector | Engi Controlled Sector` — no `column`, and the
 game's own screen offers exactly those two, numbered top to bottom.
+
+## [2026-08-17] tooling | The built pages become a local website, and the 386 cards get an index
+
+**`tools/serve-site.py`** — a local site server on 8080, with `tools/LOCAL-SITE.md` as its
+spec. The generated output was already a website's worth of pages and had no addresses: a
+profile was `sectors/sector-rock-homeworlds.html` on disk or a slug inside the watcher's
+iframe, and the 386 cards had no index at all.
+
+```
+/                  home              /cards/           the event index
+/sectors/          the chooser       /cards/<slug>     one card
+/sectors/<slug>    one profile       <page>?raw=1      the built file, as source
+```
+
+**It rewrites no built file and no link, and that is the whole design.** `/sectors/<slug>`
+shares its base path with `sectors/sector-<slug>.html` on disk, so every relative link in a
+built page resolves to a real route unchanged, and the old `.html` shapes 301 to the clean
+ones — upgrading in-page links as they are followed instead of editing them. The pages
+therefore keep working off `file://` and keep publishing as artifacts, which their own specs
+require. The watcher's `/card/<slug>` and `/sector/<slug>` shapes redirect too.
+
+Cards and sector profiles are **fragments** (no `<html>`, no `<head>` — the Artifact
+publisher supplies the document), so the server supplies one instead and puts the nav there.
+Four things that bit, all recorded in the spec: both shells' banner comments contain the
+literal string `<title>`, so reading the title without masking comments first named the tab
+after the whole banner; the fragment's `<style>` must stay in the body or the chrome's CSS
+stops losing to it; the bar is `fixed` because a sticky element inside the pages' padded body
+is inset and has no containing block; every chrome selector is prefixed `sb-` because the
+pages define `.wrap`, `.card`, `.note` and `.chip` themselves.
+
+**`tools/build-card-index.py`** → `cards/index.html`, one row per card with name, in-game id,
+derived tags and how many sector pools can place it. **Tags come from `extract-sector.py`'s
+own `Trees.profile()`**, not from the sector profiles — so a tag reads identically in both
+places, and the **118 cards in no sector pool are tagged too** rather than left blank.  Those
+118 are listed with a `–` and `?sector=none` filters to them: no pool listing an event is an
+answer, not the absence of one. 50 rows carry no tags at all, which is honest — an empty
+beacon holds nothing to tag.
+
+**The URL is the state, on both indexes.** The chooser's `?pick=` now resolves a slug, a game
+id (`ROCK_HOME`), a display name, or an unambiguous prefix, with case and `-`/`_`/space
+normalised away — and **a token matching nothing or more than one sector is dropped and
+named on the page**, because `rock` and `slug` are each two sectors and guessing would pin
+the wrong one. Every pin writes `?pick=` back with `replaceState`; `localStorage` is the
+fallback for the bare URL only, and only a hand action writes it, so the watcher opening this
+page at a sector choice cannot overwrite the reader's own pins. A hand pin also clears
+`column=1` — that caveat is about an offer the map reported.
+
+**Verification.** `serve-site.py --check` resolves all 416 routes plus every relative asset
+each page asks for, in-process, so the checker exercises the same function the browser does.
+Two mistakes it made first and is now written against: resolving assets against the
+*pre*-redirect path (which reported all 19 sector cards missing, reproducible nowhere), and a
+reference pattern loose enough to match hrefs built in JavaScript. `smoke-inline.py --base
+http://127.0.0.1:8080` runs the existing in-place-card checks against the served site — 19
+pages pass over http, and file:// still passes, which matters because a beacon box reaches
+its card by a different path in each.
+
+The save watcher is **untouched**. Two servers, two ports, same files; merging them is
+deferred at the user's request.
+
+## [2026-08-17] tooling | `?seen=` — the beacons a run has already visited, marked on the sector page
+
+A sector profile served with `?seen=<slug-or-id>,…` now marks every matching beacon box with a
+`Seen` chip and puts a `n seen` count beside each budget line's name. **The pips and the
+allocation count are never touched** — the marks are additive, beside what was already there.
+
+**The URL is the channel because it is the only one a hosted site leaves the watcher.** The
+watcher cannot serve the page once the site is hosted, so what it retains is control of the
+address — the same mechanism `?pick=` already uses (`LOCAL-SITE.md` §5a), carrying a bigger
+payload. Measured, because the question asked was whether the text volume costs anything:
+
+| | |
+|---|---|
+| worst realistic payload | 24 longest slugs from `federation-space` — **775 chars**, 834 with the URL |
+| parse + mark on that real page (144 boxes, 1,972 elements) | **0.00 ms** median, 0.30 ms max over 200 runs |
+| the same at 140 KB — 180× anything constructible | 0.90 ms median |
+| binding limit if hosted | nginx/Apache default request line **~8 KB**, i.e. 10× headroom |
+| local `http.server` ceiling, measured | ~65,000 chars; 32,000 still returns 200 |
+
+So slugs, not a bitmap. A bitmap would be 16 base64 chars instead of 775 and would silently
+re-read an old link as a different set of events the moment a pool's ordering shifted on
+rebuild — the failure this repo refuses everywhere else. The one number to respect: a
+parameter accumulating a **whole run** is 5,949 chars, still under 8 KB but no longer
+comfortably, so `?seen=` stays scoped to one sector.
+
+**A token is a slug or an in-game event id**, case and `-`/`_`/space normalised away. Ids
+matter because the watcher's source is `Creating event: <ID>` in `FTL_HS.log` — requiring
+slugs would insert a translation table between the log and the URL. One flat lookup is safe,
+and that is measured rather than assumed: across all 386 cards **no normalised event id equals
+a different event's slug**. A token matching nothing is reported in a strip under the nav and
+says *"not in this sector's pool"* rather than *"unknown"* — the page holds one sector and
+cannot tell a typo from a real event elsewhere.
+
+**Overlap is intended, and it is not rare.** `engi-ship-attacked-by-mantis-ship` is in both
+`DISTRESS_BEACON_ENGI` and `NEUTRAL_ENGI`, so one visit counts in both; 58 (sector, event)
+pairs land in more than one budget line across the 19 sectors, and 12 sectors have none.
+Attributing a visit to a single line would need to know which beacon it was, which the URL
+does not carry — so both are marked rather than one guessed.
+
+Four things that had to be got right, all in the spec:
+
+- **`.brow` is a five-column grid**, so the count chip rides inside the existing `.name` flex
+  (which already carries `placed first` / `may be cut` chips) instead of adding a sixth cell
+  that would shift the pips.
+- **The row count reads `.bpool > .pool`, direct children only** — an AE delta block has a
+  `.pool` of its own in the same expansion.
+- **The strip counts events, not boxes.** An event reachable through both a budget line and a
+  marker section has a box in each; counting boxes reported 10 for 5 events.
+- **Events with no card are markable** — a plain `div.ev` still carries its id in `.id`, and
+  the run visited it either way.
+
+**Injected by the server, never built into the page** — same chrome/content boundary as the nav
+(§4), so the profile still opens off `file://` and still publishes as an artifact. `--check`
+now asserts both directions: the overlay attaches with `?seen=`, and does not leak without it.
+418 routes.
+
+## [2026-08-17] tooling | `?seen=` carries visit counts, and the budget sums them
+
+A token may now say how many times a beacon was visited. Two forms, because two callers want
+different things:
+
+```
+store-engi:3              three visits
+store-engi,store-engi     two visits -- repeats accumulate
+```
+
+Repeats are what the watcher naturally produces: one token per `Creating event:` line,
+appended in order, nothing to tally. `:n` is for a compacted or hand-written URL. Every token
+is a visit record, so the forms add — `store-engi:2,STORE_ENGI` is three visits. **The URL
+bound is unchanged**: a run visits at most 24 beacons, so at most 24 tokens either way.
+
+The box chip reads `Seen 3` on a repeat and plain `Seen` on a single visit — a repeat is the
+only part that is news. The budget row now **sums visits rather than counting events**: a store
+seen twice spends two of that line's beacons, which is what the budget measures. The cyan
+overlap chip counts visits too, so both chips are in one unit and the per-line totals exceed
+the run's real total by exactly the overlaps.
+
+Three bugs caught by testing rather than by reading, all now recorded in `LOCAL-SITE.md` §5c:
+
+- **`store-engi:2` rendered as `Seen 4`.** A box offers its slug *and* its normalised in-game
+  id as lookup keys, and for plenty of events those are the same string — `store-engi` and
+  `STORE_ENGI` both normalise to `store-engi`. Summing over the raw key list added the count
+  twice. The keys are deduplicated before the sum.
+- **`FREE_WEAPON:tow` was reported as "not in this sector's pool"**, naming an event that is in
+  that pool twice over. A bad count and a missing event are different mistakes and are now
+  reported as two different things; blaming the pool sends a reader looking in the wrong place.
+- **`1 visits`.** The tooltips were phrased with a plural that broke at one. Rewritten as
+  `seen 1× across 1 of the 9 events this line can place`, which needs no agreement at any count.
+
+`:0` is deliberately **not** an error — it says the beacon was visited zero times, which is
+what saying nothing says, so the token drops silently rather than being reported.
+
+## [2026-08-17] tooling | The watcher drives the site by URL, and tracks what a sector has seen
+
+**The watcher no longer serves pages.** `tools/serve-site.py` owns every page; the watcher
+computes a complete site URL, publishes it as `url` in `/current`, and its shell composes
+`site + url` into the iframe and does nothing else.
+
+| `view` | `url` |
+|---|---|
+| `choose` | `/sectors/?pick=<slug>,…[&column=1]` |
+| `sector` | `/sectors/<slug>[?seen=…]` |
+| `card` | `/cards/<slug>` |
+
+The URL is built in Python, not in the shell, which previously reassembled it from `view` plus
+a slug — a second place for the two to disagree about what belongs on screen. Its old routes
+(`/card/<slug>`, `/sector/<slug>`, anything under `/cards` or `/sectors`) now **302 to the
+site**, so old links still land right, and `_send_static` is gone. `--site URL` is the whole
+change needed to drive a hosted copy, which is the point of putting the state in the address.
+The watcher probes the site once at startup and prints `site … (reachable)`, because a site
+that is down otherwise reads as a broken watcher while `/current` reports perfect state.
+
+**`?seen=` is derived from the log, and reset by it.** `Creating event: <ID>` lines after the
+last `Sector: <ID>` line are this sector's beacon arrivals, with multiplicity —
+`seen=STORE_ENGI:2,FIND_WEAPON,…`. **Recomputed on every read, never accumulated**, which is
+what makes the reset exact and free: a new `Sector:` line moves the anchor and everything
+before it stops counting. No state to remember, so none to forget at the wrong moment — no
+double-count on a re-read, no leak across a jump, nothing to clear on restart. No `Sector:`
+line in the 256 KB tail means the tail lies wholly inside one block (a line between two would
+be in it), so anchor 0 is correct rather than a fallback.
+
+Filtered to the sector's **pool**, because the log carries much more than arrivals: sub-events,
+`Creating ShipEvent:` spawns, the entry beacon, and `FUEL_EXPLORE` — the out-of-fuel event,
+which is real but is not a beacon any budget allocated.
+
+**The pool is three sources, and taking only the first was a real bug.** `entries[].events`
+plus `generation.fallback_events` (the fill-in row) plus `entries[].override.added` (the AE
+delta) — because the sector page draws a box for each, and a box is what `?seen=` marks.
+`entries` alone gave the Mantis sector 37 events where the page shows 55: the fill-in list is
+20 events and 18 are nowhere in `entries`, so **over a third of that sector's beacons could
+never have been marked**, silently. Verified end to end afterwards: watcher → `/current` →
+shell → iframe → `Store (Engi) SEEN 2`, `4 of 4 events marked seen · 5 visits`, and per-line
+counts with overlap.
+
+> ⚠️ **A stale watcher can hold the port and answer for the new one.** `Server` sets
+> `allow_reuse_address`, and on **Windows** that permits a second bind to a port already
+> listening. Caught while testing this: a watcher started the previous afternoon was still on
+> 8787, answering `/card/…` with a page instead of the new redirect, while the new process
+> printed a clean startup — the old code looked like a bug in the new code. Kill by port **and
+> confirm the port is clear** before restarting. Recorded in `SAVE-WATCH.md` §5a; the existing
+> staleness warning covered edits reaching a running watcher, not two watchers at once.
+
+## [2026-08-17] tooling | `Creating event:` — a bare line is an arrival, a trailing number is a child
+
+Found while checking the first live `?seen=` run: the exit beacon reported
+`REBEL_TRANSPORT:2` for a single visit. The log says why, and the pattern is exact
+(`MANTIS_SECTOR`, eight lines, no exceptions):
+
+```
+Creating event: NOTHING_MANTIS               <- arrival
+Creating event: AUTO_ASTEROID                <- arrival
+Creating event: DESTROYED_DEFAULT 287        <- its outcome
+Creating event: DISTRESS_TRAPPED_MINER       <- arrival
+Creating event: DISTRESS_TRAPPED_MINER_LOOT 99
+Creating event: REBEL_TRANSPORT              <- arrival
+Creating event: REBEL_TRANSPORT 851          <- and its own child, same name
+```
+
+**A bare line is a beacon arrival; anything after the name means the event was created inside
+another one.** The pool filter already dropped the children whose names differ from a pool
+event — `DESTROYED_DEFAULT`, `DISTRESS_TRAPPED_MINER_LOOT`. The last pair is the case it cannot
+reach: a child sharing its parent's name is in the pool by definition, so only the trailing
+number separates them. `ARRIVED_EVENT` now matches bare lines only, and the count is right.
+
+**`CREATED_EVENT` still matches both, deliberately.** *Which event is on screen* is answered by
+the most recent line of either kind, and `REBEL_TRANSPORT 851` being last is precisely how the
+watcher knows it is in `REBEL_TRANSPORT`. Two questions, two patterns — collapsing them would
+have broken the older one to fix the newer.
+
+Recorded as a known risk since the evidence is one sector wide: a genuine arrival carrying a
+trailing number would be missed, and the symptom would be an undercount, not a wrong count.
+
+**Also recorded: the browser tab has to be reloaded, not the watcher.** The shell's JavaScript
+is fetched once when the page is opened, so a tab left open across a watcher restart keeps
+running the old shell — which built its own URL and ignored the new `url` field. It looked
+exactly like the watcher failing to pass the parameter while `/current` plainly showed it.
+
+## [2026-08-17] tooling | The arrival pattern needs a real newline, not `$`
+
+Spotted while answering "why isn't `?seen=` in the URL" (it was — on the *iframe's* URL, which
+is where it belongs; the shell's own address never changes because it is a fixed page hosting a
+frame). The live seen list read `…,REBEL_TRANSPORT,REBEL`, and checking whether `REBEL` was real
+turned up a latent bug instead: it *is* real (`<event name="REBEL">` in `events_rebel.xml`, in
+the Mantis pool), but the pattern that found it could have invented it.
+
+`ARRIVED_EVENT` ended in `$`, and in `MULTILINE` **`$` also matches at the end of the string** —
+so a log caught mid-write matches its own truncated final line. The game appends constantly and
+the watcher polls twice a second, so this is a live race, and it lies two ways, both silent:
+
+| Torn read | Reads as |
+|---|---|
+| `Creating event: REBEL_CHECKPOINT` cut short | an arrival at `REBEL` — a real pool event, so nothing downstream can tell |
+| `Creating event: REBEL_TRANSPORT 851` before ` 851` lands | a bare line, inflating that beacon by one |
+
+Now a lookahead for the newline. The only thing that costs is the genuine last line of a file
+with no trailing newline — the ambiguous case anyway, and the next poll picks it up once the
+newline is written. Counts on the real log are unchanged.
+
+Worth noting what made this findable: the bad value would have been a *plausible* one. `REBEL`
+sitting in the Mantis pool is exactly why the failure mode is silent, and why the check was
+"is this event real" rather than "does this look odd".
