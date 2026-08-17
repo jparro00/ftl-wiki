@@ -548,6 +548,27 @@ Four things that are easy to get wrong:
 `extract-sector.py`'s own derivation, so a tag reads the same there as on a sector page — and
 the 118 events in no sector pool are tagged and listed too, rather than dropped.
 
+### 5.2c-3 The hosted copy — "publish the site", "put it on Pages"
+
+The same site with the server taken out of it, at
+<https://jparro00.github.io/ftl-wiki/>. `python tools/build-pages.py --deploy` rebuilds a
+gitignored `site/` and force-pushes it to the `gh-pages` branch, which is what GitHub Pages
+serves. **`tools/LOCAL-SITE.md` §10 is the spec** — same reasoning as every other spec here.
+
+Three things worth knowing before touching it:
+
+1. **It imports `serve-site.py` and renders with that module's own functions.** The hosted
+   pages *are* the local ones. Never re-implement the chrome here; a fix to `serve-site.py`
+   reaches Pages on the next `--deploy`.
+2. **Absolute URLs are the failure mode, and it is invisible locally.** A project Pages site
+   is served from `/ftl-wiki/`, where `href="/sectors/"` 404s — while working perfectly on
+   `127.0.0.1:8080`. The build rewrites the chrome's absolute URLs to relative ones and
+   **raises** on one it cannot map; `--check` asserts no output page carries any.
+3. **`raw/gamedata/*.xml` is gitignored and absent from the repository's history.** The repo
+   is public because free Pages requires it, and `raw/gamedata/_PROVENANCE.md` says to keep
+   Subset Games' files out of a public one. They are still on disk, so every extractor works;
+   a fresh clone has to re-extract them before rebuilding a card or a sector profile.
+
 ### 5.2d Launching the game — always through `launch-ftl.cmd`
 
 Never start `FTLGame.exe` directly from a tool call. The user's two-monitor setup depends on

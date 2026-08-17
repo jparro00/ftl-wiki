@@ -4377,3 +4377,33 @@ single commit so superseded HTML never accumulates. Verified: all ~4,500 relativ
 resolve, no page carries an absolute URL, and five exported sector pages still open their
 beacon boxes onto cards over `file://` — the runtime and payload paths survive the export
 because the directory shape does. `tools/LOCAL-SITE.md` §10 is the spec.
+
+Two faults shipped and were caught on the live site, both of a kind nothing local could see.
+The **404 page double-prefixed its own links** — its body wrote `/ftl-wiki/sectors/…` and the
+substitution that prefixes the chrome's links then prefixed those again, giving
+`/ftl-wiki/ftl-wiki/sectors/`. It now writes the chrome's own `/sectors/` vocabulary and lets
+one substitution handle both. And the **second build could not clear `site/`**: `rmtree` stops
+on the deploy repository's read-only git objects, and stops halfway, leaving a partial site.
+`clear_output()` empties everything beside `.git`, which also keeps a deploy a one-commit
+force-push rather than a fresh 31 MB push.
+
+One thing to know when re-verifying: `smoke-inline.py --all` globs `sector-*.html` and so picks
+up `sector-rock-homeworlds-review.html`. `serve-site.py` serves review copies because its route
+checks the file; the export deliberately does not carry them (§9), so against a hosted base
+that page 404s and the tool times out with a traceback instead of a verdict. All 19 sectors
+pass when named individually.
+
+**And one that got as far as production.** The `--deploy` step runs git inside `site/`, which
+is its own throwaway repository — but git discovers a repository by walking *up*, so a
+`site/.git` that is missing or damaged resolves silently to this one. The half-finished
+`rmtree` above left exactly that: a `site/.git` holding nothing but `objects/` and `refs/`.
+The next deploy therefore ran `add -A`, `commit -m "Build the site"` and
+`push --force HEAD:gh-pages` **against the wiki**, committing the working tree to `main` and
+publishing the repository as the website. The live site served the repo tree for a few
+minutes — `/cards/index.html` still answered, because that file exists in both, which is the
+kind of coincidence that makes a check look fine.
+
+`deploy()` now reads `git rev-parse --show-toplevel` and asserts it is `site/`, re-initialising
+the repository if it is not. Checking is the fix, not being careful: the failure mode of git's
+upward search is that it always finds *something*, so there is no error to catch — only a wrong
+answer that looks like a right one.

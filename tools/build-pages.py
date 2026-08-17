@@ -328,8 +328,22 @@ def deploy(remote):
                                 check=True, capture_output=True,
                                 text=True).stdout.strip()
 
-    if not (OUT / ".git").exists():
+    # Git discovers a repository by walking *up*, so a `site/.git` that is missing or
+    # damaged silently resolves to the repository this file lives in -- and then `add -A`,
+    # `commit` and `push HEAD:gh-pages` all operate on the wiki instead of on the site.
+    # That is not hypothetical: a half-finished `rmtree` left `site/.git` holding nothing
+    # but `objects/` and `refs/`, and the deploy committed the working tree to `main` and
+    # published the repository as the website. So the toplevel is checked, not assumed.
+    top = subprocess.run(("git", "rev-parse", "--show-toplevel"), cwd=str(OUT),
+                         capture_output=True, text=True)
+    if top.returncode or pathlib.Path(top.stdout.strip() or ".").resolve() != OUT:
+        if (OUT / ".git").exists():
+            shutil.rmtree(OUT / ".git", onerror=_force_unlink)
         git("init", "-q", "-b", "gh-pages")
+        top = subprocess.run(("git", "rev-parse", "--show-toplevel"), cwd=str(OUT),
+                             capture_output=True, text=True)
+    assert pathlib.Path(top.stdout.strip()).resolve() == OUT, top.stdout
+
     git("add", "-A")
     subprocess.run(("git", "commit", "-q", "-m", "Build the site"),
                    cwd=str(OUT), check=False)          # nothing to commit is not a fault
