@@ -4298,3 +4298,82 @@ must rewrite, read and write bytes. The check is now in §7 with the rule.
 
 Verified from a clean start at close: both index builders, the mod build, all 418 site routes
 and every relative asset, and `save-watch --once`.
+
+## [2026-08-17] tooling | The watcher stopped picking up the game — two faults, one symptom
+
+Reported as "running but not picking up the game changes". `/current` answered every request,
+so the process was plainly alive; it had been returning the same `error` and the same
+four-beacon `seen` list since a point in the run that had since reached eight events.
+
+**The tell was `seen`.** It is recomputed from `FTL_HS.log` on every request, so three fetches
+eighteen seconds apart returning byte-identical lists proved the log was not being re-read at
+all. `sector_age` looked healthy throughout and is worthless here — it is computed from the
+clock and advances happily in a dead watcher.
+
+**Fault 1: the poll thread had died, and the server had not.** They are separate threads;
+`run` had no exception handling, so anything escaping a poll ended the polling while the HTTP
+server kept serving the last published state indefinitely, with nothing on the page to say so.
+The trigger was `find_save`, which called `os.path.exists` and then `os.stat` on the same path
+while FTL rewrote it twice a second — a raced `FileNotFoundError` outside every `try` in
+`poll_once`. `find_save` now stats once and keeps what answered; `run` catches per iteration,
+prints the traceback once per distinct failure, and clears `_stamp` so the unchanged-save check
+cannot skip the retry.
+
+**Fault 2, found by restarting: an unreadable save was vetoing the log.** The fresh process
+immediately reported `error` too — `UnicodeDecodeError` from the parse, with the scan finding
+no id either. But the log knew exactly what was on screen. `poll_once` reported the save's
+failure and `return`ed *before* the log channel ran, discarding an answer it already had. §4b
+is explicit that the log wins precisely because it does not depend on the save being readable;
+the code only reached it after a successful save read. The error is now raised only once the
+log has been consulted and had nothing, which is a much rarer state than either read failing
+alone. `--once` went from `error` to `ok / source: log / mantis-fight` on that change.
+
+Fault 1 is why it stopped; fault 2 is why restarting alone would have looked like a fix for
+about a minute and then wedged again on the next unreadable save.
+
+Both recorded in `tools/SAVE-WATCH.md` — §4b for the precedence, "When it misbehaves" for the
+dead-poller signature and the frozen-`seen` test that identifies it. Watcher restarted on 8787
+and confirmed live (`ok`, `source: log`, tracking `MANTIS_SECTOR`).
+
+## [2026-08-17] tooling | The site gets an address: a public repo, and a static copy for Pages
+
+`github.com/jparro00/ftl-wiki`, served at <https://jparro00.github.io/ftl-wiki/>. Two pieces.
+
+**The repository.** Public, because GitHub Pages on a free account only serves public repos.
+That collides with `raw/gamedata/_PROVENANCE.md`, which says to keep Subset Games' extracted
+files out of any public repository — so the 33 XML files were removed from **all 23 commits**
+with `git filter-repo --path-glob 'raw/gamedata/*.xml' --invert-paths`, not merely deleted at
+the tip, which would have left them fetchable from history. They remain on disk, gitignored,
+with `_PROVENANCE.md` and `README.md` still tracked so the re-extraction instructions travel
+with the repo. Every tool that reads the XML still works locally; nothing that only reads
+`cards/` or `sectors/` notices. `main` was fast-forwarded to `sector-map-signal`, which held
+the entire site — `serve-site.py` and `cards/index.html` did not exist on `main` at all.
+
+The derived game text still goes public: the cards quote the flavour text, and
+`mods/event-labels/src/data/*.append` carries it too. That is inherent to publishing this site
+and is a different thing from redistributing the game's own files.
+
+**`tools/build-pages.py`.** It imports `serve-site.py` and calls its own `resolve()`,
+`fragment_page()` and `home_page()`, so the hosted pages are the local ones rendered by the
+same code and cannot drift into two plausible sites. Three server behaviours needed a static
+equivalent, and the second is the one that would have shipped broken:
+
+- the `301` from a built file's name to the clean one becomes a **forwarding stub** that
+  carries `location.search` across, because `?seen=` and `?pick=` are the watcher's only
+  channel and a redirect that dropped the query would silently drop the run
+- the chrome's `href="/sectors/"` becomes **relative**. A project Pages site lives at
+  `/ftl-wiki/`, where a root-absolute link is a 404 — and it works perfectly on
+  `127.0.0.1:8080`, so no local check could have caught it. The build now **raises** on an
+  absolute URL it has no mapping for rather than passing it through, and `--check` asserts no
+  output page carries one. The built pages contain none, which is what closes the map.
+- `?raw=1` becomes a link to the file on GitHub, which is better provenance than it was
+
+The `?seen=` overlay is attached to every sector page instead of only the ones asking for it;
+`SEEN_JS` already returns on its own when neither parameter is present, so the behaviour is
+the server's and only the place the decision is made has moved.
+
+408 pages, 405 stubs, 31 MB, built to a gitignored `site/` and force-pushed to `gh-pages` as a
+single commit so superseded HTML never accumulates. Verified: all ~4,500 relative references
+resolve, no page carries an absolute URL, and five exported sector pages still open their
+beacon boxes onto cards over `file://` — the runtime and payload paths survive the export
+because the directory shape does. `tools/LOCAL-SITE.md` §10 is the spec.

@@ -366,6 +366,14 @@ log's last event is the previous run's), the `text_key` reported for debugging, 
 vanilla parse path — the sector and beacon numbers. `source` says which channel decided:
 `log`, `parse` or `scan`.
 
+**An unreadable save must not veto the log.** The whole point of this channel is that it does
+not depend on the save being readable, so the save's failure is reported only once the log has
+been consulted and had nothing. Getting the order wrong is not a small bug: measured
+2026-08-17, a Hyperspace save whose scan found no id short-circuited to `error` and returned
+*before* the log was read, so the watcher sat on one stale card for an entire sector while
+`Creating event:` was naming every beacon of it correctly. Both reads failing at once is the
+only real blackout, and it is far rarer than either failing alone.
+
 **Without Hyperspace there is no log**, and everything falls back to §4 exactly as before.
 
 ## 4c. Which beacons this sector has already been to
@@ -920,6 +928,25 @@ single one is almost always a save caught mid-write.
   ```
   watching C:\Users\...\FasterThanLight\hs_continue.sav   (auto, re-resolved each poll)
   ```
+
+- **Nothing is picked up, `--once` works, and the code is not stale.** The polling is dead
+  and the server is not. They are separate threads: `run` polls on a daemon thread while
+  the HTTP server answers on another, so an exception escaping a poll ends the polling
+  while `/current` keeps serving the last state it published — indefinitely, and with no
+  sign on the page that anything is wrong. Observed 2026-08-17: a watcher held one `error`
+  and a four-beacon `seen` list while the run reached six, which reads as a live watcher
+  whose game has stopped writing.
+
+  **The tell is a frozen `seen`.** It is recomputed from the log on every request, so two
+  `/current` fetches a few seconds apart that return byte-identical lists prove the log is
+  not being re-read, whatever `status` says. `sector_age` is no use here — it is computed
+  from the clock and advances in a dead watcher.
+
+  `run` now catches per iteration, prints the traceback once per distinct failure, and
+  clears `_stamp` so the retry is not skipped by the unchanged-save check. The trigger that
+  session was `find_save`, which called `os.path.exists` and then `os.stat` on the same
+  path while the game was rewriting it twice a second; it now stats once and keeps what
+  answered. A poll that fails is a poll to retry, never a reason to stop polling.
 
 - **Card never changes.** The save's mtime drives everything; confirm the game is writing
   by re-running `--once` after a jump.

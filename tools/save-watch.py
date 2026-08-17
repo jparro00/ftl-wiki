@@ -31,6 +31,7 @@ import socketserver
 import sys
 import threading
 import time
+import traceback
 import urllib.request
 import webbrowser
 
@@ -67,9 +68,18 @@ def find_save():
     between runs -- FTL deletes it when one ends -- and the watcher is most useful
     started *before* the game. A missing file is the `nosave` state, not an error.
     """
-    existing = [p for p in SAVE_CANDIDATES if os.path.exists(p)]
-    if existing:
-        return max(existing, key=lambda p: os.stat(p).st_mtime_ns)
+    # Stat once and keep what answered, rather than exists()-then-stat(): the game
+    # rewrites this file while we poll it twice a second, so a path that existed on
+    # the first call can be gone by the second. That raced raise propagated out of
+    # the poll loop, which had nothing to catch it (see `run`).
+    stamped = []
+    for path in SAVE_CANDIDATES:
+        try:
+            stamped.append((os.stat(path).st_mtime_ns, path))
+        except OSError:
+            continue
+    if stamped:
+        return max(stamped)[1]
     return SAVE_CANDIDATES[0]
 
 
@@ -714,6 +724,7 @@ class Watcher:
         self.state = {"status": "waiting", "detail": "no save read yet"}
         self._stamp = None
         self._last_key = None
+        self._last_error = None
         # What is on screen, which may be stale, versus the event we are actually
         # in. They differ while a card is held, and only the latter may drive the
         # resolver's stickiness -- otherwise a held card from a finished run could
@@ -886,6 +897,7 @@ class Watcher:
         self._log_event = log_event
 
         source = "parse"
+        save_error = None
         try:
             parsed = ftlsave.parse(self.save_path, self.ftl_dat)
             encounter = parsed["encounter"]
@@ -896,12 +908,22 @@ class Watcher:
             encounter = self._scan_encounter()
             source = "scan"
             if encounter is None:
-                detail = str(exc) if isinstance(exc, ftlsave.SaveFormatError) \
+                save_error = str(exc) if isinstance(exc, ftlsave.SaveFormatError) \
                     else "%s: %s" % (type(exc).__name__, exc)
-                self._set({"status": "error", "detail": detail})
-                return
 
-        resolved = self.resolver.resolve(encounter, current_slug=self._anchor)
+        # Only now, once the log below has had its say. Reporting the save's failure
+        # here used to `return`, which threw away an answer the log already had --
+        # and the log is the channel that does not depend on the save being readable
+        # at all (§4b). Both reads failing at once is the only real blackout, and it
+        # is much rarer than either one failing: measured 2026-08-17, a Hyperspace
+        # save whose scan found no id left the watcher stuck on `error` for an entire
+        # sector while `Creating event:` named every beacon of it correctly.
+        if save_error and not log_event:
+            self._set({"status": "error", "detail": save_error})
+            return
+
+        resolved = self.resolver.resolve(encounter, current_slug=self._anchor) \
+            if encounter is not None else None
 
         # The log names the event outright, and names it sooner. FTL does not rewrite
         # the save when a hidden choice chains into the rolled event -- measured at the
@@ -952,9 +974,32 @@ class Watcher:
                 resolved["reason"] or status,
             ), flush=True)
 
+    # The loop must outlive anything one poll can raise. This runs on a daemon
+    # thread while the HTTP server runs on another, so an escaping exception kills
+    # only the polling -- and the server carries on answering `/current` with the
+    # last state it published, for hours. Observed 2026-08-17: a watcher sat on one
+    # `error` and a four-beacon `seen` list while the run reached six, looking for
+    # all the world like a live watcher whose game had stopped writing. A poll that
+    # fails is a poll to retry, never a reason to stop polling.
     def run(self, interval=0.5):
         while True:
-            self.poll_once()
+            try:
+                self.poll_once()
+            except Exception as exc:                    # noqa: BLE001 - see above
+                detail = "%s: %s" % (type(exc).__name__, exc)
+                # Printed once per distinct failure: at two polls a second, printing
+                # every time would bury the line that says what broke.
+                if detail != self._last_error:
+                    self._last_error = detail
+                    print("[poll] %s" % detail, flush=True)
+                    traceback.print_exc()
+                # The save's stamp is recorded before the work that failed, so the
+                # next poll would see "nothing changed" and skip it. Clear it, or one
+                # raised exception silently becomes a permanent one.
+                self._stamp = None
+                self._set({"status": "error", "detail": detail})
+            else:
+                self._last_error = None
             _warn_if_source_changed()
             time.sleep(interval)
 

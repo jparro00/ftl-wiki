@@ -31,9 +31,11 @@ that the decision moves from the server to the page.
 import argparse
 import importlib.util
 import json
+import os
 import pathlib
 import re
 import shutil
+import stat
 import subprocess
 import sys
 
@@ -137,10 +139,35 @@ def stub(rel, target, title):
                               "js": json.dumps(target)})
 
 
+def _force_unlink(func, path, _exc):
+    """Git marks its object files read-only, and Windows honours that against
+    `os.unlink`. Nothing here is precious enough to stop for."""
+    os.chmod(path, stat.S_IWRITE)
+    func(path)
+
+
+def clear_output():
+    """Empty `site/` — except for `site/.git`, which is the deploy repository.
+
+    `rmtree(OUT)` was the first version and it fails on the *second* build: the deploy
+    repo's read-only object files stop the delete halfway through, leaving a half-built
+    site behind. Keeping it is also what makes a deploy a one-commit force-push instead
+    of a fresh 31 MB push every time.
+    """
+    if not OUT.exists():
+        OUT.mkdir(parents=True)
+        return
+    for child in OUT.iterdir():
+        if child.name == ".git":
+            continue
+        if child.is_dir():
+            shutil.rmtree(child, onerror=_force_unlink)
+        else:
+            child.unlink()
+
+
 def build():
-    if OUT.exists():
-        shutil.rmtree(OUT)
-    OUT.mkdir(parents=True)
+    clear_output()
 
     sectors, cards = site.sector_slugs(), site.card_slugs()
     # `cards/<slug>.html` is the page and `cards/card-<slug>.html` is its stub, so a
@@ -210,18 +237,19 @@ def not_found():
     """404. Its links are absolute-with-prefix, not relative: GitHub Pages serves this
     one file for any missing path, so a relative link in it resolves against whatever
     the reader typed rather than against the file's own location."""
-    base = "/%s/" % REPO.split("/", 1)[1]
+    prefix = "/" + REPO.split("/", 1)[1]
+    # Written in the chrome's own root-absolute vocabulary — `/sectors/`, not
+    # `/ftl-wiki/sectors/` — so the one substitution below prefixes these and the nav's
+    # links together. Writing the prefix in here as well is how this page first shipped,
+    # and it produced `/ftl-wiki/ftl-wiki/sectors/`.
     body = ('<div class="hm"><p class="eyebrow">404</p><h1>No such page</h1>'
             '<p class="lede">That address is not part of this site.</p>'
-            '<div class="jump"><a href="%s">Home</a>'
-            '<a href="%ssectors/index.html">Sectors</a>'
-            '<a href="%scards/index.html">Events</a></div></div>'
-            % (base, base, base))
+            '<div class="jump"><a href="/">Home</a>'
+            '<a href="/sectors/">Sectors</a>'
+            '<a href="/cards/">Events</a></div></div>')
     doc = site.document("Not found", body,
                         head="<style>%s</style>" % site.HOME_CSS).body.decode("utf-8")
-    # The chrome's own links get the same prefix, for the same reason.
-    return ABS.sub(lambda m: m.group(1) + base.rstrip("/") + m.group(2) + m.group(3),
-                   doc)
+    return ABS.sub(lambda m: m.group(1) + prefix + m.group(2) + m.group(3), doc)
 
 
 # --------------------------------------------------------------------------
@@ -248,8 +276,10 @@ def check():
 
     problems, checked, pages = [], 0, 0
     for path in sorted(OUT.rglob("*.html")):
-        pages += 1
         rel = path.relative_to(OUT).as_posix()
+        if rel.startswith(".git/"):       # the deploy repo, not the site
+            continue
+        pages += 1
         body = path.read_text(encoding="utf-8")
         if rel != "404.html":
             for match in ABS.finditer(body):
