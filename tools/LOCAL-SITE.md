@@ -609,9 +609,24 @@ python tools/smoke-inline.py site/sectors/<slug>.html   # boxes still open onto 
 
 `--check` walks all 814 built files, resolves all ~4,500 relative references against the file
 that makes them, and fails on a missing target or on any absolute URL. The in-place beacon
-cards were verified in the exported tree over `file://` — `../cards/runtime/card.js` and
-`../cards/data/<slug>.js` resolve there exactly as they do on disk, which is the point of
-keeping the directory shape.
+cards were verified in the exported tree over `file://` and against the hosted site, all 19
+sectors — `../cards/runtime/card.js` and `../cards/data/<slug>.js` resolve in both exactly as
+they do on disk, which is the point of keeping the directory shape.
+
+> **`smoke-inline.py --all --base <hosted>` trips on the review copies.** `--all` globs
+> `sector-*.html`, which picks up `sector-rock-homeworlds-review.html`; the local server
+> happens to serve those because its route checks the file (§9), and the export deliberately
+> does not carry them. Against a hosted base it 404s and the tool times out 30 seconds later
+> with a traceback rather than a verdict. Name the pages instead, or use `--base` locally.
+
+Two things that shipped wrong first, both invisible until the site was hosted:
+
+- **The 404 page double-prefixed its own links.** Its body wrote `/ftl-wiki/sectors/…`, and
+  the substitution that prefixes the chrome's links then prefixed those too. The body now
+  writes the chrome's own `/sectors/` vocabulary and lets the one substitution handle both.
+- **The second build could not clear `site/`.** `rmtree` stops on the deploy repo's read-only
+  git objects, and stops *halfway*, leaving a partial site. `clear_output()` empties everything
+  beside `.git` instead — which also keeps the deploy a one-commit force-push.
 
 ### What the hosted copy does not have
 
