@@ -477,9 +477,32 @@ Creating event: STORE_ENGI      ← a second beacon: counts 2
 Creating event: STORE_ENGI      ← the first one again: still 2
 ```
 
-`VISIT_SCAN` reads arrivals and beacon lines in **one pass**, so their order is preserved and
-each arrival belongs to whichever beacon was last reported. Each event collects the *set* of
-beacons it was seen at, and its count is how many that is.
+`VISIT_SCAN` reads arrivals and beacon lines in **one pass**, so their order is preserved.
+Each event collects the *set* of beacons it was seen at, and its count is how many that is.
+
+**An arrival takes the nearest beacon line, preferring the one before it.** The engine logs an
+event the instant it is created; the mod reports the beacon from a render hook, so its line can
+lag by a frame. On a jump the ship moves while the map is open and the beacon lands first,
+which is the ordinary case:
+
+```
+map-signal: beacon 358,257
+map-signal: closed sector 3
+Creating event: NEBULA_PIRATE_SMUGGLE     ← beacon already known
+```
+
+But a sector's **first** arrival — after generation, or after loading a save — beats the first
+tick and has no beacon line before it:
+
+```
+Creating event: STORM_ITEMS               ← nothing before it
+map-signal: beacon 384,181                ← one frame later
+```
+
+Looking forward fixes that, and **stops at the next arrival**, so a lag can never reach past
+the beacon it belongs to. Without it the first arrival of every sector is attributed to
+nothing — and flying back to that beacon then counts it twice, which is the exact bug this
+whole mechanism exists to prevent.
 
 **Without the beacon lines the fallback is exactly right, and it is not a special case.** The
 current beacon stays `None`, every arrival of one event lands in `{None}`, and the event counts

@@ -4238,3 +4238,38 @@ a drift fails silently, with the mod logging happily and the watcher counting ar
 
 **Installing the rebuilt mod is a Slipstream patch and a game restart**, and is what upgrades
 the count from safe to exact.
+
+## [2026-08-17] tooling | map-signal patched in, and the one-frame lag it exposed
+
+Patched and relaunched: `python tools/build-map-signal-mod.py --install`, then
+`mods\fullscreen-no-minimize\launch-ftl.cmd`. FTL was already closed and `hs_continue.sav` was
+one minute old, so the run was safe. `verify-env.py` reports PASS — the two-monitor fix
+survived the relaunch — and the log shows `map-signal: loaded` with no probe lines, so the new
+`currentLoc.loc` read is clean.
+
+The beacon lines went live immediately, and the first real trace showed a flaw the synthetic
+tests could not:
+
+```
+Creating event: STORM_ITEMS               <- nothing before it
+[Lua]: map-signal: beacon 384,181         <- one frame later
+[Lua]: map-signal: open sector 3
+[Lua]: map-signal: beacon 358,257
+[Lua]: map-signal: closed sector 3
+Creating event: NEBULA_PIRATE_SMUGGLE     <- beacon already known
+```
+
+**The engine logs an event the instant it is created; the mod reports from a render hook, so
+its line can lag by a frame.** On a jump the ship moves while the map is open and the beacon
+lands first — the ordinary case, and the one the tests covered. A sector's *first* arrival
+(after generation, or after loading a save) beats the first tick and had no beacon at all.
+
+So an arrival now takes the nearest beacon line, **preferring the one before it** and otherwise
+looking forward, stopping at the next arrival so a lag can never reach past the beacon it
+belongs to. Without it the first arrival of every sector is attributed to nothing — and flying
+back to that beacon counts it twice, which is precisely the bug the mechanism exists to
+prevent. Four more cases tested, including that revisit.
+
+Worth naming: the synthetic tests all wrote the beacon line *before* the arrival, because that
+is how the design was imagined. The real log wrote it after. **Test the order the file
+receives, not the order the design assumes** — the same lesson as the `[Lua]: ` prefix.

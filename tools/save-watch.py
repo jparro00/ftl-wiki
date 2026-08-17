@@ -394,25 +394,45 @@ class HyperspaceLog:
         # event again, and that is not a second beacon -- while two different beacons
         # holding the same event are two. So each event collects the *set* of beacons it
         # was seen at, and its count is how many that is.
-        order, at = [], {}
-        here = None
         # Only a line with nothing after the name is an arrival: a child event created
         # inside one carries a trailing number, and where it shares its parent's name
-        # the pool cannot tell them apart.
+        # the pool cannot tell them apart. And only events this sector's pool can place
+        # -- the log also carries the entry beacon, ship spawns and the out-of-fuel
+        # event, none of which is a beacon the budget allocated.
+        marks = []
         for match in VISIT_SCAN.finditer(text, anchor):
             if match.group("beacon"):
-                here = match.group("beacon")
+                marks.append((True, match.group("beacon")))
+            elif match.group("event") in pool:
+                marks.append((False, match.group("event")))
+
+        # **An arrival takes the nearest beacon line, preferring the one before it.**
+        # The engine logs an event the instant it is created; the mod reports the beacon
+        # from a render hook, so its line can lag by a frame. On a jump the ship moves
+        # while the map is open and the beacon lands first, which is the ordinary case --
+        # but a sector's *first* arrival (after generation, or after loading a save) beats
+        # the first tick and would otherwise be attributed to nothing at all. Looking
+        # forward fixes it, and stops at the next arrival so a lag can never reach past
+        # the beacon it belongs to.
+        order, at = [], {}
+        for i, (is_beacon, value) in enumerate(marks):
+            if is_beacon:
                 continue
-            eid = match.group("event")
-            # And only events this sector's pool can place. The log also carries the
-            # entry beacon, ship spawns, and the out-of-fuel event -- none of which is a
-            # beacon the budget allocated, and the pool is what states the difference.
-            if eid not in pool:
-                continue
-            if eid not in at:
-                at[eid] = set()
-                order.append(eid)
-            at[eid].add(here)
+            here = None
+            for j in range(i - 1, -1, -1):
+                if marks[j][0]:
+                    here = marks[j][1]
+                    break
+            if here is None:
+                for j in range(i + 1, len(marks)):
+                    if not marks[j][0]:
+                        break
+                    here = marks[j][1]
+                    break
+            if value not in at:
+                at[value] = set()
+                order.append(value)
+            at[value].add(here)
         self._visits = [(eid, len(at[eid])) for eid in order]
 
         # How big this run's map is, from the last complete generation block.
