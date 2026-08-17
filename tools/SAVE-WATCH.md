@@ -498,15 +498,52 @@ a different question: not "what is here" but "which of these two do I fly to". I
 screen **and the offer**, because the offer is the part nothing else holds:
 
 ```
-map-signal: choosing 4 column -> Rock Homeworlds | Slug Home Nebula
+map-signal: choosing 4 -> Rock Homeworlds | Slug Home Nebula          <- the offer itself
+map-signal: choosing 4 column -> Rock Homeworlds | Slug Home Nebula   <- the next column
 map-signal: chosen
 ```
 
-`bChoosingNewSector` is the screen. The **offer is not available**, and `column` in that
-line says so: what follows is every sector in the next column of the map, which is a
-superset of the ones this sector connects to.
+`bChoosingNewSector` is the screen. **`column` is the load-bearing word.** Without it, the
+names are the sectors this one connects to. With it, they are every sector in the next
+column — a superset — because the engine's adjacency is not readable and the transition is
+one the generation rules do not pin down.
 
-#### Why the exact offer cannot be had (measured, not assumed)
+#### The link map — all six transitions
+
+The engine's own adjacency is not bound to Lua (measured below), so the offer is **derived**
+by reproducing the generation. `StarMap::AddSectorColumn` was read out of the shipped binary
+on 2026-08-17 — `raw/modding/2026-08-17-sector-column-linking-disassembly.md`,
+[[source-sector-column-linking-disassembly]] — which covers every case.
+
+A column holds 2–4 sectors, re-rolled *only* while equal to the previous column, so every
+ordered unequal pair occurs and the general path always has `|n − m| == 1`.
+`reachable(m, n, mine, column)`, positions 1-based from the top:
+
+| m → n | pos 1 | pos 2 | pos 3 | pos 4 | |
+|---|---|---|---|---|---|
+| 1 → n | all | | | | forced |
+| 2 → 3 | 1,2 | 2,3 | | | general (grow) |
+| 3 → 4 | 1,2 | 2,3 | 3,4 | | general (grow) |
+| 3 → 2 | 1 | 1,2 | 2 | | general (shrink) |
+| 4 → 3 | 1 | 1,2 | 2,3 | 3 | general (shrink) |
+| 2 → 4 | 1,2 | 3,4 | | | **special-cased in the binary** |
+| 4 → 2 | 1 | 1 | 2 | 2 | **special-cased in the binary** |
+
+2→4 is *not* the general grow rule — from position 2 it reaches the 3rd and 4th, not the 2nd
+and 3rd. That is why the binary branches, and why treating it as general would name a sector
+the player cannot reach.
+
+The player's own index in their column comes from `visited`: exactly one sector per column
+is ever visited, because you pass through exactly one. If none or several are, there is no
+index and no exact answer — the column is reported instead. Same if any sector's name fails
+to read: the rules count positions, so a hole makes the positions meaningless. A shape the
+generation cannot produce (`m == n`) is refused rather than guessed at.
+
+**Column order is creation order**, which the disassembly establishes and the game's own
+"1." / "2." choice labels follow — so the *n*th sector at a level in `starMap.sectors` is the
+*n*th from the top on screen. Confirmed live twice.
+
+#### Why the exact offer cannot be read from the engine (measured, not assumed)
 
 Probed against the live bindings on 2026-08-16, by dumping SWIG's own member tables
 rather than guessing at names:
@@ -527,10 +564,10 @@ Lua. Two other routes were checked and closed:
 - **No sector-choice hook.** `Defines.InternalEvents` holds 78 events — `JUMP_ARRIVE`,
   `MAIN_MENU`, `GET_LEVEL_DESCRIPTION` — and none of them is the choice.
 
-`xftl` does document the column-linking rules ("4 prev, 2 now: 1st sector links to previous
-1st/2nd…"), but loosely, and its own author calls the implementation "annoying to read due
-to inlining". Re-deriving them would risk naming the **wrong** sectors, which is worse than
-naming a few extra. So the column is reported as a column, and the page says which it is.
+Which is why the offer is derived by reproducing the generation instead (above). The
+fallback path — report the column, labelled — is still in the mod and still reachable: an
+unreadable name, no single `visited` sector in the column, or a shape the generation cannot
+produce. Naming a sector the player cannot travel to is worse than naming a few extra.
 
 The watcher resolves each name against `display_name` / `title` / `short_name` in the
 profiles and serves `/sectors/index.html?pick=<slug>,…&column=1` — the chooser

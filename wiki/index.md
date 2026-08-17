@@ -1004,6 +1004,7 @@ page. `source_kind: research` and the `raw/modding/` directory are extensions be
 - [[source-xftl-sector-map]] — raw/modding/2026-08-15-xftl-sector-map.txt | **the sector graph, the 6×4 beacon grid, exit placement, `AddQuest`, and the fleet advance in px/jump** | unknown | Ingested: 2026-08-15
 - [[source-xftl-stores]] — raw/modding/2026-08-15-xftl-stores.txt | store section generation, system selection, resource stock ranges | both | Ingested: 2026-08-15
 - [[source-store-crew-selection-disassembly]] — raw/modding/2026-08-16-store-crew-selection-disassembly.md | the store crew-draw algorithm read out of FTLGame_orig.exe: weight = 6 − rarity, 0 excluded, 3 independent slots, rarityList overlays base | both | Ingested: 2026-08-16
+- [[source-sector-column-linking-disassembly]] — raw/modding/2026-08-17-sector-column-linking-disassembly.md | StarMap::AddSectorColumn read out of FTLGame.exe: the exact link map for all six column transitions, and the proof that every unequal 2–4 pair occurs | both | Ingested: 2026-08-17
 - [[source-ftl-dat-rarity-corpus-search]] — raw/modding/2026-08-16-ftl-dat-rarity-corpus-search.md | recorded negative: rarity is in only 3 data files in all of ftl.dat, all already held; the 164-entry uncopied diff; raw/gamedata verified not stale against a Hyperspace-modded install | both | Ingested: 2026-08-16
 
 ### Vendor documentation

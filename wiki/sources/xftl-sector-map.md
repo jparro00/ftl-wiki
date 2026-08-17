@@ -33,6 +33,11 @@ describes the sector graph and the beacon layout algorithm at all**, and it answ
   2→4 links new-1/2 to old-1 and new-3/4 to old-2; all other transitions walk each new sector
   to its index-peer in the previous column, chaining as it goes, so that no neighbour links
   overlap.
+  > ⚠️ **CONTRADICTION:** the "all other transitions" account here is not implementable as
+  > written — see [[source-sector-column-linking-disassembly]], which reads the routine out
+  > of the binary and gives the exact link map for all six transitions. Its own author calls
+  > the implementation "annoying to read due to inlining"; the disassembly is trusted over
+  > the prose, and confirms this page's two *stated* cases (4→2, 2→4) exactly.
 - **Sector type roll**: 20% nebula; otherwise an independent 60% friendly / 40% hostile —
   i.e. **48% friendly, 32% hostile, 20% nebula**, in `StarMap::GetRandomSectorChoice`. A
   fourth value (>2) exists in `RenderSectorMap` and draws a grey dot; the author speculates

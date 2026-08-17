@@ -3771,3 +3771,103 @@ so the pinned boxes changed with them.
 Checked in Firefox: the head, the five pin sets from the last round, the empty and single-pin
 states, both click targets, panel width across all of them, and a resize. `tools/SECTOR-PAGE.md`
 §7b carries all four of the panel's non-obvious mechanisms.
+
+## [2026-08-16] tooling | The sector map reports the offer, not the column — where the rules say so
+
+The chooser was pinning all four sectors of the next column at a jump. That was the
+documented fallback doing its job, not a page bug: the mod reports the column because
+Hyperspace exposes three members on a `Sector` and adjacency is not one of them. But the
+user could not even see two of the four on screen, and a superset that includes sectors you
+cannot travel to is not an answer.
+
+**Verified live rather than assumed.** With the choice screen up, the log read
+`choosing 2 column -> Mantis Controlled Sector | Engi Controlled Sector | Uncharted Nebula |
+Engi Homeworlds`, and the game was offering the **first two**. That single observation
+settles two things at once: the 2-prev/4-now rule in
+[[source-xftl-sector-map]] reads the way it looks, and `starMap.sectors` iterates a column
+in the order the rules count in ("1st", "2nd", ...) — which no source states and which every
+index-based rule depends on.
+
+**What the mod now answers exactly**, via `reachable(m, n, mine, column)`:
+
+| This column | Next | Answer |
+|---|---|---|
+| 1 | any | the whole column — forced, there is nowhere else for them to connect |
+| 2 | 4 | 1st → next 1st+2nd, 2nd → next 3rd+4th (verified above) |
+| 4 | 2 | 1st/2nd → next 1st, 3rd/4th → next 2nd |
+| 2→3, 3→2, 3→4, 4→3 | | still the column, still labelled |
+
+The player's index in their own column comes from `visited` — exactly one sector per column
+is ever visited — and if that does not hold, or any name fails to read, there is no index and
+the column is reported. The `column` word in the log line is now the signal for exactly this:
+present means superset, absent means offer. The watcher and the page needed no change; the
+caveat above the panel simply stops appearing when the answer is exact.
+
+**Two verification tools, because the mod's own checks could not do either.** The builder
+never compiled the Lua — Hyperspace was the first thing that ever parsed it, where a syntax
+error is a dead render hook — and it cannot test arithmetic that lives in Lua. A scratchpad
+venv with `lupa` now does both: `load()` the built file, lift `reachable()` out with a regex,
+and run it over 15 cases including the live one.
+
+**Left open, and named as such.** Four of the six transitions a run can take are still the
+column. The source gives them only as an algorithm whose own author calls the implementation
+hard to read, and two readings of it disagree about who reaches what. Settling it means
+reading `StarMap::AddSectorColumn` out of the binary — the store-crew disassembly's method —
+and `zhl.log` in the game directory names the neighbouring `StarMap::` functions with
+addresses, which is where that starts. `SAVE-WATCH.md` §5d carries the table and the gap.
+
+## [2026-08-17] tooling | AddSectorColumn, read out of the binary — all six transitions, and 3→4 is real
+
+The four transitions the sector-choice mod could not answer are answered.
+`StarMap::AddSectorColumn` was disassembled out of the shipped executable, and
+`reachable()` now reproduces the generation rather than paraphrasing prose about it.
+[[source-sector-column-linking-disassembly]], per
+`raw/modding/2026-08-17-sector-column-linking-disassembly.md`.
+
+**Finding the function was most of the work.** ZHL's `zhl.log` in the game directory names
+every vanilla `StarMap::` function with the address it resolved — but those are *runtime*
+addresses, and disassembling them as file offsets yields mangled symbol strings, not code.
+The module loads 0xB90000 above its ImageBase; subtracting that puts `AddSectorColumn` at
+`0x005ca680`, which Hyperspace's own byte signature then confirms. And the signature does
+**not** occur in `FTLGame_orig.exe` at all — the folder holds a `downgrade.bat`, the two
+exes are different builds, and the patched one is what actually runs. So this disassembly
+targets `FTLGame.exe`, unlike [[source-store-crew-selection-disassembly]].
+
+**The user's hypothesis was wrong, and the code says so plainly.** 3→4 and 4→3 were
+believed impossible. The size roll is `2 + (rand() % 3)` compared against the previous
+column's count with a single `jne` — equality is the only thing re-rolled, so every ordered
+unequal pair from {2,3,4} occurs. What is true, and is probably what the belief was reaching
+for, is that the *general* path only ever runs with `|n − m| == 1`: the two size-2 gaps are
+special-cased, and equality cannot happen. So there are exactly three code paths, not six.
+
+**The general loop, recovered.** Each sector of the previous column is linked to the sector
+its predecessor created, then creates one of its own; a growing column makes one **extra
+sector at position 1** (not "a new column in the 2nd position", which is what
+[[source-xftl-sector-map]] says and which is not implementable as written — flagged as a
+contradiction on both pages); a shrinking column breaks before the last position creates
+anything. Every new sector ends up reachable by somebody, which the test asserts.
+
+| m → n | pos 1 | pos 2 | pos 3 | pos 4 | |
+|---|---|---|---|---|---|
+| 2 → 3 | 1,2 | 2,3 | | | general (grow) |
+| 3 → 4 | 1,2 | 2,3 | 3,4 | | general (grow) |
+| 3 → 2 | 1 | 1,2 | 2 | | general (shrink) |
+| 4 → 3 | 1 | 1,2 | 2,3 | 3 | general (shrink) |
+| 2 → 4 | 1,2 | 3,4 | | | special |
+| 4 → 2 | 1 | 1 | 2 | 2 | special |
+
+**2→4 is the case that proves the exercise was necessary.** From position 2 it reaches the
+3rd and 4th; the general grow rule would say 2nd and 3rd. Shipping the general rule for it
+would have named a sector the player cannot fly to — the exact failure that started this.
+
+**Column order is creation order**, established from the code (sectors appended to the
+all-sectors vector as created, y advancing by a fixed step) rather than assumed. That is
+what makes an index-based rule meaningful at all, and it had been the unstated assumption
+under the whole approach.
+
+**Testing does not restate the implementation.** The checker simulates the recovered loop
+and compares its output against the Lua, over all six transitions × every position, so a
+wrong constant shows up as a disagreement instead of as two copies of one mistake. Verified
+live afterwards: patched, relaunched, and the sector map logged
+`choosing 2 -> Mantis Controlled Sector | Engi Controlled Sector` — no `column`, and the
+game's own screen offers exactly those two, numbered top to bottom.

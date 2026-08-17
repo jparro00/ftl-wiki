@@ -196,6 +196,53 @@ end
 -- the linking rules ("4 prev, 2 now: 1st links to previous 1st/2nd...") but loosely, and
 -- re-deriving them would risk naming the wrong sectors -- worse than naming a few extra.
 -- So the column is reported as a column, and the page says so.
+-- Which of the next column the player can actually travel to, or nil for "cannot say".
+--
+-- The engine's adjacency is not bound to Lua, so this reproduces the generation itself.
+-- Recovered from StarMap::AddSectorColumn in the shipped binary, 2026-08-17 --
+-- raw/modding/2026-08-17-sector-column-linking-disassembly.md has the disassembly and
+-- the reconstruction. All six transitions a run can take are covered.
+--
+-- A column holds 2..4 sectors, re-rolled only while equal to the previous column, so
+-- |n - m| is 1 except for the two cases the code special-cases outright:
+--
+--   m=2, n=4  new 1st/2nd hang off prev 1st; new 3rd/4th off prev 2nd
+--   m=4, n=2  new jth hangs off prev 2j and 2j+1
+--   n = m+1   the general loop, with one extra sector created at peer 1
+--   n = m-1   the general loop, breaking before the last peer creates anything
+--
+-- m=1 (leaving the first sector) is forced: the whole column hangs off it.
+local function reachable(m, n, mine, column)
+    if mine == nil then return nil end
+    if m == 1 then return column end
+
+    local pick = {}
+    local function take(i)
+        if column[i] then pick[#pick + 1] = column[i] end
+    end
+
+    if m == 2 and n == 4 then
+        take(2 * mine - 1)
+        take(2 * mine)
+    elseif m == 4 and n == 2 then
+        take(math.floor((mine - 1) / 2) + 1)
+    elseif n == m + 1 then
+        -- Peer p is linked to the sector created for p-1 and to its own.
+        take(mine)
+        take(mine + 1)
+    elseif n == m - 1 then
+        -- ...and the last peer only inherits, because the loop breaks before it
+        -- creates anything of its own.
+        if mine > 1 then take(mine - 1) end
+        if mine < m then take(mine) end
+    else
+        return nil   -- a column shape the generation cannot produce
+    end
+
+    if #pick == 0 then return nil end
+    return pick
+end
+
 local function offer(map)
     local ok, current = pcall(function() return map.currentSector end)
     if not ok or current == nil then
@@ -216,13 +263,19 @@ local function offer(map)
         safe_probe("starMap", map)
         return nil
     end
-    local names = {}
+    -- Both columns in the engine's own vector order, which is the order the linking
+    -- rules count in ("1st", "2nd", ...). Verified 2026-08-16 against a live choice:
+    -- a 2-wide column into a 4-wide one offered the first two names to the player
+    -- sitting in the 1st sector, which is what the 2-prev/4-now rule says.
+    local here, next_col = {}, {}
     got = pcall(function()
         for i = 0, sectors:size() - 1 do
             local s = sectors[i]
-            if math.floor(s.level) == level + 1 then
-                local name = name_of(s)
-                if name then names[#names + 1] = name end
+            local at = math.floor(s.level)
+            if at == level then
+                here[#here + 1] = {name = name_of(s), visited = s.visited and true or false}
+            elseif at == level + 1 then
+                next_col[#next_col + 1] = name_of(s) or false
             end
         end
     end)
@@ -230,7 +283,31 @@ local function offer(map)
         report("walk", "walking sectors failed")
         return nil
     end
-    return names
+    if #next_col == 0 then return nil end
+
+    -- Where the player sits in their own column. Only one sector per column is ever
+    -- visited -- you pass through exactly one -- so the flag identifies it without
+    -- needing pointer equality on the userdata, which SWIG does not promise.
+    local mine, seen = nil, 0
+    for i, s in ipairs(here) do
+        if s.visited then
+            seen = seen + 1
+            mine = i
+        end
+    end
+    if seen ~= 1 then mine = nil end   -- not one visited sector: no index, no rule
+
+    -- A name that would not read leaves a false in the column. The rules count
+    -- positions, so a hole means the positions cannot be trusted and the exact
+    -- answer is off the table -- but the column can still be reported.
+    local named, whole = true, {}
+    for i = 1, #next_col do
+        if next_col[i] then whole[#whole + 1] = next_col[i] else named = false end
+    end
+
+    local reach = named and reachable(#here, #next_col, mine, next_col) or nil
+    if reach then return reach, true end
+    return whole, false
 end
 
 local function tick()
@@ -261,13 +338,14 @@ local function tick()
         log(PREFIX .. "chosen")
         return
     end
-    local names = offer(map)
+    local names, exact = offer(map)
     if not names or #names == 0 then
         pcall(probe_choice, map)   -- only when there is nothing to report
     end
-    -- "column" is load-bearing: it tells the watcher these are the sectors in the next
-    -- column, not a verified list of the ones this sector connects to.
-    log(PREFIX .. "choosing " .. sector_of(map) .. " column -> "
+    -- "column" is load-bearing: it says these are the sectors in the next column, not
+    -- the ones this sector connects to. It is dropped only when the transition is one
+    -- the generation rules pin down, in which case the list is the offer itself.
+    log(PREFIX .. "choosing " .. sector_of(map) .. (exact and "" or " column") .. " -> "
         .. ((names and #names > 0) and table.concat(names, " | ") or "?"))
 end
 
