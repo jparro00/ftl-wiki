@@ -460,6 +460,43 @@ are two arrivals — two beacons that rolled the same event, or one revisited. N
 tries to tell those apart; the count is what the log says. What a repeat is *not* is a parent
 and its same-named child, which the trailing number now excludes.
 
+## 4d. How big this run's map is
+
+The sector page shows the run's own beacon count beside the budget's ranges
+(`LOCAL-SITE.md` §5c). The watcher supplies it, and the generation block already carries it —
+**one `Getting Event:` line per beacon the allocation table filled**:
+
+```
+-- Generating Events --
+Sector: MANTIS_SECTOR
+Getting Event: STORE_MANTIS
+Getting Event: HOSTILE_MANTIS        ← ×6
+...
+-- Done Generating Events --
+```
+→ `beacons=20`
+
+Measured across three real blocks: **20** for `MANTIS_SECTOR`, **21** and **21** for two
+`CIVILIAN_SECTOR`s — all inside the 19–24 a 6×4 grid at 80% per cell can hold.
+
+**It counts what the table placed, not every beacon on the map.** No `START_BEACON` and no
+`FINISH_BEACON` appears in any of those blocks: the entry beacon is the sector's fixed
+`<startEvent>` and the exit is a fixed `FINISH_BEACON`, so neither is drawn — except in nebula
+sectors, where `FINISH_BEACON_NEBULA` *is* in the list. So the map holds a little more than
+this number, and the page says **"21 placed this run"** rather than "21 beacons", because that
+is the claim the evidence supports. It is also the figure the budget's ranges should be read
+against, which is the comparison the line exists to make.
+
+**Both markers must be in the tail, or nothing is reported.** The read is bounded at 256 KB,
+so an opener scrolled off the top would leave a partial block that counts short — and a short
+count is indistinguishable from a small map. Refusing is the only safe answer.
+
+> ⚠️ Do not reach for the **save** for this. It does carry a beacon list (§3), but under
+> Hyperspace the save is read by content scan, which gives up the list entirely (§3b). That
+> dead end was walked once already — the log is the channel.
+
+---
+
 ### The browser has to be reloaded after a change here
 
 The shell's JavaScript is fetched once, when the page is opened. A tab left open across a
@@ -486,7 +523,7 @@ computes a complete site URL, publishes it as `url` in `/current`, and the shell
 | `view` | `url` |
 |---|---|
 | `choose` | `/sectors/?pick=<slug>,…[&column=1]` |
-| `sector` | `/sectors/<slug>[?seen=…]` |
+| `sector` | `/sectors/<slug>[?beacons=…][&seen=…]` |
 | `card` | `/cards/<slug>` |
 
 **Start both.** `serve-site.py` first, then the watcher; the watcher probes the site once at
@@ -541,7 +578,7 @@ carries the decision:
 | `view` | When | Frame shows |
 |---|---|---|
 | `choose` | **the sector map is open** — the screen that offers the next sectors (§5d) | `/sectors/?pick=…`, the offer already pinned |
-| `sector` | the beacon map is open (§5c), **or** the resolved event is a `START_BEACON_*`, **or** no card resolves at all, **or** within `--sector-hold` seconds of arriving in a new sector | `/sectors/<slug>?seen=…` (§4c) |
+| `sector` | the beacon map is open (§5c), **or** the resolved event is a `START_BEACON_*`, **or** no card resolves at all, **or** within `--sector-hold` seconds of arriving in a new sector | `/sectors/<slug>?beacons=…&seen=…` (§4c, §4d) |
 | `card` | none of the above | `/cards/<slug>` |
 
 Those are paths on the site (§5a), and `url` in `/current` carries the one that won.

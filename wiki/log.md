@@ -4165,3 +4165,40 @@ not an inference, and marking rows as cut would be exactly the guess the budget 
 Two details worth keeping: either parameter may appear alone, and neither present still means
 no markup at all; and a `?beacons=`-only URL gets **no strip** — the count went into the
 heading, and an empty strip would still push the page down by its own height.
+
+## [2026-08-17] tooling | The watcher sends `?beacons=`, and the log knew all along
+
+`?beacons=` shipped as a parameter with nothing passing it, so it never appeared on screen —
+the reported symptom was "might be stale, I don't see it called out on the page". The site was
+current; the watcher simply never sent it.
+
+**And the reason given for not wiring it was wrong.** The previous entry says the watcher
+"cannot supply it" because the Hyperspace save is read by content scan, which gives up the
+beacon list. True of the *save*, and the check stopped there. The **log** has it: the
+generation block writes **one `Getting Event:` line per beacon the allocation table filled**.
+
+```
+-- Generating Events --
+Sector: MANTIS_SECTOR
+Getting Event: STORE_MANTIS
+Getting Event: HOSTILE_MANTIS   ×6
+...
+-- Done Generating Events --
+```
+
+Measured across three real blocks: 20 for `MANTIS_SECTOR`, 21 and 21 for two
+`CIVILIAN_SECTOR`s — all inside the 19–24 a 6×4 grid at 80% per cell can hold.
+
+**It counts what the table placed, not every beacon on the map, and the label changed to
+match.** No `START_BEACON` and no `FINISH_BEACON` appears in those blocks: the entry beacon is
+the sector's fixed `<startEvent>` and the exit is a fixed `FINISH_BEACON`, so neither is
+drawn — except in nebula sectors, where `FINISH_BEACON_NEBULA` *is* in the list. So the page
+reads **"21 placed this run"**, not "21 beacons on this map". That is the claim the evidence
+supports, and it is also the right figure to read the budget's ranges against, which is the
+comparison the line exists to make. The tooltip states the gap.
+
+**Both block markers must be in the 256 KB tail or nothing is reported** — an opener scrolled
+off the top leaves a partial block that counts short, and a short count is indistinguishable
+from a small map.
+
+The sector URL now carries both: `/sectors/<slug>?beacons=21&seen=…`. Either may be absent.

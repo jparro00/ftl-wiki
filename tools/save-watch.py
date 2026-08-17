@@ -80,6 +80,30 @@ def find_save():
 # Hyperspace prints one of these before the beacon lines of every generation.
 SECTOR_LINE = re.compile(r"^Sector:\s*([A-Z0-9_]+)\s*$", re.M)
 
+# The generation block, and the one line inside it that is written **once per beacon the
+# allocation table filled** -- the list it drew from, not the event it picked:
+#
+#   -- Generating Events --
+#   Sector: MANTIS_SECTOR
+#   Getting Event: STORE_MANTIS
+#   Getting Event: HOSTILE_MANTIS        (x6)
+#   ...
+#   -- Done Generating Events --
+#
+# Counting them is how the watcher knows how big this run's map is. Measured across three
+# real blocks: 20 for MANTIS_SECTOR, 21 and 21 for two CIVILIAN_SECTORs -- all inside the
+# 19-24 a 6x4 grid at 80% per cell can hold.
+#
+# **It counts what the table placed, not every beacon on the map.** No START_BEACON and no
+# FINISH_BEACON appears in any of those blocks: the entry beacon is the sector's fixed
+# `<startEvent>` and the exit is a fixed `FINISH_BEACON`, so neither is drawn -- except in
+# nebula sectors, where `FINISH_BEACON_NEBULA` *is* in the list. That makes this exactly
+# the figure the budget's "N slots allocated" should be read against, and a little short
+# of the map's full beacon count. The page says "placed", which is the true claim.
+GEN_OPEN = re.compile(r"^-- Generating Events --\s*$", re.M)
+GEN_CLOSE = re.compile(r"^-- Done Generating Events --\s*$", re.M)
+GETTING_EVENT = re.compile(r"^Getting Event:\s*[A-Z0-9_]+", re.M)
+
 # And one of these as each event is instantiated -- on arrival at a beacon, and again
 # for every event a choice chains into. `Creating ShipEvent:` lines are ship spawns and
 # deliberately not matched.
@@ -231,6 +255,7 @@ class HyperspaceLog:
         self._choosing = None       # slugs on offer at the sector map, or None
         self._choosing_approx = False   # ...and whether that is the column, not the offer
         self._visits = []           # [(event id, times)] visited in this sector, in order
+        self._beacons = None        # how many beacons the table placed in this sector
 
     @staticmethod
     def _load_index():
@@ -290,6 +315,7 @@ class HyperspaceLog:
             self._map_open, self._event, self._choosing = None, None, None
             self._choosing_approx = False
             self._visits = []
+            self._beacons = None
         self._stamp = stamp
         try:
             with open(self.log_path, "rb") as fh:
@@ -363,6 +389,20 @@ class HyperspaceLog:
             times[eid] += 1
         self._visits = [(eid, times[eid]) for eid in order]
 
+        # How big this run's map is, from the last complete generation block.
+        # **Both markers must be in the tail.** The read is bounded at 256 KB, so an
+        # opener scrolled off the top would leave a partial block that counts short --
+        # and a short count is indistinguishable from a small map. Refuse instead.
+        self._beacons = None
+        opens = list(GEN_OPEN.finditer(text))
+        if opens:
+            close = GEN_CLOSE.search(text, opens[-1].end())
+            if close:
+                block = text[opens[-1].end():close.start()]
+                found = len(GETTING_EVENT.findall(block))
+                if found:
+                    self._beacons = found
+
         if not hits:
             return
         # The last generation block is the current sector; earlier ones are history.
@@ -386,6 +426,7 @@ class HyperspaceLog:
             "choosing": self._choosing,
             "choosing_approx": self._choosing_approx,
             "visits": list(self._visits),
+            "beacons": self._beacons,
         }
 
 
@@ -718,6 +759,7 @@ class Watcher:
         state["next_sectors_approx"] = info["choosing_approx"]
         state["seen"] = [eid if n == 1 else "%s:%d" % (eid, n)
                          for eid, n in info["visits"]]
+        state["beacons"] = info["beacons"]
         start = state.get("slug") in self.hs_log.start_slugs
         state["at_start_beacon"] = start
 
@@ -753,10 +795,15 @@ class Watcher:
             return "/sectors/" + query
         if state.get("view") == "sector" and state.get("sector_slug"):
             url = "/sectors/" + state["sector_slug"]
-            # Only this sector's beacons, and only on this sector's page. Carrying them
-            # onto a card would mark nothing and lengthen every URL.
+            # Only this sector's run data, and only on this sector's page. Carrying it
+            # onto a card would show nothing and lengthen every URL.
+            query = []
+            if state.get("beacons"):
+                query.append("beacons=%d" % state["beacons"])
             if state.get("seen"):
-                url += "?seen=" + ",".join(state["seen"])
+                query.append("seen=" + ",".join(state["seen"]))
+            if query:
+                url += "?" + "&".join(query)
             return url
         if state.get("slug"):
             return "/cards/" + state["slug"]

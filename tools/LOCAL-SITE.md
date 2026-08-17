@@ -300,16 +300,24 @@ what it was before this existed.
 #### `?beacons=<n>` — the count in the budget heading
 
 ```
-BEACON BUDGET      21 beacons on this map · 19–27 slots allocated · 56 events in pool
+BEACON BUDGET      21 placed this run · 14–32 slots allocated · 77 events in pool
 ```
 
 First in the line, and the only bright figure in it, because it is the one fact about *this*
-map — and it is what makes the allocated range mean anything: 19–27 slots against 21 beacons
-says the bottom of the table is getting cut, which the range alone cannot say.
+map — and it is what makes the allocated range mean anything: 14–32 slots against 21 placed
+says most of the range was never reachable, which the range alone cannot say.
 
-**It has to come from outside.** No file states it — the map rolls the count — and the save
-watcher cannot supply it either: under Hyperspace the save is read by content scan, which
-gives up the beacon list entirely (`SAVE-WATCH.md` §3b). So the URL or nothing.
+**It has to come from outside** — no file states it, because the map rolls the count. The save
+cannot answer either: under Hyperspace it is read by content scan, which gives up the beacon
+list entirely (`SAVE-WATCH.md` §3b). The **log** can, and the watcher now sends it: one
+`Getting Event:` line per beacon the table filled (`SAVE-WATCH.md` §4d).
+
+**"placed", not "beacons on the map", and the difference is real.** The count is beacons the
+allocation table drew for. The entry beacon is the sector's fixed `<startEvent>` and the exit
+is a fixed `FINISH_BEACON`, so neither is drawn — except in nebula sectors, where
+`FINISH_BEACON_NEBULA` *is* in the list. That makes this exactly the figure to read the
+budget's "N slots allocated" against, and a little short of the map's full beacon count. The
+tooltip says so.
 
 **The page reports it and derives nothing from it.** Which lines a short map cuts is a roll,
 not an inference, and marking rows as cut would be exactly the guess the budget refuses to
@@ -317,7 +325,7 @@ make. A value that is not a positive integer is reported in the strip and otherw
 
 This replaced the `may be cut` chip, which is the better trade: a chip that fired on most lines
 of most sectors, saying a line *might* be cut, against one number that says how much room there
-actually is (`SECTOR-PAGE.md` §4.1b).
+actually was (`SECTOR-PAGE.md` §4.1b).
 
 #### `?seen=<token>,…`
 
