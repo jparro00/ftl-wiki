@@ -12,7 +12,11 @@ file tells Claude how to behave. This README is the quick operator's guide.
 ## The two layers
 
 - **`raw/`** — you drop sources here. Never edited. The source of truth.
-  - `raw/gamedata/` — datamined game files (`events.xml`, `sector_data.xml`, `blueprints.xml`, …)
+  - `raw/gamedata/` — datamined game files (`events.xml`, `sector_data.xml`, `blueprints.xml`, …).
+    **Not in this repository** — they are Subset Games' copyrighted files, and this repo is
+    public. `raw/gamedata/_PROVENANCE.md` says how to re-extract them from your own install.
+    Everything already generated from them (`cards/`, `sectors/`) is committed, so the site
+    builds and serves without them.
   - `raw/wiki/` — community wiki pages, guides, forum and reddit posts
   - `raw/runs/` — your own playthrough notes and observations
 - **`wiki/`** — Claude maintains this: a page per event (`events/`), per quest chain
@@ -108,6 +112,18 @@ Every view is a link you can send. Pin two sectors and the address bar says
 Nothing is rebuilt or rewritten to make this work — the same files still open straight off
 disk and still publish as artifacts. Details in
 [`tools/LOCAL-SITE.md`](./tools/LOCAL-SITE.md).
+
+### Read it online
+The same site, hosted: **<https://jparro00.github.io/ftl-wiki/>**
+
+```bash
+python tools/build-pages.py --deploy    # rebuild site/ and publish it
+```
+
+`build-pages.py` imports `serve-site.py` and renders every page with the same functions the
+local server uses, so the hosted copy cannot drift from the one on your machine. It writes a
+gitignored `site/` and force-pushes it to the `gh-pages` branch, which is what GitHub Pages
+serves. Run it after rebuilding a card, a sector, or an index.
 
 ### Lint it
 Every so often (say, every handful of ingests):

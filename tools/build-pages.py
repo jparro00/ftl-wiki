@@ -291,6 +291,13 @@ def deploy(remote):
     def git(*args):
         return subprocess.run(("git",) + args, cwd=str(OUT), check=True)
 
+    # `site/` is its own repository and knows nothing of this one's remotes, so a remote
+    # *name* has to be resolved to a URL here rather than passed through.
+    if "/" not in remote or not re.match(r"[a-z]+://|.+@", remote):
+        remote = subprocess.run(("git", "remote", "get-url", remote), cwd=str(ROOT),
+                                check=True, capture_output=True,
+                                text=True).stdout.strip()
+
     if not (OUT / ".git").exists():
         git("init", "-q", "-b", "gh-pages")
     git("add", "-A")
