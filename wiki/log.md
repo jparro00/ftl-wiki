@@ -4202,3 +4202,39 @@ off the top leaves a partial block that counts short, and a short count is indis
 from a small map.
 
 The sector URL now carries both: `/sectors/<slug>?beacons=21&seen=…`. Either may be absent.
+
+## [2026-08-17] tooling | A revisited beacon counts once — which needed the beacon's identity
+
+`?seen=` counted arrivals, so flying back to a beacon counted it twice. The live log proves the
+problem rather than merely suggesting it: `Creating event: START_BEACON` appears **twice** in
+one sector's block, and a sector has one entry beacon, so that can only be one beacon
+revisited. The game re-fires a beacon's event on return.
+
+Two different beacons holding the same event genuinely are two, though, so the fix is not
+"count each event once" — it needs the beacon's identity, and **the engine's log never gives
+it.** `Creating event:` names the event and nothing else.
+
+So `map-signal` now reports it: `map-signal: beacon 412,233`, the ship's beacon coordinates
+logged when they change, from `starMap.currentLoc.loc` — the only identity Lua is given, since
+a `Location` exposes no index or id. Floored, because they are floats and a pixel of jitter
+would read as a new beacon.
+
+`VISIT_SCAN` reads arrivals and beacon lines in **one pass**, so their order survives and each
+arrival belongs to whichever beacon was last reported. Each event collects the *set* of beacons
+it was seen at; its count is how many that is.
+
+**The no-mod fallback is exactly right and is not a special case.** With no beacon lines the
+current beacon stays `None`, every arrival of one event lands in `{None}`, and the event counts
+once — so an unpatched game under-counts a duplicated event rather than over-counting a
+revisited beacon. The safe direction, and the one asked for. Verified on the live log: the
+current sector's `NEBULA_AUTO:2` became `NEBULA_AUTO` immediately, with no mod change.
+
+Four cases tested: no beacon lines (revisit → 1), same beacon twice (→ 1), two different
+beacons with one event (→ 2), and one beacon visited three times beside another (→ 2).
+
+The mod build checks the new line against `VISIT_SCAN` itself, imported from the watcher —
+same contract discipline as the open/closed and choosing/chosen pairs, and for the same reason:
+a drift fails silently, with the mod logging happily and the watcher counting arrivals again.
+
+**Installing the rebuilt mod is a Slipstream patch and a game restart**, and is what upgrades
+the count from safe to exact.

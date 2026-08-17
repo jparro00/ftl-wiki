@@ -367,10 +367,14 @@ store-engi:3                          visited three times
 store-engi,store-engi                 also two visits — repeats accumulate
 ```
 
-**Two forms for the count, because two callers want different things.** Repeats are what the
-watcher naturally produces — one token per `Creating event:` line, appended in order, nothing
-to tally. `:n` is for a compacted or hand-written URL. Every token is a visit record, so the
-forms add: `store-engi:2,STORE_ENGI` is three visits.
+**Two forms for the count, because two callers want different things.** Repeats are the plain
+form; `:n` is for a compacted or hand-written URL. Every token is a visit record, so the forms
+add: `store-engi:2,STORE_ENGI` is three visits.
+
+**A count means distinct beacons, not arrivals** — that is the watcher's contract, not this
+page's. Flying back to a beacon fires its event again and must not count twice, while two
+different beacons holding the same event must (`SAVE-WATCH.md` §4c). This page counts what it
+is given; it has no way to know which beacon anything came from.
 
 The URL bound does not change. A run visits at most 24 beacons, so there are at most 24 tokens
 either way, and §5c's 775-character worst case still holds.

@@ -10,6 +10,7 @@ local PREFIX = "map-signal: "
 
 local last_open = nil      -- nil until the first read, so the first state is announced
 local last_choosing = nil  -- ...same for the sector-choice screen
+local last_at = nil        -- ...and for which beacon the ship is sitting on
 local reported = {}       -- failure sites already logged, so a fault cannot spam
 
 local function report(key, msg)
@@ -313,6 +314,23 @@ end
 local function tick()
     local map = star_map()
     if map == nil then return end
+
+    -- Which beacon the ship is on. The engine's own log names the event at each arrival
+    -- and never the beacon, so flying back to one fires the same line again and reads
+    -- as a second arrival -- observed as `Creating event: START_BEACON` twice in one
+    -- sector, which can only be one beacon revisited. The coordinates are the only
+    -- identity Lua is given: Location exposes `loc`, and nothing that is an index or id.
+    -- Floored, because they are floats and a jitter of a pixel would read as a new
+    -- beacon. Reported before anything else here so it survives an unreadable bOpen.
+    local at_ok, at = pcall(function()
+        local loc = map.currentLoc
+        if loc == nil then return nil end
+        return math.floor(loc.loc.x) .. "," .. math.floor(loc.loc.y)
+    end)
+    if at_ok and at ~= nil and at ~= last_at then
+        last_at = at
+        log(PREFIX .. "beacon " .. at)
+    end
 
     local ok, open = pcall(function() return map.bOpen and true or false end)
     if not ok then

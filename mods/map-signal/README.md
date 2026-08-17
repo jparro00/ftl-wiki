@@ -7,6 +7,7 @@ names the sectors in the column you are choosing from:
 map-signal: loaded
 map-signal: open sector 3
 map-signal: closed sector 3
+map-signal: beacon 412,233
 map-signal: choosing 3 column -> Rock Homeworlds | Slug Home Nebula
 map-signal: chosen
 ```
@@ -80,6 +81,10 @@ with no mods at all — it throws a NullPointerException. To reach true vanilla,
 - `map-signal: loaded` after launch — the script registered.
 - `map-signal: open sector N` the first time you open the map — the flag is being read.
 - `map-signal: choosing N column -> A | B` at the sector map — the column is being read.
+- `map-signal: beacon X,Y` after each jump — the ship's beacon is being read. This is what
+  stops a beacon you fly back to from counting as a second visit: the engine's own log names
+  the event at every arrival and never the beacon, so without this line the watcher can only
+  count each event once per sector (`SAVE-WATCH.md` §4c).
 
 A `map-signal: probe …` line means a field this script expected is not exposed by this
 Hyperspace build; the line lists the members that **are**, so the script can be rewritten

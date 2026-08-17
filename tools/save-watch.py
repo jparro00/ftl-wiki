@@ -149,6 +149,24 @@ CREATED_EVENT = re.compile(r"^Creating event: ([A-Za-z0-9_]+)", re.M)
 # written.
 ARRIVED_EVENT = re.compile(r"^Creating event: ([A-Za-z0-9_]+)[ \t]*(?=\r?\n)", re.M)
 
+# Arrivals and beacon changes, in one scan so their **order** is preserved -- which is
+# the whole point: an arrival belongs to whichever beacon was last reported.
+#
+# The engine's own log names the event and never the beacon, so a beacon flown back to
+# fires the same `Creating event:` line again and reads as a second arrival. Observed
+# directly: `Creating event: START_BEACON` twice in one sector, which can only be one
+# beacon revisited. `map-signal` therefore reports the ship's beacon coordinates when
+# they change (§4c), and that is the only identity available anywhere.
+#
+# **With no beacon lines in the log the fallback is exactly right, and it is not a
+# special case.** `here` stays None, every arrival of one event lands in `{None}`, and
+# the event counts once. So an unpatched game under-counts a genuinely duplicated event
+# rather than over-counting a revisited beacon -- the safe direction, and the one the
+# user asked for.
+VISIT_SCAN = re.compile(
+    r"^(?:\[[^\]]*\]:\s*)?map-signal:\s+beacon\s+(?P<beacon>-?\d+,-?\d+)[ \t]*(?=\r?\n)"
+    r"|^Creating event: (?P<event>[A-Za-z0-9_]+)[ \t]*(?=\r?\n)", re.M)
+
 # And the `map-signal` mod (tools/build-map-signal-mod.py) prints one of these each
 # time the star map opens or closes. Only the two state words match: the mod's
 # `loaded` and its error lines share the prefix and must not read as transitions.
@@ -372,22 +390,30 @@ class HyperspaceLog:
         # block -- a line between two blocks would be in it. So anchor 0 is right, not
         # a fallback.
         pool = self.pools.get(last if last else self._id) or set()
-        order, times = [], {}
-        # ARRIVED_EVENT, not CREATED_EVENT: only a line with nothing after the name is a
-        # beacon arrival. A child event created inside one carries a trailing number, and
-        # where it shares its parent's name the pool cannot tell them apart.
-        for match in ARRIVED_EVENT.finditer(text, anchor):
-            eid = match.group(1)
+        # **Counted in beacons, not in arrivals.** Flying back to a beacon fires its
+        # event again, and that is not a second beacon -- while two different beacons
+        # holding the same event are two. So each event collects the *set* of beacons it
+        # was seen at, and its count is how many that is.
+        order, at = [], {}
+        here = None
+        # Only a line with nothing after the name is an arrival: a child event created
+        # inside one carries a trailing number, and where it shares its parent's name
+        # the pool cannot tell them apart.
+        for match in VISIT_SCAN.finditer(text, anchor):
+            if match.group("beacon"):
+                here = match.group("beacon")
+                continue
+            eid = match.group("event")
             # And only events this sector's pool can place. The log also carries the
             # entry beacon, ship spawns, and the out-of-fuel event -- none of which is a
             # beacon the budget allocated, and the pool is what states the difference.
             if eid not in pool:
                 continue
-            if eid not in times:
-                times[eid] = 0
+            if eid not in at:
+                at[eid] = set()
                 order.append(eid)
-            times[eid] += 1
-        self._visits = [(eid, times[eid]) for eid in order]
+            at[eid].add(here)
+        self._visits = [(eid, len(at[eid])) for eid in order]
 
         # How big this run's map is, from the last complete generation block.
         # **Both markers must be in the tail.** The read is bounded at 256 KB, so an

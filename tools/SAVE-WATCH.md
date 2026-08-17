@@ -455,10 +455,44 @@ could never have been marked, silently.
 **`?seen=` rides only on the sector URL.** A card page has no boxes to mark, so carrying it
 there would lengthen every URL to no effect.
 
-**A repeat is a real second visit as far as this is concerned.** Two bare lines for one event
-are two arrivals — two beacons that rolled the same event, or one revisited. Nothing here
-tries to tell those apart; the count is what the log says. What a repeat is *not* is a parent
-and its same-named child, which the trailing number now excludes.
+### The count is beacons, not arrivals
+
+Flying back to a beacon fires its event again, so counting arrivals counts that beacon twice.
+Observed directly: `Creating event: START_BEACON` appears **twice** in one sector's block, and
+a sector has one entry beacon, so that can only be one beacon revisited. Two *different*
+beacons holding the same event, meanwhile, genuinely are two.
+
+Telling those apart needs the beacon's identity, and **the engine's log never gives it** — the
+`Creating event:` line names the event and nothing else. So `map-signal` reports it: the ship's
+beacon coordinates, logged when they change, from `starMap.currentLoc.loc`, which is the only
+identity Lua is given (there is no index or id on a `Location`). Floored, because they are
+floats and a pixel of jitter would read as a new beacon.
+
+```
+[Lua]: map-signal: beacon 412,233
+Creating event: STORE_ENGI
+[Lua]: map-signal: beacon 610,140
+Creating event: STORE_ENGI      ← a second beacon: counts 2
+[Lua]: map-signal: beacon 412,233
+Creating event: STORE_ENGI      ← the first one again: still 2
+```
+
+`VISIT_SCAN` reads arrivals and beacon lines in **one pass**, so their order is preserved and
+each arrival belongs to whichever beacon was last reported. Each event collects the *set* of
+beacons it was seen at, and its count is how many that is.
+
+**Without the beacon lines the fallback is exactly right, and it is not a special case.** The
+current beacon stays `None`, every arrival of one event lands in `{None}`, and the event counts
+once. So a game running the older `map-signal` under-counts a genuinely duplicated event rather
+than over-counting a revisited beacon — the safe direction. Installing the rebuilt mod
+(`mods/map-signal/README.md`) upgrades it to exact, and needs a Slipstream patch and a restart.
+
+The build checks the beacon line against `VISIT_SCAN` itself, imported from this watcher, for
+the same reason it checks the others: a drift fails silently, with the mod logging happily and
+the watcher counting arrivals again.
+
+What a repeat is *not* is a parent and its same-named child, which the trailing number
+excludes separately (above).
 
 ## 4d. How big this run's map is
 
