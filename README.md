@@ -9,6 +9,11 @@ It follows Andrej Karpathy's [LLM Wiki](https://gist.github.com/karpathy/442a6bf
 method. The full schema and conventions live in **[`CLAUDE.md`](./CLAUDE.md)** — that
 file tells Claude how to behave. This README is the quick operator's guide.
 
+**Just cloned this?** Read **[`SETUP.md`](./SETUP.md)** first — it is written for a Claude
+agent and says what works from a bare clone (most of it: the site, the cards, the sector
+profiles and the save watcher all run with nothing installed), what needs the game's own
+data files, and which paths in the source are hardcoded to the machine this was built on.
+
 ## The two layers
 
 - **`raw/`** — you drop sources here. Never edited. The source of truth.

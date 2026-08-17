@@ -34,6 +34,10 @@ bookkeeping — summarizing, filing, cross-linking, and keeping everything consi
 .
 ├── CLAUDE.md              ← this file (the schema)
 ├── README.md              ← how the user operates the wiki
+├── SETUP.md               ← for an agent on a machine this repo was not built on: what a
+│                            bare clone can already do, what needs the game's own files,
+│                            Hyperspace or Slipstream, and every path hardcoded to the
+│                            original machine. Read it before assuming a tool will run.
 ├── raw/                   ← IMMUTABLE source layer (user drops files here)
 │   ├── gamedata/          ← datamined game files (events.xml, sector_data.xml, blueprints.xml, …)
 │   ├── wiki/              ← community wiki pages, guides, forum/reddit posts

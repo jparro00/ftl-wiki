@@ -4407,3 +4407,38 @@ kind of coincidence that makes a check look fine.
 the repository if it is not. Checking is the fix, not being careful: the failure mode of git's
 upward search is that it always finds *something*, so there is no error to catch — only a wrong
 answer that looks like a right one.
+
+## [2026-08-17] tooling | SETUP.md — what a clone of this repo can actually do
+
+Written for an agent landing on a machine this repo was not built on, because `README.md`
+is an operator's guide that assumes the environment already exists and never says how it
+comes to exist.
+
+**The finding it is built on: far more works from a bare clone than expected.** Cloned the
+public repo into an empty directory and ran everything — `serve-site.py --check` (418
+routes), `build-pages.py` (408 pages), `build-map-signal-mod.py` (built and verified),
+`save-watch.py --once` (resolved a live event), `--index-report` (386 cards, 3,448 text
+keys). All of it with no `raw/gamedata` and nothing installed. The committed build output
+is what buys that: `cards/`, `sectors/`, `cards/trees/` and `sectors/data/` are in the repo,
+so a clone has a working site before it has a game.
+
+Two things that had been assumed and are not true. **The watcher's text index does not need
+`raw/gamedata`** — it is built from `cards/trees/*.tree.json`, so both the log channel *and*
+the save channel resolve on a bare clone; `--help` still says the index comes from
+`raw/gamedata`, which is stale. And **`--once` with the log forced missing still answered**
+(`source: scan`), so losing Hyperspace costs the sector, `?seen=`, `?beacons=` and the
+star-map signal, not event resolution.
+
+Caveat recorded in the document rather than smoothed over: the *clone* needed no setup, but
+the *machine* already had FTL, Hyperspace and a live save. That is what §3 is for.
+
+What actually blocks a clone, all of it now tabulated in §6: `SLIPSTREAM` and `GAME` are
+hardcoded in both mod builders with no flag or env override, so `--install` fails on any
+other machine while building and packing do not. `build-pages.py` needs `--repo`.
+`launch-ftl.cmd` reads `%FTL_DIR%` and so needs no edit. And the prose in four mod and tool
+READMEs states this machine's paths as though they described *the* machine — flagged, since
+an "already installed at …" line reads as a fact about wherever you happen to be.
+
+Also confirmed while writing it: every `tools/*.py` is stdlib-only — no `requirements.txt`,
+nothing to install. Playwright and Node are needed by one verification tool each and by
+nothing else.
