@@ -5,6 +5,19 @@ __pycache__/
 # Built mod archives — regenerate with `python tools/build-mod.py --pack`
 mods/*/*.ftl
 
+# Subset Games' copyrighted game files, extracted from the user's own install.
+# raw/gamedata/_PROVENANCE.md says to keep them out of any public repository, and this
+# one is public. Re-extract with `python tools/ftlpkg.py` — see that file. Every tool
+# that reads them (extract-event.py, extract-sector.py, build-mod.py) needs them
+# present on disk; the built output in cards/ and sectors/ is committed, so serving
+# and rebuilding the *site* does not.
+raw/gamedata/*.xml
+
+# The static export GitHub Pages serves — build output, rebuilt by
+# `python tools/build-pages.py`, force-pushed to the `gh-pages` branch. Keeping it out
+# of `main` is what stops 33 MB of superseded HTML accumulating in the history.
+site/
+
 # OS cruft
 .DS_Store
 Thumbs.db

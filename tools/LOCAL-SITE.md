@@ -545,3 +545,82 @@ fine; defining a colour anywhere else is not.
 - **Review copies are reachable but not listed.** `/sectors/<slug>-review` serves a page
   `add-review-layer.py` produced, because the route checks the file; `routes()` skips them,
   because they are transient artifacts and not part of the site.
+
+---
+
+## 10. The hosted copy — `tools/build-pages.py`
+
+The same site with the server taken out of it, for GitHub Pages:
+<https://jparro00.github.io/ftl-wiki/>.
+
+```bash
+python tools/build-pages.py            # → site/  (gitignored), then checks it
+python tools/build-pages.py --check    # check what is in site/, build nothing
+python tools/build-pages.py --deploy   # ...and force-push site/ to the gh-pages branch
+```
+
+It **imports `serve-site.py` and calls its own `resolve()`, `fragment_page()` and
+`home_page()`.** That is the whole design: the hosted pages *are* the local ones, rendered by
+the same code, so the two cannot drift into two plausible sites. Nothing here re-implements
+the chrome, and nothing here edits a built file — §3 still holds.
+
+A static host cannot do three of the things §2–§6 rely on. Each has one replacement:
+
+| The server does | Pages gets |
+|---|---|
+| `301` from `card-<slug>.html` to `/cards/<slug>` | the real page at `cards/<slug>.html`, and a **forwarding stub** at `cards/card-<slug>.html` |
+| chrome links like `href="/sectors/"` | the same links, **relative** — `../sectors/index.html` |
+| `?raw=1`, the built file as text | the nav's `Built file` points at the file on GitHub |
+
+**The stub is the 301, without a server.** `location.replace(target + location.search)` —
+`replace` so it leaves no back-button entry, and `location.search` because `?seen=` and
+`?pick=` are the only channel the watcher has (§5c) and a redirect that dropped the query
+would silently drop the run. A `<meta refresh>` sits behind it for a reader with JavaScript
+off; that one does lose the query, which is the most a meta refresh can do. 405 stubs, ~350
+bytes each.
+
+**Relative, not root-absolute, and this is the failure that is invisible locally.** A project
+Pages site is served from `/ftl-wiki/`, where `href="/sectors/"` is a 404 — but it works
+perfectly on `127.0.0.1:8080`, so nothing local catches it. `build-pages.py` rewrites every
+absolute URL the chrome emits against the page's own depth and **raises on one it has no
+mapping for**, rather than passing it through to break only once hosted. The built pages
+themselves contain no absolute URL at all, which is what makes the map closable; `--check`
+asserts that no output page carries one.
+
+**The `?seen=` overlay is attached to every sector page**, not only to the ones asking for it.
+`SEEN_JS` already returns immediately when neither parameter is present (§5c), so the
+behaviour is exactly the server's — what moves is where the decision is made. So
+`save-watch.py --site https://jparro00.github.io/ftl-wiki` works, with the caveat below.
+
+Also written: `.nojekyll`, so Pages publishes the tree as built rather than running Jekyll
+over it, and `404.html`, whose links are **absolute-with-prefix** — Pages serves that one file
+for any missing path, so a relative link in it would resolve against whatever the reader
+typed.
+
+`cards/trees/` is not copied. The cards name it in a provenance comment and nothing fetches
+it, and it is 5.8 MB of the 31.
+
+### Verifying it
+
+```bash
+python tools/build-pages.py --check                     # every reference, every page
+python tools/smoke-inline.py site/sectors/<slug>.html   # boxes still open onto cards
+```
+
+`--check` walks all 814 built files, resolves all ~4,500 relative references against the file
+that makes them, and fails on a missing target or on any absolute URL. The in-place beacon
+cards were verified in the exported tree over `file://` — `../cards/runtime/card.js` and
+`../cards/data/<slug>.js` resolve there exactly as they do on disk, which is the point of
+keeping the directory shape.
+
+### What the hosted copy does not have
+
+- **Clean URLs are `…/<slug>.html`, not `…/<slug>`.** GitHub Pages does try the `.html`
+  extension for an extensionless path, so `/ftl-wiki/cards/ancient-device` also works — but
+  nothing here depends on that, and every link written points at the explicit `.html`.
+- **The watcher's URL shapes need the `/ftl-wiki` prefix.** `save-watch.py` builds
+  `/sectors/<slug>`; against a project Pages site that has to become
+  `/ftl-wiki/sectors/<slug>.html`. Not done — the watcher's real target is the local server,
+  where it is already right.
+- **One commit on `gh-pages`, force-pushed.** The build output is not history worth keeping,
+  and a branch that accumulated it would grow by ~30 MB a deploy.
