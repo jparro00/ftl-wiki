@@ -39,19 +39,22 @@ is unchanged — but Steam achievements stop unlocking while you are downgraded.
 
 ## Install
 
-Already installed on this machine. Hyperspace 1.22.2 is in the game folder, and all three mods
-are patched in. To re-patch after a rebuild:
+With Hyperspace and Slipstream set up, `python tools/build-beacon-mod.py --install` does the
+whole thing — it reads `$SLIPSTREAM_DIR` and `$FTL_DIR` and says which is wrong if either is
+(`SETUP.md` §6). By hand, from your Slipstream directory:
 
 ```powershell
-cd C:\Users\jparr\Documents\Slipstream
 java -jar modman.jar --patch Hyperspace.ftl event-labels.ftl beacon-reveal.ftl
 ```
 
 Hyperspace must come first — this mod adds itself to Hyperspace's script list, which has to
 exist already.
 
-From scratch elsewhere: install Hyperspace per its own guide, drop `beacon-reveal.ftl` into
+From scratch: install Hyperspace per its own guide, drop `beacon-reveal.ftl` into
 Slipstream's `mods/` folder, and patch it after `Hyperspace.ftl`.
+
+> On the machine this was written on, Hyperspace 1.22.2 sat in the game folder with all three
+> mods patched in. That is a record of that install, not a description of yours.
 
 ## Uninstall
 

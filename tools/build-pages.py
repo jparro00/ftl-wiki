@@ -49,8 +49,39 @@ _spec = importlib.util.spec_from_file_location(
 site = importlib.util.module_from_spec(_spec)
 _spec.loader.exec_module(site)
 
-REPO = "jparro00/ftl-wiki"
+FALLBACK_REPO = "jparro00/ftl-wiki"
 REF = "main"
+
+
+def default_repo():
+    """`owner/name`, read from the `origin` remote so a fork needs no source edit.
+
+    It feeds two things that both have to agree with where the site is actually hosted:
+    the `Built file` links, and the path prefix the 404 page carries (`base_prefix`). A
+    hardcoded value silently mislabels every one of those in a clone, and the 404 is the
+    page nobody checks.
+    """
+    try:
+        url = subprocess.run(("git", "remote", "get-url", "origin"), cwd=str(ROOT),
+                             capture_output=True, text=True, check=True).stdout.strip()
+    except (OSError, subprocess.CalledProcessError):
+        return FALLBACK_REPO
+    match = re.search(r"[:/]([^/:]+)/([^/]+?)(?:\.git)?/?$", url)
+    return "%s/%s" % match.groups() if match else FALLBACK_REPO
+
+
+REPO = default_repo()
+
+
+def base_prefix():
+    """The path Pages serves this repository from, with no trailing slash.
+
+    A *project* site lives at `/<name>/`; a repository named `<owner>.github.io` is a
+    *user* site and lives at the root, where a `/<name>` prefix would be wrong on every
+    link the 404 page carries.
+    """
+    owner, name = REPO.split("/", 1)
+    return "" if name.lower() == owner.lower() + ".github.io" else "/" + name
 
 
 # --------------------------------------------------------------------------
@@ -237,7 +268,7 @@ def not_found():
     """404. Its links are absolute-with-prefix, not relative: GitHub Pages serves this
     one file for any missing path, so a relative link in it resolves against whatever
     the reader typed rather than against the file's own location."""
-    prefix = "/" + REPO.split("/", 1)[1]
+    prefix = base_prefix()
     # Written in the chrome's own root-absolute vocabulary — `/sectors/`, not
     # `/ftl-wiki/sectors/` — so the one substitution below prefixes these and the nav's
     # links together. Writing the prefix in here as well is how this page first shipped,
@@ -361,7 +392,9 @@ def main():
     ap.add_argument("--deploy", action="store_true",
                     help="build, check, then force-push site/ to gh-pages")
     ap.add_argument("--remote", default="origin")
-    ap.add_argument("--repo", default=REPO, help="owner/name, for the Built file links")
+    ap.add_argument("--repo", default=REPO,
+                    help="owner/name; sets the Built file links and the 404's path "
+                         "prefix (default: read from the origin remote, now %s)" % REPO)
     args = ap.parse_args()
     REPO = args.repo
 

@@ -21,6 +21,7 @@ Requires FTL Hyperspace, and a restart: the game reads Lua from ftl.dat at start
 
 import argparse
 import importlib.util
+import os
 import pathlib
 import re
 import sys
@@ -30,8 +31,20 @@ import zipfile
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 MOD = ROOT / "mods" / "map-signal"
 SRC = MOD / "src"
-SLIPSTREAM = pathlib.Path(r"C:\Users\jparr\Documents\Slipstream")
-GAME = pathlib.Path(r"D:\Steam\steamapps\common\FTL Faster Than Light")
+# The only two values here that are about *this machine* rather than about the mod.
+# Environment first, then a `--slipstream` / `--game` flag, then the paths this repo was
+# built on -- so nothing changes for the machine it was written on and a clone needs no
+# source edit. `FTL_DIR` is the name `mods/fullscreen-no-minimize/launch-ftl.cmd` already
+# reads: one variable for the game directory, rather than two that can disagree.
+#
+# Only `--install` uses them. Building, packing and verifying touch neither, which is why
+# a bare clone can build this mod (SETUP.md §0) and only fails at the point it would write
+# to somebody's game.
+DEFAULT_SLIPSTREAM = r"C:\Users\jparr\Documents\Slipstream"
+DEFAULT_GAME = r"D:\Steam\steamapps\common\FTL Faster Than Light"
+
+SLIPSTREAM = pathlib.Path(os.environ.get("SLIPSTREAM_DIR") or DEFAULT_SLIPSTREAM)
+GAME = pathlib.Path(os.environ.get("FTL_DIR") or DEFAULT_GAME)
 
 LUA_NAME = "map-signal.lua"
 
@@ -626,6 +639,28 @@ def pack():
     return out
 
 
+def check_paths():
+    """Both machine paths, checked before anything is copied or patched.
+
+    Checked by a file that has to be *inside* each directory rather than by the directory
+    existing: a plausible-but-wrong path is the likely mistake, and `cwd=SLIPSTREAM` on a
+    directory with no `modman.jar` fails several steps later as a Java error about a
+    missing jar, which reads as a broken toolchain rather than as a wrong path.
+
+    The message names the environment variable, because that is the fix that survives the
+    next `git pull`.
+    """
+    problems = []
+    if not (SLIPSTREAM / "modman.jar").is_file():
+        problems.append("no modman.jar in %s\n"
+                        "  set SLIPSTREAM_DIR, or pass --slipstream <dir>" % SLIPSTREAM)
+    if not (GAME / "ftl.dat").is_file():
+        problems.append("no ftl.dat in %s\n"
+                        "  set FTL_DIR, or pass --game <dir>" % GAME)
+    if problems:
+        raise SystemExit("\n".join(problems))
+
+
 def install():
     """Copy the .ftl to Slipstream and patch it into the game.
 
@@ -639,6 +674,7 @@ def install():
     ftl = MOD / "map-signal.ftl"
     if not ftl.exists():
         raise SystemExit("no map-signal.ftl -- run with --pack first")
+    check_paths()
     shutil.copy2(ftl, SLIPSTREAM / "mods" / ftl.name)
 
     result = subprocess.run(
@@ -663,7 +699,19 @@ def main():
                     help="pack, copy to Slipstream, and patch the game (FTL must be closed)")
     ap.add_argument("--verify", action="store_true",
                     help="re-check an already-generated tree without rebuilding")
+    ap.add_argument("--slipstream", metavar="DIR",
+                    help="Slipstream Mod Manager directory, the one holding modman.jar "
+                         "(default: $SLIPSTREAM_DIR, else %s)" % DEFAULT_SLIPSTREAM)
+    ap.add_argument("--game", metavar="DIR",
+                    help="FTL install directory, the one holding ftl.dat "
+                         "(default: $FTL_DIR, else %s)" % DEFAULT_GAME)
     args = ap.parse_args()
+
+    global SLIPSTREAM, GAME
+    if args.slipstream:
+        SLIPSTREAM = pathlib.Path(args.slipstream)
+    if args.game:
+        GAME = pathlib.Path(args.game)
 
     if not args.verify:
         build()

@@ -17,7 +17,7 @@ You are writing wiki pages for one batch of FTL events. Read this, then your bat
   `raw/gamedata/<file>` (the `file` field), plus `raw/gamedata/events_ships.xml` for any
   enemy ship it references and `raw/gamedata/text_events.xml` for prose. Follow
   `load=` references to their targets.
-- **Fandom pages**: `C:\Users\jparr\Documents\claude\ftl\raw\wiki\<file>.md`.
+- **Fandom pages**: `raw/wiki/<file>.md`.
   - `wiki_pages[]` = **authoritative**. That page declares this event's id in its Notes
     ("called \"X\" in the datafiles"). Read every one; this is where odds, rewards and
     strategy live.
@@ -27,7 +27,8 @@ You are writing wiki pages for one batch of FTL events. Read this, then your bat
 - **Template**: `wiki/_templates/event.md`. **Schema**: `CLAUDE.md` §2.1, §3, §4.
 - **Reference page** — match this depth and tone: `wiki/events/ancient-device.md`.
 
-Project root: `C:\Users\jparr\Documents\claude\ftl`
+**Every path in this brief is relative to the repository root.** The orchestrator gives
+you that root; it is wherever this repo is checked out, and is not a fixed location.
 
 ## Output
 

@@ -212,28 +212,64 @@ watcher and `ftlsave.py` reference them but degrade rather than fail.
 
 ---
 
-## 6. Values hardcoded to the original machine
+## 6. Machine-specific values — two environment variables
 
-These are the only things in the repo that assume a specific computer. Change them, or use
-the override where one exists.
+**Nothing in this repo needs a source edit to run on another machine.** Everything that is
+about a specific computer reads an environment variable, with the original machine's paths
+as the fallback so that machine keeps working unchanged.
 
-| File | Line | Value | Override |
-|---|---|---|---|
-| `tools/build-map-signal-mod.py` | 33–34 | `SLIPSTREAM`, `GAME` | **none — edit the source** |
-| `tools/build-beacon-mod.py` | 38–39 | `SLIPSTREAM`, `GAME` | **none — edit the source** |
-| `tools/build-pages.py` | `REPO` | `jparro00/ftl-wiki` | `--repo owner/name` |
-| `mods/fullscreen-no-minimize/launch-ftl.cmd` | 15 | game directory | set `%FTL_DIR%` |
-| `tools/pull-fandom.ps1` | 7 | output directory | edit |
-| `tools/AGENT-BRIEF.md` | 20, 30 | project root | edit if you use that brief |
+| Variable | Names | Read by |
+|---|---|---|
+| `FTL_DIR` | the FTL install directory, the one holding `ftl.dat` | both mod builders, `launch-ftl.cmd`, and `ftlsave.py` — so the watcher finds a non-standard install too |
+| `SLIPSTREAM_DIR` | the Slipstream directory, the one holding `modman.jar` | both mod builders |
 
-The two mod builders are the ones that will actually stop you: `--install` copies into
-`SLIPSTREAM/mods` and runs `modman.jar` there, so on any other machine it fails until both
-constants are correct. Building, packing and verifying do not touch them.
+```bash
+export FTL_DIR="/path/to/FTL Faster Than Light"
+export SLIPSTREAM_DIR="/path/to/Slipstream"
+```
 
-The prose in `mods/event-labels/README.md`, `mods/map-signal/README.md`,
-`tools/BEACON-REVEAL.md` and `tools/EVENT-LABELS.md` also states the original machine's
-paths as though they were facts about *the* machine. They are examples. Do not take
-"already installed at …" as describing the computer you are on.
+`FTL_DIR` is one variable for one directory — `launch-ftl.cmd` already used that name, so
+the builders read it too rather than inventing a second that can disagree.
+
+Per-invocation flags override the environment:
+
+```bash
+python tools/build-map-signal-mod.py --install --slipstream <dir> --game <dir>
+python tools/build-beacon-mod.py     --install --slipstream <dir> --game <dir>
+```
+
+**Only `--install` reads either.** Build, `--pack` and `--verify` touch neither, which is
+why a bare clone builds every mod (§0) and fails only where it would write to somebody's
+game. When it does fail, it names the variable and reports both paths at once:
+
+```
+$ python tools/build-map-signal-mod.py --install
+no modman.jar in C:\nope
+  set SLIPSTREAM_DIR, or pass --slipstream <dir>
+no ftl.dat in C:\also-nope
+  set FTL_DIR, or pass --game <dir>
+```
+
+Each is checked by a file that must be *inside* it, not by the directory existing — a
+plausible-but-wrong path is the likely mistake, and `modman.jar` missing surfaces several
+steps later as a Java error that reads like a broken toolchain.
+
+### Everything else derives itself
+
+| | derived from |
+|---|---|
+| `build-pages.py` `REPO` | `git remote get-url origin`. A fork's `Built file` links and its 404's path prefix follow the fork. `--repo owner/name` overrides; a repo named `<owner>.github.io` is treated as a user site and gets no prefix |
+| `pull-fandom.ps1` output | `$PSScriptRoot`'s parent — wherever the repo is cloned |
+| `pull-fandom.ps1` User-Agent contact | `git config user.email` |
+| the save, `ftl.dat`, `FTL_HS.log` | probed (§3) |
+
+### One thing still to read carefully
+
+Prose in `mods/*/README.md`, `tools/BEACON-REVEAL.md` and `tools/EVENT-LABELS.md` records
+what was installed on the machine this was written on — Slipstream 1.9.1, Java 8,
+Hyperspace 1.22.2, at that machine's paths. Those lines are marked as records rather than
+instructions, but they are still descriptions of somebody else's computer. Do not read
+"Hyperspace 1.22.2 is in the game folder" as a statement about yours.
 
 ---
 

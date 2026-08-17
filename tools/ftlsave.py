@@ -572,7 +572,17 @@ def scan_encounter_text(path):
 
 
 def default_ftl_dat():
-    candidates = [
+    """Where the game is, tried in order. `None` means say so rather than guess.
+
+    `FTL_DIR` comes first and is the same variable the mod builders and
+    `launch-ftl.cmd` read (`SETUP.md` §6) -- one name for one directory. The two paths
+    after it are guesses at a stock Steam install; the first is the machine this was
+    written on, and is a fallback, not a default.
+    """
+    candidates = []
+    if os.environ.get("FTL_DIR"):
+        candidates.append(os.path.join(os.environ["FTL_DIR"], "ftl.dat"))
+    candidates += [
         r"D:\Steam\steamapps\common\FTL Faster Than Light\ftl.dat",
         r"C:\Program Files (x86)\Steam\steamapps\common\FTL Faster Than Light\ftl.dat",
     ]

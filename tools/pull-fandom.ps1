@@ -4,8 +4,18 @@ $ErrorActionPreference = 'Stop'
 $ProgressPreference    = 'SilentlyContinue'
 
 $base = 'https://ftl.fandom.com/api.php'
-$out  = 'C:\Users\jparr\Documents\claude\ftl\raw\wiki'
-$ua   = 'ftl-event-wiki/1.0 (personal knowledge base; contact jparro00@gmail.com)'
+
+# Derived from where this script sits, not from where it was written: $PSScriptRoot is
+# tools/, so its parent is the repo root wherever the repo happens to be cloned.
+$out  = Join-Path (Split-Path -Parent $PSScriptRoot) 'raw\wiki'
+
+# The MediaWiki API asks for a contact in the User-Agent. It should name whoever is
+# making the requests, so it follows git's configured address rather than naming the
+# person this script was written by.
+$contact = (git config user.email) 2>$null
+if (-not $contact) { $contact = 'unknown' }
+$ua   = "ftl-event-wiki/1.0 (personal knowledge base; contact $contact)"
+
 $today = '2026-08-09'
 
 $cats = @(

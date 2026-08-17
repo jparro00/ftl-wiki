@@ -42,7 +42,7 @@ the change "didn't work". That cost a full debugging round during development �
 `using fallback origin 45,40` long after the constant had been corrected in the source. The
 game reads the Lua from `ftl.dat` at startup, so a running instance never picks up a rebuild.
 
-`--install` does the equivalent of, from `C:\Users\jparr\Documents\Slipstream`:
+`--install` does the equivalent of, from `$SLIPSTREAM_DIR` (`SETUP.md` §6):
 
 ```powershell
 java -jar modman.jar --patch Hyperspace.ftl event-labels.ftl beacon-reveal.ftl
@@ -68,7 +68,7 @@ cannot rewrite `ftl.dat` underneath a running game.
 python tools\build-beacon-mod.py --install
 ```
 
-**Off** — from `C:\Users\jparr\Documents\Slipstream`, the same patch minus this mod:
+**Off** — from `$SLIPSTREAM_DIR`, the same patch minus this mod:
 
 ```
 java -jar modman.jar --patch Hyperspace.ftl event-labels.ftl

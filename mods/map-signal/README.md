@@ -64,7 +64,7 @@ a mod missing from the list is a mod uninstalled.
 
 ## Uninstall
 
-From `C:\Users\jparr\Documents\Slipstream`, the same patch minus this mod:
+From your Slipstream directory (`$SLIPSTREAM_DIR`), the same patch minus this mod:
 
 ```
 java -jar modman.jar --patch Hyperspace.ftl event-labels.ftl

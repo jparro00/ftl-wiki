@@ -177,7 +177,10 @@ from a generated append, run `--verify`, and confirm it fails.
   vanilla prose, in the format §3 specifies. The labels render. (Read out of the save by
   `tools/ftlsave.py`, which reads what the game itself is displaying.)
 
-Installed locally at `C:\Users\jparr\Documents\Slipstream` (Slipstream 1.9.1, Java 8),
-pointed at `D:\Steam\steamapps\common\FTL Faster Than Light`. All 14 vanilla files this mod
+Verified against the install this was written on — Slipstream 1.9.1 on Java 8 at
+`C:\Users\jparr\Documents\Slipstream`, pointed at
+`D:\Steam\steamapps\common\FTL Faster Than Light`. Those paths are a record of that
+check, not a configuration: the build tools read `$SLIPSTREAM_DIR` and `$FTL_DIR`
+(`SETUP.md` §6). All 14 vanilla files this mod
 appends to were confirmed byte-identical to that install's `ftl.dat` contents, so the 35
 copied event definitions match the installed vanilla exactly.

@@ -19,11 +19,13 @@ labelled — the ones with a card. The rest are untouched and look exactly as th
 
 ## Install
 
-Already installed on this machine at `C:\Users\jparr\Documents\Slipstream`, configured for
-`D:\Steam\steamapps\common\FTL Faster Than Light`. Launch `modman.exe`, tick **event-labels**,
-click **Patch**.
+With Slipstream already set up: launch `modman.exe`, tick **event-labels**, click **Patch**.
 
-From scratch elsewhere:
+> The original machine had Slipstream at `C:\Users\jparr\Documents\Slipstream` pointed at
+> `D:\Steam\steamapps\common\FTL Faster Than Light`. Those are that machine's paths, not
+> defaults — the build tools read `$SLIPSTREAM_DIR` and `$FTL_DIR` (see `SETUP.md` §6).
+
+From scratch:
 
 1. Get Slipstream Mod Manager — binaries are on
    [SourceForge](https://sourceforge.net/projects/slipstreammodmanager/), *not* the GitHub

@@ -4442,3 +4442,40 @@ an "already installed at …" line reads as a fact about wherever you happen to 
 Also confirmed while writing it: every `tools/*.py` is stdlib-only — no `requirements.txt`,
 nothing to install. Playwright and Node are needed by one verification tool each and by
 nothing else.
+
+## [2026-08-17] tooling | Nothing needs a source edit to run somewhere else
+
+`SETUP.md` §6 listed six values hardcoded to this machine, two of them hard blocks. They are
+now environment variables, flags, or derived — with this machine's paths kept as fallbacks,
+so nothing here changes and a clone needs no edit.
+
+**Two variables, not six.** `FTL_DIR` and `SLIPSTREAM_DIR`. `FTL_DIR` is the name
+`launch-ftl.cmd` already read, so the mod builders and `ftlsave.py` read that one rather than
+inventing a second name for the same directory — two names for one path is a bug waiting for
+the day they disagree. Precedence is environment, then `--slipstream` / `--game`, then the
+original paths.
+
+**Only `--install` reads either**, which is why a bare clone builds every mod and fails only
+where it would write to somebody's game. `check_paths()` runs before anything is copied and
+reports *both* problems at once, naming the variable rather than the path — the variable is
+the fix that survives the next `git pull`. Each directory is checked by a file that has to be
+inside it, not by the directory existing: a plausible-but-wrong path is the likely mistake,
+and `cwd=SLIPSTREAM` on a directory with no `modman.jar` surfaces several steps later as a
+Java error about a missing jar, which reads as a broken toolchain rather than a wrong path.
+
+**The rest derive themselves.** `build-pages.py` reads `owner/name` from the `origin` remote,
+so a fork's `Built file` links and its 404's path prefix follow the fork; a repository named
+`<owner>.github.io` is recognised as a user site and gets no prefix at all, which the previous
+`"/" + name` would have got wrong on every link. `pull-fandom.ps1` takes its output directory
+from `$PSScriptRoot`'s parent and its User-Agent contact from `git config user.email` — the
+MediaWiki API asks for a contact and it should name whoever is making the requests.
+`AGENT-BRIEF.md` states that its paths are relative to a root the orchestrator supplies.
+
+**Prose was the other half.** Four files said "already installed on this machine at
+`C:\Users\jparr\...`" in a section headed *Install*, which reads as instruction. Those are now
+marked as records of the machine this was written on, and the instructions point at the
+variables. `EVENT-LABELS.md`'s byte-identical verification note keeps its paths — it is a
+record of a check, and deleting the paths would delete what was checked.
+
+Verified after: both mod builders, both site checks, and `save-watch --once` all still pass,
+`FTL_DIR` is honoured and still falls through when wrong, and no file's line endings moved.
