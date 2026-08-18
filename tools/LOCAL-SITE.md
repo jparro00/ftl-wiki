@@ -590,7 +590,18 @@ asserts that no output page carries one.
 **The `?seen=` overlay is attached to every sector page**, not only to the ones asking for it.
 `SEEN_JS` already returns immediately when neither parameter is present (§5c), so the
 behaviour is exactly the server's — what moves is where the decision is made. So
-`save-watch.py --site https://jparro00.github.io/ftl-wiki` works, with the caveat below.
+`save-watch.py --site https://jparro00.github.io/ftl-wiki` works — verified end to end, and
+with no change to the watcher.
+
+**It survives the `/ftl-wiki` path prefix because the watcher concatenates rather than
+resolves.** `Watcher._url()` returns a path, `--site` keeps whatever string it was given,
+and the shell composes `site + url`; a prefix on the origin is therefore carried, not
+resolved away. This was first written up here as *not done, the watcher needs the prefix* —
+which was an inference, and wrong. Two more things it depends on, both checked rather than
+assumed: `github.io` sends no `X-Frame-Options` and no `frame-ancestors` CSP, so the shell's
+iframe is allowed; and Pages tries the `.html` extension on an extensionless path, so
+`/sectors/<slug>` reaches `sectors/<slug>.html` without the watcher knowing the export's
+filenames.
 
 Also written: `.nojekyll`, so Pages publishes the tree as built rather than running Jekyll
 over it, and `404.html`, whose links are **absolute-with-prefix** — Pages serves that one file
@@ -633,9 +644,8 @@ Two things that shipped wrong first, both invisible until the site was hosted:
 - **Clean URLs are `…/<slug>.html`, not `…/<slug>`.** GitHub Pages does try the `.html`
   extension for an extensionless path, so `/ftl-wiki/cards/ancient-device` also works — but
   nothing here depends on that, and every link written points at the explicit `.html`.
-- **The watcher's URL shapes need the `/ftl-wiki` prefix.** `save-watch.py` builds
-  `/sectors/<slug>`; against a project Pages site that has to become
-  `/ftl-wiki/sectors/<slug>.html`. Not done — the watcher's real target is the local server,
-  where it is already right.
+- **Latency and staleness, if the watcher points here.** Every swap is a round trip to
+  GitHub rather than to localhost, and the pages are frozen at the last `--deploy`. Hosted
+  is the right target for playing; local is the right target while rebuilding content.
 - **One commit on `gh-pages`, force-pushed.** The build output is not history worth keeping,
   and a branch that accumulated it would grow by ~30 MB a deploy.

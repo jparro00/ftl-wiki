@@ -606,6 +606,25 @@ sectors  D:\...\FTL_HS.log   (reading ENGI_SECTOR)
 page is the address bar and nothing else, which is what makes that true — see `LOCAL-SITE.md`
 §5c for why the state rides on the URL rather than being fetched.
 
+```bash
+python tools/save-watch.py --site https://jparro00.github.io/ftl-wiki
+```
+
+Verified end to end against that site, and it needed no change here. **A path prefix on the
+origin survives because this concatenates rather than resolves**: `_url()` returns a path,
+`self.site` keeps the string it was given, and the shell composes `site + url`, so
+`/cards/<slug>` becomes `…/ftl-wiki/cards/<slug>` rather than losing the `/ftl-wiki`. Every
+shape resolves, `?seen=` and `?pick=` included, and `probe_site` reports `reachable`.
+
+Two properties of GitHub Pages it leans on, checked rather than assumed: `github.io` sends no
+`X-Frame-Options` and no `frame-ancestors` CSP, so the shell's iframe is allowed; and Pages
+tries the `.html` extension on an extensionless path, so `/sectors/<slug>` finds the export's
+`sectors/<slug>.html` without this file knowing that filename.
+
+**Hosted for playing, local for working.** Hosted costs a round trip per swap and is frozen at
+the last `build-pages.py --deploy`; the local server reads pages from disk per request, so a
+rebuilt card is one reload away.
+
 **The URL is built in Python, not in the shell.** The shell used to assemble it from `view`
 and a slug; now it does not, because that was a second place where the two could disagree
 about what should be on screen.

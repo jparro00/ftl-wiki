@@ -4479,3 +4479,34 @@ record of a check, and deleting the paths would delete what was checked.
 
 Verified after: both mod builders, both site checks, and `save-watch --once` all still pass,
 `FTL_DIR` is honoured and still falls through when wrong, and no file's line endings moved.
+
+## [2026-08-17] tooling | The watcher can point at the hosted site, and the spec said it could not
+
+`LOCAL-SITE.md` §10 listed "the watcher's URL shapes need the `/ftl-wiki` prefix — not done"
+under what the hosted copy lacks. That was an inference from the URL shapes, and it was wrong.
+Tested instead of reasoned about, and it works untouched.
+
+**It survives the path prefix because the watcher concatenates rather than resolves.**
+`_url()` returns a path, `self.site` keeps whatever string `--site` was given, and the shell
+composes `site + url` — so `/cards/<slug>` becomes `…/ftl-wiki/cards/<slug>` rather than
+resolving the prefix away. Every shape resolves, `?seen=`, `?beacons=` and `?pick=` included,
+and `probe_site` answers `reachable`.
+
+Two properties of GitHub Pages it leans on, both checked rather than assumed, and either of
+which would have been a silent failure: `github.io` sends no `X-Frame-Options` and no
+`frame-ancestors` CSP, so the shell's iframe is allowed to load it — a blocked frame would
+have looked like a broken watcher. And Pages tries the `.html` extension on an extensionless
+path, so the watcher's `/sectors/<slug>` reaches the export's `sectors/<slug>.html` without
+either side knowing the other's filenames.
+
+The trade is latency and staleness, not correctness: every swap is a round trip to GitHub, and
+the pages are frozen at the last `build-pages.py --deploy`. **Hosted for playing, local for
+working** — the local server reads pages from disk per request, so a rebuilt card is one
+reload away.
+
+Written up in three places, each for its own reader: `SETUP.md` §2 now offers the hosted site
+as the zero-process way to read the pages and §3 as a `--site` target, with the stale
+"check both 8080 and 8787" row in the failure table replaced by one that asks what `--site`
+actually names; `SAVE-WATCH.md` §5a carries the command and the two Pages properties;
+`LOCAL-SITE.md` §10 records that the earlier claim was an inference and wrong, which is the
+part worth keeping — the same reasoning would produce it again.
